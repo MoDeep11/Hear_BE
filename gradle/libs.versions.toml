@@ -1,0 +1,94 @@
+[versions]
+kotlin = "1.9.25"
+springBoot = "3.5.11"
+dependencyManagement = "1.1.7"
+ktlint = "11.5.1"
+mapstruct = "1.5.5.Final"
+swagger = "2.8.15"
+jjwt = "0.12.6"
+aws = "3.1.0"
+sentry = "8.27.0"
+springCloud = "2025.0.1"
+querydsl = "5.0.0"
+jakarta-persistence = "3.1.0"
+jakarta-annotation = "2.1.1"
+
+[plugins]
+spring-boot = { id = "org.springframework.boot", version.ref = "springBoot" }
+spring-dependency-management = { id = "io.spring.dependency-management", version.ref = "dependencyManagement" }
+kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
+kotlin-spring = { id = "org.jetbrains.kotlin.plugin.spring", version.ref = "kotlin" }
+kotlin-jpa = { id = "org.jetbrains.kotlin.plugin.jpa", version.ref = "kotlin" }
+kotlin-kapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "kotlin" }
+ktlint = { id = "org.jlleitschuh.gradle.ktlint", version.ref = "ktlint" }
+
+[libraries]
+# spring boot
+spring-boot-web = { group = "org.springframework.boot", name = "spring-boot-starter-web" }
+spring-boot-security = { group = "org.springframework.boot", name = "spring-boot-starter-security" }
+spring-boot-validation = { group = "org.springframework.boot", name = "spring-boot-starter-validation" }
+
+# jpa
+jpa = { group = "org.springframework.boot", name = "spring-boot-starter-data-jpa" }
+
+# redis & cache
+redis = { group = "org.springframework.boot", name = "spring-boot-starter-data-redis" }
+cache = { group = "org.springframework.boot", name = "spring-boot-starter-cache" }
+
+# mail
+spring-boot-starter-mail = { group = "org.springframework.boot", name = "spring-boot-starter-mail" }
+
+# oauth2
+oauth2-client = { group = "org.springframework.boot", name = "spring-boot-starter-oauth2-client" }
+oauth2-resource-server = { group = "org.springframework.boot", name = "spring-boot-starter-oauth2-resource-server" }
+
+# docker-compose
+docker-compose = { group = "org.springframework.boot", name = "spring-boot-docker-compose" }
+
+# configuration processor
+configuration-processor = { group = "org.springframework.boot", name = "spring-boot-configuration-processor" }
+
+# kotlin
+kotlin-reflect = { group = "org.jetbrains.kotlin", name = "kotlin-reflect" }
+jackson-module-kotlin = { group = "com.fasterxml.jackson.module", name = "jackson-module-kotlin" }
+
+# mapstruct
+mapstruct = { group = "org.mapstruct", name = "mapstruct", version.ref = "mapstruct" }
+mapstruct-processor = { group = "org.mapstruct", name = "mapstruct-processor", version.ref = "mapstruct" }
+
+# Database
+postgresql = { group = "org.postgresql", name = "postgresql" }
+
+# aws
+aws = { group = "io.awspring.cloud", name = "spring-cloud-aws-starter", version.ref = "aws" }
+aws-s3 = { group = "io.awspring.cloud", name = "spring-cloud-aws-starter-s3", version.ref = "aws" }
+
+# swagger
+openapi = { group = "org.springdoc", name = "springdoc-openapi-starter-webmvc-ui", version.ref = "swagger" }
+
+# jwt
+jjwt-api = { group = "io.jsonwebtoken", name = "jjwt-api", version.ref = "jjwt" }
+jjwt-impl = { group = "io.jsonwebtoken", name = "jjwt-impl", version.ref = "jjwt" }
+jjwt-jackson = { group = "io.jsonwebtoken", name = "jjwt-jackson", version.ref = "jjwt" }
+
+# sentry
+sentry = { group = "io.sentry", name = "sentry-spring-boot-starter-jakarta" }
+sentry-bom = { group = "io.sentry", name = "sentry-bom", version.ref = "sentry" }
+
+# test utils
+kotlin-test-junit5 = { group = "org.jetbrains.kotlin", name = "kotlin-test-junit5" }
+junit-platform-launcher = { group = "org.junit.platform", name = "junit-platform-launcher" }
+spring-boot-starter-test = { group = "org.springframework.boot", name = "spring-boot-starter-test" }
+spring-security-test = { group = "org.springframework.security", name = "spring-security-test" }
+
+# spring cloud
+spring-cloud-openfeign = { group = "org.springframework.cloud", name = "spring-cloud-starter-openfeign" }
+spring-cloud-bom = { group = "org.springframework.cloud", name = "spring-cloud-dependencies", version.ref = "springCloud" }
+
+# QueryDLS
+querydsl-jpa = { group = "com.querydsl", name = "querydsl-jpa", version.ref = "querydsl" }
+querydsl-apt = { group = "com.querydsl", name = "querydsl-apt", version.ref = "querydsl" }
+
+# Jakarta API
+jakarta-persistence-api = { group = "jakarta.persistence", name = "jakarta.persistence-api", version.ref = "jakarta-persistence" }
+jakarta-annotation-api = { group = "jakarta.annotation", name = "jakarta.annotation-api", version.ref = "jakarta-annotation" }
