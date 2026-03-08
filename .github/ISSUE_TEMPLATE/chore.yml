@@ -1,6 +1,6 @@
 name: "⚙️ Chore"
 description: "빌드 설정, 패키지 관리, 환경 설정 등 기타 운영 작업입니다."
-title: "[CHORE] "
+title: "chore/"
 labels: ["chore"]
 body:
   - type: textarea
