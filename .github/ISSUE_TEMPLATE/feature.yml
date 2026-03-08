@@ -1,4 +1,5 @@
 name: "🚀 Feature Request"
+description: "새로운 기능을 제안하거나 기존 기능을 개선합니다."
 title: "[FEAT] "
 labels: ["feature"]
 body:

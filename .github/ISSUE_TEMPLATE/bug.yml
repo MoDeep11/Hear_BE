@@ -1,4 +1,5 @@
 name: "🐛 Bug Report"
+description: "발생한 버그를 보고합니다."
 title: "[BUG] "
 labels: ["bug"]
 body:

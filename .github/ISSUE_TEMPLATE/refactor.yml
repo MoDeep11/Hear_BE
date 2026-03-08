@@ -1,4 +1,5 @@
 name: "♻️ Refactor"
+description: "기능 변경 없이 코드 구조나 가독성을 개선하는 작업입니다."
 title: "[REFACTOR] "
 labels: ["refactor"]
 body:
