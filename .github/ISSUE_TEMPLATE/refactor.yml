@@ -1,0 +1,21 @@
+name: "♻️ Refactor"
+title: "[REFACTOR] "
+labels: ["refactor"]
+body:
+  - type: textarea
+    id: description
+    attributes:
+      label: "description"
+    validations:
+      required: true
+  - type: input
+    id: scope
+    attributes:
+      label: "scope"
+      placeholder: "e.g. Repository Layer, DTO structure"
+    validations:
+      required: true
+  - type: textarea
+    id: notes
+    attributes:
+      label: "etc"

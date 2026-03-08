@@ -1,0 +1,21 @@
+name: "🚀 Feature Request"
+title: "[FEAT] "
+labels: ["feature"]
+body:
+  - type: textarea
+    id: description
+    attributes:
+      label: "description"
+    validations:
+      required: true
+  - type: input
+    id: scope
+    attributes:
+      label: "scope"
+      placeholder: "e.g. AI Diary, Sticker System"
+    validations:
+      required: true
+  - type: textarea
+    id: notes
+    attributes:
+      label: "etc"

@@ -1,0 +1,21 @@
+name: "⚙️ Chore"
+title: "[CHORE] "
+labels: ["chore"]
+body:
+  - type: textarea
+    id: description
+    attributes:
+      label: "description"
+    validations:
+      required: true
+  - type: input
+    id: scope
+    attributes:
+      label: "scope"
+      placeholder: "e.g. CI/CD, Dependencies"
+    validations:
+      required: true
+  - type: textarea
+    id: notes
+    attributes:
+      label: "etc"
