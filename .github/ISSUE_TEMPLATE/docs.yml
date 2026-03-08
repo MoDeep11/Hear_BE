@@ -1,6 +1,6 @@
 name: "📝 Documentation"
 description: "프로젝트 문서를 추가하거나 수정합니다."
-title: "[DOCS] "
+title: "docs/"
 labels: ["documentation"]
 body:
   - type: textarea
