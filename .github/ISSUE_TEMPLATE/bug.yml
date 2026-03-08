@@ -1,0 +1,21 @@
+name: "🐛 Bug Report"
+title: "[BUG] "
+labels: ["bug"]
+body:
+  - type: textarea
+    id: description
+    attributes:
+      label: "description"
+    validations:
+      required: true
+  - type: input
+    id: scope
+    attributes:
+      label: "scope"
+      placeholder: "e.g. Auth Service, API-Gateway"
+    validations:
+      required: true
+  - type: textarea
+    id: notes
+    attributes:
+      label: "etc"
