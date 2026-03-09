@@ -3,6 +3,7 @@ kotlin = "1.9.25"
 springBoot = "3.5.11"
 dependencyManagement = "1.1.7"
 ktlint = "11.5.1"
+kotlin-logging = "7.0.3"
 mapstruct = "1.5.5.Final"
 swagger = "2.8.15"
 jjwt = "0.12.6"
@@ -48,9 +49,12 @@ docker-compose = { group = "org.springframework.boot", name = "spring-boot-docke
 # configuration processor
 configuration-processor = { group = "org.springframework.boot", name = "spring-boot-configuration-processor" }
 
-# kotlin
+# ktlint
 kotlin-reflect = { group = "org.jetbrains.kotlin", name = "kotlin-reflect" }
 jackson-module-kotlin = { group = "com.fasterxml.jackson.module", name = "jackson-module-kotlin" }
+
+# logger
+kotlin-logging = { group = "io.github.oshai", name = "kotlin-logging-jvm", version.ref = "kotlin-logging" }
 
 # mapstruct
 mapstruct = { group = "org.mapstruct", name = "mapstruct", version.ref = "mapstruct" }
