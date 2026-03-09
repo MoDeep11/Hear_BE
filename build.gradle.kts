@@ -37,6 +37,9 @@ dependencies {
     implementation(libs.kotlin.reflect)
     implementation(libs.jackson.module.kotlin)
 
+    // logger
+    implementation(libs.kotlin.logging)
+
     // Spring Boot Starters
     implementation(libs.spring.boot.web)
     implementation(libs.spring.boot.security)

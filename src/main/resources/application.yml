@@ -86,6 +86,9 @@ springdoc:
 sentry:
   dsn: ${SENTRY_DSN}
   traces-sample-rate: 1.0
+  logging:
+    minimum-event-level: error
+    minimum-breadcrumb-level: info
 
 discord:
   webhook:
