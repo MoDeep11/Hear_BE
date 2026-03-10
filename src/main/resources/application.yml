@@ -2,6 +2,9 @@ spring:
   application:
     name: hear
 
+  profiles:
+    active: ${SPRING_PROFILES_ACTIVE:prod}
+
   # PostgreSQL
   datasource:
     url: ${SPRING_DATASOURCE_URL}
@@ -90,10 +93,6 @@ sentry:
     minimum-event-level: error
     minimum-breadcrumb-level: info
 
-discord:
-  webhook:
-    url: ${DISCORD_WEBHOOK_URL}
-
 # openfeign
 feign:
   client:
@@ -102,3 +101,15 @@ feign:
         loggerLevel: ${OPENFEIGN_LOGGER_LEVEL:BASIC}
         connectTimeout: 5000
         readTimeout: 5000
+      holiday-api:
+        loggerLevel: BASIC
+        connectTimeout: 3000
+        readTimeout: 10000
+        retryer: feign.Retryer.Default
+
+api:
+  discord.webhook:
+    url: ${DISCORD_WEBHOOK_URL}
+  holiday:
+    url: ${HOLIDAY_SERVICE_URL}
+    service-key: ${HOLIDAY_SERVICE_KEY}

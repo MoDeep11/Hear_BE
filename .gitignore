@@ -41,3 +41,5 @@ out/
 
 .env
 postgres_data/
+
+**/src/main/kotlin/modeep/hear/test
