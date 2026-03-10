@@ -23,9 +23,4 @@ class OpenFeignConfig {
             TimeUnit.MILLISECONDS, // readTimeout
             true, // followRedirects
         )
-
-    @Bean
-    fun retryer(): Retryer {
-        return Retryer.Default(100, 1000, 3) // period, maxPeriod, maxAttempts
-    }
 }
