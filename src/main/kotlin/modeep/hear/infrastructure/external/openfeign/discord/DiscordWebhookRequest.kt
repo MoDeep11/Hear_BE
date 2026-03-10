@@ -11,6 +11,7 @@ data class DiscordWebhookRequest(
             e: Exception,
             requestUri: String,
         ): DiscordWebhookRequest {
+            val safeUri = maskSensitiveInfo(requestUri)
             val exceptionName = e.javaClass.simpleName
             val errorMessage = e.message ?: "Unknown error"
 
@@ -23,14 +24,26 @@ data class DiscordWebhookRequest(
                             color = ERROR_COLOR,
                             fields =
                                 listOf(
-                                    EmbedField(name = "Request URI", value = "`$requestUri`", inline = true),
+                                    EmbedField(name = "Request URI", value = "`$safeUri`", inline = true),
                                     EmbedField(name = "Exception", value = "`$exceptionName`", inline = true),
+                                    // todo: 커스텀 error 정의 후, error status code 등 다른 필드 추가 필요 + 메시지 통으로 보내지 않도록
                                     EmbedField(name = "Message", value = errorMessage.take(1024), inline = false),
                                 ),
                             footer = EmbedFooter(text = MONITORING_FOOTER),
                         ),
                     ),
             )
+        }
+
+        private fun maskSensitiveInfo(uri: String): String {
+            val sensitiveKeys = listOf("ServiceKey", "accessToken", "auth", "token")
+
+            var maskedUri = uri
+            sensitiveKeys.forEach { key ->
+                val regex = Regex("($key=)[^&]*")
+                maskedUri = maskedUri.replace(regex, "$1********")
+            }
+            return maskedUri
         }
     }
 }

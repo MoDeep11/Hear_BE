@@ -102,7 +102,7 @@ feign:
         connectTimeout: 5000
         readTimeout: 5000
       holiday-api:
-        loggerLevel: FULL
+        loggerLevel: BASIC
         connectTimeout: 3000
         readTimeout: 10000
         retryer: feign.Retryer.Default

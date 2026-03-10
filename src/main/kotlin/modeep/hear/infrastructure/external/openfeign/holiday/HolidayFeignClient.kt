@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestParam
 interface HolidayFeignClient {
     @GetMapping("/getRestDeInfo")
     fun getRestDays(
-        @RequestParam("ServiceKey") serviceKey: String,
         @RequestParam("solYear") solYear: String,
         @RequestParam("solMonth") solMonth: String?,
         @RequestParam("_type") type: String = "json",
