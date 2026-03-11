@@ -14,8 +14,8 @@ class CorsConfig {
             CorsConfiguration().apply {
                 allowedOrigins =
                     listOf(
-                        "http://localhost:8080/",
-                        "http://localhost:5173/",
+                        "http://localhost:8080",
+                        "http://localhost:5173",
                     )
                 allowedMethods = listOf("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS")
                 allowedHeaders = listOf("*")
