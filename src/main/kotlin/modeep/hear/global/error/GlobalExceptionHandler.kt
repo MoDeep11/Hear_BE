@@ -24,7 +24,7 @@ class GlobalExceptionHandler(
     @ExceptionHandler(BusinessException::class)
     fun handlerBusinessException(e: BusinessException, request: HttpServletRequest): ResponseEntity<ErrorResponse> {
         val errorCode : ErrorCode = e.errorCode
-        log.error { "[BUSINESS ERROR] ${errorCode.code}: ${errorCode.message}], Details: [${e.details}]" }
+        log.error { "[BUSINESS ERROR] ${errorCode.code}: ${errorCode.message}, Details: [${e.details}]" }
 
         return ResponseEntity
             .status(errorCode.status.value())

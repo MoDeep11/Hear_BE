@@ -2,8 +2,7 @@ package modeep.hear.infrastructure.external.openfeign.discord
 
 import modeep.hear.global.error.ErrorCode
 import modeep.hear.global.error.exception.BusinessException
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
+import java.time.Instant
 
 data class DiscordWebhookRequest(
     val embeds: List<DiscordEmbed>,
@@ -61,8 +60,7 @@ data class DiscordEmbed(
     val description: String,
     val color: Int,
     val fields: List<EmbedField>,
-    val timestamp: String =
-        LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")),
+    val timestamp: String = Instant.now().toString(),
     val footer: EmbedFooter? = null,
 )
 
