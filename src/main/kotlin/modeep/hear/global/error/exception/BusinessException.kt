@@ -4,5 +4,6 @@ import modeep.hear.global.error.ErrorCode
 
 class BusinessException(
     errorCode: ErrorCode,
-    details: String? = null,
-) : BaseException(errorCode = errorCode, details = details)
+    message: String? = null,
+    details: String? = null
+) : BaseException(errorCode, message, details)
