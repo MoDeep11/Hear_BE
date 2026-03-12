@@ -38,7 +38,7 @@ class CalendarScheduler(
 
     private fun saveYearlyCalendar(year: Int) {
         val failedMonths = mutableListOf<Int>()
-        var lastError = Exception()
+        var lastError: Exception? = null
 
         (1..12).forEach { month ->
             try {
@@ -47,6 +47,7 @@ class CalendarScheduler(
             } catch (e: BusinessException) {
                 log.error { "Error [$year-$month]: ${e.errorCode.code} - ${e.message}" }
                 failedMonths.add(month)
+                lastError = e
             } catch (e: Exception) {
                 failedMonths.add(month)
                 lastError = e
@@ -57,11 +58,13 @@ class CalendarScheduler(
             val errorMessage = "$year 년도 중 다음 달의 동기화에 실패했습니다: $failedMonths"
             log.warn { errorMessage }
 
-            exceptionNotifier.notify(
-                lastError,
-                CalendarErrorCode.CALENDAR_SYNC_PARTIAL_FAILED,
-                "Schedular: Calendar"
-            )
+            lastError?.let {
+                exceptionNotifier.notify(
+                    it,
+                    CalendarErrorCode.CALENDAR_SYNC_PARTIAL_FAILED,
+                    "Scheduler: Calendar"
+                )
+            }
         } else {
             log.info { "$year 년 모든 달력이 성공적으로 동기화되었습니다." }
         }

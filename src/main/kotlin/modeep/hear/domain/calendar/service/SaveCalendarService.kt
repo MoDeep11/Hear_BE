@@ -30,10 +30,16 @@ class SaveCalendarService(
 
         val start = LocalDate.of(year, month, 1)
         val end = start.withDayOfMonth(start.lengthOfMonth())
-        if (queryCalendarPort.existsByCalendarDateBetween(start, end)) {
+
+        val savedCount = queryCalendarPort.countByCalendarDateBetween(start, end)
+
+        if (savedCount == start.lengthOfMonth().toLong()) {
             log.info { "$year-$month 데이터가 이미 존재하여 조회를 생략합니다." }
             return queryCalendarPort.findByCalendarDateBetween(start, end)
         }
+
+        log.info { "$year-$month 데이터가 불완전하여($savedCount 개) 기존 데이터를 삭제하고 재동기화합니다." }
+        commandCalendarPort.deleteByCalendarDateBetween(start, end)
 
         val holidays = fetchExternalCalendarPort.fetch(year, month)
 

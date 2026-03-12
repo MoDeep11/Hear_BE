@@ -5,7 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository
 import java.time.LocalDate
 
 interface CalendarRepository : JpaRepository<CalendarJpaEntity, LocalDate> {
-    fun existsByCalendarDateBetween(start: LocalDate, end: LocalDate): Boolean
-
+    fun countByCalendarDateBetween(start: LocalDate, end: LocalDate): Long
     fun findByCalendarDateBetween(start: LocalDate, end: LocalDate): List<CalendarJpaEntity>
+    fun deleteByCalendarDateBetween(start: LocalDate, end: LocalDate)
 }

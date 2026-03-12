@@ -16,8 +16,8 @@ class CalendarPersistenceAdapter(
 ): CommandCalendarPort, QueryCalendarPort {
 
     //--Query--//
-    override fun existsByCalendarDateBetween(start: LocalDate, end: LocalDate): Boolean {
-        return calendarRepository.existsByCalendarDateBetween(start, end)
+    override fun countByCalendarDateBetween(start: LocalDate, end: LocalDate): Long {
+        return calendarRepository.countByCalendarDateBetween(start, end)
     }
 
     override fun findByCalendarDateBetween(start: LocalDate, end: LocalDate): List<Calendar> {
@@ -36,5 +36,9 @@ class CalendarPersistenceAdapter(
         })
 
         return savedCalendar.map { calendarMapper.toModel(it) }
+    }
+
+    override fun deleteByCalendarDateBetween(start: LocalDate, end: LocalDate) {
+        calendarRepository.deleteByCalendarDateBetween(start, end)
     }
 }
