@@ -2,6 +2,6 @@ package modeep.hear.domain.calendar.port.out
 
 import modeep.hear.domain.calendar.model.Calendar
 
-interface CalendarPort {
+interface CommandCalendarPort {
     fun saveAll(calendars: List<Calendar>): List<Calendar>
 }

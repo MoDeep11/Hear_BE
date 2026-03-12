@@ -1,7 +1,7 @@
 package modeep.hear.domain.calendar.scheduler
 
 import io.github.oshai.kotlinlogging.KotlinLogging
-import modeep.hear.domain.calendar.service.CalendarService
+import modeep.hear.domain.calendar.service.SaveCalendarService
 import org.springframework.boot.context.event.ApplicationReadyEvent
 import org.springframework.context.event.EventListener
 import org.springframework.scheduling.annotation.Scheduled
@@ -12,7 +12,7 @@ private val log = KotlinLogging.logger {}
 
 @Component
 class CalendarScheduler(
-    private val calendarService: CalendarService
+    private val saveCalendarService: SaveCalendarService
 ) {
 
     @EventListener(ApplicationReadyEvent::class)
@@ -37,7 +37,7 @@ class CalendarScheduler(
     private fun saveYearlyCalendar(year: Int) {
         (1..12).forEach { month ->
             try {
-                calendarService.saveMonthCalendar(year, month)
+                saveCalendarService.saveMonthCalendar(year, month)
                 Thread.sleep(100)  // API 과부하 방지
             } catch (e: Exception) {
                 TODO("Error handling")
