@@ -17,7 +17,7 @@ class CalendarScheduler(
 
     @EventListener(ApplicationReadyEvent::class)
     fun initCalendarData() {
-        val targetYear = 2026
+        val targetYear = LocalDate.now().year
         log.info { "Server init: Start to create calendar data about $targetYear year." }
 
         saveYearlyCalendar(targetYear)
@@ -28,16 +28,14 @@ class CalendarScheduler(
     @Scheduled(cron = "0 0 2 1 12 ?", zone = "Asia/Seoul")
     fun scheduleNextYearCalendar() {
         val nextYear = LocalDate.now().year + 1
-        println("Regular Schedule: Generates calendar data for the $nextYear year in advance.")
-
+        log.info { "Regular Schedule: Generates calendar data for the $nextYear year in advance." }
         saveYearlyCalendar(nextYear)
     }
 
-    // 저장 로직
     private fun saveYearlyCalendar(year: Int) {
         (1..12).forEach { month ->
             try {
-                saveCalendarService.saveMonthCalendar(year, month)
+                saveCalendarService.execute(year, month)
                 Thread.sleep(100)  // API 과부하 방지
             } catch (e: Exception) {
                 TODO("Error handling")
