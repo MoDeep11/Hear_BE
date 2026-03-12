@@ -1,7 +1,7 @@
 package modeep.hear.domain.calendar.scheduler
 
 import io.github.oshai.kotlinlogging.KotlinLogging
-import modeep.hear.domain.calendar.service.SaveCalendarService
+import modeep.hear.domain.calendar.port.`in`.SaveCalendarUseCase
 import org.springframework.boot.context.event.ApplicationReadyEvent
 import org.springframework.context.event.EventListener
 import org.springframework.scheduling.annotation.Scheduled
@@ -12,7 +12,7 @@ private val log = KotlinLogging.logger {}
 
 @Component
 class CalendarScheduler(
-    private val saveCalendarService: SaveCalendarService
+    private val saveCalendarUseCase: SaveCalendarUseCase,
 ) {
 
     @EventListener(ApplicationReadyEvent::class)
@@ -33,14 +33,22 @@ class CalendarScheduler(
     }
 
     private fun saveYearlyCalendar(year: Int) {
+        val failedMonths = mutableListOf<Int>()
+
         (1..12).forEach { month ->
             try {
-                saveCalendarService.execute(year, month)
+                saveCalendarUseCase.execute(year, month)
                 Thread.sleep(100)  // API 과부하 방지
             } catch (e: Exception) {
-                TODO("Error handling")
-                // println("Error: $year 년 $month 월 데이터 생성 중 오류 발생: ${e.message}")
+                log.error { "$month 월 실패: ${e.message}" }
+                failedMonths.add(month) // 실패한 월 저장
             }
+        }
+
+        if (failedMonths.isNotEmpty()) {
+            log.warn { "⚠️ 작업 완료. 실패한 월: $failedMonths (총 ${failedMonths.size}건)" }
+        } else {
+            log.info { "🎉 모든 월이 성공적으로 동기화되었습니다." }
         }
     }
 }
