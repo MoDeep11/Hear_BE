@@ -1,10 +1,10 @@
-package modeep.hear.infrastructure.adapter.out.calendar.openfeign
+package modeep.hear.infrastructure.adapter.out.calendar.external
 
 import com.fasterxml.jackson.core.type.TypeReference
 import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.ObjectMapper
-import modeep.hear.domain.calendar.port.out.CalendarPort
-import modeep.hear.domain.calendar.port.out.SimpleHolidayInfo
+import modeep.hear.domain.calendar.port.`in`.CalendarUseCase
+import modeep.hear.domain.calendar.port.`in`.dto.SimpleHolidayInfo
 import modeep.hear.infrastructure.external.openfeign.holiday.HolidayFeignClient
 import modeep.hear.infrastructure.external.openfeign.holiday.HolidayItem
 import modeep.hear.infrastructure.external.openfeign.holiday.HolidayResponse
@@ -13,10 +13,10 @@ import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
 @Component
-class CalendarAdapter(
+class CalendarExternalAdapter(
     private val holidayFeignClient: HolidayFeignClient,
     private val objectMapper: ObjectMapper
-) : CalendarPort {
+) : CalendarUseCase {
 
     override fun fetchHolidays(year: Int, month: Int): List<SimpleHolidayInfo> {
         val response = holidayFeignClient.getRestDays(year.toString(), String.format("%02d", month))
