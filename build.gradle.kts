@@ -75,6 +75,10 @@ dependencies {
     kapt(libs.jakarta.persistence.api)
     kapt(libs.jakarta.annotation.api)
 
+    // spring retry & aspect
+    implementation(libs.spring.retry)
+    implementation(libs.spring.aspects)
+
     // Cloud & External APIs
     implementation(libs.aws)
     implementation(libs.aws.s3)

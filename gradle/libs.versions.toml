@@ -96,3 +96,7 @@ querydsl-apt = { group = "com.querydsl", name = "querydsl-apt", version.ref = "q
 # Jakarta API
 jakarta-persistence-api = { group = "jakarta.persistence", name = "jakarta.persistence-api", version.ref = "jakarta-persistence" }
 jakarta-annotation-api = { group = "jakarta.annotation", name = "jakarta.annotation-api", version.ref = "jakarta-annotation" }
+
+# spring retry & aspects
+spring-retry = { group = "org.springframework.retry", name = "spring-retry" }
+spring-aspects = { group = "org.springframework", name = "spring-aspects" }
