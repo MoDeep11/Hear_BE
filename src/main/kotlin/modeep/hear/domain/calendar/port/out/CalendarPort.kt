@@ -1,12 +1,7 @@
 package modeep.hear.domain.calendar.port.out
 
-import java.time.LocalDate
+import modeep.hear.domain.calendar.model.Calendar
 
 interface CalendarPort {
-    fun fetchHolidays(year: Int, month: Int): List<SimpleHolidayInfo>
+    fun saveAll(calendars: List<Calendar>): List<Calendar>
 }
-
-data class SimpleHolidayInfo(
-    val date: LocalDate,
-    val name: String
-)

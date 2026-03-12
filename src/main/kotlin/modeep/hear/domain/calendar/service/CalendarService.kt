@@ -1,16 +1,19 @@
 package modeep.hear.domain.calendar.service
 
-import modeep.hear.domain.calendar.port.out.CalendarPort
 import modeep.hear.domain.calendar.model.Calendar
+import modeep.hear.domain.calendar.port.`in`.CalendarUseCase
+import modeep.hear.domain.calendar.port.out.CalendarPort
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 import java.time.LocalDate
 
 @Service
 class CalendarService(
+    private val calendarUseCase: CalendarUseCase,
     private val calendarPort: CalendarPort,
 ) {
     fun getProcessedHolidays(year: Int, month: Int): List<Calendar> {
-        val holidayItems = calendarPort.fetchHolidays(year, month)
+        val holidayItems = calendarUseCase.fetchHolidays(year, month)
 
         val holidayDates = holidayItems.map { it.date }.toSet()
 
@@ -24,5 +27,11 @@ class CalendarService(
                 isHoliday = holidayDates.contains(currentDate)
             )
         }
+    }
+
+    @Transactional
+    fun saveMonthCalendar(year: Int, month: Int) {
+        val calendars = getProcessedHolidays(year, month)
+        calendarPort.saveAll(calendars)
     }
 }
