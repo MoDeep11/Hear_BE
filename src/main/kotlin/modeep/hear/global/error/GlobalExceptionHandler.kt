@@ -40,7 +40,7 @@ class GlobalExceptionHandler(
         val errorCode : ErrorCode = e.errorCode
         log.error { "[CRITICAL] ${errorCode.code}: ${e.message}" }
 
-        discordSendService.sendErrorLog(e, request.requestURI)
+        discordSendService.sendErrorLog(e, errorCode, request.requestURI)
 
         return ResponseEntity
             .status(errorCode.status.value())
@@ -90,6 +90,9 @@ class GlobalExceptionHandler(
     @ExceptionHandler(Exception::class)
     fun handleException(e: Exception, request: HttpServletRequest): ResponseEntity<ErrorResponse> {
         log.error(e) { "Unexpected Error: ${e.message}, Cause: ${e.cause}" }
+
+        discordSendService.sendErrorLog(e, GlobalErrorCode.INTERNAL_SERVER_ERROR, request.requestURI)
+
         return ResponseEntity
             .status(HttpStatus.INTERNAL_SERVER_ERROR.value())
             .body(ErrorResponse(

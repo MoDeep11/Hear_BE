@@ -1,5 +1,10 @@
 package modeep.hear.infrastructure.external.openfeign.discord
 
+import modeep.hear.global.error.ErrorCode
+import modeep.hear.global.error.exception.BusinessException
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
+
 data class DiscordWebhookRequest(
     val embeds: List<DiscordEmbed>,
 ) {
@@ -9,25 +14,28 @@ data class DiscordWebhookRequest(
 
         fun createErrorEmbed(
             e: Exception,
+            errorCode: ErrorCode,
             requestUri: String,
         ): DiscordWebhookRequest {
             val safeUri = maskSensitiveInfo(requestUri)
-            val exceptionName = e.javaClass.simpleName
-            val errorMessage = e.message ?: "Unknown error"
+            val exceptionName = e::class.simpleName ?: "UnknownException"
 
             return DiscordWebhookRequest(
                 embeds =
                     listOf(
                         DiscordEmbed(
-                            title = exceptionName,
-                            description = errorMessage,
+                            title = errorCode.name,
+                            description = errorCode.message,
                             color = ERROR_COLOR,
                             fields =
                                 listOf(
                                     EmbedField(name = "Request URI", value = "`$safeUri`", inline = true),
                                     EmbedField(name = "Exception", value = "`$exceptionName`", inline = true),
-                                    // todo: 커스텀 error 정의 후, error status code 등 다른 필드 추가 필요 + 메시지 통으로 보내지 않도록
-                                    EmbedField(name = "Message", value = errorMessage.take(1024), inline = false),
+                                    EmbedField(
+                                        name = "Detail Reason",
+                                        value = if (e is BusinessException) "```${e.details ?: "N/A"}```" else "```None```",
+                                        inline = false
+                                    ),
                                 ),
                             footer = EmbedFooter(text = MONITORING_FOOTER),
                         ),
@@ -54,9 +62,7 @@ data class DiscordEmbed(
     val color: Int,
     val fields: List<EmbedField>,
     val timestamp: String =
-        java.time.OffsetDateTime
-            .now()
-            .toString(),
+        LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")),
     val footer: EmbedFooter? = null,
 )
 
