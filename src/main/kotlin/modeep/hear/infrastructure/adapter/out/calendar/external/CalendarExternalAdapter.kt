@@ -10,7 +10,18 @@ class CalendarExternalAdapter(
     private val holidayFeignClient: HolidayFeignClient,
 ) : FetchExternalCalendarPort {
     override fun fetch(year: Int, month: Int): Set<LocalDate> {
-        val response = holidayFeignClient.getRestDays(year.toString(), "%02d".format(month))
+
+        val response = try {
+            holidayFeignClient.getRestDays(year.toString(), "%02d".format(month))
+        } catch (e: Exception) {
+            TODO("error handling")
+        }
+
+        val header = response.response.header
+
+        if (header.resultCode != "00") {
+            TODO("error handling")
+        }
 
         val holidayItems = response.response.body?.items?.item ?: emptyList()
 

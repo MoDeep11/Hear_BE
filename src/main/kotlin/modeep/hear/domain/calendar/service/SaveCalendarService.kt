@@ -43,7 +43,8 @@ class SaveCalendarService(
     }
 
     @Recover
-    fun recover(e: Exception, year: Int, month: Int) {
-        log.info { "Failed to save calendar data for $year-$month: ${e.message}" }
+    fun recover(e: Exception, year: Int, month: Int): List<Calendar> {
+        log.error(e) { "Failed to save calendar data for $year-$month: ${e.message}" }
+        return emptyList()
     }
 }
