@@ -14,7 +14,7 @@ import java.time.LocalDate
 class CalendarJpaEntity(
 
     @Id
-    @Column(name = "calendar_date")
+    @Column(name = "calendar_date", nullable = false, unique = true)
     val calendarDate: LocalDate,
 
     @Enumerated(EnumType.STRING)
