@@ -5,8 +5,8 @@ import modeep.hear.domain.calendar.model.Calendar
 import modeep.hear.domain.calendar.port.`in`.SaveCalendarUseCase
 import modeep.hear.domain.calendar.port.out.CommandCalendarPort
 import modeep.hear.domain.calendar.port.out.FetchExternalCalendarPort
+import modeep.hear.domain.calendar.port.out.QueryCalendarPort
 import org.springframework.retry.annotation.Backoff
-import org.springframework.retry.annotation.Recover
 import org.springframework.retry.annotation.Retryable
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -17,7 +17,8 @@ private val log = KotlinLogging.logger {}
 @Service
 class SaveCalendarService(
     private val commandCalendarPort: CommandCalendarPort,
-    private val fetchExternalCalendarPort: FetchExternalCalendarPort
+    private val queryCalendarPort: QueryCalendarPort,
+    private val fetchExternalCalendarPort: FetchExternalCalendarPort,
 ) : SaveCalendarUseCase {
     @Retryable(
         value = [Exception::class],
@@ -26,6 +27,14 @@ class SaveCalendarService(
     )
     @Transactional
     override fun execute(year: Int, month: Int): List<Calendar> {
+
+        val start = LocalDate.of(year, month, 1)
+        val end = start.withDayOfMonth(start.lengthOfMonth())
+        if (queryCalendarPort.existsByCalendarDateBetween(start, end)) {
+            log.info { "$year-$month 데이터가 이미 존재하여 조회를 생략합니다." }
+            return queryCalendarPort.findByCalendarDateBetween(start, end)
+        }
+
         val holidays = fetchExternalCalendarPort.fetch(year, month)
 
         val firstDay = LocalDate.of(year, month, 1)
@@ -42,9 +51,11 @@ class SaveCalendarService(
         return commandCalendarPort.saveAll(calendars)
     }
 
-    @Recover
-    fun recover(e: Exception, year: Int, month: Int): List<Calendar> {
-        log.error(e) { "Failed to save calendar data for $year-$month: ${e.message}" }
-        return emptyList()
-    }
+    // 디버깅을 위해서는 Recover를 사용하면 안된다.
+    // 데이터 무결성이 중요한 경우(예: A 데이터를 못 찾았을 때 B 데이터라도 보여줘야 하는 경우)에 사용할 수 있다/
+//    @Recover
+//    fun recover(e: Exception, year: Int, month: Int): List<Calendar> {
+//        log.error(e) { "Failed to save calendar data for $year-$month: ${e.message}" }
+//        return emptyList()
+//    }
 }

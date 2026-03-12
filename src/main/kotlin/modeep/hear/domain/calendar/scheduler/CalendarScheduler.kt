@@ -3,6 +3,7 @@ package modeep.hear.domain.calendar.scheduler
 import io.github.oshai.kotlinlogging.KotlinLogging
 import modeep.hear.domain.calendar.exception.CalendarErrorCode
 import modeep.hear.domain.calendar.port.`in`.SaveCalendarUseCase
+import modeep.hear.global.error.ExceptionNotifier
 import modeep.hear.global.error.exception.BusinessException
 import org.springframework.boot.context.event.ApplicationReadyEvent
 import org.springframework.context.event.EventListener
@@ -15,6 +16,7 @@ private val log = KotlinLogging.logger {}
 @Component
 class CalendarScheduler(
     private val saveCalendarUseCase: SaveCalendarUseCase,
+    private val exceptionNotifier: ExceptionNotifier,
 ) {
 
     @EventListener(ApplicationReadyEvent::class)
@@ -36,6 +38,7 @@ class CalendarScheduler(
 
     private fun saveYearlyCalendar(year: Int) {
         val failedMonths = mutableListOf<Int>()
+        var lastError = Exception()
 
         (1..12).forEach { month ->
             try {
@@ -45,16 +48,19 @@ class CalendarScheduler(
                 log.error { "Error [$year-$month]: ${e.errorCode.code} - ${e.message}" }
                 failedMonths.add(month)
             } catch (e: Exception) {
-                log.error(e) { "System Error: ${e.message}" }
                 failedMonths.add(month)
+                lastError = e
             }
         }
 
         if (failedMonths.isNotEmpty()) {
-            log.warn { "$year 년 작업 완료 (실패한 월: $failedMonths). 확인이 필요합니다." }
-            throw BusinessException(
-                errorCode = CalendarErrorCode.CALENDAR_SYNC_PARTIAL_FAILED,
-                message = "$year 년도 중 다음 달의 동기화에 실패했습니다: $failedMonths"
+            val errorMessage = "$year 년도 중 다음 달의 동기화에 실패했습니다: $failedMonths"
+            log.warn { errorMessage }
+
+            exceptionNotifier.notify(
+                lastError,
+                CalendarErrorCode.CALENDAR_SYNC_PARTIAL_FAILED,
+                "Schedular: Calendar"
             )
         } else {
             log.info { "$year 년 모든 달력이 성공적으로 동기화되었습니다." }
