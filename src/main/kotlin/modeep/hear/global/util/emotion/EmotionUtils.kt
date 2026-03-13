@@ -4,10 +4,10 @@ import kotlin.math.abs
 import kotlin.math.round
 
 object EmotionUtils {
-
     fun Double.roundToOneDecimal(): Double =
         round(this * 10) / 10.0
 
+    // 값을 다 더했을 때 100%가 되는지 계산하는 함수
     fun calculatePercentages(counts: Map<String, Int>): Map<String, Double> {
         val totalCount = counts.values.sum().toDouble()
 
