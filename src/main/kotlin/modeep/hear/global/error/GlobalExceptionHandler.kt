@@ -51,7 +51,6 @@ class GlobalExceptionHandler(
             ))
     }
 
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MethodArgumentNotValidException::class)
     fun handleMethodArgumentNotValidException(e: MethodArgumentNotValidException, request: HttpServletRequest): ResponseEntity<ErrorResponse> {
         log.error { "Validation failed for argument: ${e.bindingResult.fieldError?.field}" }
@@ -71,7 +70,6 @@ class GlobalExceptionHandler(
             )
     }
 
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(IllegalArgumentException::class)
     fun handlerIllegalArgumentException(e: IllegalArgumentException, request: HttpServletRequest): ResponseEntity<ErrorResponse> {
         log.error { "IllegalArgumentException: ${e.message}, Cause: ${e.cause}" }
@@ -85,7 +83,6 @@ class GlobalExceptionHandler(
             ))
     }
 
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler(Exception::class)
     fun handleException(e: Exception, request: HttpServletRequest): ResponseEntity<ErrorResponse> {
         log.error(e) { "Unexpected Error: ${e.message}, Cause: ${e.cause}" }
