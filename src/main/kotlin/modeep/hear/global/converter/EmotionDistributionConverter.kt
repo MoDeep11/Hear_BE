@@ -6,5 +6,5 @@ import modeep.hear.domain.common.model.emotion.EmotionDistribution
 
 @Converter
 class EmotionDistributionConverter(
-    objectMapper: ObjectMapper,
+    objectMapper: ObjectMapper
 ) : JsonConverter<EmotionDistribution>(EmotionDistribution::class.java, objectMapper)
