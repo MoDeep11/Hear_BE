@@ -2,7 +2,6 @@ package modeep.hear.infrastructure.config.openfeign
 
 import feign.Logger
 import feign.Request
-import feign.Retryer
 import org.springframework.cloud.openfeign.EnableFeignClients
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -17,10 +16,8 @@ class OpenFeignConfig {
     @Bean
     fun options(): Request.Options =
         Request.Options(
-            5000,
-            TimeUnit.MILLISECONDS, // connectTimeout
-            5000,
-            TimeUnit.MILLISECONDS, // readTimeout
+            5000, TimeUnit.MILLISECONDS, // connectTimeout
+            5000, TimeUnit.MILLISECONDS, // readTimeout
             true, // followRedirects
         )
 }

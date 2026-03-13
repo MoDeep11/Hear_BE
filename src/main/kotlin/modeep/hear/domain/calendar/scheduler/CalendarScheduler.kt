@@ -1,7 +1,10 @@
 package modeep.hear.domain.calendar.scheduler
 
 import io.github.oshai.kotlinlogging.KotlinLogging
+import modeep.hear.domain.calendar.exception.CalendarErrorCode
 import modeep.hear.domain.calendar.port.`in`.SaveCalendarUseCase
+import modeep.hear.global.error.ExceptionNotifier
+import modeep.hear.global.error.exception.BusinessException
 import org.springframework.boot.context.event.ApplicationReadyEvent
 import org.springframework.context.event.EventListener
 import org.springframework.scheduling.annotation.Scheduled
@@ -13,6 +16,7 @@ private val log = KotlinLogging.logger {}
 @Component
 class CalendarScheduler(
     private val saveCalendarUseCase: SaveCalendarUseCase,
+    private val exceptionNotifier: ExceptionNotifier,
 ) {
 
     @EventListener(ApplicationReadyEvent::class)
@@ -20,9 +24,21 @@ class CalendarScheduler(
         val targetYear = LocalDate.now().year
         log.info { "Server init: Start to create calendar data about $targetYear year." }
 
-        saveYearlyCalendar(targetYear)
+        val result = saveYearlyCalendar(targetYear)
 
-        println("Complete $targetYear year calendar data creation.")
+        if (result.isSuccess) {
+            log.info { "Complete $targetYear year calendar data creation." }
+        } else {
+            log.error { "Failed to create calendar data for $targetYear" }
+
+            result.lastError?.let {
+                exceptionNotifier.notify(
+                    it,
+                    CalendarErrorCode.CALENDAR_SYNC_PARTIAL_FAILED,
+                    "Scheduler: Calendar"
+                )
+            }
+        }
     }
 
     @Scheduled(cron = "0 0 2 1 12 ?", zone = "Asia/Seoul")
@@ -32,15 +48,34 @@ class CalendarScheduler(
         saveYearlyCalendar(nextYear)
     }
 
-    private fun saveYearlyCalendar(year: Int) {
+    private fun saveYearlyCalendar(year: Int): SyncResult {
+        val failedMonths = mutableListOf<Int>()
+        var lastError: Exception? = null
+
         (1..12).forEach { month ->
             try {
                 saveCalendarUseCase.execute(year, month)
                 Thread.sleep(100)  // API 과부하 방지
+            } catch (e: InterruptedException) {
+                Thread.currentThread().interrupt()
+                log.warn { "스케줄러 작업이 종료되었습니다: ${e.message}" }
+            } catch (e: BusinessException) {
+                log.error { "Error [$year-$month]: ${e.errorCode.code} - ${e.message}" }
+                failedMonths.add(month)
+                lastError = e
             } catch (e: Exception) {
-                // todo: error handling
-                log.error { "$year 년 $month 월 실패: ${e.message}" }
+                failedMonths.add(month)
+                lastError = e
             }
         }
+        return SyncResult(year, failedMonths, lastError)
+    }
+
+    data class SyncResult(
+        val year: Int,
+        val failedMonths: List<Int>,
+        val lastError: Exception? = null
+    ) {
+        val isSuccess: Boolean get() = failedMonths.isEmpty()
     }
 }
