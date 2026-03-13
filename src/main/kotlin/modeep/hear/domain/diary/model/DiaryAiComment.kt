@@ -1,12 +1,12 @@
 package modeep.hear.domain.diary.model
 
 import modeep.hear.domain.common.model.base.BaseTime
-import modeep.hear.domain.common.model.status.Status
+import modeep.hear.domain.diary.type.DiaryAiCommentStatus
 import java.util.UUID
 
 data class DiaryAiComment(
     val diaryId: UUID? = null,
     val content: String,
-    val status: Status = Status.PENDING,  // EMPTY, PENDING, COMPLETED, FAILED
+    val diaryImageStatus: DiaryAiCommentStatus = DiaryAiCommentStatus.PENDING,
     val baseTime: BaseTime
 )
