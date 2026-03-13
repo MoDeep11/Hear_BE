@@ -55,21 +55,20 @@ class GlobalExceptionHandler(
     @ExceptionHandler(MethodArgumentNotValidException::class)
     fun handleMethodArgumentNotValidException(e: MethodArgumentNotValidException, request: HttpServletRequest): ResponseEntity<ErrorResponse> {
         log.error { "Validation failed for argument: ${e.bindingResult.fieldError?.field}" }
-        val fieldError = e.bindingResult.fieldErrors.firstOrNull()
+        val fieldErrors = e.bindingResult.fieldErrors
         return ResponseEntity
             .status(HttpStatus.BAD_REQUEST.value())
             .body(ErrorResponse(
                 code = "INVALID_INPUT_VALUE", // todo: error code
-                message = fieldError?.defaultMessage ?: "입력값이 유효하지 않습니다.",
+                message = fieldErrors.firstOrNull()?.defaultMessage ?: "입력값이 유효하지 않습니다.",
                 path = request.requestURI,
-                errors = listOf(
+                errors = fieldErrors.map { fieldError ->
                     ErrorResponse.FieldError(
-                        field = fieldError?.field ?: "unknown",
-                        value = fieldError?.rejectedValue?.toString() ?: "unknown",
+                        field = fieldError.field,
                         reason = fieldError?.defaultMessage ?: "unknown"
-                    )
+                    )},
                 ),
-            ))
+            )
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
