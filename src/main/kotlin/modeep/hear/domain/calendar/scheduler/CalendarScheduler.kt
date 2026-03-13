@@ -24,9 +24,21 @@ class CalendarScheduler(
         val targetYear = LocalDate.now().year
         log.info { "Server init: Start to create calendar data about $targetYear year." }
 
-        saveYearlyCalendar(targetYear)
+        val result = saveYearlyCalendar(targetYear)
 
-        log.info { "Complete $targetYear year calendar data creation." }
+        if (result.isSuccess) {
+            log.info { "Complete $targetYear year calendar data creation." }
+        } else {
+            log.error { "Failed to create calendar data for $targetYear" }
+
+            result.lastError?.let {
+                exceptionNotifier.notify(
+                    it,
+                    CalendarErrorCode.CALENDAR_SYNC_PARTIAL_FAILED,
+                    "Scheduler: Calendar"
+                )
+            }
+        }
     }
 
     @Scheduled(cron = "0 0 2 1 12 ?", zone = "Asia/Seoul")
@@ -36,7 +48,7 @@ class CalendarScheduler(
         saveYearlyCalendar(nextYear)
     }
 
-    private fun saveYearlyCalendar(year: Int) {
+    private fun saveYearlyCalendar(year: Int): SyncResult {
         val failedMonths = mutableListOf<Int>()
         var lastError: Exception? = null
 
@@ -44,6 +56,9 @@ class CalendarScheduler(
             try {
                 saveCalendarUseCase.execute(year, month)
                 Thread.sleep(100)  // API 과부하 방지
+            } catch (e: InterruptedException) {
+                Thread.currentThread().interrupt()
+                log.warn { "스케줄러 작업이 종료되었습니다: ${e.message}" }
             } catch (e: BusinessException) {
                 log.error { "Error [$year-$month]: ${e.errorCode.code} - ${e.message}" }
                 failedMonths.add(month)
@@ -53,20 +68,14 @@ class CalendarScheduler(
                 lastError = e
             }
         }
+        return SyncResult(year, failedMonths, lastError)
+    }
 
-        if (failedMonths.isNotEmpty()) {
-            val errorMessage = "$year 년도 중 다음 달의 동기화에 실패했습니다: $failedMonths"
-            log.warn { errorMessage }
-
-            lastError?.let {
-                exceptionNotifier.notify(
-                    it,
-                    CalendarErrorCode.CALENDAR_SYNC_PARTIAL_FAILED,
-                    "Scheduler: Calendar"
-                )
-            }
-        } else {
-            log.info { "$year 년 모든 달력이 성공적으로 동기화되었습니다." }
-        }
+    data class SyncResult(
+        val year: Int,
+        val failedMonths: List<Int>,
+        val lastError: Exception? = null
+    ) {
+        val isSuccess: Boolean get() = failedMonths.isEmpty()
     }
 }
