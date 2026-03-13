@@ -1,6 +1,7 @@
 package modeep.hear.domain.user.model
 
 import modeep.hear.domain.common.model.base.BaseTime
+import modeep.hear.domain.common.model.emotion.EmotionDistribution
 import java.time.YearMonth
 import java.util.UUID
 
@@ -12,6 +13,6 @@ data class MonthlyStatistics(
     val photoCount: Int,
     val writingRate: Float,
     val aiReportContent: String,
-    val emotionDistribution: String,
+    val emotionDistribution: EmotionDistribution,
     val baseTime: BaseTime
 )
