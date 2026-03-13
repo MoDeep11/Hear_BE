@@ -1,8 +1,11 @@
 package modeep.hear.infrastructure.external.openfeign.discord
 
+import io.github.oshai.kotlinlogging.KotlinLogging
 import modeep.hear.global.error.ErrorCode
 import org.springframework.scheduling.annotation.Async
 import org.springframework.stereotype.Component
+
+private val log = KotlinLogging.logger {}
 
 @Component
 class DiscordSendService(
@@ -15,7 +18,11 @@ class DiscordSendService(
         requestUri: String,
     ) {
         val request = DiscordWebhookRequest.createErrorEmbed(e, errorCode, requestUri)
-        discordWebhookClient.sendWebhook(request)
+        runCatching {
+            discordWebhookClient.sendWebhook(request)
+        }.onFailure {
+            log.warn(e) { "Failed to send error log to Discord" }
+        }
     }
 
     @Async("discordAsyncExecutor")

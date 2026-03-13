@@ -4,7 +4,6 @@ import io.github.oshai.kotlinlogging.KotlinLogging
 import modeep.hear.domain.calendar.model.Calendar
 import modeep.hear.domain.calendar.port.`in`.SaveCalendarUseCase
 import modeep.hear.domain.calendar.port.out.CommandCalendarPort
-import modeep.hear.domain.calendar.port.out.FetchExternalCalendarPort
 import modeep.hear.domain.calendar.port.out.QueryCalendarPort
 import org.springframework.retry.annotation.Backoff
 import org.springframework.retry.annotation.Retryable
@@ -18,15 +17,15 @@ private val log = KotlinLogging.logger {}
 class SaveCalendarService(
     private val commandCalendarPort: CommandCalendarPort,
     private val queryCalendarPort: QueryCalendarPort,
-    private val fetchExternalCalendarPort: FetchExternalCalendarPort,
 ) : SaveCalendarUseCase {
+
     @Retryable(
         value = [Exception::class],
         maxAttempts = 3,
         backoff = Backoff(delay = 2000)
     )
     @Transactional
-    override fun execute(year: Int, month: Int): List<Calendar> {
+    override fun execute(year: Int, month: Int, holidays: Set<LocalDate>): List<Calendar> {
 
         val start = LocalDate.of(year, month, 1)
         val end = start.withDayOfMonth(start.lengthOfMonth())
@@ -40,8 +39,6 @@ class SaveCalendarService(
 
         log.info { "$year-$month 데이터가 불완전하여($savedCount 개) 기존 데이터를 삭제하고 재동기화합니다." }
         commandCalendarPort.deleteByCalendarDateBetween(start, end)
-
-        val holidays = fetchExternalCalendarPort.fetch(year, month)
 
         val firstDay = LocalDate.of(year, month, 1)
 
