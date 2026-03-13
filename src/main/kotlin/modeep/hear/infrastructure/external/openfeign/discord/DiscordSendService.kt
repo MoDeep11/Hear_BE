@@ -21,7 +21,7 @@ class DiscordSendService(
         runCatching {
             discordWebhookClient.sendWebhook(request)
         }.onFailure {
-            log.warn(e) { "Failed to send error log to Discord" }
+            log.warn(it) { "Failed to send error log to Discord" }
         }
     }
 
