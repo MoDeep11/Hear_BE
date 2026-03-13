@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service
 @Service
 class SyncCalendarService(
     private val fetchExternalCalendarPort: FetchExternalCalendarPort,
-    private val saveCalendarService: SaveCalendarService,
+    private val saveCalendarService: SaveCalendarService
 ) : SyncCalendarUseCase {
     override fun execute(year: Int, month: Int): List<Calendar> {
         val holidays = fetchExternalCalendarPort.fetch(year, month)

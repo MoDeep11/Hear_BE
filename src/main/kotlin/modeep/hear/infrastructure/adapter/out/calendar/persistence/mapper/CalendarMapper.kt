@@ -12,8 +12,8 @@ interface CalendarMapper {
     fun toEntity(model: Calendar): CalendarJpaEntity
 }
 
-//@Mapper(componentModel = "spring")
-//abstract class CalendarMapper {
+// @Mapper(componentModel = "spring")
+// abstract class CalendarMapper {
 //
 //    fun toModel(entity: CalendarJpaEntity): Calendar {
 //        return Calendar(
@@ -30,4 +30,4 @@ interface CalendarMapper {
 //            isHoliday = model.isHoliday
 //        )
 //    }
-//}
+// }

@@ -9,13 +9,13 @@ private val log = KotlinLogging.logger {}
 
 @Component
 class DiscordSendService(
-    private val discordWebhookClient: DiscordWebhookClient,
+    private val discordWebhookClient: DiscordWebhookClient
 ) {
     @Async("discordAsyncExecutor")
     fun sendErrorLog(
         e: Exception,
         errorCode: ErrorCode,
-        requestUri: String,
+        requestUri: String
     ) {
         val request = DiscordWebhookRequest.createErrorEmbed(e, errorCode, requestUri)
         runCatching {

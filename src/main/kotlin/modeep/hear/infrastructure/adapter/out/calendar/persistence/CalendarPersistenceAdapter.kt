@@ -12,10 +12,10 @@ import java.time.LocalDate
 @Component
 class CalendarPersistenceAdapter(
     private val calendarRepository: CalendarRepository,
-    private val calendarMapper: CalendarMapper,
-): CommandCalendarPort, QueryCalendarPort {
+    private val calendarMapper: CalendarMapper
+) : CommandCalendarPort, QueryCalendarPort {
 
-    //--Query--//
+    // --Query--//
     override fun countByCalendarDateBetween(start: LocalDate, end: LocalDate): Long {
         return calendarRepository.countByCalendarDateBetween(start, end)
     }
@@ -25,15 +25,17 @@ class CalendarPersistenceAdapter(
         return calendarJpaEntities.map { calendarMapper.toModel(it) }
     }
 
-    //--Command--//
+    // --Command--//
     override fun saveAll(calendars: List<Calendar>): List<Calendar> {
-        val savedCalendar = calendarRepository.saveAll(calendars.map { model ->
-            CalendarJpaEntity(
-                calendarDate = model.calendarDate,
-                dayOfWeek = model.dayOfWeek,
-                isHoliday = model.isHoliday
-            )
-        })
+        val savedCalendar = calendarRepository.saveAll(
+            calendars.map { model ->
+                CalendarJpaEntity(
+                    calendarDate = model.calendarDate,
+                    dayOfWeek = model.dayOfWeek,
+                    isHoliday = model.isHoliday
+                )
+            }
+        )
 
         return savedCalendar.map { calendarMapper.toModel(it) }
     }

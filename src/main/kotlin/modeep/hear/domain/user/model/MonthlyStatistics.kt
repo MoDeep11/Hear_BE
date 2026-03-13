@@ -1,8 +1,11 @@
 package modeep.hear.domain.user.model
 
+import modeep.hear.domain.common.annotation.Aggregate
+import modeep.hear.domain.common.model.base.BaseTime
 import java.time.YearMonth
 import java.util.UUID
 
+@Aggregate
 data class MonthlyStatistics(
     val id: UUID? = null,
     val userId: UUID? = null,
@@ -12,6 +15,5 @@ data class MonthlyStatistics(
     val writingRate: Float,
     val aiReportContent: String,
     val emotionDistribution: String,
-    val createdAt: Long,
-    val updatedAt: Long,
+    val baseTime: BaseTime
 )

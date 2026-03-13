@@ -4,17 +4,17 @@ import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
 data class HolidayResponse(
-    val response: HolidayResponseData,
+    val response: HolidayResponseData
 )
 
 data class HolidayResponseData(
     val header: HolidayHeader,
-    val body: HolidayBody?,
+    val body: HolidayBody?
 )
 
 data class HolidayHeader(
     val resultCode: String,
-    val resultMsg: String,
+    val resultMsg: String
 )
 
 data class HolidayBody(
@@ -33,7 +33,7 @@ data class HolidayItem(
     val dateName: String,
     val isHoliday: String,
     val dateKind: String,
-    val seq: Int,
+    val seq: Int
 ) {
     fun toLocalDate(): LocalDate =
         LocalDate.parse(this.locdate.toString(), HOLIDAY_DATE_FORMATTER)

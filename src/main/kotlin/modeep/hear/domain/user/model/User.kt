@@ -1,9 +1,9 @@
 package modeep.hear.domain.user.model
 
 import modeep.hear.domain.common.annotation.Aggregate
+import modeep.hear.domain.common.model.base.BaseTime
 import modeep.hear.domain.user.type.Role
 import modeep.hear.domain.user.type.UserStatus
-import java.time.LocalDateTime
 import java.util.UUID
 
 @Aggregate
@@ -13,7 +13,6 @@ data class User(
     val password: String,
     val role: Role,
     val status: UserStatus,
-    val createdAt: LocalDateTime,
-    val updatedAt: LocalDateTime,
-    val isEmailSubscribed: Boolean,
+    val baseTime: BaseTime,
+    val isEmailSubscribed: Boolean
 )

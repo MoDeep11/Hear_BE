@@ -16,7 +16,7 @@ private val log = KotlinLogging.logger {}
 @Service
 class SaveCalendarService(
     private val commandCalendarPort: CommandCalendarPort,
-    private val queryCalendarPort: QueryCalendarPort,
+    private val queryCalendarPort: QueryCalendarPort
 ) : SaveCalendarUseCase {
 
     @Retryable(
@@ -26,7 +26,6 @@ class SaveCalendarService(
     )
     @Transactional
     override fun execute(year: Int, month: Int, holidays: Set<LocalDate>): List<Calendar> {
-
         val start = LocalDate.of(year, month, 1)
         val end = start.withDayOfMonth(start.lengthOfMonth())
 

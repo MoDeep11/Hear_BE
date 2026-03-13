@@ -39,8 +39,10 @@ class HolidayFeignConfig {
             // DTO에 없는 필드
             .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
 
-        return ResponseEntityDecoder(SpringDecoder {
-            HttpMessageConverters(MappingJackson2HttpMessageConverter(objectMapper))
-        })
+        return ResponseEntityDecoder(
+            SpringDecoder {
+                HttpMessageConverters(MappingJackson2HttpMessageConverter(objectMapper))
+            }
+        )
     }
 }

@@ -13,10 +13,9 @@ private val log = KotlinLogging.logger {}
 
 @Component
 class CalendarExternalAdapter(
-    private val holidayFeignClient: HolidayFeignClient,
+    private val holidayFeignClient: HolidayFeignClient
 ) : FetchExternalCalendarPort {
     override fun fetch(year: Int, month: Int): Set<LocalDate> {
-
         val response = try {
             holidayFeignClient.getRestDays(year.toString(), "%02d".format(month))
         } catch (e: Exception) {

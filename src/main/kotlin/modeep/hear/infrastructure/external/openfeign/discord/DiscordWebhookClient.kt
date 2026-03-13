@@ -8,11 +8,11 @@ import org.springframework.web.bind.annotation.RequestBody
 @FeignClient(
     name = "discord-webhook",
     url = "\${api.discord.webhook.url}",
-    configuration = [OpenFeignConfig::class],
+    configuration = [OpenFeignConfig::class]
 )
 interface DiscordWebhookClient {
     @PostMapping
     fun sendWebhook(
-        @RequestBody request: DiscordWebhookRequest,
+        @RequestBody request: DiscordWebhookRequest
     )
 }

@@ -1,12 +1,13 @@
 package modeep.hear.domain.user.model
 
-import java.time.LocalDateTime
+import modeep.hear.domain.common.annotation.Aggregate
+import modeep.hear.domain.common.model.base.BaseTime
 import java.util.UUID
 
+@Aggregate
 data class UserProfile(
     val userId: UUID? = null,
     val nickname: String,
     val profileImageUrl: String,
-    val createdAt: LocalDateTime,
-    val updatedAt: LocalDateTime,
+    val baseTime: BaseTime
 )
