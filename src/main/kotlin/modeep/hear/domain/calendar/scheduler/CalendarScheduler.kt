@@ -2,7 +2,8 @@ package modeep.hear.domain.calendar.scheduler
 
 import io.github.oshai.kotlinlogging.KotlinLogging
 import modeep.hear.domain.calendar.exception.CalendarErrorCode
-import modeep.hear.domain.calendar.port.`in`.SaveCalendarUseCase
+import modeep.hear.domain.calendar.port.`in`.SyncCalendarUseCase
+import modeep.hear.domain.calendar.service.SyncCalendarService
 import modeep.hear.global.error.ExceptionNotifier
 import modeep.hear.global.error.exception.BusinessException
 import org.springframework.boot.context.event.ApplicationReadyEvent
@@ -15,7 +16,7 @@ private val log = KotlinLogging.logger {}
 
 @Component
 class CalendarScheduler(
-    private val saveCalendarUseCase: SaveCalendarUseCase,
+    private val syncCalendarUseCase: SyncCalendarUseCase,
     private val exceptionNotifier: ExceptionNotifier,
 ) {
 
@@ -54,7 +55,7 @@ class CalendarScheduler(
 
         (1..12).forEach { month ->
             try {
-                saveCalendarUseCase.execute(year, month)
+                syncCalendarUseCase.execute(year, month)
                 Thread.sleep(100)  // API 과부하 방지
             } catch (e: InterruptedException) {
                 Thread.currentThread().interrupt()
