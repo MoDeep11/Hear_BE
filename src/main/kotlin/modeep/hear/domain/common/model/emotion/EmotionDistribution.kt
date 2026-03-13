@@ -1,4 +1,4 @@
-package modeep.hear.domain.common.model
+package modeep.hear.domain.common.model.emotion
 
 import modeep.hear.global.util.emotion.EmotionUtils
 
