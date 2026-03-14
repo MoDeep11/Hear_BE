@@ -1,5 +1,7 @@
 package modeep.hear.domain.diary.type
 
-enum class DiarySourceType {
-    MANUAL, AI_MADE
+enum class DiarySourceType(
+    val label: String
+) {
+    MANUAL("유저 생성"), AI_MADE("AI 생성")
 }
