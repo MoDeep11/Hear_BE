@@ -12,7 +12,7 @@ data class User(
     val email: String,
     val password: String,
     val role: Role,
-    val status: UserStatus,
+    val status: UserStatus = UserStatus.ACTIVE,
     val baseTime: BaseTime,
     val isEmailSubscribed: Boolean
 )

@@ -4,6 +4,7 @@ import modeep.hear.domain.calendar.model.Calendar
 import modeep.hear.infrastructure.adapter.out.calendar.persistence.entity.CalendarJpaEntity
 import org.mapstruct.Mapper
 
+// MapStruct가 자동으로 구현
 @Mapper(componentModel = "spring")
 interface CalendarMapper {
 
