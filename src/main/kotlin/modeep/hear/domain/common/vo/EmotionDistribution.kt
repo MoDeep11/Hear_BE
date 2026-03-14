@@ -1,6 +1,6 @@
 package modeep.hear.domain.common.vo
 
-import modeep.hear.global.util.emotion.EmotionUtils
+import modeep.hear.global.util.EmotionUtils
 
 data class EmotionDistribution(
     val values: Map<Emotion, Double>
@@ -13,16 +13,12 @@ data class EmotionDistribution(
     fun getScore(emotion: Emotion): Double = values.getOrDefault(emotion, 0.0)
 
     companion object {
-        // Emotion.values() -> Emotion.entries
         // KEYS.associateWith { VALUE }: Map 생성
-        fun emptyAllZero() = EmotionDistribution(Emotion.entries.associateWith { 0.0 })
+        fun empty() = EmotionDistribution(Emotion.entries.associateWith { 0.0 })
 
         fun create(counts: Map<Emotion, Int>): EmotionDistribution {
-            val emotionName = counts.mapKeys { it.key.name }
-            val calculated = EmotionUtils.calculatePercentages(emotionName)
-
-            val finalValues = calculated.mapKeys { (key, _) -> Emotion.valueOf(key) }
-            return EmotionDistribution(finalValues)
+            val calculated = EmotionUtils.calculatePercentages(counts)
+            return EmotionDistribution(calculated)
         }
     }
 }

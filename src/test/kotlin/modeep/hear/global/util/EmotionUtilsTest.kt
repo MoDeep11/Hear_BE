@@ -1,8 +1,9 @@
-package modeep.hear.global.util.emotion
+package modeep.hear.global.util
 
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
+import kotlin.collections.get
 
 class EmotionUtilsTest {
 
