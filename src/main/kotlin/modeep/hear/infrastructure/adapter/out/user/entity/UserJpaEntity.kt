@@ -20,11 +20,11 @@ class UserJpaEntity(
     val password: String,
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "role", nullable = false)
+    @Column(name = "role", nullable = false, length = 8)
     val role: Role,
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "status", nullable = false)
+    @Column(name = "status", nullable = false, length = 16)
     val status: UserStatus = UserStatus.ACTIVE,
 
     @Column(name = "is_email_subscribed", nullable = false)

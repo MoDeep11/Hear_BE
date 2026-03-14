@@ -12,7 +12,7 @@ data class Diary(
     val userId: UUID? = null,
     val content: String,
     val emotion: Emotion,
-    val tags: List<String> = emptyList(),
+    val tags: List<String>? = null,
     val baseTime: BaseTime,
     val sourceType: DiarySourceType = DiarySourceType.AI_MADE,
     val sessionId: UUID? = null

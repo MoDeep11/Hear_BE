@@ -1,15 +1,10 @@
 package modeep.hear.infrastructure.adapter.out.user.entity
 
 import jakarta.persistence.Column
-import jakarta.persistence.Embedded
 import jakarta.persistence.Entity
-import jakarta.persistence.FetchType
 import jakarta.persistence.Id
-import jakarta.persistence.JoinColumn
-import jakarta.persistence.MapsId
-import jakarta.persistence.OneToOne
 import jakarta.persistence.Table
-import modeep.hear.global.common.entity.vo.JpaAuditTime
+import modeep.hear.global.common.entity.BaseTimeEntity
 import java.time.LocalDateTime
 import java.util.UUID
 
@@ -20,10 +15,10 @@ class UserStatJpaEntity(
     @Column(name = "user_id")
     val userId: UUID? = null,
 
-    @MapsId
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    val user: UserJpaEntity,
+//    @MapsId
+//    @OneToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "user_id")
+//    val user: UserJpaEntity,
 
     @Column(name = "current_streak")
     var currentStreak: Int = 0,
@@ -36,7 +31,4 @@ class UserStatJpaEntity(
 
     @Column(name = "last_written_at")
     var lastWrittenAt: LocalDateTime? = null
-) {
-    @Embedded
-    val auditTime: JpaAuditTime = JpaAuditTime()
-}
+) : BaseTimeEntity()

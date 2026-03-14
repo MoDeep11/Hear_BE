@@ -1,11 +1,10 @@
 package modeep.hear.infrastructure.adapter.out.user.entity
 
 import jakarta.persistence.Column
-import jakarta.persistence.Embedded
 import jakarta.persistence.Entity
 import jakarta.persistence.Id
 import jakarta.persistence.Table
-import modeep.hear.global.common.entity.vo.JpaAuditTime
+import modeep.hear.global.common.entity.BaseTimeEntity
 import java.util.UUID
 
 @Entity
@@ -20,7 +19,4 @@ class UserProfileJpaEntity(
 
     @Column(name = "profile_image_url")
     val profileImageUrl: String
-) {
-    @Embedded
-    val auditTime: JpaAuditTime = JpaAuditTime()
-}
+) : BaseTimeEntity()
