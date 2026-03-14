@@ -1,7 +1,7 @@
 package modeep.hear.domain.user.model
 
-import modeep.hear.domain.common.model.base.BaseTime
-import modeep.hear.domain.common.model.emotion.EmotionDistribution
+import modeep.hear.domain.common.vo.BaseTime
+import modeep.hear.domain.common.vo.EmotionDistribution
 import java.time.YearMonth
 import java.util.UUID
 

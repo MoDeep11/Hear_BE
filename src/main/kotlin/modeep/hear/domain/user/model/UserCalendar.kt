@@ -1,6 +1,6 @@
 package modeep.hear.domain.user.model
 
-import modeep.hear.domain.common.model.emotion.Emotion
+import modeep.hear.domain.common.vo.Emotion
 import modeep.hear.domain.user.model.id.UserCalendarId
 
 data class UserCalendar(

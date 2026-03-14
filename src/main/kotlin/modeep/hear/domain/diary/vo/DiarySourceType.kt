@@ -1,4 +1,4 @@
-package modeep.hear.domain.diary.type
+package modeep.hear.domain.diary.vo
 
 enum class DiarySourceType(
     val label: String

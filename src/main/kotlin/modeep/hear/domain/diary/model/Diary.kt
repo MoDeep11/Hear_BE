@@ -1,9 +1,9 @@
 package modeep.hear.domain.diary.model
 
 import modeep.hear.domain.common.annotation.Aggregate
-import modeep.hear.domain.common.model.base.BaseTime
-import modeep.hear.domain.common.model.emotion.Emotion
-import modeep.hear.domain.diary.type.DiarySourceType
+import modeep.hear.domain.common.vo.BaseTime
+import modeep.hear.domain.common.vo.Emotion
+import modeep.hear.domain.diary.vo.DiarySourceType
 import java.util.UUID
 
 @Aggregate

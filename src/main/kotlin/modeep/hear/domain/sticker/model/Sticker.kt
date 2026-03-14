@@ -1,14 +1,15 @@
-package modeep.hear.domain.chat.model
+package modeep.hear.domain.sticker.model
 
-import modeep.hear.domain.chat.vo.ChatStatus
 import modeep.hear.domain.common.annotation.Aggregate
 import modeep.hear.domain.common.vo.BaseTime
+import modeep.hear.domain.sticker.vo.StickerStatus
 import java.util.UUID
 
 @Aggregate
-data class Chat(
+data class Sticker(
     val id: UUID? = null,
     val userId: UUID? = null,
-    val status: ChatStatus = ChatStatus.ONGOING,
+    val status: StickerStatus = StickerStatus.PENDING,
+    val imageUrl: String,
     val baseTime: BaseTime
 )

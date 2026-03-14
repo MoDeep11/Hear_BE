@@ -1,7 +1,7 @@
 package modeep.hear.domain.chat.model
 
-import modeep.hear.domain.chat.type.AiImageTaskStatus
-import modeep.hear.domain.common.model.base.BaseTime
+import modeep.hear.domain.chat.vo.AiImageTaskStatus
+import modeep.hear.domain.common.vo.BaseTime
 import java.util.UUID
 
 data class AiImageTask(

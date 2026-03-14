@@ -1,9 +1,9 @@
 package modeep.hear.domain.user.model
 
 import modeep.hear.domain.common.annotation.Aggregate
-import modeep.hear.domain.common.model.base.BaseTime
-import modeep.hear.domain.user.type.Role
-import modeep.hear.domain.user.type.UserStatus
+import modeep.hear.domain.common.vo.BaseTime
+import modeep.hear.domain.user.vo.Role
+import modeep.hear.domain.user.vo.UserStatus
 import java.util.UUID
 
 @Aggregate

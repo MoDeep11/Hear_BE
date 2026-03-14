@@ -1,4 +1,4 @@
-package modeep.hear.domain.common.model.status
+package modeep.hear.domain.common.vo
 
 interface ModelStatus {
     val isFinalState: Boolean // 상태가 변화할 수 있는지

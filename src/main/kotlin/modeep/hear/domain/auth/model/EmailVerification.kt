@@ -1,9 +1,9 @@
 package modeep.hear.domain.auth.model
 
 import modeep.hear.domain.auth.exception.AuthErrorCode
-import modeep.hear.domain.auth.type.EmailVerificationType
+import modeep.hear.domain.auth.vo.EmailVerificationType
 import modeep.hear.domain.common.annotation.Aggregate
-import modeep.hear.domain.common.model.base.BaseTime
+import modeep.hear.domain.common.vo.BaseTime
 import modeep.hear.global.error.exception.BusinessException
 import java.time.LocalDateTime
 import java.util.UUID

@@ -1,12 +1,11 @@
-package modeep.hear.domain.diary.type
+package modeep.hear.domain.sticker.vo
 
-import modeep.hear.domain.common.model.status.ModelStatus
+import modeep.hear.domain.common.vo.ModelStatus
 
-enum class DiaryAiCommentStatus(
+enum class StickerStatus(
     override val isFinalState: Boolean,
     override val label: String
 ) : ModelStatus {
-    EMPTY(false, "피드백 없음"),
     PENDING(false, "요청 대기 중"),
     COMPLETED(true, "완료"),
     FAILED(false, "실패")

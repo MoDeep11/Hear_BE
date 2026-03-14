@@ -1,8 +1,8 @@
 package modeep.hear.domain.diary.model
 
-import modeep.hear.domain.common.model.base.BaseTime
-import modeep.hear.domain.diary.type.DiaryImageStatus
-import modeep.hear.domain.diary.type.DiarySourceType
+import modeep.hear.domain.common.vo.BaseTime
+import modeep.hear.domain.diary.vo.DiaryImageStatus
+import modeep.hear.domain.diary.vo.DiarySourceType
 import java.util.UUID
 
 data class DiaryImage(

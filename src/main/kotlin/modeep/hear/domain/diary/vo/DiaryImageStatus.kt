@@ -1,6 +1,6 @@
-package modeep.hear.domain.diary.type
+package modeep.hear.domain.diary.vo
 
-import modeep.hear.domain.common.model.status.ModelStatus
+import modeep.hear.domain.common.vo.ModelStatus
 
 enum class DiaryImageStatus(
     override val isFinalState: Boolean,

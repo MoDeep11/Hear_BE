@@ -1,10 +1,12 @@
 package modeep.hear.domain.chat.model
 
-import modeep.hear.domain.chat.type.MessageType
-import modeep.hear.domain.chat.type.Sender
-import modeep.hear.domain.common.model.base.BaseTime
+import modeep.hear.domain.chat.vo.MessageType
+import modeep.hear.domain.chat.vo.Sender
+import modeep.hear.domain.common.annotation.Aggregate
+import modeep.hear.domain.common.vo.BaseTime
 import java.util.UUID
 
+@Aggregate
 data class Message(
     val id: UUID? = null,
     val sessionId: UUID? = null,

@@ -1,6 +1,6 @@
 package modeep.hear.domain.user.model
 
-import modeep.hear.domain.common.model.base.BaseTime
+import modeep.hear.domain.common.vo.BaseTime
 import java.util.UUID
 
 data class UserStat(

@@ -1,4 +1,4 @@
-package modeep.hear.domain.common.model.base
+package modeep.hear.domain.common.vo
 
 import java.time.LocalDateTime
 

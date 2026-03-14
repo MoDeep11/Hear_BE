@@ -1,6 +1,6 @@
-package modeep.hear.domain.chat.type
+package modeep.hear.domain.chat.vo
 
-import modeep.hear.domain.common.model.status.ModelStatus
+import modeep.hear.domain.common.vo.ModelStatus
 
 enum class ChatStatus(
     override val isFinalState: Boolean,
