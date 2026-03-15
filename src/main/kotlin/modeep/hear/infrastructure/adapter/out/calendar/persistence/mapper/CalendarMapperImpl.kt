@@ -2,7 +2,9 @@ package modeep.hear.infrastructure.adapter.out.calendar.persistence.mapper
 
 import modeep.hear.domain.calendar.model.Calendar
 import modeep.hear.infrastructure.adapter.out.calendar.persistence.entity.CalendarJpaEntity
+import org.springframework.stereotype.Component
 
+@Component
 class CalendarMapperImpl() : CalendarMapper {
     override fun toModel(entity: CalendarJpaEntity): Calendar {
         return Calendar(
