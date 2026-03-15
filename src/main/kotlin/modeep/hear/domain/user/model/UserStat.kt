@@ -30,33 +30,21 @@ data class UserStat(
         )
     }
 
+    // 일기 삭제 시
+    // 단, 정책 상 일기 삭제 시에도 streak은 유지되도록 한다.
     fun decreaseDiaryCount(previousLastWrittenAt: LocalDateTime?): UserStat {
         if (this.totalDiaries <= 0) return this
 
         return if (previousLastWrittenAt == null) {
             this.copy(
                 totalDiaries = 0,
-                currentStreak = 0,
                 lastWrittenAt = null
             )
         } else {
             this.copy(
                 totalDiaries = this.totalDiaries - 1,
                 lastWrittenAt = previousLastWrittenAt,
-                currentStreak = recalculateStreak(previousLastWrittenAt)
             )
-        }
-    }
-
-    private fun recalculateStreak(previousLastWrittenAt: LocalDateTime): Int {
-        val today = LocalDate.now()
-        val lastWrittenDate = previousLastWrittenAt.toLocalDate()
-
-        return when {
-            lastWrittenDate == today || lastWrittenDate == today.minusDays(1) -> {
-                if (currentStreak > 1) currentStreak - 1 else 1
-            }
-            else -> 0
         }
     }
 

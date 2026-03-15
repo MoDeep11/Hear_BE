@@ -1,0 +1,12 @@
+package modeep.hear.domain.user.exception
+
+import modeep.hear.global.error.ErrorCode
+import org.springframework.http.HttpStatus
+
+enum class UserErrorCode(
+    override val status: HttpStatus,
+    override val code: String,
+    override val message: String
+) : ErrorCode {
+    INVALID_USER_CALENDAR(HttpStatus.BAD_REQUEST, "USER_021", "유효하지 않은 값입니다.")
+}
