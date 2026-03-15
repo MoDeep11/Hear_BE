@@ -6,12 +6,12 @@ import modeep.hear.global.error.exception.BusinessException
 fun String.maskUri(): String {
     val sensitiveKeys = listOf("ServiceKey", "accessToken", "auth", "token")
 
-    var maskedUri = this
-    sensitiveKeys.forEach { key ->
-        val regex = Regex("($key=)[^&]*")
-        maskedUri = maskedUri.replace(regex, "$1********")
+    val keyPattern = sensitiveKeys.joinToString("|") { Regex.escape(it) }
+    val regex = Regex("""(^|[?&])($keyPattern)=([^&#]*)""", RegexOption.IGNORE_CASE)
+
+    return regex.replace(this) { m ->
+        "${m.groupValues[1]}${m.groupValues[2]}=********"
     }
-    return maskedUri
 }
 
 fun String?.maskIfSensitive(fieldName: String): String {
