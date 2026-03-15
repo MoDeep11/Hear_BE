@@ -1,5 +1,6 @@
 package modeep.hear.global.converter
 
+import com.fasterxml.jackson.core.type.TypeReference
 import com.fasterxml.jackson.databind.ObjectMapper
 import jakarta.persistence.Converter
 import modeep.hear.domain.common.vo.EmotionDistribution
@@ -7,4 +8,7 @@ import modeep.hear.domain.common.vo.EmotionDistribution
 @Converter
 class EmotionDistributionConverter(
     objectMapper: ObjectMapper
-) : JsonConverter<EmotionDistribution>(EmotionDistribution::class.java, objectMapper)
+) : JsonConverter<EmotionDistribution>(
+    object : TypeReference<EmotionDistribution>() {},
+    objectMapper
+)
