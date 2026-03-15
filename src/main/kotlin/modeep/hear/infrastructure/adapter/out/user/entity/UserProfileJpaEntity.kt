@@ -12,11 +12,11 @@ import java.util.UUID
 class UserProfileJpaEntity(
     @Id
     @Column(name = "user_id")
-    val userId: UUID? = null,
+    val userId: UUID,
 
-    @Column(name = "nickname", nullable = false)
+    @Column(name = "nickname", nullable = false, length = 20)
     val nickname: String,
 
-    @Column(name = "profile_image_url")
+    @Column(name = "profile_image_url", nullable = false)
     val profileImageUrl: String
 ) : BaseTimeEntity()

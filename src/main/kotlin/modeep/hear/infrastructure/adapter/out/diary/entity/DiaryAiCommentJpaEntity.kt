@@ -17,7 +17,7 @@ class DiaryAiCommentJpaEntity(
     @Column(name = "diary_id", nullable = false)
     val diaryId: UUID,
 
-    @Column(name = "content", nullable = false, length = 1000)
+    @Column(name = "content", length = 1000)
     val content: String? = null,
 
     @Enumerated(EnumType.STRING)

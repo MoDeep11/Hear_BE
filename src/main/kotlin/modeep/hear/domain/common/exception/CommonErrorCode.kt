@@ -8,5 +8,5 @@ enum class CommonErrorCode(
     override val code: String,
     override val message: String
 ) : ErrorCode {
-    INVALID_EMOTION_EXCEPTION(HttpStatus.BAD_REQUEST, "EMOTION_001", "감정 수치 형식이 올바르지 않습니다."),
+    INVALID_EMOTION_EXCEPTION(HttpStatus.BAD_REQUEST, "EMOTION_001", "감정 수치 형식이 올바르지 않습니다.")
 }
