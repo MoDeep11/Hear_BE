@@ -8,5 +8,6 @@ enum class UserErrorCode(
     override val code: String,
     override val message: String
 ) : ErrorCode {
-    INVALID_USER_CALENDAR(HttpStatus.BAD_REQUEST, "USER_021", "유효하지 않은 값입니다.")
+
+    INVALID_VALUE(HttpStatus.BAD_REQUEST, "USER_001", "유효하지 않은 값입니다."),
 }

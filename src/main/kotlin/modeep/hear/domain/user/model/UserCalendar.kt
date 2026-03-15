@@ -13,11 +13,11 @@ data class UserCalendar(
     init {
         when {
             hasDiary && emotion == null -> throw BusinessException(
-                UserErrorCode.INVALID_USER_CALENDAR,
+                UserErrorCode.INVALID_VALUE,
                 "일기가 있다면 감정은 null일 수 없습니다."
             )
             !hasDiary && emotion != null -> throw BusinessException(
-                UserErrorCode.INVALID_USER_CALENDAR,
+                UserErrorCode.INVALID_VALUE,
                 "일기가 없다면 감정은 null이어야 합니다."
             )
         }

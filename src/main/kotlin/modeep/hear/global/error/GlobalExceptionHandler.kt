@@ -6,6 +6,7 @@ import modeep.hear.global.common.response.ErrorResponse
 import modeep.hear.global.error.exception.BusinessException
 import modeep.hear.global.error.exception.CriticalException
 import modeep.hear.global.error.exception.GlobalErrorCode
+import modeep.hear.global.util.maskIfSensitive
 import modeep.hear.infrastructure.external.openfeign.discord.DiscordSendService
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -68,6 +69,7 @@ class GlobalExceptionHandler(
                     errors = fieldErrors.map { fieldError ->
                         ErrorResponse.FieldError(
                             field = fieldError.field,
+                            value = fieldError.rejectedValue?.toString().maskIfSensitive(fieldError.field),
                             reason = fieldError?.defaultMessage ?: "unknown"
                         )
                     }

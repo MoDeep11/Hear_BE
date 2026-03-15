@@ -36,7 +36,7 @@ data class UserStat(
 
         return if (previousLastWrittenAt == null) {
             this.copy(
-                totalDiaries = 0,
+                totalDiaries = (this.totalDiaries - 1).coerceAtLeast(0),
                 lastWrittenAt = null
             )
         } else {

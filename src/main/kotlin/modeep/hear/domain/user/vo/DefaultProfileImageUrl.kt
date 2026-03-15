@@ -3,7 +3,7 @@ package modeep.hear.domain.user.vo
 enum class DefaultProfileImageUrl(
     val value: String
 ) {
-    HAPPY("link"),
+    HAPPY("link"),  // todo: 링크 추가
     SAD("link"),
     ANGRY("link"),
     ANXIETY("link"),
