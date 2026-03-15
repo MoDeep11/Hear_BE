@@ -19,7 +19,7 @@ abstract class JsonConverter<T>(
                 throw BusinessException(
                     GlobalErrorCode.JSON_CONVERSION_ERROR,
                     "객체를 JSON 문자열로 변환하는데 실패했습니다: ${typeReference.type.typeName}",
-                    e
+                    cause = e
                 )
             }
         }
@@ -34,7 +34,7 @@ abstract class JsonConverter<T>(
             throw BusinessException(
                 GlobalErrorCode.JSON_CONVERSION_ERROR,
                 "JSON을 객체로 변환하는데 실패했습니다: ${typeReference.type.typeName}",
-                e.stackTrace
+                cause = e
             )
         }
     }

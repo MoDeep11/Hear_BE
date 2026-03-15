@@ -23,13 +23,12 @@ class UserMapperImpl(
 
     override fun toEntity(model: User): UserJpaEntity {
         return UserJpaEntity(
+            id = model.id,
             email = model.email,
             password = model.password,
             role = model.role,
             status = model.status,
             isEmailSubscribed = model.isEmailSubscribed
-        ).apply {
-            this.baseTime = baseTimeMapper.toEntity(model.baseTime)
-        }
+        )
     }
 }

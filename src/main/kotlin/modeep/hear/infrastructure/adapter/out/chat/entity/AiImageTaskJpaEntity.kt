@@ -20,6 +20,7 @@ class AiImageTaskJpaEntity(
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false, length = 16)
-    val status: AiImageTaskStatus = AiImageTaskStatus.RESERVED
+    val status: AiImageTaskStatus = AiImageTaskStatus.RESERVED,
 
-) : BaseEntity()
+    id: UUID? = null
+) : BaseEntity(id)

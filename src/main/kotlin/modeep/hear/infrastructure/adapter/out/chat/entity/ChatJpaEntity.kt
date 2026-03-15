@@ -17,5 +17,7 @@ class ChatJpaEntity(
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false, length = 16)
-    val status: ChatStatus = ChatStatus.ONGOING
-) : BaseEntity()
+    val status: ChatStatus = ChatStatus.ONGOING,
+
+    id: UUID? = null
+) : BaseEntity(id)

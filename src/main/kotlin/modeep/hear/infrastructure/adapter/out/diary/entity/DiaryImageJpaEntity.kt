@@ -28,5 +28,7 @@ class DiaryImageJpaEntity(
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false, length = 16)
-    val diaryImageStatus: DiaryImageStatus = DiaryImageStatus.PROCESSING
-) : BaseEntity()
+    val diaryImageStatus: DiaryImageStatus = DiaryImageStatus.PROCESSING,
+
+    id: UUID? = null
+) : BaseEntity(id)

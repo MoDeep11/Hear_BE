@@ -34,5 +34,7 @@ class MonthlyStatisticJpaEntity(
 
     @Convert(converter = EmotionDistributionConverter::class)
     @Column(name = "emotion_distribution", columnDefinition = "TEXT", nullable = false)
-    var emotionDistribution: EmotionDistribution
-) : BaseUUIDEntity()
+    var emotionDistribution: EmotionDistribution,
+
+    id: UUID? = null
+) : BaseUUIDEntity(id)

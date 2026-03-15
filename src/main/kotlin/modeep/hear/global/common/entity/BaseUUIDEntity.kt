@@ -8,7 +8,9 @@ import org.hibernate.annotations.UuidGenerator
 import java.util.UUID
 
 @MappedSuperclass
-abstract class BaseUUIDEntity {
+abstract class BaseUUIDEntity(
+    id: UUID? = null
+) {
     @Id
     @GeneratedValue
     @UuidGenerator

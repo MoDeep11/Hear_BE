@@ -35,5 +35,7 @@ class DiaryJpaEntity(
     val sourceType: DiarySourceType,
 
     @Column(name = "session_id")
-    val sessionId: UUID? = null
-) : BaseEntity()
+    val sessionId: UUID? = null,
+
+    id: UUID? = null
+) : BaseEntity(id)

@@ -8,6 +8,7 @@ import jakarta.persistence.Table
 import modeep.hear.domain.user.vo.Role
 import modeep.hear.domain.user.vo.UserStatus
 import modeep.hear.global.common.entity.BaseEntity
+import java.util.UUID
 
 @Entity
 @Table(name = "users")
@@ -28,5 +29,7 @@ class UserJpaEntity(
     val status: UserStatus = UserStatus.ACTIVE,
 
     @Column(name = "is_email_subscribed", nullable = false)
-    val isEmailSubscribed: Boolean = false
-) : BaseEntity()
+    val isEmailSubscribed: Boolean = false,
+
+    id: UUID? = null
+) : BaseEntity(id)
