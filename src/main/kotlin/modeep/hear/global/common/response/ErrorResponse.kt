@@ -15,6 +15,6 @@ data class ErrorResponse(
     data class FieldError(
         val field: String? = null,
         val value: String? = null,
-        val reason: String? = null,
+        val reason: String? = null
     )
 }

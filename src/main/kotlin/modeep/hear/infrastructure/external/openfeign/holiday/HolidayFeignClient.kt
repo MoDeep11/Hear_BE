@@ -11,14 +11,14 @@ import org.springframework.web.bind.annotation.RequestParam
     url = "\${api.holiday.url}",
     configuration = [
         OpenFeignConfig::class,
-        HolidayFeignConfig::class,
-    ],
+        HolidayFeignConfig::class
+    ]
 )
 interface HolidayFeignClient {
     @GetMapping("/getRestDeInfo")
     fun getRestDays(
         @RequestParam("solYear") solYear: String,
-        @RequestParam("solMonth") solMonth: String?,
         @RequestParam("_type") type: String = "json",
+        @RequestParam("numOfRows") numOfRows: Int = 400
     ): HolidayResponse
 }

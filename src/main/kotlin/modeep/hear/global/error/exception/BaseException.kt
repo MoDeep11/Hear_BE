@@ -6,4 +6,5 @@ open class BaseException(
     val errorCode: ErrorCode,
     override val message: String? = null,
     val details: String? = null,
+    override val cause: Throwable? = null
 ) : RuntimeException()

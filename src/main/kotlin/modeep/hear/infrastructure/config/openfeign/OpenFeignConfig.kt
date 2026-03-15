@@ -16,8 +16,10 @@ class OpenFeignConfig {
     @Bean
     fun options(): Request.Options =
         Request.Options(
-            5000, TimeUnit.MILLISECONDS, // connectTimeout
-            5000, TimeUnit.MILLISECONDS, // readTimeout
-            true, // followRedirects
+            5000,
+            TimeUnit.MILLISECONDS, // connectTimeout
+            5000,
+            TimeUnit.MILLISECONDS, // readTimeout
+            true // followRedirects
         )
 }

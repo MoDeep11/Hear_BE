@@ -5,7 +5,7 @@ import org.springframework.stereotype.Component
 
 @Component
 class ExceptionNotifier(
-    private val discordSendService: DiscordSendService,
+    private val discordSendService: DiscordSendService
 ) {
     fun notify(e: Exception, errorCode: ErrorCode, requestUri: String) {
         discordSendService.sendErrorLog(e, errorCode, requestUri)

@@ -8,15 +8,15 @@ import java.time.LocalDate
 data class Calendar(
     val calendarDate: LocalDate,
     val dayOfWeek: DayOfWeek,
-    val isHoliday: Boolean,
+    val isHoliday: Boolean
 ) {
     companion object {
         fun create(date: LocalDate, isHoliday: Boolean): Calendar {
             val dayOfWeek = date.dayOfWeek
 
             val finalIsHoliday = isHoliday ||
-                    dayOfWeek == DayOfWeek.SATURDAY ||
-                    dayOfWeek == DayOfWeek.SUNDAY
+                dayOfWeek == DayOfWeek.SATURDAY ||
+                dayOfWeek == DayOfWeek.SUNDAY
 
             return Calendar(
                 calendarDate = date,
