@@ -22,5 +22,5 @@ class DiaryAiCommentJpaEntity(
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false, length = 16)
-    val diaryImageStatus: DiaryAiCommentStatus = DiaryAiCommentStatus.PENDING
+    val status: DiaryAiCommentStatus = DiaryAiCommentStatus.PENDING
 ) : BaseTimeEntity()

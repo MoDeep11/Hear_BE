@@ -7,6 +7,6 @@ import java.util.UUID
 data class DiaryAiComment(
     val diaryId: UUID? = null,
     val content: String? = null,
-    val diaryImageStatus: DiaryAiCommentStatus = DiaryAiCommentStatus.PENDING,
+    val status: DiaryAiCommentStatus = DiaryAiCommentStatus.PENDING,
     val baseTime: BaseTime
 )

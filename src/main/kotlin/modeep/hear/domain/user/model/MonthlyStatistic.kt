@@ -12,8 +12,10 @@ data class MonthlyStatistic(
     val targetYearMonth: YearMonth,
     val diaryCount: Int = 0,
     val photoCount: Int = 0,
-    val writingRate: Float = targetYearMonth.calculateWritingRate(diaryCount),
     val aiReportContent: String? = null,
     val emotionDistribution: EmotionDistribution = EmotionDistribution.empty(),
     val baseTime: BaseTime
-)
+) {
+    val writingRate: Float
+        get() = targetYearMonth.calculateWritingRate(diaryCount)
+}
