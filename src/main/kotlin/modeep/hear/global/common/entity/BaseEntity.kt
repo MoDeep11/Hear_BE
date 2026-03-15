@@ -1,18 +1,13 @@
 package modeep.hear.global.common.entity
 
-import jakarta.persistence.Column
-import jakarta.persistence.GeneratedValue
-import jakarta.persistence.Id
+import jakarta.persistence.Embedded
+import jakarta.persistence.EntityListeners
 import jakarta.persistence.MappedSuperclass
-import org.hibernate.annotations.UuidGenerator
-import java.util.UUID
+import org.springframework.data.jpa.domain.support.AuditingEntityListener
 
 @MappedSuperclass
-abstract class BaseEntity : BaseTimeEntity() {
-    @Id
-    @GeneratedValue
-    @UuidGenerator
-    @Column(name = "id", nullable = false)
-    var id: UUID? = null
-        protected set // 외부 수정 방지
+@EntityListeners(AuditingEntityListener::class)
+abstract class BaseEntity : BaseUUIDEntity() {
+    @Embedded
+    var baseTime: JpaBaseTime = JpaBaseTime()
 }
