@@ -18,7 +18,7 @@ data class UserProfile(
         if (nickname.length > 20) {
             throw BusinessException(
                 UserErrorCode.INVALID_VALUE,
-                "nickname 은 20자 이상일 수 없습니다."
+                "nickname 은 20자를 초과할 수 없습니다."
             )
         }
     }

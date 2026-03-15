@@ -21,7 +21,7 @@ fun String?.maskIfSensitive(fieldName: String): String {
 
     val isSensitive = sensitiveFields.any { fieldName.contains(it, ignoreCase = true) }
 
-    return if (isSensitive) "$1********" else this
+    return if (isSensitive) "********" else this
 }
 
 fun String.checkBlank(label: String) {

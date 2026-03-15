@@ -15,6 +15,6 @@ abstract class BaseUUIDEntity(
     @GeneratedValue
     @UuidGenerator
     @Column(name = "id", nullable = false)
-    var id: UUID? = null
+    var id: UUID? = id
         protected set // 외부 수정 방지
 }

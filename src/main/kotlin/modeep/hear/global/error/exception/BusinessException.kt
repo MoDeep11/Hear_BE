@@ -7,4 +7,4 @@ class BusinessException(
     message: String? = null,
     details: String? = null,
     cause: Throwable? = null
-) : BaseException(errorCode, message, details)
+) : BaseException(errorCode, message, details, cause)
