@@ -12,7 +12,7 @@ abstract class BaseUUIDEntity {
     @Id
     @GeneratedValue
     @UuidGenerator
-    @Column(columnDefinition = "BINARY(16)", nullable = false)
+    @Column(name = "id", nullable = false)
     var id: UUID? = null
         protected set // 외부 수정 방지
 }

@@ -3,7 +3,6 @@ package modeep.hear.domain.calendar.service.component
 import io.github.oshai.kotlinlogging.KotlinLogging
 import modeep.hear.domain.calendar.model.Calendar
 import modeep.hear.domain.calendar.port.out.CommandCalendarPort
-import modeep.hear.domain.calendar.port.out.QueryCalendarPort
 import org.springframework.retry.annotation.Backoff
 import org.springframework.retry.annotation.Retryable
 import org.springframework.stereotype.Service
@@ -15,10 +14,8 @@ private val log = KotlinLogging.logger {}
 
 @Service
 class SaveCalendarComponent(
-    private val commandCalendarPort: CommandCalendarPort,
-    private val queryCalendarPort: QueryCalendarPort
+    private val commandCalendarPort: CommandCalendarPort
 ) {
-
     @Retryable(
         value = [Exception::class],
         maxAttempts = 3,

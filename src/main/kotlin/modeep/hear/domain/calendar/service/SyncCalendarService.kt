@@ -8,7 +8,6 @@ import modeep.hear.domain.calendar.service.component.QueryCalendarComponent
 import modeep.hear.domain.calendar.service.component.SaveCalendarComponent
 import modeep.hear.global.util.ProfileUtil
 import org.springframework.stereotype.Service
-import java.time.LocalDate
 
 private val log = KotlinLogging.logger {}
 
@@ -17,7 +16,7 @@ class SyncCalendarService(
     private val fetchExternalCalendarPort: FetchExternalCalendarPort,
     private val queryCalendarComponent: QueryCalendarComponent,
     private val saveCalendarComponent: SaveCalendarComponent,
-    private val profileUtil: ProfileUtil,
+    private val profileUtil: ProfileUtil
 ) : SyncCalendarUseCase {
     override fun execute(year: Int): List<Calendar> {
         val saved = queryCalendarComponent.exist(year)
