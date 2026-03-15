@@ -49,33 +49,27 @@ class CalendarScheduler(
     }
 
     private fun saveYearlyCalendar(year: Int): SyncResult {
-        val failedMonths = mutableListOf<Int>()
         var lastError: Exception? = null
 
-        (1..12).forEach { month ->
-            try {
-                syncCalendarUseCase.execute(year, month)
-                Thread.sleep(100) // API 과부하 방지
-            } catch (e: InterruptedException) {
-                Thread.currentThread().interrupt()
-                log.warn { "스케줄러 작업이 종료되었습니다: ${e.message}" }
-            } catch (e: BusinessException) {
-                log.error { "Error [$year-$month]: ${e.errorCode.code} - ${e.message}" }
-                failedMonths.add(month)
-                lastError = e
-            } catch (e: Exception) {
-                failedMonths.add(month)
-                lastError = e
-            }
+        try {
+            syncCalendarUseCase.execute(year)
+            Thread.sleep(100) // API 과부하 방지
+        } catch (e: InterruptedException) {
+            Thread.currentThread().interrupt()
+            log.warn { "스케줄러 작업이 종료되었습니다: ${e.message}" }
+        } catch (e: BusinessException) {
+            log.error { "Error [year=$year]: ${e.errorCode.code} - ${e.message}" }
+            lastError = e
+        } catch (e: Exception) {
+            lastError = e
         }
-        return SyncResult(year, failedMonths, lastError)
+        return SyncResult(year, lastError)
     }
 
     data class SyncResult(
         val year: Int,
-        val failedMonths: List<Int>,
         val lastError: Exception? = null
     ) {
-        val isSuccess: Boolean get() = failedMonths.isEmpty()
+        val isSuccess: Boolean = lastError == null
     }
 }

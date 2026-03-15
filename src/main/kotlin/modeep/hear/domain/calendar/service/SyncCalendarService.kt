@@ -16,19 +16,18 @@ class SyncCalendarService(
     private val queryCalendarComponent: QueryCalendarComponent,
     private val saveCalendarComponent: SaveCalendarComponent
 ) : SyncCalendarUseCase {
-    override fun execute(year: Int, month: Int): List<Calendar> {
-
-        val saved = queryCalendarComponent.exist(year, month)
+    override fun execute(year: Int): List<Calendar> {
+        val saved = queryCalendarComponent.exist(year)
 
         if (saved) {
-            log.info { "$year-$month 데이터가 이미 존재합니다. 조회를 생략합니다." }
-            return queryCalendarComponent.find(year, month)
+            log.info { "$year 데이터가 이미 존재합니다. 조회를 생략합니다." }
+            return queryCalendarComponent.find(year)
         }
 
-        log.info { "$year-$month 데이터 동기화 시작..." }
-        val holidays = fetchExternalCalendarPort.fetch(year, month)
+        log.info { "$year 데이터 동기화 시작..." }
+        val holidays = fetchExternalCalendarPort.fetch(year)
 
-        return saveCalendarComponent.execute(year, month, holidays)
+        return saveCalendarComponent.execute(year, holidays)
     }
 }
 

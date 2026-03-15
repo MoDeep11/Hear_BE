@@ -15,9 +15,9 @@ private val log = KotlinLogging.logger {}
 class CalendarExternalAdapter(
     private val holidayFeignClient: HolidayFeignClient
 ) : FetchExternalCalendarPort {
-    override fun fetch(year: Int, month: Int): Set<LocalDate> {
+    override fun fetch(year: Int): Set<LocalDate> {
         val response = try {
-            holidayFeignClient.getRestDays(year.toString(), "%02d".format(month))
+            holidayFeignClient.getRestDays(year.toString())
         } catch (e: Exception) {
             val rawBody = if (e is FeignException) e.contentUTF8() else null
             val defaultMsg = "응답 본문을 추출할 수 없음 (Cause: ${e.cause})"

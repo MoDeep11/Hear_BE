@@ -9,6 +9,7 @@ import org.springframework.retry.annotation.Retryable
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.time.LocalDate
+import java.time.Year
 
 private val log = KotlinLogging.logger {}
 
@@ -24,22 +25,25 @@ class SaveCalendarComponent(
         backoff = Backoff(delay = 2000)
     )
     @Transactional
-    fun execute(year: Int, month: Int, holidays: Set<LocalDate>): List<Calendar> {
-        val start = LocalDate.of(year, month, 1)
-        val end = start.withDayOfMonth(start.lengthOfMonth())
-
+    fun execute(year: Int, holidays: Set<LocalDate>): List<Calendar> {
+        val (start, end) = getYearRange(year)
         commandCalendarPort.deleteByCalendarDateBetween(start, end)
 
-        val firstDay = LocalDate.of(year, month, 1)
-
-        val calendars = (0 until firstDay.lengthOfMonth()).map { daysToAdd ->
-            val currentDate = firstDay.plusDays(daysToAdd.toLong())
+        val calendars = (0 until end.lengthOfYear()).map { daysToAdd ->
+            val currentDate = start.plusDays(daysToAdd.toLong())
             Calendar.create(
                 date = currentDate,
                 isHoliday = holidays.contains(currentDate)
             )
         }
         return commandCalendarPort.saveAll(calendars)
+    }
+
+    private fun getYearRange(yearInt: Int): Pair<LocalDate, LocalDate> {
+        val year = Year.of(yearInt)
+        val start = year.atDay(1)
+        val end = year.atDay(year.length())
+        return Pair(start, end)
     }
 
     // 디버깅을 위해서는 Recover를 사용하면 안된다.

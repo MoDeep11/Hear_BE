@@ -18,7 +18,7 @@ interface HolidayFeignClient {
     @GetMapping("/getRestDeInfo")
     fun getRestDays(
         @RequestParam("solYear") solYear: String,
-        @RequestParam("solMonth") solMonth: String?,
-        @RequestParam("_type") type: String = "json"
+        @RequestParam("_type") type: String = "json",
+        @RequestParam("numOfRows") numOfRows: Int = 400
     ): HolidayResponse
 }
