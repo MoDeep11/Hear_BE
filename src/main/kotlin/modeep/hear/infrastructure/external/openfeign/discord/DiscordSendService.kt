@@ -17,8 +17,8 @@ class DiscordSendService(
         errorCode: ErrorCode,
         requestUri: String
     ) {
-        val request = DiscordWebhookRequest.createErrorEmbed(e, errorCode, requestUri)
         runCatching {
+            val request = DiscordWebhookRequest.createErrorEmbed(e, errorCode, requestUri)
             discordWebhookClient.sendWebhook(request)
         }.onFailure {
             log.warn(it) { "Failed to send error log to Discord" }

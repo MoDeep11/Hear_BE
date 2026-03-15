@@ -24,6 +24,11 @@ object EmotionUtil {
     fun calculatePercentages(counts: Map<Emotion, Int>): Map<Emotion, Double> {
         val totalCount = counts.values.sum().toDouble()
 
+        // 음수 처리
+        if (counts.values.any { it < 0 }) {
+            throw BusinessException(CommonErrorCode.INVALID_EMOTION_EXCEPTION, "감정 카운트는 음수일 수 없습니다.")
+        }
+
         // 0% 반환
         if (totalCount == 0.0) {
             return counts.mapValues { 0.0 }

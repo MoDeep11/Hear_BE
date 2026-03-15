@@ -9,5 +9,4 @@ enum class CommonErrorCode(
     override val message: String
 ) : ErrorCode {
     INVALID_EMOTION_EXCEPTION(HttpStatus.BAD_REQUEST, "EMOTION_001", "감정 수치 형식이 올바르지 않습니다."),
-    EMOTION_CALCULATION_EXCEPTION(HttpStatus.BAD_REQUEST, "EMOTION_002", "감정 수치는 소수점 첫째 자리까지만 허용됩니다.")
 }
