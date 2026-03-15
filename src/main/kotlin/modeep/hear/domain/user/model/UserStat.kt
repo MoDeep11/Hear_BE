@@ -1,7 +1,6 @@
 package modeep.hear.domain.user.model
 
 import modeep.hear.domain.common.vo.BaseTime
-import java.time.LocalDate
 import java.time.LocalDateTime
 import java.util.UUID
 
@@ -43,7 +42,7 @@ data class UserStat(
         } else {
             this.copy(
                 totalDiaries = this.totalDiaries - 1,
-                lastWrittenAt = previousLastWrittenAt,
+                lastWrittenAt = previousLastWrittenAt
             )
         }
     }
