@@ -9,5 +9,5 @@ enum class UserErrorCode(
     override val message: String
 ) : ErrorCode {
 
-    INVALID_VALUE(HttpStatus.BAD_REQUEST, "USER_001", "유효하지 않은 값입니다."),
+    INVALID_VALUE(HttpStatus.BAD_REQUEST, "USER_001", "유효하지 않은 값입니다.")
 }

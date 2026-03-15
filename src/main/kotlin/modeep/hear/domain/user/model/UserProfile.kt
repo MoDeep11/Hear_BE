@@ -17,7 +17,9 @@ data class UserProfile(
         nickname.checkBlank("nickname")
         if (nickname.length > 20) {
             throw BusinessException(
-                UserErrorCode.INVALID_VALUE, "nickname 은 20자 이상일 수 없습니다.")
+                UserErrorCode.INVALID_VALUE,
+                "nickname 은 20자 이상일 수 없습니다."
+            )
         }
     }
     companion object {
@@ -25,10 +27,10 @@ data class UserProfile(
             val userId = UUID.randomUUID()
             return UserProfile(
                 userId = userId,
-                nickname =  nickname
-                        ?.trim()
-                        ?.takeUnless { it.isEmpty() }
-                        ?: "user${userId.toString().take(8)}",
+                nickname = nickname
+                    ?.trim()
+                    ?.takeUnless { it.isEmpty() }
+                    ?: "user${userId.toString().take(8)}",
                 profileImageUrl = DefaultProfileImageUrl.random().value,
                 baseTime = BaseTime()
             )

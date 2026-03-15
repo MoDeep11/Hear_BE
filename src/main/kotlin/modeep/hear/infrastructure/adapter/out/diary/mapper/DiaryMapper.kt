@@ -5,6 +5,7 @@ import modeep.hear.global.common.mapper.BaseTimeMapper
 import modeep.hear.infrastructure.adapter.out.diary.entity.DiaryJpaEntity
 import org.mapstruct.Mapper
 
+// MapStruct가 자동으로 구현
 @Mapper(
     componentModel = "spring",
     uses = [BaseTimeMapper::class]

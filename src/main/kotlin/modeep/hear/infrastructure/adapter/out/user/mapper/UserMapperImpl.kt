@@ -15,7 +15,7 @@ class UserMapperImpl(
             role = entity.role,
             status = entity.status,
             baseTime = baseTimeMapper.toModel(entity.baseTime),
-            isEmailSubscribed = entity.isEmailSubscribed  // is 네이밍 때문에 직접 구현
+            isEmailSubscribed = entity.isEmailSubscribed // is 네이밍 때문에 직접 구현
         )
     }
 
@@ -30,5 +30,4 @@ class UserMapperImpl(
             this.baseTime = baseTimeMapper.toEntity(model.baseTime)
         }
     }
-
 }

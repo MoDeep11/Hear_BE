@@ -22,8 +22,10 @@ fun Float.roundToOneDecimal(): Float {
 }
 
 fun Int.validateNotNegative(label: String) {
-    if (this < 0) throw BusinessException(
-        UserErrorCode.INVALID_VALUE,
-        "$label 는 음수일 수 없습니다."
-    )
+    if (this < 0) {
+        throw BusinessException(
+            UserErrorCode.INVALID_VALUE,
+            "$label 는 음수일 수 없습니다."
+        )
+    }
 }
