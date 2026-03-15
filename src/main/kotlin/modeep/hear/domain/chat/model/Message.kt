@@ -9,7 +9,7 @@ import java.util.UUID
 @Aggregate
 data class Message(
     val id: UUID? = null,
-    val sessionId: UUID? = null,
+    val sessionId: UUID,
     val sender: Sender,
     val message: String,
     val messageType: MessageType = MessageType.TEXT,

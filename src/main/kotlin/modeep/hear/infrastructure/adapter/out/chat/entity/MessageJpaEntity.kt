@@ -30,6 +30,6 @@ class MessageJpaEntity(
     @Column(name = "voice_url", length = 512)
     val voiceUrl: String? = null,
 
-    @Column(name = "duration", nullable = false)
-    val duration: Int = 0
+    @Column(name = "duration")
+    val duration: Int? = 0
 ) : BaseEntity()
