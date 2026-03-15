@@ -7,7 +7,7 @@ import kotlin.math.abs
 import kotlin.math.floor
 import kotlin.math.round
 
-object EmotionUtils {
+object EmotionUtil {
     fun Double.roundToOneDecimal(): Double =
         round(this * 10) / 10.0
 

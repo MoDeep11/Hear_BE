@@ -6,7 +6,9 @@ import modeep.hear.domain.calendar.port.`in`.SyncCalendarUseCase
 import modeep.hear.domain.calendar.port.out.FetchExternalCalendarPort
 import modeep.hear.domain.calendar.service.component.QueryCalendarComponent
 import modeep.hear.domain.calendar.service.component.SaveCalendarComponent
+import modeep.hear.global.util.ProfileUtil
 import org.springframework.stereotype.Service
+import java.time.LocalDate
 
 private val log = KotlinLogging.logger {}
 
@@ -14,7 +16,8 @@ private val log = KotlinLogging.logger {}
 class SyncCalendarService(
     private val fetchExternalCalendarPort: FetchExternalCalendarPort,
     private val queryCalendarComponent: QueryCalendarComponent,
-    private val saveCalendarComponent: SaveCalendarComponent
+    private val saveCalendarComponent: SaveCalendarComponent,
+    private val profileUtil: ProfileUtil,
 ) : SyncCalendarUseCase {
     override fun execute(year: Int): List<Calendar> {
         val saved = queryCalendarComponent.exist(year)
@@ -25,8 +28,11 @@ class SyncCalendarService(
         }
 
         log.info { "$year 데이터 동기화 시작..." }
-        val holidays = fetchExternalCalendarPort.fetch(year)
-
+        val holidays = if (profileUtil.isProd) {
+            fetchExternalCalendarPort.fetch(year)
+        } else {
+            emptySet()
+        }
         return saveCalendarComponent.execute(year, holidays)
     }
 }
