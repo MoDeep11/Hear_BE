@@ -7,7 +7,6 @@ import org.mapstruct.Mapper
 // MapStruct가 자동으로 구현
 @Mapper(componentModel = "spring")
 interface CalendarMapper {
-
     fun toModel(entity: CalendarJpaEntity): Calendar
 
     fun toEntity(model: Calendar): CalendarJpaEntity
