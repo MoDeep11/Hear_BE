@@ -12,7 +12,7 @@ class QueryCalendarComponent(
 ) {
     fun exist(year: Int): Boolean {
         val (start, end) = getYearRange(year)
-        return queryCalendarPort.countByCalendarDateBetween(start, end) == (end.dayOfMonth).toLong()
+        return queryCalendarPort.countByCalendarDateBetween(start, end) == (Year.of(year).length()).toLong()
     }
 
     fun find(year: Int): List<Calendar> {
