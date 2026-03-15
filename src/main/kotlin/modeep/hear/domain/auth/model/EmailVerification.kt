@@ -19,11 +19,11 @@ data class EmailVerification(
     val baseTime: BaseTime
 ) {
     fun verify(): EmailVerification {
-        if (!isVerified) {
+        if (isVerified) {
             throw BusinessException(AuthErrorCode.EMAIL_ALREADY_VERIFIED)
         }
 
-        if (LocalDateTime.now().isBefore(expiresAt)) {
+        if (LocalDateTime.now().isAfter(expiresAt)) {
             throw BusinessException(AuthErrorCode.VERIFICATION_TIMEOUT)
         }
 

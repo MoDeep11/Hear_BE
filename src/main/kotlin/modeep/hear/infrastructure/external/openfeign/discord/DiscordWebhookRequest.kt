@@ -2,6 +2,7 @@ package modeep.hear.infrastructure.external.openfeign.discord
 
 import modeep.hear.global.error.ErrorCode
 import modeep.hear.global.error.exception.BusinessException
+import modeep.hear.global.util.maskUri
 import java.time.Instant
 
 data class DiscordWebhookRequest(
@@ -16,7 +17,7 @@ data class DiscordWebhookRequest(
             errorCode: ErrorCode,
             requestUri: String
         ): DiscordWebhookRequest {
-            val safeUri = maskSensitiveInfo(requestUri)
+            val safeUri = requestUri.maskUri()
             val exceptionName = e::class.simpleName ?: "UnknownException"
 
             return DiscordWebhookRequest(
@@ -40,17 +41,6 @@ data class DiscordWebhookRequest(
                     )
                 )
             )
-        }
-
-        private fun maskSensitiveInfo(uri: String): String {
-            val sensitiveKeys = listOf("ServiceKey", "accessToken", "auth", "token")
-
-            var maskedUri = uri
-            sensitiveKeys.forEach { key ->
-                val regex = Regex("($key=)[^&]*")
-                maskedUri = maskedUri.replace(regex, "$1********")
-            }
-            return maskedUri
         }
     }
 }

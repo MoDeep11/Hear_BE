@@ -1,6 +1,7 @@
 package modeep.hear.domain.auth.model
 
 import modeep.hear.domain.auth.exception.AuthErrorCode
+import modeep.hear.domain.auth.vo.ResetToken
 import modeep.hear.domain.common.annotation.Aggregate
 import modeep.hear.domain.common.vo.BaseTime
 import modeep.hear.global.error.exception.BusinessException
@@ -11,7 +12,7 @@ import java.util.UUID
 data class PasswordResetToken(
     val id: UUID? = null,
     val userId: UUID? = null,
-    val token: String,
+    val token: ResetToken,
     val isUsed: Boolean = false, // token이 사용되었는지
     val expiresAt: LocalDateTime,
     val version: Long, // 낙관적 락
@@ -22,7 +23,7 @@ data class PasswordResetToken(
     fun canBeUsed(): Boolean = !isUsed && !isExpired()
 
     fun use(): PasswordResetToken {
-        if (canBeUsed()) {
+        if (!canBeUsed()) {
             throw BusinessException(AuthErrorCode.PASSWORD_TOKEN_INVALID)
         }
         return this.copy(isUsed = true) // 복사한 객체 반환
