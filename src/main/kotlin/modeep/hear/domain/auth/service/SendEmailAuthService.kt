@@ -7,7 +7,7 @@ import modeep.hear.domain.auth.port.out.EmailVerificationPort
 import modeep.hear.domain.auth.port.out.MailExternalPort
 import modeep.hear.global.error.exception.BusinessException
 import modeep.hear.global.util.VerificationCodeGenerator
-import modeep.hear.infrastructure.adapter.`in`.auth.dto.SendEmailRequest
+import modeep.hear.infrastructure.adapter.`in`.auth.dto.request.SendEmailRequest
 import org.springframework.data.redis.core.StringRedisTemplate
 import org.springframework.stereotype.Service
 import java.util.concurrent.TimeUnit

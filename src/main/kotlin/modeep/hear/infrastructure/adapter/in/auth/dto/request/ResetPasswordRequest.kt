@@ -1,13 +1,12 @@
-package modeep.hear.infrastructure.adapter.`in`.auth.dto
+package modeep.hear.infrastructure.adapter.`in`.auth.dto.request
 
 import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.Pattern
 import jakarta.validation.constraints.Size
 
-data class CreateUserRequest(
+data class ResetPasswordRequest(
     @field:NotBlank
-    @field:Pattern(regexp = "^(?:\\w+\\.?)*\\w+@(?:\\w+\\.)+\\w+$")
-    val email: String,
+    val token: String,
 
     @field:NotBlank
     @field:Size(min = 8, max = 100)
@@ -15,6 +14,5 @@ data class CreateUserRequest(
     val password: String,
 
     @field:NotBlank
-    @field:Size(min = 8, max = 100)
     val confirmPassword: String
 )

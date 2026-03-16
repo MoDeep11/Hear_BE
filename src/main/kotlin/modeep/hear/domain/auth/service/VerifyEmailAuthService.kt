@@ -6,7 +6,7 @@ import modeep.hear.domain.auth.port.`in`.VerifyEmailAuthUseCase
 import modeep.hear.domain.auth.port.out.EmailVerificationPort
 import modeep.hear.domain.auth.port.out.VerifiedTicketPort
 import modeep.hear.global.error.exception.BusinessException
-import modeep.hear.infrastructure.adapter.`in`.auth.dto.VerifyEmailRequest
+import modeep.hear.infrastructure.adapter.`in`.auth.dto.request.VerifyEmailRequest
 import org.springframework.stereotype.Service
 import java.util.UUID
 
