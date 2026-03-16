@@ -1,3 +1,7 @@
 package modeep.hear.domain.user.port.out
 
-interface CommandUserPort
+import modeep.hear.domain.user.model.User
+
+interface CommandUserPort {
+    fun save(user: User)
+}

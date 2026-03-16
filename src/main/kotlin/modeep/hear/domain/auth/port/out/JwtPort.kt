@@ -1,7 +1,7 @@
 package modeep.hear.domain.auth.port.out
 
 import jakarta.servlet.http.HttpServletRequest
-import modeep.hear.domain.auth.port.`in`.TokenResponse
+import modeep.hear.domain.auth.port.`in`.dto.TokenResponse
 import org.springframework.security.core.Authentication
 import java.util.UUID
 

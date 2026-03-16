@@ -31,7 +31,7 @@ class JwtFilter(
 
         if (token != null) {
             if (jwtAdapter.isBlacklist(token)) {
-                throw BusinessException(AuthErrorCode.ALREADY_LOGOUT)
+                throw BusinessException(AuthErrorCode.LOGOUT_TOKEN)
             }
 
             jwtAdapter.validateToken(token)

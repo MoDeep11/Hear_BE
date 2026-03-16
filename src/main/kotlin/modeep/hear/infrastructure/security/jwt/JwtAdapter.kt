@@ -7,7 +7,7 @@ import io.jsonwebtoken.security.Keys
 import jakarta.servlet.http.HttpServletRequest
 import modeep.hear.domain.auth.exception.AuthErrorCode
 import modeep.hear.domain.auth.model.RefreshToken
-import modeep.hear.domain.auth.port.`in`.TokenResponse
+import modeep.hear.domain.auth.port.`in`.dto.TokenResponse
 import modeep.hear.domain.auth.port.out.BlacklistTokenPort
 import modeep.hear.domain.auth.port.out.JwtPort
 import modeep.hear.domain.auth.port.out.RefreshTokenPort
