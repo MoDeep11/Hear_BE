@@ -3,15 +3,15 @@ package modeep.hear.infrastructure.security.jwt
 import io.jsonwebtoken.Claims
 import io.jsonwebtoken.ExpiredJwtException
 import io.jsonwebtoken.Jwts
-import io.jsonwebtoken.MalformedJwtException
 import io.jsonwebtoken.security.Keys
 import jakarta.servlet.http.HttpServletRequest
 import modeep.hear.domain.auth.exception.AuthErrorCode
+import modeep.hear.domain.auth.model.RefreshToken
 import modeep.hear.domain.auth.port.`in`.TokenResponse
+import modeep.hear.domain.auth.port.out.BlacklistTokenPort
 import modeep.hear.domain.auth.port.out.JwtPort
 import modeep.hear.domain.auth.port.out.RefreshTokenPort
 import modeep.hear.global.error.exception.BusinessException
-import modeep.hear.infrastructure.adapter.out.auth.persistence.entity.RefreshTokenRedisEntity
 import modeep.hear.infrastructure.security.userdetails.CustomUserDetailsService
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.Authentication
@@ -27,7 +27,8 @@ import javax.crypto.SecretKey
 class JwtAdapter(
     private val jwtProperties: JwtProperties,
     private val customUserDetailsService: CustomUserDetailsService,
-    private val refreshTokenPort: RefreshTokenPort
+    private val refreshTokenPort: RefreshTokenPort,
+    private val blacklistTokenPort: BlacklistTokenPort
 ) : JwtPort {
     companion object {
         private const val PREFIX = "Bearer "
@@ -96,8 +97,7 @@ class JwtAdapter(
         val refreshToken = generateToken(userId, REFRESH_TYPE, jwtProperties.refreshExpiration)
 
         refreshTokenPort.save(
-            RefreshTokenRedisEntity(
-                userId = userId,
+            RefreshToken(
                 refreshToken = refreshToken,
                 timeToLive = jwtProperties.refreshExpiration
             )
@@ -132,4 +132,7 @@ class JwtAdapter(
             .build()
             .parseSignedClaims(token).payload
     }
+
+    fun isBlacklist(token: String): Boolean =
+        blacklistTokenPort.exists(token)
 }

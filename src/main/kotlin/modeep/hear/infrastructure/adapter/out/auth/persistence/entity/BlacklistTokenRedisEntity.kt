@@ -1,14 +1,15 @@
 package modeep.hear.infrastructure.adapter.out.auth.persistence.entity
 
-import org.springframework.data.annotation.Id
+import jakarta.persistence.Id
 import org.springframework.data.redis.core.RedisHash
 import org.springframework.data.redis.core.TimeToLive
 
-@RedisHash(value = "AUTH:RT")
-class RefreshTokenRedisEntity(
-
+@RedisHash(value = "AUTH:BL")
+class BlacklistTokenRedisEntity(
     @Id
-    val refreshToken: String,
+    val accessToken: String,
+
+    val userId: String,
 
     @TimeToLive
     val timeToLive: Long

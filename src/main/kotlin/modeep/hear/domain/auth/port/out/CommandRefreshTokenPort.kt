@@ -1,9 +1,9 @@
 package modeep.hear.domain.auth.port.out
 
-import modeep.hear.infrastructure.adapter.out.auth.persistence.entity.RefreshTokenRedisEntity
+import modeep.hear.domain.auth.model.RefreshToken
 
 interface CommandRefreshTokenPort {
-    fun save(refreshToken: RefreshTokenRedisEntity)
+    fun save(refreshToken: RefreshToken)
 
     fun delete(refreshToken: String)
 }
