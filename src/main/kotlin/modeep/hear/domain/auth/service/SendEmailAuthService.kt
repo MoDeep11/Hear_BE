@@ -23,6 +23,6 @@ class SendEmailAuthService(
         )
         emailVerificationPort.save(emailVerification)
 
-        mailExternalPort.send(request)
+        mailExternalPort.send(emailVerification)
     }
 }

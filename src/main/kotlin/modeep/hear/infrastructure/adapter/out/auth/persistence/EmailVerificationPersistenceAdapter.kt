@@ -15,7 +15,7 @@ class EmailVerificationPersistenceAdapter(
 ) : EmailVerificationPort {
 
     // --Query--//
-    override fun findByEmail(email: String): EmailVerification? {
+    override fun findByEmail(email: String): EmailVerification {
         val entity = emailVerificationRepository.findByEmail(email)
             ?: throw BusinessException(UserErrorCode.EMAIL_NOT_FOUND)
         return emailVerificationMapper.toDomain(entity)

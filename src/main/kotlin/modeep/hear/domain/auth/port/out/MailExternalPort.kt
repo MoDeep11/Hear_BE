@@ -1,7 +1,7 @@
 package modeep.hear.domain.auth.port.out
 
-import modeep.hear.infrastructure.adapter.`in`.auth.dto.SendEmailRequest
+import modeep.hear.domain.auth.model.EmailVerification
 
 interface MailExternalPort {
-    fun send(request: SendEmailRequest)
+    fun send(request: EmailVerification)
 }
