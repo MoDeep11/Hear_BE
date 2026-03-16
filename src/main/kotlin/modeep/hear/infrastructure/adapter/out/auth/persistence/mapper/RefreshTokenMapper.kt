@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component
 
 @Component
 class RefreshTokenMapper {
-    fun toDomain(entity: RefreshTokenRedisEntity) : RefreshToken {
+    fun toDomain(entity: RefreshTokenRedisEntity): RefreshToken {
         return RefreshToken(
             refreshToken = entity.refreshToken,
             timeToLive = entity.timeToLive

@@ -19,5 +19,4 @@ class BlacklistTokenMapper {
             userId = domain.userId,
             timeToLive = domain.timeToLive
         )
-
 }
