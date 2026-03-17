@@ -11,7 +11,7 @@ class RefreshTokenPersistenceAdapter(
     private val repo: RefreshTokenRepository,
     private val mapper: RefreshTokenMapper
 ) : RefreshTokenPort {
-    //--Query--//
+    // --Query--//
     override fun findByRefreshToken(refreshToken: String): RefreshToken? {
         return repo.findByRefreshToken(refreshToken)?.let { mapper.toModel(it) }
     }
@@ -19,7 +19,7 @@ class RefreshTokenPersistenceAdapter(
     override fun existsByRefreshToken(refreshToken: String): Boolean =
         repo.existsById(refreshToken)
 
-    //--Command--//
+    // --Command--//
     override fun save(refreshToken: RefreshToken) {
         repo.save(
             mapper.toEntity(refreshToken)

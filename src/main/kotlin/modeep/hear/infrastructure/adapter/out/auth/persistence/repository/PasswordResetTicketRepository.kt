@@ -5,4 +5,5 @@ import org.springframework.data.repository.CrudRepository
 
 interface PasswordResetTicketRepository : CrudRepository<PasswordResetTicketRedisEntity, String> {
     fun findByTicket(ticket: String): PasswordResetTicketRedisEntity?
+    fun existsByTicket(ticket: String): Boolean
 }

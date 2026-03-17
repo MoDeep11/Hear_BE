@@ -8,6 +8,7 @@ import modeep.hear.domain.auth.port.`in`.ReissueAuthUseCase
 import modeep.hear.domain.auth.port.`in`.ResetPasswordAuthUseCase
 import modeep.hear.domain.auth.port.`in`.SendEmailAuthUseCase
 import modeep.hear.domain.auth.port.`in`.VerifyEmailAuthUseCase
+import modeep.hear.domain.auth.port.`in`.VerifyResetTicketAuthUseCase
 import modeep.hear.global.common.response.ApiResult
 import modeep.hear.global.document.auth.AuthApiDocument
 import modeep.hear.infrastructure.adapter.`in`.auth.dto.request.LoginRequest
@@ -37,7 +38,8 @@ class AuthWebAdapter(
     private val verifyEmailAuthUseCase: VerifyEmailAuthUseCase,
     private val resetPasswordAuthUseCase: ResetPasswordAuthUseCase,
     private val logoutAuthUseCase: LogoutAuthUseCase,
-    private val reissueAuthUseCase: ReissueAuthUseCase
+    private val reissueAuthUseCase: ReissueAuthUseCase,
+    private val verifyResetTicketAuthUseCase: VerifyResetTicketAuthUseCase
 ) : AuthApiDocument {
 
     @PostMapping("/login")
@@ -99,10 +101,11 @@ class AuthWebAdapter(
     }
 
     @GetMapping("/password-resets")
-    override fun checkResetPasswordEmail(
-        @RequestParam token: String
+    override fun verifyResetTicket(
+        @RequestParam ticket: String
     ): ResponseEntity<ApiResult<Unit>> {
-        TODO("Not yet implemented")
+        verifyResetTicketAuthUseCase.execute(ticket)
+        return ResponseEntity.ok(ApiResult())
     }
 
     @PatchMapping("/password-resets")

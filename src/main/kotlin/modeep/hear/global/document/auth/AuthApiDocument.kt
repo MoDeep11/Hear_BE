@@ -66,8 +66,8 @@ interface AuthApiDocument {
     ): ResponseEntity<ApiResult<String>>
 
     @ApiInternalServerErrorResponse
-    fun checkResetPasswordEmail(
-        token: String
+    fun verifyResetTicket(
+        ticket: String
     ): ResponseEntity<ApiResult<Unit>>
 
     @ApiInternalServerErrorResponse
