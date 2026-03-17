@@ -12,12 +12,12 @@ class PasswordResetTicketPersistenceAdapter(
     private val mapper: PasswordResetTicketMapper
 ) : PasswordResetTicketPort {
 
-    //--Query--//
+    // --Query--//
     override fun findByTicket(ticket: String): PasswordResetTicket? {
         return repository.findByTicket(ticket)?.let { mapper.toModel(it) }
     }
 
-    //--Command--//
+    // --Command--//
     override fun save(ticket: PasswordResetTicket) {
         val entity = mapper.toEntity(ticket)
         repository.save(entity)

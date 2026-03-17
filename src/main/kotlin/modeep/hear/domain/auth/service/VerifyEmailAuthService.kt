@@ -16,7 +16,7 @@ class VerifyEmailAuthService(
     private val emailVerificationPort: EmailVerificationPort,
     private val verifiedTicketPort: VerifiedTicketPort
 ) : VerifyEmailAuthUseCase {
-    override fun execute(request: VerifyEmailRequest) : String {
+    override fun execute(request: VerifyEmailRequest): String {
         val auth = emailVerificationPort.findByEmail(request.email)
             ?: throw BusinessException(UserErrorCode.EMAIL_NOT_FOUND)
 

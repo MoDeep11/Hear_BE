@@ -39,7 +39,6 @@ data class User(
                 baseTime = BaseTime()
             )
         }
-
     }
 
     fun updatePassword(newPassword: String): User {

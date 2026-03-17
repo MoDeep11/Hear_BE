@@ -33,12 +33,15 @@ class AuthExternalAdapter(
 
         helper.setTo(request.email)
         helper.setSubject("[HEAR] 비밀번호 재설정")
-        helper.setText("""
+        helper.setText(
+            """
             <h3>비밀번호 재설정 안내</h3>
             <p>아래 링크를 클릭하여 비밀번호를 재설정해 주세요.</p>
-            <a href="${domain}/password-reset?ticket=${request.ticket}">비밀번호 재설정하기</a>
+            <a href="$domain/password-reset?ticket=${request.ticket}">비밀번호 재설정하기</a>
             <p>이 링크는 5분 동안만 유효합니다.</p>
-        """, true)
+        """,
+            true
+        )
 
         mailSender.send(message)
     }

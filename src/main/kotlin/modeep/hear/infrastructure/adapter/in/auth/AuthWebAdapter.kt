@@ -37,12 +37,13 @@ class AuthWebAdapter(
     private val verifyEmailAuthUseCase: VerifyEmailAuthUseCase,
     private val resetPasswordAuthUseCase: ResetPasswordAuthUseCase,
     private val logoutAuthUseCase: LogoutAuthUseCase,
-    private val reissueAuthUseCase: ReissueAuthUseCase,
+    private val reissueAuthUseCase: ReissueAuthUseCase
 ) : AuthApiDocument {
 
     @PostMapping("/login")
     override fun login(
-        @RequestBody @Valid request: LoginRequest
+        @RequestBody @Valid
+        request: LoginRequest
     ): ResponseEntity<ApiResult<TokenResponse>> {
         return ResponseEntity.ok(
             ApiResult(
@@ -53,7 +54,8 @@ class AuthWebAdapter(
 
     @PostMapping("/register")
     override fun register(
-        @RequestBody @Valid request: RegisterRequest
+        @RequestBody @Valid
+        request: RegisterRequest
     ): ResponseEntity<ApiResult<TokenResponse>> {
         return ResponseEntity.ok(
             ApiResult(
@@ -65,7 +67,8 @@ class AuthWebAdapter(
     @PostMapping("/reissue")
     override fun reissue(
         @RequestHeader("Authorization") accessToken: String,
-        @RequestBody @Valid request: ReissueRequest,
+        @RequestBody @Valid
+        request: ReissueRequest
     ): ResponseEntity<ApiResult<TokenResponse>> {
         return ResponseEntity.ok(
             ApiResult(
@@ -76,7 +79,8 @@ class AuthWebAdapter(
 
     @PostMapping("/email")
     override fun sendEmail(
-        @RequestBody @Valid request: SendEmailRequest
+        @RequestBody @Valid
+        request: SendEmailRequest
     ): ResponseEntity<ApiResult<Unit>> {
         sendEmailAuthUseCase.execute(request)
         return ResponseEntity.ok(ApiResult())
@@ -84,11 +88,14 @@ class AuthWebAdapter(
 
     @PostMapping("/email-tickets")
     override fun verifyEmail(
-        @RequestBody @Valid request: VerifyEmailRequest
+        @RequestBody @Valid
+        request: VerifyEmailRequest
     ): ResponseEntity<ApiResult<String>> {
-        return ResponseEntity.ok(ApiResult(
-            data = verifyEmailAuthUseCase.execute(request)
-        ))
+        return ResponseEntity.ok(
+            ApiResult(
+                data = verifyEmailAuthUseCase.execute(request)
+            )
+        )
     }
 
     @GetMapping("/password-resets")
@@ -100,7 +107,8 @@ class AuthWebAdapter(
 
     @PatchMapping("/password-resets")
     override fun resetPassword(
-        @RequestBody @Valid request: ResetPasswordRequest
+        @RequestBody @Valid
+        request: ResetPasswordRequest
     ): ResponseEntity<ApiResult<Unit>> {
         resetPasswordAuthUseCase.execute(request)
         return ResponseEntity.ok(ApiResult())
@@ -109,7 +117,8 @@ class AuthWebAdapter(
     @PostMapping("/logout")
     override fun logout(
         @RequestHeader("Authorization") accessToken: String,
-        @RequestBody @Valid request: LogoutRequest,
+        @RequestBody @Valid
+        request: LogoutRequest
     ): ResponseEntity<ApiResult<Unit>> {
         logoutAuthUseCase.execute(request, accessToken)
         return ResponseEntity.ok(ApiResult())

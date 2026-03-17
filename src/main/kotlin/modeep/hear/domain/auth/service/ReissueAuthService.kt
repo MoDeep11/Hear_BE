@@ -18,7 +18,7 @@ class ReissueAuthService(
 ) : ReissueAuthUseCase {
     override fun execute(
         request: ReissueRequest,
-        accessToken: String,
+        accessToken: String
     ): TokenResponse {
         val accessTokenClaim = jwtPort.validateToken(accessToken)
 

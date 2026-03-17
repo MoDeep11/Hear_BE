@@ -5,7 +5,7 @@ import modeep.hear.domain.auth.model.RefreshToken
 interface RefreshTokenPort {
     fun findByRefreshToken(refreshToken: String): RefreshToken?
 
-    fun existsByRefreshToken(refreshToken: String) : Boolean
+    fun existsByRefreshToken(refreshToken: String): Boolean
 
     fun save(refreshToken: RefreshToken)
 

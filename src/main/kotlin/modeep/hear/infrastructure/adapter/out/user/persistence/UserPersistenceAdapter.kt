@@ -13,7 +13,7 @@ class UserPersistenceAdapter(
 ) : UserPort {
     // --Query--//
     override fun findByEmail(email: String): User? {
-       return repository.findByEmail(email) ?.let { mapper.toModel(it) }
+        return repository.findByEmail(email) ?.let { mapper.toModel(it) }
     }
 
     override fun existsByEmail(email: String): Boolean =

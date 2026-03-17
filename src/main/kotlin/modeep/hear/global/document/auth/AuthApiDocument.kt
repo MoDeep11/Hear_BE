@@ -52,7 +52,7 @@ interface AuthApiDocument {
     @ApiInternalServerErrorResponse
     fun reissue(
         accessToken: String,
-        request: ReissueRequest,
+        request: ReissueRequest
     ): ResponseEntity<ApiResult<TokenResponse>>
 
     @ApiInternalServerErrorResponse
@@ -63,21 +63,21 @@ interface AuthApiDocument {
     @ApiInternalServerErrorResponse
     fun verifyEmail(
         request: VerifyEmailRequest
-    ) : ResponseEntity<ApiResult<String>>
+    ): ResponseEntity<ApiResult<String>>
 
     @ApiInternalServerErrorResponse
     fun checkResetPasswordEmail(
         token: String
-    ) : ResponseEntity<ApiResult<Unit>>
+    ): ResponseEntity<ApiResult<Unit>>
 
     @ApiInternalServerErrorResponse
     fun resetPassword(
         request: ResetPasswordRequest
-    ) : ResponseEntity<ApiResult<Unit>>
+    ): ResponseEntity<ApiResult<Unit>>
 
     @ApiInternalServerErrorResponse
     fun logout(
         accessToken: String,
         request: LogoutRequest
-    ) : ResponseEntity<ApiResult<Unit>>
+    ): ResponseEntity<ApiResult<Unit>>
 }

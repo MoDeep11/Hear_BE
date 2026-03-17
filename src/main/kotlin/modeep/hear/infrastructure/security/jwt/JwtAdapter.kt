@@ -4,7 +4,6 @@ import io.jsonwebtoken.Claims
 import io.jsonwebtoken.ExpiredJwtException
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.security.Keys
-import jakarta.servlet.http.HttpServletRequest
 import modeep.hear.domain.auth.exception.AuthErrorCode
 import modeep.hear.domain.auth.model.BlacklistToken
 import modeep.hear.domain.auth.model.RefreshToken
@@ -21,7 +20,6 @@ import org.springframework.stereotype.Component
 import org.springframework.util.StringUtils
 import java.time.LocalDateTime
 import java.util.Date
-import java.util.UUID
 import javax.crypto.SecretKey
 
 @Component
