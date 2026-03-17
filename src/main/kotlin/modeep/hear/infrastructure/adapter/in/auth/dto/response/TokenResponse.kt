@@ -1,4 +1,4 @@
-package modeep.hear.domain.auth.port.`in`.dto
+package modeep.hear.infrastructure.adapter.`in`.auth.dto.response
 
 import java.time.LocalDateTime
 

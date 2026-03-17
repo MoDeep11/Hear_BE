@@ -1,7 +1,7 @@
 package modeep.hear.domain.auth.port.`in`
 
-import modeep.hear.infrastructure.adapter.`in`.auth.dto.response.LoginResponse
+import modeep.hear.infrastructure.adapter.`in`.auth.dto.response.TokenResponse
 
 interface LoginUseCase {
-    fun execute(response: LoginResponse): LoginResponse
+    fun execute(response: TokenResponse): TokenResponse
 }
