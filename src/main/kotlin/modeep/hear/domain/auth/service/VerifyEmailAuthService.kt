@@ -15,7 +15,7 @@ class VerifyEmailAuthService(
     private val emailVerificationPort: EmailVerificationPort,
     private val verifiedTicketPort: VerifiedTicketPort
 ) : VerifyEmailAuthUseCase {
-    override fun execute(request: VerifyEmailRequest) {
+    override fun execute(request: VerifyEmailRequest) : String {
         val auth = emailVerificationPort.findByEmail(request.email)
 
         if (auth.code != request.code) {
@@ -26,5 +26,7 @@ class VerifyEmailAuthService(
         verifiedTicketPort.save(VerifiedTicket(ticket, request.email))
 
         emailVerificationPort.delete(auth.email)
+
+        return ticket
     }
 }
