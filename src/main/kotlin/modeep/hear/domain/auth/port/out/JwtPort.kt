@@ -11,4 +11,8 @@ interface JwtPort {
     fun getAuthentication(token: String): Authentication
 
     fun resolveToken(request: HttpServletRequest): String?
+
+    fun getRemainingTime(accessToken: String) : Long
+
+    fun registerBlacklist(accessToken: String, remainingTime: Long)
 }

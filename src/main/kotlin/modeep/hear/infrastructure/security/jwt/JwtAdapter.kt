@@ -6,6 +6,7 @@ import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.security.Keys
 import jakarta.servlet.http.HttpServletRequest
 import modeep.hear.domain.auth.exception.AuthErrorCode
+import modeep.hear.domain.auth.model.BlacklistToken
 import modeep.hear.domain.auth.model.RefreshToken
 import modeep.hear.domain.auth.port.out.BlacklistTokenPort
 import modeep.hear.domain.auth.port.out.JwtPort
@@ -76,6 +77,21 @@ class JwtAdapter(
             if (token.isNotEmpty()) return token
         }
         return null
+    }
+
+    override fun getRemainingTime(accessToken: String): Long {
+        val expiration = getClaimsIgnoreExpiration(accessToken).expiration
+        val remainTime = expiration.time - System.currentTimeMillis()
+        return if (remainTime > 0) remainTime else 0L
+    }
+
+    override fun registerBlacklist(accessToken: String, remainingTime: Long) {
+        blacklistTokenPort.save(
+            BlacklistToken(
+                accessToken = accessToken,
+                timeToLive = remainingTime
+            )
+        )
     }
 
     private fun generateToken(userId: UUID, type: String, expirationSeconds: Long): String {

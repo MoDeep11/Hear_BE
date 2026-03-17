@@ -8,9 +8,6 @@ import org.springframework.data.redis.core.TimeToLive
 class BlacklistTokenRedisEntity(
     @Id
     val accessToken: String,
-
-    val userId: String,
-
     @TimeToLive
     val timeToLive: Long
 )
