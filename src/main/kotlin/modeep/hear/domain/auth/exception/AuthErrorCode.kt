@@ -19,5 +19,6 @@ enum class AuthErrorCode(
     EXPIRED_TOKEN(HttpStatus.UNAUTHORIZED, "AUTH_012", "만료된 토큰입니다."),
     LOGOUT_TOKEN(HttpStatus.UNAUTHORIZED, "AUTH_013", "로그아웃된 토큰입니다"),
 
-    PASSWORD_NOT_MATCH(HttpStatus.BAD_REQUEST, "AUTH_021", "비밀번호가 일치하지 않습니다.")
+    PASSWORD_NOT_MATCH(HttpStatus.BAD_REQUEST, "AUTH_021", "비밀번호가 일치하지 않습니다."),
+    INVALID_LOGIN_CREDENTIALS(HttpStatus.UNAUTHORIZED, "AUTH_022", "유저 정보가 일치하지 않습니다.")
 }

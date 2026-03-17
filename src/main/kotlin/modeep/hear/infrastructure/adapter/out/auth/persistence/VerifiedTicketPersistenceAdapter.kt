@@ -12,7 +12,7 @@ class VerifiedTicketPersistenceAdapter(
     private val verifiedTicketRepository: VerifiedTicketRepository
 ) : VerifiedTicketPort {
 
-    //--Command--//
+    // --Command--//
     override fun save(ticket: VerifiedTicket) {
         verifiedTicketRepository.save(
             verifiedTicketMapper.toEntity(ticket)

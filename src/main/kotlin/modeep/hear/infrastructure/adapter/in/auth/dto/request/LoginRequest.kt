@@ -10,5 +10,5 @@ data class LoginRequest(
 
     @field:NotBlank
     @field:Size(min = 8, max = 100)
-    val password: String,
+    val password: String
 )

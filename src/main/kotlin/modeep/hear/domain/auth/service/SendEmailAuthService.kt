@@ -14,7 +14,7 @@ import java.util.concurrent.TimeUnit
 
 @Service
 class SendEmailAuthService(
-    private val redisTemplate: StringRedisTemplate,  // TODO: 언젠가 변경
+    private val redisTemplate: StringRedisTemplate, // TODO: 언젠가 변경
     private val codeGenerator: VerificationCodeGenerator,
     private val mailExternalPort: MailExternalPort,
     private val emailVerificationPort: EmailVerificationPort

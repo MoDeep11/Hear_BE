@@ -23,16 +23,17 @@ interface AuthApiDocument {
 
     @Operation(
         summary = "로그인",
-        description =  "유저 정보를 기반으로 로그인합니다.",
+        description = "유저 정보를 기반으로 로그인합니다."
     )
     @ApiInternalServerErrorResponse
     fun login(
-        @RequestBody @Valid request: LoginRequest
-    ) : TokenResponse
+        @RequestBody @Valid
+        request: LoginRequest
+    ): TokenResponse
 
     @Operation(
         summary = "회원가입",
-        description =  "새로운 유저를 생성합니다.",
+        description = "새로운 유저를 생성합니다."
     )
     @ApiResponse(
         responseCode = "200",
@@ -46,41 +47,48 @@ interface AuthApiDocument {
     )
     @ApiInternalServerErrorResponse
     fun register(
-        @RequestBody @Valid request: RegisterRequest
-    ) : TokenResponse
+        @RequestBody @Valid
+        request: RegisterRequest
+    ): TokenResponse
 
     @ApiInternalServerErrorResponse
     fun reissue(
-        @RequestBody @Valid request: ReissueRequest
-    ) : TokenResponse
+        @RequestBody @Valid
+        request: ReissueRequest
+    ): TokenResponse
 
     @ApiInternalServerErrorResponse
     fun sendVerificationEmail(
-        @RequestBody @Valid request: SendEmailRequest
+        @RequestBody @Valid
+        request: SendEmailRequest
     )
 
     @ApiInternalServerErrorResponse
     fun verifyEmail(
-        @RequestBody @Valid request: VerifyEmailRequest
+        @RequestBody @Valid
+        request: VerifyEmailRequest
     )
 
     @ApiInternalServerErrorResponse
     fun sendResetPasswordEmail(
-        @RequestBody @Valid request: SendEmailRequest
+        @RequestBody @Valid
+        request: SendEmailRequest
     )
 
     @ApiInternalServerErrorResponse
     fun checkResetPasswordEmail(
-        @RequestParam token: String,
+        @RequestParam token: String
     )
 
     @ApiInternalServerErrorResponse
     fun resetPassword(
-        @RequestBody @Valid request: ReissueRequest
+        @RequestBody @Valid
+        request: ReissueRequest
     )
 
     @ApiInternalServerErrorResponse
     fun logout(
-        @RequestBody @Valid request: LogoutRequest
+        @RequestBody @Valid
+        request: LogoutRequest
     )
 }

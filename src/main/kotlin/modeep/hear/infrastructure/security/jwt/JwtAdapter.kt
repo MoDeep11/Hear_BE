@@ -7,11 +7,11 @@ import io.jsonwebtoken.security.Keys
 import jakarta.servlet.http.HttpServletRequest
 import modeep.hear.domain.auth.exception.AuthErrorCode
 import modeep.hear.domain.auth.model.RefreshToken
-import modeep.hear.domain.auth.port.`in`.dto.TokenResponse
 import modeep.hear.domain.auth.port.out.BlacklistTokenPort
 import modeep.hear.domain.auth.port.out.JwtPort
 import modeep.hear.domain.auth.port.out.RefreshTokenPort
 import modeep.hear.global.error.exception.BusinessException
+import modeep.hear.infrastructure.adapter.`in`.auth.dto.response.TokenResponse
 import modeep.hear.infrastructure.security.userdetails.CustomUserDetailsService
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.Authentication

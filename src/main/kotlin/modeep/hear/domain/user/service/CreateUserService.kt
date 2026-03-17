@@ -17,7 +17,6 @@ class CreateUserService(
         if (userPort.existsByEmail(user.email)) {
             throw BusinessException(UserErrorCode.EMAIL_ALREADY_EXISTS)
         }
-
         userPort.save(user)
     }
 }

@@ -22,15 +22,15 @@ data class EmailVerificationAggregate(
     val version: Long,
     val baseTime: BaseTime
 ) {
-   fun verify(): EmailVerificationAggregate {
-       if (isVerified) {
-           throw BusinessException(AuthErrorCode.EMAIL_ALREADY_VERIFIED)
-       }
+    fun verify(): EmailVerificationAggregate {
+        if (isVerified) {
+            throw BusinessException(AuthErrorCode.EMAIL_ALREADY_VERIFIED)
+        }
 
-       if (LocalDateTime.now().isAfter(expiresAt)) {
-           throw BusinessException(AuthErrorCode.VERIFICATION_TIMEOUT)
-       }
+        if (LocalDateTime.now().isAfter(expiresAt)) {
+            throw BusinessException(AuthErrorCode.VERIFICATION_TIMEOUT)
+        }
 
-       return this.copy(isVerified = true)
-   }
+        return this.copy(isVerified = true)
+    }
 }
