@@ -31,7 +31,7 @@ class RegisterAuthService(
 
         saveUserUseCase.execute(user)
 
-        return jwtPort.createToken(user.id!!)
+        return jwtPort.createToken(user.id!!.toString())
     }
 
     private fun matches(password: String, confirmPassword: String) {

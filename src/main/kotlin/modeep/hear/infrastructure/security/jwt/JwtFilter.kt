@@ -12,6 +12,10 @@ class JwtFilter(
     private val jwtAdapter: JwtAdapter
 ) : OncePerRequestFilter() {
 
+    companion object {
+        private const val HEADER = "Authorization"
+    }
+
     override fun shouldNotFilter(request: HttpServletRequest): Boolean {
         val path = request.requestURI
         val excludePath = listOf(
@@ -27,17 +31,22 @@ class JwtFilter(
         response: HttpServletResponse,
         filterChain: FilterChain
     ) {
-        val token = jwtAdapter.resolveToken(request)
+        // Early Return
+        val bearerToken = request.getHeader(HEADER) ?: return filterChain.doFilter(request, response)
+        val token = jwtAdapter.resolveToken(bearerToken) ?: return filterChain.doFilter(request, response)
 
-        if (token != null) {
-            if (jwtAdapter.isBlacklist(token)) {
-                throw BusinessException(AuthErrorCode.LOGOUT_TOKEN)
-            }
+        validateAccessToken(token)
 
-            jwtAdapter.validateToken(token)
-            val authentication = jwtAdapter.getAuthentication(token)
-            SecurityContextHolder.getContext().authentication = authentication
-        }
+        val authentication = jwtAdapter.getAuthentication(token)
+        SecurityContextHolder.getContext().authentication = authentication
+
         filterChain.doFilter(request, response)
+    }
+
+    private fun validateAccessToken(token: String) {
+        if (jwtAdapter.isBlacklist(token)) {
+            throw BusinessException(AuthErrorCode.LOGOUT_TOKEN)
+        }
+        jwtAdapter.validateToken(token)
     }
 }

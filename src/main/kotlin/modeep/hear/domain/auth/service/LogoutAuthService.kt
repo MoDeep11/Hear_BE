@@ -1,6 +1,6 @@
 package modeep.hear.domain.auth.service
 
-import modeep.hear.domain.auth.port.`in`.LogoutUseCase
+import modeep.hear.domain.auth.port.`in`.LogoutAuthUseCase
 import modeep.hear.domain.auth.port.out.JwtPort
 import modeep.hear.domain.auth.port.out.RefreshTokenPort
 import modeep.hear.infrastructure.adapter.`in`.auth.dto.request.LogoutRequest
@@ -11,7 +11,7 @@ import org.springframework.transaction.annotation.Transactional
 class LogoutAuthService(
     private val refreshTokenPort: RefreshTokenPort,
     private val jwtPort: JwtPort
-) : LogoutUseCase {
+) : LogoutAuthUseCase {
     @Transactional
     override fun execute(request: LogoutRequest, accessToken: String) {
         refreshTokenPort.delete(request.refreshToken)

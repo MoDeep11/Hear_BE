@@ -3,7 +3,7 @@ package modeep.hear.domain.auth.service
 import modeep.hear.domain.auth.exception.AuthErrorCode
 import modeep.hear.domain.auth.model.EmailVerification
 import modeep.hear.domain.auth.model.PasswordResetTicket
-import modeep.hear.domain.auth.port.`in`.SendEmailUseCase
+import modeep.hear.domain.auth.port.`in`.SendEmailAuthUseCase
 import modeep.hear.domain.auth.port.out.EmailVerificationPort
 import modeep.hear.domain.auth.port.out.MailExternalPort
 import modeep.hear.domain.auth.port.out.PasswordResetTicketPort
@@ -27,7 +27,7 @@ class SendEmailAuthService(
     private val emailVerificationPort: EmailVerificationPort,
     private val queryUserPort: QueryUserPort,
     private val passwordResetTicketPort: PasswordResetTicketPort
-) : SendEmailUseCase {
+) : SendEmailAuthUseCase {
 
     @Transactional
     override fun execute(request: SendEmailRequest) {

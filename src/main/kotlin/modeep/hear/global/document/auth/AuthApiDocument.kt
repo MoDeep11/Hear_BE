@@ -51,7 +51,8 @@ interface AuthApiDocument {
 
     @ApiInternalServerErrorResponse
     fun reissue(
-        request: ReissueRequest
+        accessToken: String,
+        request: ReissueRequest,
     ): ResponseEntity<ApiResult<TokenResponse>>
 
     @ApiInternalServerErrorResponse
@@ -76,6 +77,7 @@ interface AuthApiDocument {
 
     @ApiInternalServerErrorResponse
     fun logout(
+        accessToken: String,
         request: LogoutRequest
     ) : ResponseEntity<ApiResult<Unit>>
 }

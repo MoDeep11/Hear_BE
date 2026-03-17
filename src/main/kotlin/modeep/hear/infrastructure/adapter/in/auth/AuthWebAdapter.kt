@@ -1,10 +1,12 @@
 package modeep.hear.infrastructure.adapter.`in`.auth
 
 import jakarta.validation.Valid
-import modeep.hear.domain.auth.port.`in`.LoginUseCase
+import modeep.hear.domain.auth.port.`in`.LoginAuthUseCase
+import modeep.hear.domain.auth.port.`in`.LogoutAuthUseCase
 import modeep.hear.domain.auth.port.`in`.RegisterAuthUseCase
+import modeep.hear.domain.auth.port.`in`.ReissueAuthUseCase
 import modeep.hear.domain.auth.port.`in`.ResetPasswordAuthUseCase
-import modeep.hear.domain.auth.port.`in`.SendEmailUseCase
+import modeep.hear.domain.auth.port.`in`.SendEmailAuthUseCase
 import modeep.hear.domain.auth.port.`in`.VerifyEmailAuthUseCase
 import modeep.hear.global.common.response.ApiResult
 import modeep.hear.global.document.auth.AuthApiDocument
@@ -21,6 +23,7 @@ import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PatchMapping
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.RequestHeader
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
@@ -28,11 +31,13 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 @RequestMapping("/api/v1/auth")
 class AuthWebAdapter(
-    private val loginUseCase: LoginUseCase,
+    private val loginAuthUseCase: LoginAuthUseCase,
     private val registerAuthUseCase: RegisterAuthUseCase,
-    private val sendEmailUseCase: SendEmailUseCase,
+    private val sendEmailAuthUseCase: SendEmailAuthUseCase,
     private val verifyEmailAuthUseCase: VerifyEmailAuthUseCase,
     private val resetPasswordAuthUseCase: ResetPasswordAuthUseCase,
+    private val logoutAuthUseCase: LogoutAuthUseCase,
+    private val reissueAuthUseCase: ReissueAuthUseCase,
 ) : AuthApiDocument {
 
     @PostMapping("/login")
@@ -41,7 +46,7 @@ class AuthWebAdapter(
     ): ResponseEntity<ApiResult<TokenResponse>> {
         return ResponseEntity.ok(
             ApiResult(
-                data = loginUseCase.execute(request)
+                data = loginAuthUseCase.execute(request)
             )
         )
     }
@@ -59,16 +64,21 @@ class AuthWebAdapter(
 
     @PostMapping("/reissue")
     override fun reissue(
-        @RequestBody @Valid request: ReissueRequest
+        @RequestHeader("Authorization") accessToken: String,
+        @RequestBody @Valid request: ReissueRequest,
     ): ResponseEntity<ApiResult<TokenResponse>> {
-        TODO("Not yet implemented")
+        return ResponseEntity.ok(
+            ApiResult(
+                data = reissueAuthUseCase.execute(request, accessToken)
+            )
+        )
     }
 
     @PostMapping("/email")
     override fun sendEmail(
         @RequestBody @Valid request: SendEmailRequest
     ): ResponseEntity<ApiResult<Unit>> {
-        sendEmailUseCase.execute(request)
+        sendEmailAuthUseCase.execute(request)
         return ResponseEntity.ok(ApiResult())
     }
 
@@ -98,8 +108,10 @@ class AuthWebAdapter(
 
     @PostMapping("/logout")
     override fun logout(
-        @RequestBody @Valid request: LogoutRequest
+        @RequestHeader("Authorization") accessToken: String,
+        @RequestBody @Valid request: LogoutRequest,
     ): ResponseEntity<ApiResult<Unit>> {
-        TODO("Not yet implemented")
+        logoutAuthUseCase.execute(request, accessToken)
+        return ResponseEntity.ok(ApiResult())
     }
 }

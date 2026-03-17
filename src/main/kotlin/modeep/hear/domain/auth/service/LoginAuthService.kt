@@ -1,7 +1,7 @@
 package modeep.hear.domain.auth.service
 
 import modeep.hear.domain.auth.exception.AuthErrorCode
-import modeep.hear.domain.auth.port.`in`.LoginUseCase
+import modeep.hear.domain.auth.port.`in`.LoginAuthUseCase
 import modeep.hear.domain.auth.port.out.JwtPort
 import modeep.hear.domain.auth.port.out.PasswordPort
 import modeep.hear.domain.user.exception.UserErrorCode
@@ -18,7 +18,7 @@ class LoginAuthService(
     private val queryUserPort: QueryUserPort,
     private val jwtPort: JwtPort,
     private val passwordPort: PasswordPort
-) : LoginUseCase {
+) : LoginAuthUseCase {
     override fun execute(request: LoginRequest): TokenResponse {
         val user = queryUserPort.findByEmail(request.email)
             ?: throw BusinessException(
@@ -32,6 +32,6 @@ class LoginAuthService(
             )
         }
 
-        return jwtPort.createToken(user.id!!)
+        return jwtPort.createToken(user.id!!.toString())
     }
 }

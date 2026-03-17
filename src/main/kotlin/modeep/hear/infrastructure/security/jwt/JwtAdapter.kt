@@ -33,7 +33,6 @@ class JwtAdapter(
 ) : JwtPort {
     companion object {
         private const val PREFIX = "Bearer "
-        private const val HEADER = "Authorization"
         private const val TYPE_CLAIM = "type"
         private const val ACCESS_TYPE = "access"
         private const val REFRESH_TYPE = "refresh"
@@ -42,7 +41,7 @@ class JwtAdapter(
 
     private val key: SecretKey = Keys.hmacShaKeyFor(jwtProperties.secret.toByteArray())
 
-    override fun createToken(userId: UUID): TokenResponse {
+    override fun createToken(userId: String): TokenResponse {
         val now = LocalDateTime.now()
 
         return TokenResponse(
@@ -69,9 +68,7 @@ class JwtAdapter(
         }
     }
 
-    override fun resolveToken(request: HttpServletRequest): String? {
-        val bearerToken = request.getHeader(HEADER) ?: return null
-
+    override fun resolveToken(bearerToken: String): String? {
         if (StringUtils.hasText(bearerToken) && bearerToken.startsWith(PREFIX, ignoreCase = true)) {
             val token = bearerToken.substring(PREFIX.length).trim()
             if (token.isNotEmpty()) return token
@@ -94,7 +91,17 @@ class JwtAdapter(
         )
     }
 
-    private fun generateToken(userId: UUID, type: String, expirationSeconds: Long): String {
+    override fun validateToken(token: String): Claims {
+        return try {
+            parseToken(token)
+        } catch (e: ExpiredJwtException) {
+            throw BusinessException(AuthErrorCode.EXPIRED_TOKEN)
+        } catch (e: Exception) {
+            throw BusinessException(AuthErrorCode.INVALID_TOKEN)
+        }
+    }
+
+    private fun generateToken(userId: String, type: String, expirationSeconds: Long): String {
         val now = Date()
 
         return Jwts.builder()
@@ -106,10 +113,10 @@ class JwtAdapter(
             .compact()
     }
 
-    private fun generateAccessToken(userId: UUID): String =
+    private fun generateAccessToken(userId: String): String =
         generateToken(userId, ACCESS_TYPE, jwtProperties.accessExpiration)
 
-    private fun generateRefreshToken(userId: UUID): String {
+    private fun generateRefreshToken(userId: String): String {
         val refreshToken = generateToken(userId, REFRESH_TYPE, jwtProperties.refreshExpiration)
 
         refreshTokenPort.save(
@@ -127,16 +134,6 @@ class JwtAdapter(
             parseToken(token)
         } catch (e: ExpiredJwtException) {
             e.claims
-        } catch (e: Exception) {
-            throw BusinessException(AuthErrorCode.INVALID_TOKEN)
-        }
-    }
-
-    fun validateToken(token: String): Claims {
-        return try {
-            parseToken(token)
-        } catch (e: ExpiredJwtException) {
-            throw BusinessException(AuthErrorCode.EXPIRED_TOKEN)
         } catch (e: Exception) {
             throw BusinessException(AuthErrorCode.INVALID_TOKEN)
         }
