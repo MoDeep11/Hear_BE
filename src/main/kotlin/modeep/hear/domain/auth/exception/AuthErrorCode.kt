@@ -14,6 +14,7 @@ enum class AuthErrorCode(
     VERIFICATION_TIMEOUT(HttpStatus.UNAUTHORIZED, "AUTH_003", "인증 시간이 만료되었습니다."),
     TOO_MANY_EMAIL_REQUESTS(HttpStatus.TOO_MANY_REQUESTS, "AUTH_004", "인증번호 요청은 1분에 한 번만 가능합니다."),
     INVALID_VERIFICATION_CODE(HttpStatus.BAD_REQUEST, "AUTH_005", "인증 코드가 일치하지 않습니다."),
+    EMAIL_ALREADY_EXISTS(HttpStatus.CONFLICT, "AUTH_006", "해당 이메일로 이미 가입한 계정이 있습니다."),
 
     INVALID_TOKEN(HttpStatus.UNAUTHORIZED, "AUTH_011", "유효하지 않은 토큰입니다."),
     EXPIRED_TOKEN(HttpStatus.UNAUTHORIZED, "AUTH_012", "만료된 토큰입니다."),
