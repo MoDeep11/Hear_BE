@@ -13,7 +13,10 @@ import java.util.*
 class MDCLoggingFilter : OncePerRequestFilter() {
 
     companion object {
+        private const val TRACE_ID = "traceId"
         private const val USER_ID = "userId"
+        private const val HTTP_METHOD = "httpMethod"
+        private const val REQUEST_URL = "requestUrl"
         private const val HEADER = "X-Trace-Id"
     }
 
@@ -22,34 +25,22 @@ class MDCLoggingFilter : OncePerRequestFilter() {
         response: HttpServletResponse,
         filterChain: FilterChain
     ) {
-        val principal = SecurityContextHolder.getContext().authentication.principal
+        val auth = SecurityContextHolder.getContext().authentication
+        val traceId = UUID.randomUUID().toString().take(8)
 
-        MDC.put(USER_ID, uuid)
-        MDC.put("user_id", principal?.userId)
-        MDC.put("user_type", principal?.userType.toString())
-        MDC.put("http_method", httpRequest.method)
-        MDC.put("request_url", httpRequest.requestURI)
-        response.setHeader(HEADER, uuid)
+        val currentUserId = auth?.name ?: "anonymous"
+
+        MDC.put(TRACE_ID, traceId)
+        MDC.put(USER_ID, currentUserId)
+        MDC.put(HTTP_METHOD, request.method)
+        MDC.put(REQUEST_URL, request.requestURI)
+
+        response.setHeader(HEADER, traceId)
 
         try {
             filterChain.doFilter(request, response)
         } finally {
             // MDC 비우기 (ThreadLocal 오염 방지)
-            MDC.clear()
-        }
-    }
-    @Component
-    class MDCLoggingFilter: Filter {
-        override fun doFilter(request: ServletRequest, response: ServletResponse, chain: FilterChain) {
-            val httpRequest = request as HttpServletRequest
-            val principal = SecurityContextHolder.getContext().authentication.principal as? MustItPrincipal
-
-            MDC.put("user_id", principal?.userId)
-            MDC.put("user_type", principal?.userType.toString())
-            MDC.put("http_method", httpRequest.method)
-            MDC.put("request_url", httpRequest.requestURI)
-
-            chain.doFilter(request, response)
             MDC.clear()
         }
     }
