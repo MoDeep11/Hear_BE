@@ -11,8 +11,10 @@ import modeep.hear.global.error.exception.BusinessException
 import modeep.hear.infrastructure.adapter.`in`.auth.dto.request.RegisterRequest
 import modeep.hear.infrastructure.adapter.`in`.auth.dto.response.TokenResponse
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 
 @Service
+@Transactional
 class RegisterAuthService(
     private val passwordPort: PasswordPort,
     private val jwtPort: JwtPort,

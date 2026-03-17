@@ -9,7 +9,11 @@ import modeep.hear.domain.user.port.`in`.SaveUserUseCase
 import modeep.hear.domain.user.port.out.QueryUserPort
 import modeep.hear.global.error.exception.BusinessException
 import modeep.hear.infrastructure.adapter.`in`.auth.dto.request.ResetPasswordRequest
+import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 
+@Service
+@Transactional
 class ResetPasswordAuthService(
     private val passwordResetTicketPort: PasswordResetTicketPort,
     private val queryUserPort: QueryUserPort,
