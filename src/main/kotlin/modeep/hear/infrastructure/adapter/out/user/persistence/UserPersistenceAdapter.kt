@@ -1,34 +1,27 @@
 package modeep.hear.infrastructure.adapter.out.user.persistence
 
-import modeep.hear.domain.user.exception.UserErrorCode
 import modeep.hear.domain.user.model.User
 import modeep.hear.domain.user.port.out.UserPort
-import modeep.hear.global.error.exception.BusinessException
 import modeep.hear.infrastructure.adapter.out.user.mapper.UserMapper
 import modeep.hear.infrastructure.adapter.out.user.persistence.repository.UserRepository
 import org.springframework.stereotype.Component
 
 @Component
 class UserPersistenceAdapter(
-    private val userRepository: UserRepository,
-    private val userMapper: UserMapper
+    private val repository: UserRepository,
+    private val mapper: UserMapper
 ) : UserPort {
     // --Query--//
-    override fun findByEmail(email: String): User {
-        val userEntity = userRepository.findByEmail(email)
-            ?: throw BusinessException(
-                UserErrorCode.EMAIL_NOT_FOUND,
-                "email: $email"
-            )
-        return userMapper.toModel(userEntity)
+    override fun findByEmail(email: String): User? {
+       return repository.findByEmail(email) ?.let { mapper.toModel(it) }
     }
 
     override fun existsByEmail(email: String): Boolean =
-        userRepository.existsByEmail(email)
+        repository.existsByEmail(email)
 
     // --Command--//
     override fun save(user: User) {
-        val userEntity = userMapper.toEntity(user)
-        userRepository.save(userEntity)
+        val userEntity = mapper.toEntity(user)
+        repository.save(userEntity)
     }
 }

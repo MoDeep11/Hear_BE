@@ -12,7 +12,7 @@ import java.util.UUID
 data class User(
     val id: UUID? = null,
     val email: String,
-    val password: String,
+    private var password: String,
     val role: Role,
     val status: UserStatus = UserStatus.ACTIVE,
     val baseTime: BaseTime,
@@ -39,5 +39,13 @@ data class User(
                 baseTime = BaseTime()
             )
         }
+
     }
+
+    fun updatePassword(newPassword: String): User {
+        this.password = newPassword
+        return this
+    }
+
+    fun getPassword(): String = this.password
 }

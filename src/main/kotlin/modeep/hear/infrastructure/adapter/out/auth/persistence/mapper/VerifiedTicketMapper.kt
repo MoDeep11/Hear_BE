@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component
 
 @Component
 class VerifiedTicketMapper {
-    fun toDomain(verifiedTicketRedisEntity: VerifiedTicketRedisEntity) =
+    fun toModel(verifiedTicketRedisEntity: VerifiedTicketRedisEntity) =
         VerifiedTicket(
             ticket = verifiedTicketRedisEntity.ticket,
             email = verifiedTicketRedisEntity.email,

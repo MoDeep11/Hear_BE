@@ -5,7 +5,7 @@ import modeep.hear.domain.auth.port.`in`.RegisterAuthUseCase
 import modeep.hear.domain.auth.port.out.JwtPort
 import modeep.hear.domain.auth.port.out.PasswordPort
 import modeep.hear.domain.user.model.User
-import modeep.hear.domain.user.port.`in`.CreateUserUseCase
+import modeep.hear.domain.user.port.`in`.SaveUserUseCase
 import modeep.hear.domain.user.vo.Role
 import modeep.hear.global.error.exception.BusinessException
 import modeep.hear.infrastructure.adapter.`in`.auth.dto.request.RegisterRequest
@@ -16,7 +16,7 @@ import org.springframework.stereotype.Service
 class RegisterAuthService(
     private val passwordPort: PasswordPort,
     private val jwtPort: JwtPort,
-    private val createUserUseCase: CreateUserUseCase
+    private val saveUserUseCase: SaveUserUseCase
 ) : RegisterAuthUseCase {
     override fun execute(request: RegisterRequest): TokenResponse {
         matches(request.password, request.confirmPassword)
@@ -27,7 +27,7 @@ class RegisterAuthService(
             role = Role.USER
         )
 
-        createUserUseCase.execute(user)
+        saveUserUseCase.execute(user)
 
         return jwtPort.createToken(user.id!!)
     }

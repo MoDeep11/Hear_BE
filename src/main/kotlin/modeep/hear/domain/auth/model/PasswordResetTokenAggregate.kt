@@ -1,15 +1,17 @@
 package modeep.hear.domain.auth.model
 
-import modeep.hear.domain.auth.exception.AuthErrorCode
 import modeep.hear.domain.auth.vo.ResetToken
 import modeep.hear.domain.common.annotation.Aggregate
 import modeep.hear.domain.common.vo.BaseTime
-import modeep.hear.global.error.exception.BusinessException
 import java.time.LocalDateTime
 import java.util.UUID
 
+@Deprecated(
+    "Not used anymore",
+    ReplaceWith("PasswordResetTicket")
+)
 @Aggregate
-data class PasswordResetToken(
+data class PasswordResetTokenAggregate(
     val id: UUID? = null,
     val userId: UUID? = null,
     val token: ResetToken,
@@ -20,12 +22,8 @@ data class PasswordResetToken(
 ) {
     fun isExpired(): Boolean = LocalDateTime.now().isAfter(expiresAt)
 
-    fun canBeUsed(): Boolean = !isUsed && !isExpired()
-
-    fun use(): PasswordResetToken {
-        if (!canBeUsed()) {
-            throw BusinessException(AuthErrorCode.PASSWORD_TOKEN_INVALID)
-        }
+    fun use(): PasswordResetTokenAggregate {
+        require(!isUsed && !isExpired())
         return this.copy(isUsed = true) // 복사한 객체 반환
     }
 }

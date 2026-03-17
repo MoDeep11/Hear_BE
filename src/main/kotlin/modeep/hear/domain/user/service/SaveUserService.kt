@@ -2,16 +2,16 @@ package modeep.hear.domain.user.service
 
 import modeep.hear.domain.user.exception.UserErrorCode
 import modeep.hear.domain.user.model.User
-import modeep.hear.domain.user.port.`in`.CreateUserUseCase
+import modeep.hear.domain.user.port.`in`.SaveUserUseCase
 import modeep.hear.domain.user.port.out.UserPort
 import modeep.hear.global.error.exception.BusinessException
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
 @Service
-class CreateUserService(
+class SaveUserService(
     private val userPort: UserPort
-) : CreateUserUseCase {
+) : SaveUserUseCase {
     @Transactional
     override fun execute(user: User) {
         if (userPort.existsByEmail(user.email)) {

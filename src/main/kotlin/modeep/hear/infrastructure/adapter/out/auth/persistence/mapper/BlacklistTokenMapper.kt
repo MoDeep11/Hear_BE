@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component
 
 @Component
 class BlacklistTokenMapper {
-    fun toDomain(entity: BlacklistTokenRedisEntity) =
+    fun toModel(entity: BlacklistTokenRedisEntity) =
         BlacklistToken(
             accessToken = entity.accessToken,
             userId = entity.userId,

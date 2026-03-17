@@ -9,7 +9,7 @@ enum class AuthErrorCode(
     override val message: String
 ) : ErrorCode {
 
-    PASSWORD_TOKEN_INVALID(HttpStatus.BAD_REQUEST, "AUTH_001", "이미 사용되었거나 만료된 토큰입니다."),
+    INVALID_TICKET(HttpStatus.BAD_REQUEST, "AUTH_001", "유효하지 않은 티켓입니다."),
     EMAIL_ALREADY_VERIFIED(HttpStatus.CONFLICT, "AUTH_002", "이미 인증이 완료된 요청입니다."),
     VERIFICATION_TIMEOUT(HttpStatus.UNAUTHORIZED, "AUTH_003", "인증 시간이 만료되었습니다."),
     TOO_MANY_EMAIL_REQUESTS(HttpStatus.TOO_MANY_REQUESTS, "AUTH_004", "인증번호 요청은 1분에 한 번만 가능합니다."),

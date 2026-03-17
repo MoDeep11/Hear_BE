@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component
 
 @Component
 class EmailVerificationMapper {
-    fun toDomain(entity: EmailVerificationRedisEntity) =
+    fun toModel(entity: EmailVerificationRedisEntity) =
         EmailVerification(
             email = entity.email,
             code = entity.code,
