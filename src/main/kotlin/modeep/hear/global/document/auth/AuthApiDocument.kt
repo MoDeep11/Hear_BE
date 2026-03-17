@@ -11,6 +11,7 @@ import modeep.hear.infrastructure.adapter.`in`.auth.dto.request.LoginRequest
 import modeep.hear.infrastructure.adapter.`in`.auth.dto.request.LogoutRequest
 import modeep.hear.infrastructure.adapter.`in`.auth.dto.request.RegisterRequest
 import modeep.hear.infrastructure.adapter.`in`.auth.dto.request.ReissueRequest
+import modeep.hear.infrastructure.adapter.`in`.auth.dto.request.ResetPasswordRequest
 import modeep.hear.infrastructure.adapter.`in`.auth.dto.request.SendEmailRequest
 import modeep.hear.infrastructure.adapter.`in`.auth.dto.request.VerifyEmailRequest
 import modeep.hear.infrastructure.adapter.`in`.auth.dto.response.TokenResponse
@@ -54,7 +55,7 @@ interface AuthApiDocument {
     ): ResponseEntity<ApiResult<TokenResponse>>
 
     @ApiInternalServerErrorResponse
-    fun sendVerificationEmail(
+    fun sendEmail(
         request: SendEmailRequest
     ): ResponseEntity<ApiResult<Unit>>
 
@@ -64,18 +65,13 @@ interface AuthApiDocument {
     ) : ResponseEntity<ApiResult<String>>
 
     @ApiInternalServerErrorResponse
-    fun sendResetPasswordEmail(
-        request: SendEmailRequest
-    ) : ResponseEntity<ApiResult<Unit>>
-
-    @ApiInternalServerErrorResponse
     fun checkResetPasswordEmail(
         token: String
     ) : ResponseEntity<ApiResult<Unit>>
 
     @ApiInternalServerErrorResponse
     fun resetPassword(
-        request: ReissueRequest
+        request: ResetPasswordRequest
     ) : ResponseEntity<ApiResult<Unit>>
 
     @ApiInternalServerErrorResponse

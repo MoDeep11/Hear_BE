@@ -3,6 +3,7 @@ package modeep.hear.infrastructure.adapter.`in`.auth
 import jakarta.validation.Valid
 import modeep.hear.domain.auth.port.`in`.LoginUseCase
 import modeep.hear.domain.auth.port.`in`.RegisterAuthUseCase
+import modeep.hear.domain.auth.port.`in`.ResetPasswordAuthUseCase
 import modeep.hear.domain.auth.port.`in`.SendEmailUseCase
 import modeep.hear.domain.auth.port.`in`.VerifyEmailAuthUseCase
 import modeep.hear.global.common.response.ApiResult
@@ -11,6 +12,7 @@ import modeep.hear.infrastructure.adapter.`in`.auth.dto.request.LoginRequest
 import modeep.hear.infrastructure.adapter.`in`.auth.dto.request.LogoutRequest
 import modeep.hear.infrastructure.adapter.`in`.auth.dto.request.RegisterRequest
 import modeep.hear.infrastructure.adapter.`in`.auth.dto.request.ReissueRequest
+import modeep.hear.infrastructure.adapter.`in`.auth.dto.request.ResetPasswordRequest
 import modeep.hear.infrastructure.adapter.`in`.auth.dto.request.SendEmailRequest
 import modeep.hear.infrastructure.adapter.`in`.auth.dto.request.VerifyEmailRequest
 import modeep.hear.infrastructure.adapter.`in`.auth.dto.response.TokenResponse
@@ -29,7 +31,8 @@ class AuthWebAdapter(
     private val loginUseCase: LoginUseCase,
     private val registerAuthUseCase: RegisterAuthUseCase,
     private val sendEmailUseCase: SendEmailUseCase,
-    private val verifyEmailAuthUseCase: VerifyEmailAuthUseCase
+    private val verifyEmailAuthUseCase: VerifyEmailAuthUseCase,
+    private val resetPasswordAuthUseCase: ResetPasswordAuthUseCase,
 ) : AuthApiDocument {
 
     @PostMapping("/login")
@@ -61,8 +64,8 @@ class AuthWebAdapter(
         TODO("Not yet implemented")
     }
 
-    @PostMapping("/email-verifications")
-    override fun sendVerificationEmail(
+    @PostMapping("/email")
+    override fun sendEmail(
         @RequestBody @Valid request: SendEmailRequest
     ): ResponseEntity<ApiResult<Unit>> {
         sendEmailUseCase.execute(request)
@@ -78,13 +81,6 @@ class AuthWebAdapter(
         ))
     }
 
-    @PostMapping("/password-resets")
-    override fun sendResetPasswordEmail(
-        @RequestBody @Valid request: SendEmailRequest
-    ): ResponseEntity<ApiResult<Unit>> {
-        TODO("Not yet implemented")
-    }
-
     @GetMapping("/password-resets")
     override fun checkResetPasswordEmail(
         @RequestParam token: String
@@ -94,9 +90,10 @@ class AuthWebAdapter(
 
     @PatchMapping("/password-resets")
     override fun resetPassword(
-        @RequestBody @Valid request: ReissueRequest
+        @RequestBody @Valid request: ResetPasswordRequest
     ): ResponseEntity<ApiResult<Unit>> {
-        TODO("Not yet implemented")
+        resetPasswordAuthUseCase.execute(request)
+        return ResponseEntity.ok(ApiResult())
     }
 
     @PostMapping("/logout")
