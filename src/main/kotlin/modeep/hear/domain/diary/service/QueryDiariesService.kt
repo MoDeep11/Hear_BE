@@ -5,6 +5,7 @@ import modeep.hear.domain.diary.port.`in`.QueryDiariesUseCase
 import modeep.hear.domain.diary.port.out.QueryDiaryPort
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import java.time.YearMonth
 
 @Service
 @Transactional(readOnly = true)
@@ -18,7 +19,7 @@ class QueryDiariesService(
         limit: Int,
         sort: String,
         tag: String?
-    ): Diary {
-        
+    ): List<Diary> {
+        return queryDiaryPort.findAllByYearMonth(YearMonth.parse(yearMonth))
     }
 }

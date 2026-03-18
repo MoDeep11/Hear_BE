@@ -10,7 +10,7 @@ interface QueryDiariesUseCase {
         limit: Int,
         sort: String,
         tag: String?
-    ): Diary
+    ): List<Diary>
 }
 // `imageType` : MANUAL(default) / AI_MADE
 //

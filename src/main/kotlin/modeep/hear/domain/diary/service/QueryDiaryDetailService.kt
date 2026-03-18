@@ -16,9 +16,7 @@ class QueryDiaryDetailService(
 ) : QueryDiaryDetailUseCase {
     override fun execute(diaryId: UUID): Diary {
         val diary = queryDiaryPort.findById(diaryId)
-            ?: throw BusinessException(
-                DiaryErrorCode.DIARY_NOT_FOUND
-            )
+            ?: throw BusinessException(DiaryErrorCode.DIARY_NOT_FOUND)
 
         return diary
     }
