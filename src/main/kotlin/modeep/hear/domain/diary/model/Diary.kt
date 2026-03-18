@@ -24,7 +24,9 @@ data class Diary(
             content: String,
             emotion: Emotion,
             tags: List<String>? = null,
-            sessionId: UUID? = null
+            sourceType: DiarySourceType = DiarySourceType.MANUAL,
+            sessionId: UUID? = null,
+            diaryImages: List<DiaryImage> = emptyList(),
         ): Diary {
             return Diary(
                 id = UUID.randomUUID(),
@@ -33,7 +35,9 @@ data class Diary(
                 emotion = emotion,
                 tags = tags,
                 baseTime = BaseTime(),
-                sessionId = sessionId
+                sourceType = sourceType,
+                sessionId = sessionId,
+                diaryImages = diaryImages,
             )
         }
     }

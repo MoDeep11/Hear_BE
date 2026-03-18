@@ -1,8 +1,11 @@
 package modeep.hear.domain.diary.service
 
+import modeep.hear.domain.diary.exception.DiaryErrorCode
 import modeep.hear.domain.diary.port.`in`.QueryDiariesUseCase
 import modeep.hear.domain.diary.port.out.QueryDiaryPort
 import modeep.hear.domain.diary.vo.DiarySourceType
+import modeep.hear.domain.user.exception.UserErrorCode
+import modeep.hear.global.error.exception.BusinessException
 import modeep.hear.infrastructure.adapter.`in`.diary.dto.response.QueryDiariesResponse
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Sort
@@ -34,8 +37,9 @@ class QueryDiariesService(
             .filter { diary -> tag == null || diary.tags?.contains(tag) == true }
             .map { diary ->
                 QueryDiariesResponse(
-                    id = diary.id!!,
-                    thumbnailUrl = diary.diaryImages.minBy { it.order },
+                    id = diary.id ?: throw BusinessException(DiaryErrorCode.DIARY_NOT_FOUND),
+                    thumbnailUrl = diary.diaryImages.minByOrNull { it.order }
+                        ?: throw BusinessException(DiaryErrorCode.DIARY_NOT_FOUND),
                     tags = diary.tags ?: emptyList(),
                     createdAt = diary.baseTime.createdAt.toLocalDate()
                 )
