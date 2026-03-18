@@ -28,6 +28,7 @@ spring:
       hibernate:
         format_sql: false
         use_sql_comments: false
+        default_batch_fetch_size: 100
 
   # Redis & Cache
   data:
