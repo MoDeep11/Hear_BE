@@ -38,8 +38,8 @@ class QueryDiariesService(
             .map { diary ->
                 QueryDiariesResponse(
                     id = diary.id ?: throw BusinessException(DiaryErrorCode.DIARY_NOT_FOUND),
-                    thumbnailUrl = diary.diaryImages.minByOrNull { it.order }
-                        ?: throw BusinessException(DiaryErrorCode.DIARY_NOT_FOUND),
+                    thumbnailUrl = diary.diaryImages.minByOrNull { it.order }?.imageUrl
+                        ?: throw BusinessException(DiaryErrorCode.DIARY_IMAGE_REQUIRED),
                     tags = diary.tags ?: emptyList(),
                     createdAt = diary.baseTime.createdAt.toLocalDate()
                 )
