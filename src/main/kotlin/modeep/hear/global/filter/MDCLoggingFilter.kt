@@ -15,7 +15,7 @@ class MDCLoggingFilter : OncePerRequestFilter() {
     companion object {
         private const val TRACE_ID = "traceId"
         private const val USER_ID = "userId"
-        private const val ANONYMOUS = "anonymous"
+        private const val ANONYMOUS = "unknown"
         private const val HTTP_METHOD = "httpMethod"
         private const val REQUEST_URL = "requestUrl"
         private const val HEADER = "X-Trace-Id"
