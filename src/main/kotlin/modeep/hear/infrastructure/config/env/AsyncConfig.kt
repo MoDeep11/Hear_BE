@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Configuration
 import org.springframework.scheduling.annotation.EnableAsync
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor
 import java.util.concurrent.Executor
+import java.util.concurrent.ThreadPoolExecutor
 
 private val log = KotlinLogging.logger {}
 
@@ -23,6 +24,19 @@ class AsyncConfig {
         executor.setRejectedExecutionHandler { runnable, exec ->
             log.warn { "에러 알림 큐 포화: 작업 드랍됨 (Active: ${exec.activeCount})" }
         }
+
+        executor.initialize()
+        return executor
+    }
+
+    @Bean(name = ["mailAsyncExecutor"])
+    fun mailAsyncExecutor(): Executor {
+        val executor = ThreadPoolTaskExecutor()
+        executor.corePoolSize = 5
+        executor.maxPoolSize = 15
+        executor.queueCapacity = 200
+        executor.setThreadNamePrefix("MailAsync-")
+        executor.setRejectedExecutionHandler(ThreadPoolExecutor.CallerRunsPolicy())
 
         executor.initialize()
         return executor
