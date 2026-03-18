@@ -20,6 +20,7 @@ import java.util.UUID
 import java.util.concurrent.TimeUnit
 
 @Service
+@Transactional(readOnly = true)
 class SendEmailAuthService(
     private val redisTemplate: StringRedisTemplate, // TODO: 언젠가 변경
     private val codeGenerator: VerificationCodeGenerator,
@@ -29,7 +30,6 @@ class SendEmailAuthService(
     private val passwordResetTicketPort: PasswordResetTicketPort
 ) : SendEmailAuthUseCase {
 
-    @Transactional
     override fun execute(request: SendEmailRequest) {
         val limitKey = "AUTH:LIMIT:${request.email}"
 

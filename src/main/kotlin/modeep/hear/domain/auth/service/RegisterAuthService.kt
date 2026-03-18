@@ -31,7 +31,9 @@ class RegisterAuthService(
 
         saveUserUseCase.execute(user)
 
-        return jwtPort.createToken(user.id!!.toString())
+        val userId = user.id
+            ?: throw BusinessException(AuthErrorCode.INVALID_LOGIN_CREDENTIALS)
+        return jwtPort.createToken(userId.toString())
     }
 
     private fun matches(password: String, confirmPassword: String) {

@@ -22,7 +22,7 @@ class LoginAuthService(
     override fun execute(request: LoginRequest): TokenResponse {
         val user = queryUserPort.findByEmail(request.email)
             ?: throw BusinessException(
-                UserErrorCode.EMAIL_NOT_FOUND,
+                AuthErrorCode.INVALID_LOGIN_CREDENTIALS,
                 "email: ${request.email}"
             )
 
@@ -32,6 +32,8 @@ class LoginAuthService(
             )
         }
 
-        return jwtPort.createToken(user.id!!.toString())
+        val userId = user.id
+            ?: throw BusinessException(AuthErrorCode.INVALID_LOGIN_CREDENTIALS)
+        return jwtPort.createToken(userId.toString())
     }
 }
