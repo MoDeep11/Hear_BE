@@ -12,8 +12,8 @@ class CustomUserDetails(
     override fun getAuthorities(): Collection<GrantedAuthority> =
         listOf(SimpleGrantedAuthority("ROLE_${user.role.name}"))
 
-    override fun getPassword(): String = user.password
-    override fun getUsername(): String = user.email
+    override fun getPassword(): String = user.getPassword()
+    override fun getUsername(): String = user.id.toString()
 
     override fun isAccountNonExpired() = true
     override fun isAccountNonLocked() = true
