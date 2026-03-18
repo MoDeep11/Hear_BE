@@ -24,7 +24,8 @@ class QueryDiariesService(
         tag: String?
     ): List<QueryDiariesResponse> {
         val sortParts = sort.split(",")
-        val direction = if (sortParts.getOrElse(1) { "desc" } == "asc") Sort.Direction.ASC else Sort.Direction.DESC
+        val direction = if (sortParts.getOrElse(1) { "desc" }.equals("asc", ignoreCase = true))
+            Sort.Direction.ASC else Sort.Direction.DESC
         val pageable = PageRequest.of(0, limit, Sort.by(direction, "baseTime.createdAt"))
 
         val diaries = queryDiaryPort.findAllByMonthWithFilters(yearMonth, hasPhoto, imageType, pageable)
