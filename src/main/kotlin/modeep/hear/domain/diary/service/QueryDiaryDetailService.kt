@@ -12,12 +12,12 @@ import java.util.UUID
 @Service
 @Transactional(readOnly = true)
 class QueryDiaryDetailService(
-    private val queryDiaryPort: QueryDiaryPort,
+    private val queryDiaryPort: QueryDiaryPort
 ) : QueryDiaryDetailUseCase {
     override fun execute(diaryId: UUID): Diary {
         val diary = queryDiaryPort.findById(diaryId)
             ?: throw BusinessException(
-                DiaryErrorCode.DIARY_NOT_FOUND,
+                DiaryErrorCode.DIARY_NOT_FOUND
             )
 
         return diary
