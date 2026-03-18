@@ -15,6 +15,7 @@ class MDCLoggingFilter : OncePerRequestFilter() {
     companion object {
         private const val TRACE_ID = "traceId"
         private const val USER_ID = "userId"
+        private const val ANONYMOUS = "anonymous"
         private const val HTTP_METHOD = "httpMethod"
         private const val REQUEST_URL = "requestUrl"
         private const val HEADER = "X-Trace-Id"
@@ -28,7 +29,7 @@ class MDCLoggingFilter : OncePerRequestFilter() {
         val auth = SecurityContextHolder.getContext().authentication
         val traceId = UUID.randomUUID().toString().take(8)
 
-        val currentUserId = auth?.name ?: "anonymous"
+        val currentUserId = auth?.name ?: ANONYMOUS
 
         MDC.put(TRACE_ID, traceId)
         MDC.put(USER_ID, currentUserId)
