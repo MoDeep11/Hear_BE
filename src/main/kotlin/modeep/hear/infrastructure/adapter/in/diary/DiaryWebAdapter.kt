@@ -24,16 +24,21 @@ class DiaryWebAdapter(
     private val queryDiaryDetailUseCase: QueryDiaryDetailUseCase
 ) : DiaryApiDocument {
 
+    companion object {
+        const val DEFAULT_HAS_PHOTO = "true"
+    }
+
     @GetMapping
     override fun getDiaries(
-        @RequestParam imageType: DiarySourceType,
-        @RequestParam hasPhoto: Boolean,
-        @RequestParam @DateTimeFormat(pattern = "yyyy-MM") yearMonth: YearMonth,
-        @RequestParam(defaultValue = "32") limit: Int,
-        @RequestParam(defaultValue = "createdAt,desc") sort: String,
-        @RequestParam tag: String?
+        @RequestParam(required = false, defaultValue = DiarySourceType.DEFAULT_TYPE) imageType: DiarySourceType,
+        @RequestParam(required = false, defaultValue = DEFAULT_HAS_PHOTO) hasPhoto: Boolean,
+        @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM") yearMonth: YearMonth?,
+        @RequestParam(required = false, defaultValue = "32") limit: Int,
+        @RequestParam(required = false, defaultValue = "createdAt,desc") sort: String,
+        @RequestParam(required = false) tag: String?
     ): ResponseEntity<ApiResult<List<QueryDiariesResponse>>> {
-        val diaries = queryDiariesUseCase.execute(imageType, hasPhoto, yearMonth, limit, sort, tag)
+        val resolvedYearMonth = yearMonth ?: YearMonth.now()
+        val diaries = queryDiariesUseCase.execute(imageType, hasPhoto, resolvedYearMonth, limit, sort, tag)
         return ResponseEntity.ok(
             ApiResult(
                 data = diaries

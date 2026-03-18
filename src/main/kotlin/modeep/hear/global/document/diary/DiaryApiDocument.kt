@@ -15,7 +15,7 @@ interface DiaryApiDocument {
     fun getDiaries(
         imageType: DiarySourceType,
         hasPhoto: Boolean,
-        yearMonth: YearMonth,
+        yearMonth: YearMonth?,
         limit: Int,
         sort: String,
         tag: String?
