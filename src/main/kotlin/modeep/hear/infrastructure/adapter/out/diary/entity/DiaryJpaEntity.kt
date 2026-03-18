@@ -39,17 +39,17 @@ class DiaryJpaEntity(
     @Column(name = "session_id")
     val sessionId: UUID? = null,
 
-    @OneToMany(mappedBy = "post", cascade = [CascadeType.ALL], orphanRemoval = true)
+    @OneToMany(mappedBy = "diary", cascade = [CascadeType.ALL], orphanRemoval = true)
     private val diaryImages: MutableList<DiaryImageJpaEntity> = mutableListOf(),
 
     id: UUID? = null
 ) : BaseEntity(id) {
 
     fun addImage(url: String) {
-        val postImage = DiaryImageJpaEntity(
+        val diaryImage = DiaryImageJpaEntity(
             imageUrl = url,
-            post = this
+            diary = this
         )
-        diaryImages.add(postImage)
+        diaryImages.add(diaryImage)
     }
 }
