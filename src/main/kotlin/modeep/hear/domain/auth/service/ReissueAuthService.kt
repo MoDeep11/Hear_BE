@@ -18,8 +18,10 @@ class ReissueAuthService(
 ) : ReissueAuthUseCase {
     override fun execute(
         request: ReissueRequest,
-        accessToken: String
+        bearerAccessToken: String
     ): TokenResponse {
+        val accessToken = jwtPort.resolveToken(bearerAccessToken)
+            ?: throw BusinessException(AuthErrorCode.INVALID_TOKEN)
         val accessTokenClaim = jwtPort.validateToken(accessToken)
 
         val userId = accessTokenClaim.subject

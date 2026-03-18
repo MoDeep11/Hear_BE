@@ -9,14 +9,12 @@ class BlacklistTokenMapper {
     fun toModel(entity: BlacklistTokenRedisEntity) =
         BlacklistToken(
             accessToken = entity.accessToken,
-            userId = entity.userId,
             timeToLive = entity.timeToLive
         )
 
     fun toEntity(domain: BlacklistToken) =
         BlacklistTokenRedisEntity(
             accessToken = domain.accessToken,
-            userId = domain.userId,
             timeToLive = domain.timeToLive
         )
 }
