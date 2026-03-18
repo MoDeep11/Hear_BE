@@ -14,22 +14,20 @@ import org.springframework.stereotype.Component
 @Component
 class SecurityAdapter(
     private val repo: UserRepository,
-    private val mapper: UserMapper
-) : SecurityPort {
-    private val encoder: PasswordEncoder
-) : PasswordPort {
+    private val mapper: UserMapper,
+    private val encoder: PasswordEncoder,
+) : SecurityPort, PasswordPort {
     override fun matches(rawPassword: String, encodedPassword: String): Boolean =
         encoder.matches(rawPassword, encodedPassword)
+
+    override fun encode(password: String): String {
+        return encoder.encode(password)
+    }
 
     override fun getCurrentUser(): User {
         val email = SecurityContextHolder.getContext().authentication.name
         val entity = repo.findByEmail(email)
-            ?: throw BusinessException(
-                UserErrorCode.INVALID_VALUE // Todo: 차후 변경
-            )
-
+            ?: throw BusinessException(UserErrorCode.USER_NOT_FOUND)
         return mapper.toModel(entity)
-    override fun encode(password: String): String {
-        return encoder.encode(password)
     }
 }
