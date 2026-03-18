@@ -29,7 +29,7 @@ class ReissueAuthService(
     }
 
     private fun verifyRefreshTokenOwner(rawRefreshToken: String, userId: String) {
-        if (refreshTokenPort.existsByRefreshToken(rawRefreshToken)) {
+        if (!refreshTokenPort.existsByRefreshToken(rawRefreshToken)) {
             throw BusinessException(AuthErrorCode.INVALID_TOKEN)
         }
 

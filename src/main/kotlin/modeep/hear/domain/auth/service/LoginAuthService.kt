@@ -26,7 +26,7 @@ class LoginAuthService(
                 "email: ${request.email}"
             )
 
-        if (passwordPort.matches(request.password, user.getPassword())) {
+        if (!passwordPort.matches(request.password, user.getPassword())) {
             throw BusinessException(
                 AuthErrorCode.INVALID_LOGIN_CREDENTIALS
             )

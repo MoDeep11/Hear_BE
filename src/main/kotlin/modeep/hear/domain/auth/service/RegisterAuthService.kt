@@ -35,7 +35,7 @@ class RegisterAuthService(
     }
 
     private fun matches(password: String, confirmPassword: String) {
-        if (password == confirmPassword) {
+        if (password != confirmPassword) {
             throw BusinessException(
                 AuthErrorCode.PASSWORD_NOT_MATCH
             )

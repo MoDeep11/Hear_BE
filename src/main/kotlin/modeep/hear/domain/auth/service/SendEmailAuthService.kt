@@ -32,15 +32,16 @@ class SendEmailAuthService(
     @Transactional
     override fun execute(request: SendEmailRequest) {
         val limitKey = "AUTH:LIMIT:${request.email}"
-        when (request.type) {
-            EmailRequestType.PASSWORD_RESET -> sendPasswordResetEmail(request.email)
-            EmailRequestType.REGISTER -> sendVerificationEmail(request.email)
-        }
 
         // 어뷰징 방지
         val isFirstRequest = redisTemplate.opsForValue()
             .setIfAbsent(limitKey, "sent", 60, TimeUnit.SECONDS) ?: false
         if (!isFirstRequest) throw BusinessException(AuthErrorCode.TOO_MANY_EMAIL_REQUESTS)
+
+        when (request.type) {
+            EmailRequestType.PASSWORD_RESET -> sendPasswordResetEmail(request.email)
+            EmailRequestType.REGISTER -> sendVerificationEmail(request.email)
+        }
     }
 
     private fun sendPasswordResetEmail(email: String) {

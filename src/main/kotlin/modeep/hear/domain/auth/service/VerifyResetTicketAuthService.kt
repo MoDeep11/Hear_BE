@@ -14,7 +14,7 @@ class VerifyResetTicketAuthService(
 ) : VerifyResetTicketAuthUseCase {
 
     override fun execute(ticket: String) {
-        if (passwordResetTicketPort.existsByTicket(ticket)) {
+        if (!passwordResetTicketPort.existsByTicket(ticket)) {
             throw BusinessException(AuthErrorCode.INVALID_TICKET)
         }
     }

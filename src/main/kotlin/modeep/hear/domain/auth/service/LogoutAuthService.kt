@@ -12,7 +12,6 @@ class LogoutAuthService(
     private val refreshTokenPort: RefreshTokenPort,
     private val jwtPort: JwtPort
 ) : LogoutAuthUseCase {
-    @Transactional
     override fun execute(request: LogoutRequest, accessToken: String) {
         refreshTokenPort.delete(request.refreshToken)
 
