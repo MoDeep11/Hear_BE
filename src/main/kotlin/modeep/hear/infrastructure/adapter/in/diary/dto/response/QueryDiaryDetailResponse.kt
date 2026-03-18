@@ -14,5 +14,5 @@ data class QueryDiaryDetailResponse(
     val sourceType: DiarySourceType,
     val sessionId: UUID? = null,
     val createdAt: LocalDate,
-    val updatedAt: LocalDate,
+    val updatedAt: LocalDate
 )

@@ -1,16 +1,12 @@
 package modeep.hear.domain.diary.service
 
-import modeep.hear.domain.common.vo.Emotion
 import modeep.hear.domain.diary.exception.DiaryErrorCode
-import modeep.hear.domain.diary.model.Diary
 import modeep.hear.domain.diary.port.`in`.QueryDiaryDetailUseCase
 import modeep.hear.domain.diary.port.out.QueryDiaryPort
-import modeep.hear.domain.diary.vo.DiarySourceType
 import modeep.hear.global.error.exception.BusinessException
 import modeep.hear.infrastructure.adapter.`in`.diary.dto.response.QueryDiaryDetailResponse
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import java.time.LocalDate
 import java.util.UUID
 
 @Service
@@ -22,8 +18,9 @@ class QueryDiaryDetailService(
         val diary = queryDiaryPort.findById(diaryId)
             ?: throw BusinessException(DiaryErrorCode.DIARY_NOT_FOUND)
 
-        if (diary.id == null || diary.userId == null)
+        if (diary.id == null || diary.userId == null) {
             throw BusinessException(DiaryErrorCode.DIARY_NOT_FOUND)
+        }
 
         return QueryDiaryDetailResponse(
             id = diary.id,
@@ -34,7 +31,7 @@ class QueryDiaryDetailService(
             sourceType = diary.sourceType,
             sessionId = diary.sessionId,
             createdAt = diary.baseTime.createdAt.toLocalDate(),
-            updatedAt = diary.baseTime.updatedAt.toLocalDate(),
+            updatedAt = diary.baseTime.updatedAt.toLocalDate()
         )
     }
 }

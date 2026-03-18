@@ -11,9 +11,9 @@ import java.util.UUID
 
 class DiaryPersistenceAdapter(
     private val repo: DiaryRepository,
-    private val mapper: DiaryMapper,
+    private val mapper: DiaryMapper
 ) : DiaryPort {
-    //--Query--//
+    // --Query--//
     override fun findById(diaryId: UUID): Diary? {
         return repo.findByIdWithImages(diaryId) ?.let { mapper.toModel(it) }
     }
@@ -22,7 +22,7 @@ class DiaryPersistenceAdapter(
         yearMonth: YearMonth,
         hasPhoto: Boolean,
         imageType: DiarySourceType,
-        pageable: Pageable,
+        pageable: Pageable
     ): List<Diary> {
         val start = yearMonth.atDay(1).atStartOfDay()
         val end = yearMonth.plusMonths(1).atDay(1).atStartOfDay()

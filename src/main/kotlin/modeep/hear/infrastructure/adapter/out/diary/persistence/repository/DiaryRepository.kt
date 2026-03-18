@@ -10,21 +10,25 @@ import java.time.LocalDateTime
 import java.util.UUID
 
 interface DiaryRepository : JpaRepository<DiaryJpaEntity, UUID> {
-    @Query("""
+    @Query(
+        """
         select d from DiaryJpaEntity d 
         join fetch d.diaryImages 
         where d.id = :id
-    """)
+    """
+    )
     fun findByIdWithImages(id: UUID): DiaryJpaEntity?
 
-    @Query("""
+    @Query(
+        """
         SELECT DISTINCT d FROM DiaryJpaEntity d 
         LEFT JOIN FETCH d.diaryImages 
         LEFT JOIN FETCH d.tags 
         WHERE d.baseTime.createdAt >= :start AND d.baseTime.createdAt < :end
         AND (:imageType IS NULL OR d.sourceType = :imageType)
         AND (:hasPhoto = false OR SIZE(d.diaryImages) > 0)
-    """)
+    """
+    )
     fun findAllByMonthWithFilters(
         @Param("start") start: LocalDateTime,
         @Param("end") end: LocalDateTime,

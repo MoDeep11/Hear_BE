@@ -12,6 +12,6 @@ interface QueryDiaryPort {
         yearMonth: YearMonth,
         hasPhoto: Boolean,
         imageType: DiarySourceType,
-        pageable: Pageable,
+        pageable: Pageable
     ): List<Diary>
 }

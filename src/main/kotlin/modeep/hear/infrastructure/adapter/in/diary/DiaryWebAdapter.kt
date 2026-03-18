@@ -21,7 +21,7 @@ import java.util.UUID
 @RequestMapping("/api/v1/diaries")
 class DiaryWebAdapter(
     private val queryDiariesUseCase: QueryDiariesUseCase,
-    private val queryDiaryDetailUseCase: QueryDiaryDetailUseCase,
+    private val queryDiaryDetailUseCase: QueryDiaryDetailUseCase
 ) : DiaryApiDocument {
 
     @GetMapping
@@ -31,15 +31,25 @@ class DiaryWebAdapter(
         @RequestParam @DateTimeFormat(pattern = "yyyy-MM") yearMonth: YearMonth,
         @RequestParam(defaultValue = "32") limit: Int,
         @RequestParam(defaultValue = "createdAt,desc") sort: String,
-        @RequestParam tag: String?,
-    ): ResponseEntity<ApiResult<QueryDiariesResponse>> {
-        TODO("Not yet implemented")
+        @RequestParam tag: String?
+    ): ResponseEntity<ApiResult<List<QueryDiariesResponse>>> {
+        val diaries = queryDiariesUseCase.execute(imageType, hasPhoto, yearMonth, limit, sort, tag)
+        return ResponseEntity.ok(
+            ApiResult(
+                data = diaries
+            )
+        )
     }
 
     @GetMapping("/{diary_id}")
     override fun getDiaryDetail(
         @PathVariable("diary_id") diaryId: UUID
     ): ResponseEntity<ApiResult<QueryDiaryDetailResponse>> {
-        TODO("Not yet implemented")
+        val diary = queryDiaryDetailUseCase.execute(diaryId)
+        return ResponseEntity.ok(
+            ApiResult(
+                data = diary
+            )
+        )
     }
 }
