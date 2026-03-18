@@ -25,9 +25,17 @@ class SecurityAdapter(
     }
 
     override fun getCurrentUser(): User {
-        val email = SecurityContextHolder.getContext().authentication.name
+        val email = getEmail() ?: throw BusinessException(UserErrorCode.USER_NOT_FOUND)
         val entity = repo.findByEmail(email)
             ?: throw BusinessException(UserErrorCode.USER_NOT_FOUND)
         return mapper.toModel(entity)
+    }
+
+    fun getEmail(): String? {
+        val auth = SecurityContextHolder.getContext().authentication
+        if (auth == null || !auth.isAuthenticated || auth.name == "anonymousUser") {
+            return null
+        }
+        return auth.name
     }
 }
