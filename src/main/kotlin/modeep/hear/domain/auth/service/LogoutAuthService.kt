@@ -5,7 +5,6 @@ import modeep.hear.domain.auth.port.out.JwtPort
 import modeep.hear.domain.auth.port.out.RefreshTokenPort
 import modeep.hear.infrastructure.adapter.`in`.auth.dto.request.LogoutRequest
 import org.springframework.stereotype.Service
-import org.springframework.transaction.annotation.Transactional
 
 @Service
 class LogoutAuthService(

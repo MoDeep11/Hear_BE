@@ -4,7 +4,6 @@ import modeep.hear.domain.auth.exception.AuthErrorCode
 import modeep.hear.domain.auth.port.`in`.LoginAuthUseCase
 import modeep.hear.domain.auth.port.out.JwtPort
 import modeep.hear.domain.auth.port.out.PasswordPort
-import modeep.hear.domain.user.exception.UserErrorCode
 import modeep.hear.domain.user.port.out.QueryUserPort
 import modeep.hear.global.error.exception.BusinessException
 import modeep.hear.infrastructure.adapter.`in`.auth.dto.request.LoginRequest

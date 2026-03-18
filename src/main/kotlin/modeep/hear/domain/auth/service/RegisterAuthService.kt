@@ -4,6 +4,7 @@ import modeep.hear.domain.auth.exception.AuthErrorCode
 import modeep.hear.domain.auth.port.`in`.RegisterAuthUseCase
 import modeep.hear.domain.auth.port.out.JwtPort
 import modeep.hear.domain.auth.port.out.PasswordPort
+import modeep.hear.domain.user.exception.UserErrorCode
 import modeep.hear.domain.user.model.User
 import modeep.hear.domain.user.port.`in`.SaveUserUseCase
 import modeep.hear.domain.user.vo.Role
@@ -32,7 +33,7 @@ class RegisterAuthService(
         saveUserUseCase.execute(user)
 
         val userId = user.id
-            ?: throw BusinessException(AuthErrorCode.INVALID_LOGIN_CREDENTIALS)
+            ?: throw BusinessException(UserErrorCode.USER_NOT_FOUND)
         return jwtPort.createToken(userId.toString())
     }
 
