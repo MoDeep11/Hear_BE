@@ -13,7 +13,6 @@ springCloud = "2025.0.1"
 querydsl = "5.0.0"
 jakarta-persistence = "3.1.0"
 jakarta-annotation = "2.1.1"
-flyway = "10.0.0"
 
 [plugins]
 spring-boot = { id = "org.springframework.boot", version.ref = "springBoot" }
@@ -104,5 +103,5 @@ spring-retry = { group = "org.springframework.retry", name = "spring-retry" }
 spring-aspects = { group = "org.springframework", name = "spring-aspects" }
 
 # Flyway
-flyway-core = { group = "org.flywaydb", name = "flyway-core", version.ref = "flyway" }
-flyway-database-postgresql = { group = "org.flywaydb", name = "flyway-database-postgresql", version.ref = "flyway" }
+flyway-core = { group = "org.flywaydb", name = "flyway-core" }
+flyway-database-postgresql = { group = "org.flywaydb", name = "flyway-database-postgresql" }
