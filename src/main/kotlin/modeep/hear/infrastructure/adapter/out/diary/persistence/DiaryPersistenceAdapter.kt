@@ -20,17 +20,21 @@ class DiaryPersistenceAdapter(
         return repo.findByIdWithImages(diaryId) ?.let { mapper.toModel(it) }
     }
 
-    override fun findAllByMonthWithFilters(
+    override fun findIdsByFilters(
         yearMonth: YearMonth,
         hasPhoto: Boolean,
         imageType: DiarySourceType,
         tag: String?,
         pageable: Pageable
-    ): List<Diary> {
+    ): List<UUID> {
         val start = yearMonth.atDay(1).atStartOfDay()
         val end = yearMonth.plusMonths(1).atDay(1).atStartOfDay()
 
-        return repo.findAllByMonthWithFilters(start, end, imageType, hasPhoto, tag, pageable)
+        return repo.findIdsByFilters(start, end, imageType.name, hasPhoto, tag, pageable)
+    }
+
+    override fun findAllByIdInWithImages(ids: List<UUID>): List<Diary> {
+        return repo.findAllByIdInWithImages(ids)
             .map { it.let(mapper::toModel) }
     }
 }

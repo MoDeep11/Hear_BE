@@ -9,11 +9,13 @@ import java.util.UUID
 interface QueryDiaryPort {
     fun findById(diaryId: UUID): Diary?
 
-    fun findAllByMonthWithFilters(
+    fun findIdsByFilters(
         yearMonth: YearMonth,
         hasPhoto: Boolean,
         imageType: DiarySourceType,
         tag: String? = null,
         pageable: Pageable
-    ): List<Diary>
+    ): List<UUID>
+
+    fun findAllByIdInWithImages(ids: List<UUID>): List<Diary>
 }

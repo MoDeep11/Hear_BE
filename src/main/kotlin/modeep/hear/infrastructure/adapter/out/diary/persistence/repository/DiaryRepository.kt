@@ -1,6 +1,5 @@
 package modeep.hear.infrastructure.adapter.out.diary.persistence.repository
 
-import modeep.hear.domain.diary.vo.DiarySourceType
 import modeep.hear.infrastructure.adapter.out.diary.entity.DiaryJpaEntity
 import org.springframework.data.domain.Pageable
 import org.springframework.data.jpa.repository.JpaRepository
@@ -19,10 +18,8 @@ interface DiaryRepository : JpaRepository<DiaryJpaEntity, UUID> {
     )
     fun findByIdWithImages(id: UUID): DiaryJpaEntity?
 
-    @Query(
-        value = """
-        SELECT DISTINCT d.* FROM diaries d
-        LEFT JOIN diary_images di ON d.id = di.diary_id
+    @Query(value = """
+        SELECT d.id FROM diaries d
         WHERE d.created_at >= :start AND d.created_at < :end
         AND (:imageType IS NULL OR d.source_type = :imageType)
         AND (:hasPhoto = false OR EXISTS (
@@ -30,17 +27,23 @@ interface DiaryRepository : JpaRepository<DiaryJpaEntity, UUID> {
             WHERE diary_id = d.id
             AND image_url IS NOT NULL
         ))
-        -- JSONB 태그 필터링 (단일 태그 존재 여부 확인)
         AND (:tag IS NULL OR d.tags ? :tag)
-    """,
-        nativeQuery = true
-    )
-    fun findAllByMonthWithFilters(
+        ORDER BY d.created_at DESC
+    """, nativeQuery = true)
+    fun findIdsByFilters(
         @Param("start") start: LocalDateTime,
         @Param("end") end: LocalDateTime,
-        @Param("imageType") imageType: DiarySourceType?,
+        @Param("imageType") imageType: String?,
         @Param("hasPhoto") hasPhoto: Boolean,
         @Param("tag") tag: String?,
         pageable: Pageable
-    ): List<DiaryJpaEntity>
+    ): List<UUID>
+
+    @Query("""
+        SELECT DISTINCT d FROM DiaryJpaEntity d
+        LEFT JOIN FETCH d.diaryImages
+        WHERE d.id IN :ids
+        ORDER BY d.baseTime.createdAt DESC
+    """)
+    fun findAllByIdInWithImages(@Param("ids") ids: List<UUID>): List<DiaryJpaEntity>
 }
