@@ -5,7 +5,7 @@ import java.util.UUID
 
 data class QueryDiariesResponse(
     val id: UUID,
-    val thumbnailUrl: String,
+    val thumbnailUrl: String?,
     val tags: List<String>,
     val createdAt: LocalDate
 )

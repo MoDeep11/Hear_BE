@@ -25,22 +25,21 @@ class QueryDiariesService(
         } else {
             Sort.Direction.DESC
         }
-        val pageable = PageRequest.of(0, request.limit, Sort.by(direction, "baseTime.createdAt"))
+        val pageable = PageRequest.of(0, request.limit, Sort.by(direction, "created_at"))  // SQL 컬럼명
 
         val diaries = queryDiaryPort.findAllByMonthWithFilters(
             yearMonth = request.resolvedYearMonth,
             hasPhoto = request.hasPhoto,
             imageType = request.imageType,
             tag = request.tag,
-            pageable = pageable
+            pageable = pageable,
         )
 
         return diaries
             .map { diary ->
                 QueryDiariesResponse(
                     id = diary.id ?: throw BusinessException(DiaryErrorCode.DIARY_NOT_FOUND),
-                    thumbnailUrl = diary.diaryImages.minByOrNull { it.order }?.imageUrl
-                        ?: throw BusinessException(DiaryErrorCode.DIARY_IMAGE_REQUIRED),
+                    thumbnailUrl = diary.diaryImages.minByOrNull { it.order }?.imageUrl,  // null 허용
                     tags = diary.tags ?: emptyList(),
                     createdAt = diary.baseTime.createdAt.toLocalDate()
                 )
