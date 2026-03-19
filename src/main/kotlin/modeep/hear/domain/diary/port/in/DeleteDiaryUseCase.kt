@@ -1,9 +1,7 @@
 package modeep.hear.domain.diary.port.`in`
 
-import modeep.hear.domain.diary.model.Diary
+import java.util.UUID
 
 interface DeleteDiaryUseCase {
-    fun execute(
-        diary: Diary,
-    ): Diary
+    fun execute(diaryId: UUID)
 }

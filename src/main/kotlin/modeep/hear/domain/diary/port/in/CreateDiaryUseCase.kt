@@ -1,9 +1,10 @@
 package modeep.hear.domain.diary.port.`in`
 
-import modeep.hear.domain.diary.model.Diary
+import modeep.hear.infrastructure.adapter.`in`.diary.dto.request.CreateDiaryRequest
+import modeep.hear.infrastructure.adapter.`in`.diary.dto.response.CreateDiaryResponse
 
 interface CreateDiaryUseCase {
     fun execute(
-        diary: Diary,
-    ): Diary
+        request: CreateDiaryRequest,
+    ): CreateDiaryResponse
 }
