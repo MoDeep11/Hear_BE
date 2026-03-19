@@ -21,12 +21,12 @@ interface DiaryRepository : JpaRepository<DiaryJpaEntity, UUID> {
 
     @Query(
         value = """
-        SELECT DISTINCT d.* FROM diary d
-        LEFT JOIN diary_image di ON d.id = di.diary_id
+        SELECT DISTINCT d.* FROM diaries d
+        LEFT JOIN diary_images di ON d.id = di.diary_id
         WHERE d.created_at >= :start AND d.created_at < :end
         AND (:imageType IS NULL OR d.source_type = :imageType)
         AND (:hasPhoto = false OR EXISTS (
-            SELECT 1 FROM diary_image 
+            SELECT 1 FROM diary_images
             WHERE diary_id = d.id
             AND image_url IS NOT NULL
         ))
