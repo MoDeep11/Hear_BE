@@ -12,8 +12,13 @@ import java.util.UUID
 class CustomUserDetailsService(
     private val userPort: QueryUserPort
 ) : UserDetailsService {
-    override fun loadUserByUsername(uesrId: String): UserDetails =
-        userPort.findById(UUID.fromString(uesrId))
+    override fun loadUserByUsername(userId: String): UserDetails {
+        val userUuid = userId.takeIf { it.isNotBlank() }?.let {
+            runCatching { UUID.fromString(it) }.getOrNull()
+        } ?: throw BusinessException(UserErrorCode.USER_NOT_FOUND)
+
+        return userPort.findById(userUuid)
             ?.let { CustomUserDetails(it) }
             ?: throw BusinessException(UserErrorCode.USER_NOT_FOUND)
+    }
 }
