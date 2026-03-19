@@ -5,6 +5,6 @@ import modeep.hear.infrastructure.adapter.`in`.diary.dto.response.CreateDiaryRes
 
 interface CreateDiaryUseCase {
     fun execute(
-        request: CreateDiaryRequest,
+        request: CreateDiaryRequest
     ): CreateDiaryResponse
 }

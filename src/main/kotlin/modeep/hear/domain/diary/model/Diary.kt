@@ -10,7 +10,7 @@ import java.util.UUID
 data class Diary(
     val id: UUID? = null,
     val userId: UUID? = null,
-    val content: String,
+    var content: String,
     val emotion: Emotion,
     val tags: List<String>? = null,
     val baseTime: BaseTime,
@@ -40,5 +40,9 @@ data class Diary(
                 diaryImages = diaryImages
             )
         }
+    }
+
+    fun updateContent(content: String) {
+        this.content = content
     }
 }

@@ -11,5 +11,5 @@ data class CreateDiaryResponse(
     val emotion: Emotion,
     val tags: List<String>,
     val sources: DiarySourceType,
-    val createdAt: LocalDateTime,
+    val createdAt: LocalDateTime
 )

@@ -9,11 +9,10 @@ data class CreateDiaryRequest(
     @field:NotBlank
     val content: String,
 
-    @field:NotBlank
     val emotion: Emotion,
 
     @field:NotEmpty
     val tags: List<@NotBlank String>,
 
-    val sourceType: DiarySourceType = DiarySourceType.AI_MADE,
+    val sourceType: DiarySourceType = DiarySourceType.AI_MADE
 )

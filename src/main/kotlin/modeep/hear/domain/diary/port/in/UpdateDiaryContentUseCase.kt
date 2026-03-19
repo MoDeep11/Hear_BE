@@ -1,10 +1,11 @@
 package modeep.hear.domain.diary.port.`in`
 
-import modeep.hear.infrastructure.adapter.`in`.diary.dto.response.UploadDiaryImageResponse
-import org.springframework.web.multipart.MultipartFile
+import modeep.hear.infrastructure.adapter.`in`.diary.dto.request.UpdateDiaryContentRequest
+import java.util.UUID
 
 interface UpdateDiaryContentUseCase {
     fun execute(
-        images: List<MultipartFile>,
-    ): UploadDiaryImageResponse
+        diaryId: UUID,
+        request: UpdateDiaryContentRequest
+    )
 }
