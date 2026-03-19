@@ -27,8 +27,11 @@ class SecurityAdapter(
     }
 
     override fun getCurrentUser(): User {
-        val userId = getUserId() ?: throw BusinessException(UserErrorCode.USER_NOT_FOUND)
-        val entity = repo.findByIdOrNull(UUID.fromString(userId))
+        val userId = getUserId()?.takeIf { it.isNotBlank() }?.let {
+            runCatching { UUID.fromString(it) }.getOrNull()
+        } ?: throw BusinessException(UserErrorCode.USER_NOT_FOUND)
+
+        val entity = repo.findByIdOrNull(userId)
             ?: throw BusinessException(UserErrorCode.USER_NOT_FOUND)
         return mapper.toModel(entity)
     }
