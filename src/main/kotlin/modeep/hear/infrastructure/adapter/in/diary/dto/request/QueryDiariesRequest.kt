@@ -1,0 +1,18 @@
+package modeep.hear.infrastructure.adapter.`in`.diary.dto.request
+
+import modeep.hear.domain.diary.vo.DiarySourceType
+import org.springframework.format.annotation.DateTimeFormat
+import java.time.YearMonth
+
+data class QueryDiariesRequest(
+    val imageType: DiarySourceType = DiarySourceType.AI_MADE,
+    val hasPhoto: Boolean = false,
+    @field:DateTimeFormat(pattern = "yyyy-MM")
+    val yearMonth: YearMonth? = null,
+    val limit: Int = 32,
+    val sort: String = "createdAt,desc",
+    val tag: String? = null
+) {
+    val resolvedYearMonth: YearMonth
+        get() = yearMonth ?: YearMonth.now()
+}

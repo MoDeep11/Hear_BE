@@ -1,12 +1,10 @@
 package modeep.hear.infrastructure.adapter.out.user.entity
 
 import jakarta.persistence.Column
-import jakarta.persistence.Convert
 import jakarta.persistence.Entity
 import jakarta.persistence.Table
 import modeep.hear.domain.common.vo.EmotionDistribution
 import modeep.hear.global.common.entity.BaseUUIDEntity
-import modeep.hear.global.converter.EmotionDistributionConverter
 import org.hibernate.annotations.JdbcTypeCode
 import org.hibernate.type.SqlTypes
 import java.time.YearMonth

@@ -26,7 +26,7 @@ data class Diary(
             tags: List<String>? = null,
             sourceType: DiarySourceType = DiarySourceType.MANUAL,
             sessionId: UUID? = null,
-            diaryImages: List<DiaryImage> = emptyList(),
+            diaryImages: List<DiaryImage> = emptyList()
         ): Diary {
             return Diary(
                 id = UUID.randomUUID(),
@@ -37,7 +37,7 @@ data class Diary(
                 baseTime = BaseTime(),
                 sourceType = sourceType,
                 sessionId = sessionId,
-                diaryImages = diaryImages,
+                diaryImages = diaryImages
             )
         }
     }

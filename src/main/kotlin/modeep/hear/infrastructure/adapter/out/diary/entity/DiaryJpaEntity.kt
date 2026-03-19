@@ -2,7 +2,6 @@ package modeep.hear.infrastructure.adapter.out.diary.entity
 
 import jakarta.persistence.CascadeType
 import jakarta.persistence.Column
-import jakarta.persistence.Convert
 import jakarta.persistence.Entity
 import jakarta.persistence.EnumType
 import jakarta.persistence.Enumerated
@@ -11,7 +10,6 @@ import jakarta.persistence.Table
 import modeep.hear.domain.common.vo.Emotion
 import modeep.hear.domain.diary.vo.DiarySourceType
 import modeep.hear.global.common.entity.BaseEntity
-import modeep.hear.global.converter.TagsConverter
 import org.hibernate.annotations.JdbcTypeCode
 import org.hibernate.type.SqlTypes
 import java.util.UUID

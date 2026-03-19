@@ -6,9 +6,11 @@ import modeep.hear.domain.diary.vo.DiarySourceType
 import modeep.hear.infrastructure.adapter.out.diary.mapper.DiaryMapper
 import modeep.hear.infrastructure.adapter.out.diary.persistence.repository.DiaryRepository
 import org.springframework.data.domain.Pageable
+import org.springframework.stereotype.Component
 import java.time.YearMonth
 import java.util.UUID
 
+@Component
 class DiaryPersistenceAdapter(
     private val repo: DiaryRepository,
     private val mapper: DiaryMapper
@@ -23,7 +25,7 @@ class DiaryPersistenceAdapter(
         hasPhoto: Boolean,
         imageType: DiarySourceType,
         tag: String?,
-        pageable: Pageable,
+        pageable: Pageable
     ): List<Diary> {
         val start = yearMonth.atDay(1).atStartOfDay()
         val end = yearMonth.plusMonths(1).atDay(1).atStartOfDay()

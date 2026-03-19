@@ -3,15 +3,13 @@ package modeep.hear.domain.diary.service
 import modeep.hear.domain.diary.exception.DiaryErrorCode
 import modeep.hear.domain.diary.port.`in`.QueryDiariesUseCase
 import modeep.hear.domain.diary.port.out.QueryDiaryPort
-import modeep.hear.domain.diary.vo.DiarySourceType
-import modeep.hear.domain.user.exception.UserErrorCode
 import modeep.hear.global.error.exception.BusinessException
+import modeep.hear.infrastructure.adapter.`in`.diary.dto.request.QueryDiariesRequest
 import modeep.hear.infrastructure.adapter.`in`.diary.dto.response.QueryDiariesResponse
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Sort
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import java.time.YearMonth
 
 @Service
 @Transactional(readOnly = true)
@@ -19,22 +17,25 @@ class QueryDiariesService(
     private val queryDiaryPort: QueryDiaryPort
 ) : QueryDiariesUseCase {
     override fun execute(
-        imageType: DiarySourceType,
-        hasPhoto: Boolean,
-        yearMonth: YearMonth,
-        limit: Int,
-        sort: String,
-        tag: String?,
+        request: QueryDiariesRequest
     ): List<QueryDiariesResponse> {
-        val sortParts = sort.split(",")
-        val direction = if (sortParts.getOrElse(1) { "desc" }.equals("asc", ignoreCase = true))
-            Sort.Direction.ASC else Sort.Direction.DESC
-        val pageable = PageRequest.of(0, limit, Sort.by(direction, "baseTime.createdAt"))
+        val sortParts = request.sort.split(",")
+        val direction = if (sortParts.getOrElse(1) { "desc" }.equals("asc", ignoreCase = true)) {
+            Sort.Direction.ASC
+        } else {
+            Sort.Direction.DESC
+        }
+        val pageable = PageRequest.of(0, request.limit, Sort.by(direction, "baseTime.createdAt"))
 
-        val diaries = queryDiaryPort.findAllByMonthWithFilters(yearMonth, hasPhoto, imageType, tag, pageable)
+        val diaries = queryDiaryPort.findAllByMonthWithFilters(
+            yearMonth = request.resolvedYearMonth,
+            hasPhoto = request.hasPhoto,
+            imageType = request.imageType,
+            tag = request.tag,
+            pageable = pageable
+        )
 
         return diaries
-            .filter { diary -> tag == null || diary.tags?.contains(tag) == true }
             .map { diary ->
                 QueryDiariesResponse(
                     id = diary.id ?: throw BusinessException(DiaryErrorCode.DIARY_NOT_FOUND),
