@@ -9,6 +9,8 @@ import java.util.UUID
 interface QueryDiaryPort {
     fun findById(diaryId: UUID): Diary?
 
+    fun getReferenceById(diaryId: UUID): Diary
+
     fun findIdsByFilters(
         yearMonth: YearMonth,
         hasPhoto: Boolean,
