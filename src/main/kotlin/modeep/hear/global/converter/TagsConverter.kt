@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.type.TypeReference
 import com.fasterxml.jackson.databind.ObjectMapper
 import jakarta.persistence.Converter
 
+@Deprecated("Not used anymore")
 @Converter
 class TagsConverter(
     objectMapper: ObjectMapper

@@ -22,12 +22,13 @@ class DiaryPersistenceAdapter(
         yearMonth: YearMonth,
         hasPhoto: Boolean,
         imageType: DiarySourceType,
-        pageable: Pageable
+        tag: String?,
+        pageable: Pageable,
     ): List<Diary> {
         val start = yearMonth.atDay(1).atStartOfDay()
         val end = yearMonth.plusMonths(1).atDay(1).atStartOfDay()
 
-        return repo.findAllByMonthWithFilters(start, end, imageType, hasPhoto, pageable)
+        return repo.findAllByMonthWithFilters(start, end, imageType, hasPhoto, tag, pageable)
             .map { it.let(mapper::toModel) }
     }
 }

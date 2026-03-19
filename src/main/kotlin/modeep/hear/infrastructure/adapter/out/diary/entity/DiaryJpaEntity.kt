@@ -12,6 +12,8 @@ import modeep.hear.domain.common.vo.Emotion
 import modeep.hear.domain.diary.vo.DiarySourceType
 import modeep.hear.global.common.entity.BaseEntity
 import modeep.hear.global.converter.TagsConverter
+import org.hibernate.annotations.JdbcTypeCode
+import org.hibernate.type.SqlTypes
 import java.util.UUID
 
 @Entity
@@ -28,8 +30,8 @@ class DiaryJpaEntity(
     @Column(name = "emotion", nullable = false, length = 8)
     val emotion: Emotion,
 
-    @Convert(converter = TagsConverter::class)
-    @Column(name = "tags")
+    @JdbcTypeCode(SqlTypes.JSON) // jsonb 타입
+    @Column(name = "tags", columnDefinition = "jsonb")
     val tags: List<String>? = null,
 
     @Enumerated(EnumType.STRING)

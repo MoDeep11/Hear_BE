@@ -24,14 +24,14 @@ class QueryDiariesService(
         yearMonth: YearMonth,
         limit: Int,
         sort: String,
-        tag: String?
+        tag: String?,
     ): List<QueryDiariesResponse> {
         val sortParts = sort.split(",")
         val direction = if (sortParts.getOrElse(1) { "desc" }.equals("asc", ignoreCase = true))
             Sort.Direction.ASC else Sort.Direction.DESC
         val pageable = PageRequest.of(0, limit, Sort.by(direction, "baseTime.createdAt"))
 
-        val diaries = queryDiaryPort.findAllByMonthWithFilters(yearMonth, hasPhoto, imageType, pageable)
+        val diaries = queryDiaryPort.findAllByMonthWithFilters(yearMonth, hasPhoto, imageType, tag, pageable)
 
         return diaries
             .filter { diary -> tag == null || diary.tags?.contains(tag) == true }
