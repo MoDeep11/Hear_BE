@@ -1,15 +1,17 @@
 package modeep.hear.infrastructure.adapter.out.diary.entity
 
+import jakarta.persistence.CascadeType
 import jakarta.persistence.Column
-import jakarta.persistence.Convert
 import jakarta.persistence.Entity
 import jakarta.persistence.EnumType
 import jakarta.persistence.Enumerated
+import jakarta.persistence.OneToMany
 import jakarta.persistence.Table
 import modeep.hear.domain.common.vo.Emotion
 import modeep.hear.domain.diary.vo.DiarySourceType
 import modeep.hear.global.common.entity.BaseEntity
-import modeep.hear.global.converter.TagsConverter
+import org.hibernate.annotations.JdbcTypeCode
+import org.hibernate.type.SqlTypes
 import java.util.UUID
 
 @Entity
@@ -26,8 +28,8 @@ class DiaryJpaEntity(
     @Column(name = "emotion", nullable = false, length = 8)
     val emotion: Emotion,
 
-    @Convert(converter = TagsConverter::class)
-    @Column(name = "tags")
+    @JdbcTypeCode(SqlTypes.JSON) // jsonb 타입
+    @Column(name = "tags", columnDefinition = "jsonb")
     val tags: List<String>? = null,
 
     @Enumerated(EnumType.STRING)
@@ -37,5 +39,17 @@ class DiaryJpaEntity(
     @Column(name = "session_id")
     val sessionId: UUID? = null,
 
+    @OneToMany(mappedBy = "diary", cascade = [CascadeType.ALL], orphanRemoval = true)
+    private val diaryImages: MutableList<DiaryImageJpaEntity> = mutableListOf(),
+
     id: UUID? = null
-) : BaseEntity(id)
+) : BaseEntity(id) {
+
+    fun addImage(url: String) {
+        val diaryImage = DiaryImageJpaEntity(
+            imageUrl = url,
+            diary = this
+        )
+        diaryImages.add(diaryImage)
+    }
+}

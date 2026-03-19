@@ -4,6 +4,9 @@ import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.EnumType
 import jakarta.persistence.Enumerated
+import jakarta.persistence.FetchType
+import jakarta.persistence.JoinColumn
+import jakarta.persistence.ManyToOne
 import jakarta.persistence.Table
 import modeep.hear.domain.diary.vo.DiaryImageStatus
 import modeep.hear.domain.diary.vo.DiarySourceType
@@ -13,8 +16,9 @@ import java.util.UUID
 @Entity
 @Table(name = "diary_images")
 class DiaryImageJpaEntity(
-    @Column(name = "diary_id", nullable = false)
-    val diaryId: UUID,
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "diary_id")
+    val diary: DiaryJpaEntity? = null,
 
     @Column(name = "image_url", length = 512)
     val imageUrl: String? = null,

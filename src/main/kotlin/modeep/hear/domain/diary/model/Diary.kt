@@ -15,5 +15,30 @@ data class Diary(
     val tags: List<String>? = null,
     val baseTime: BaseTime,
     val sourceType: DiarySourceType = DiarySourceType.AI_MADE,
-    val sessionId: UUID? = null
-)
+    val sessionId: UUID? = null,
+    val diaryImages: List<DiaryImage> = emptyList()
+) {
+    companion object {
+        fun create(
+            userId: UUID,
+            content: String,
+            emotion: Emotion,
+            tags: List<String>? = null,
+            sourceType: DiarySourceType = DiarySourceType.MANUAL,
+            sessionId: UUID? = null,
+            diaryImages: List<DiaryImage> = emptyList()
+        ): Diary {
+            return Diary(
+                id = UUID.randomUUID(),
+                userId = userId,
+                content = content,
+                emotion = emotion,
+                tags = tags,
+                baseTime = BaseTime(),
+                sourceType = sourceType,
+                sessionId = sessionId,
+                diaryImages = diaryImages
+            )
+        }
+    }
+}

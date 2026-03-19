@@ -6,6 +6,7 @@ import jakarta.persistence.AttributeConverter
 import modeep.hear.global.error.exception.BusinessException
 import modeep.hear.global.error.exception.GlobalErrorCode
 
+@Deprecated("Not used anymore")
 abstract class JsonConverter<T>(
     private val typeReference: TypeReference<T>,
     private val objectMapper: ObjectMapper
