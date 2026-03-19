@@ -48,6 +48,7 @@ dependencies {
     implementation(libs.redis)
     implementation(libs.cache)
     implementation(libs.spring.boot.starter.mail)
+    developmentOnly(libs.spring.boot.devtools)
 
     // OAuth2
 //    implementation(libs.oauth2.client)
@@ -78,6 +79,10 @@ dependencies {
     // spring retry & aspect
     implementation(libs.spring.retry)
     implementation(libs.spring.aspects)
+
+    // Flyway
+    implementation(libs.flyway.core)
+    runtimeOnly(libs.flyway.database.postgresql)
 
     // Cloud & External APIs
     implementation(libs.aws)

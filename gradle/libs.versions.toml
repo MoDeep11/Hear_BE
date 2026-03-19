@@ -13,6 +13,7 @@ springCloud = "2025.0.1"
 querydsl = "5.0.0"
 jakarta-persistence = "3.1.0"
 jakarta-annotation = "2.1.1"
+flyway = "10.0.0"
 
 [plugins]
 spring-boot = { id = "org.springframework.boot", version.ref = "springBoot" }
@@ -28,6 +29,7 @@ ktlint = { id = "org.jlleitschuh.gradle.ktlint", version.ref = "ktlint" }
 spring-boot-web = { group = "org.springframework.boot", name = "spring-boot-starter-web" }
 spring-boot-security = { group = "org.springframework.boot", name = "spring-boot-starter-security" }
 spring-boot-validation = { group = "org.springframework.boot", name = "spring-boot-starter-validation" }
+spring-boot-devtools = { group = "org.springframework.boot", name = "spring-boot-devtools", version.ref = "springBoot" }
 
 # jpa
 jpa = { group = "org.springframework.boot", name = "spring-boot-starter-data-jpa" }
@@ -100,3 +102,7 @@ jakarta-annotation-api = { group = "jakarta.annotation", name = "jakarta.annotat
 # spring retry & aspects
 spring-retry = { group = "org.springframework.retry", name = "spring-retry" }
 spring-aspects = { group = "org.springframework", name = "spring-aspects" }
+
+# Flyway
+flyway-core = { group = "org.flywaydb", name = "flyway-core", version.ref = "flyway" }
+flyway-database-postgresql = { group = "org.flywaydb", name = "flyway-database-postgresql", version.ref = "flyway" }
