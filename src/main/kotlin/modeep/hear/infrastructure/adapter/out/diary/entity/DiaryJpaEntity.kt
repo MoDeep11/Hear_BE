@@ -6,6 +6,7 @@ import jakarta.persistence.Entity
 import jakarta.persistence.EnumType
 import jakarta.persistence.Enumerated
 import jakarta.persistence.OneToMany
+import jakarta.persistence.OrderBy
 import jakarta.persistence.Table
 import modeep.hear.domain.common.vo.Emotion
 import modeep.hear.domain.diary.vo.DiarySourceType
@@ -40,6 +41,7 @@ class DiaryJpaEntity(
     val sessionId: UUID? = null,
 
     @OneToMany(mappedBy = "diary", cascade = [CascadeType.ALL], orphanRemoval = true)
+    @OrderBy("order ASC")
     private val diaryImages: MutableList<DiaryImageJpaEntity> = mutableListOf(),
 
     id: UUID? = null
