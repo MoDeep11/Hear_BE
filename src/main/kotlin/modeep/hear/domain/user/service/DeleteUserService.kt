@@ -26,7 +26,7 @@ class DeleteUserService(
     ) {
         val user = securityPort.getCurrentUser()
 
-        if (passwordPort.matches(request.password, user.getPassword())) {
+        if (!passwordPort.matches(request.password, user.getPassword())) {
             throw BusinessException(AuthErrorCode.PASSWORD_NOT_MATCH)
         }
 
