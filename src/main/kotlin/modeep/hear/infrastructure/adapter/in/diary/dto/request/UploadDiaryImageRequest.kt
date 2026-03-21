@@ -1,11 +1,14 @@
 package modeep.hear.infrastructure.adapter.`in`.diary.dto.request
 
+import jakarta.validation.constraints.Min
 import org.springframework.web.multipart.MultipartFile
 import java.util.UUID
 
 data class UploadDiaryImageRequest(
     val image: MultipartFile?,
-    val id: UUID?, // 새로운 이미지 일 경우 null
+    val id: UUID?,
+
+    @field:Min(value = 0)
     val order: Int,
     val isDeleted: Boolean = false
 )
