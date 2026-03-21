@@ -22,7 +22,7 @@ class DeleteUserService(
 ) : DeleteUserUseCase {
     override fun execute(
         accessToken: String,
-        request: DeleteUserRequest,
+        request: DeleteUserRequest
     ) {
         val user = securityPort.getCurrentUser()
 

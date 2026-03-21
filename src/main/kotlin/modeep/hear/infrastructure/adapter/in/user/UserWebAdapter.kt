@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-@RequestMapping("/api/v1/diaries/me")
+@RequestMapping("/api/v1/user/me")
 class UserWebAdapter(
     private val deleteUserUseCase: DeleteUserUseCase
 ) : UserApiDocument {
@@ -21,11 +21,12 @@ class UserWebAdapter(
     @DeleteMapping
     override fun deleteUser(
         @RequestHeader("Authorization") accessToken: String,
-        @RequestBody @Valid request: DeleteUserRequest
+        @RequestBody @Valid
+        request: DeleteUserRequest
     ): ResponseEntity<ApiResult<Unit>> {
         deleteUserUseCase.execute(
             accessToken = accessToken,
-            request = request,
+            request = request
         )
         return ResponseEntity.ok(ApiResult())
     }
