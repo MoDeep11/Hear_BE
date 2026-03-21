@@ -1,7 +1,12 @@
 package modeep.hear.infrastructure.adapter.`in`.user.dto.request
 
+import jakarta.validation.constraints.NotBlank
+
 data class DeleteUserRequest(
+    @field:NotBlank
     val password: String,
+
+    @field:NotBlank
     val refreshToken: String
 )
 

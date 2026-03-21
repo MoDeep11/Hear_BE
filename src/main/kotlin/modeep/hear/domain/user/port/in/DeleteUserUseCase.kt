@@ -4,7 +4,7 @@ import modeep.hear.infrastructure.adapter.`in`.user.dto.request.DeleteUserReques
 
 interface DeleteUserUseCase {
     fun execute(
+        accessToken: String,
         request: DeleteUserRequest,
-        accessToken: String
     )
 }

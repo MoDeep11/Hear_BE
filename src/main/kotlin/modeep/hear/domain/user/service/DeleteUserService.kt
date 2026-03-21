@@ -21,8 +21,8 @@ class DeleteUserService(
     private val logoutAuthUseCase: LogoutAuthUseCase
 ) : DeleteUserUseCase {
     override fun execute(
+        accessToken: String,
         request: DeleteUserRequest,
-        accessToken: String
     ) {
         val user = securityPort.getCurrentUser()
 
