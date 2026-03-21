@@ -8,6 +8,6 @@ import java.util.UUID
 interface UploadDiaryImageUseCase {
     fun execute(
         diaryId: UUID,
-        request: List<UploadDiaryImageRequest>,
+        requests: List<UploadDiaryImageRequest>,
     ): List<UploadDiaryImageResponse>
 }

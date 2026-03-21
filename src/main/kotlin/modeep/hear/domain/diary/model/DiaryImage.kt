@@ -33,4 +33,10 @@ data class DiaryImage(
             )
         }
     }
+
+    fun updateOrder(
+        order: Int
+    ) = copy(
+        order = order
+    )
 }
