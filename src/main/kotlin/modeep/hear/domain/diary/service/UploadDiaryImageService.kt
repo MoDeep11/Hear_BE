@@ -1,13 +1,13 @@
 package modeep.hear.domain.diary.service
 
 import modeep.hear.domain.auth.port.out.SecurityPort
-import modeep.hear.domain.common.port.out.S3Port
 import modeep.hear.domain.diary.exception.DiaryErrorCode
 import modeep.hear.domain.diary.model.DiaryImage
 import modeep.hear.domain.diary.port.`in`.UploadDiaryImageUseCase
 import modeep.hear.domain.diary.port.out.DiaryPort
 import modeep.hear.domain.diary.vo.DiaryImageStatus
 import modeep.hear.domain.diary.vo.DiarySourceType
+import modeep.hear.domain.s3.port.out.S3Port
 import modeep.hear.global.error.exception.BusinessException
 import modeep.hear.infrastructure.adapter.`in`.diary.dto.request.UploadDiaryImageRequest
 import modeep.hear.infrastructure.adapter.`in`.diary.dto.response.UploadDiaryImageResponse
@@ -41,7 +41,8 @@ class UploadDiaryImageService(
                 // 1. 새 이미지 추가
                 request.image != null && request.id == null && !request.isDeleted -> {
                     // s3 업로드
-                    val imageUrl = s3Port.upload(request.image)
+                    val fileData = request.toDomainFile(request.image)
+                    val imageUrl = s3Port.upload(fileData)
 
                     val newImage = DiaryImage.create(
                         diaryId = diary.id,
