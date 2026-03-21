@@ -28,7 +28,7 @@ class UpdateDiaryContentService(
         )
 
         diary.updateContent(
-            diary.content
+            request.content
         )
 
         diaryPort.save(diary)
