@@ -20,8 +20,8 @@ data class DiaryImage(
             imageUrl: String? = null,
             order: Int,
             sourceType: DiarySourceType = DiarySourceType.AI_MADE,
-            diaryImageStatus: DiaryImageStatus =  DiaryImageStatus.PROCESSING,
-        ) : DiaryImage {
+            diaryImageStatus: DiaryImageStatus = DiaryImageStatus.PROCESSING
+        ): DiaryImage {
             return DiaryImage(
                 id = UUID.randomUUID(),
                 diaryId = diaryId,
@@ -29,7 +29,7 @@ data class DiaryImage(
                 order = order,
                 sourceType = sourceType,
                 diaryImageStatus = diaryImageStatus,
-                baseTime = BaseTime(),
+                baseTime = BaseTime()
             )
         }
     }

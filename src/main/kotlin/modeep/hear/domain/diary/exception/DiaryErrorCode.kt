@@ -15,6 +15,5 @@ enum class DiaryErrorCode(
 
     IMAGE_REQUIRED(HttpStatus.BAD_REQUEST, "DIARY_005", "사진이 없습니다."),
     TOO_MANY_IMAGES(HttpStatus.BAD_REQUEST, "DIARY_006", "사진는 최대 10개까지 올릴 수 있습니다."),
-    IMAGE_NOT_FOUND(HttpStatus.NOT_FOUND, "DIARY_007", "기존 사진을 찾을 수 없습니다."),
-
+    IMAGE_NOT_FOUND(HttpStatus.NOT_FOUND, "DIARY_007", "기존 사진을 찾을 수 없습니다.")
 }

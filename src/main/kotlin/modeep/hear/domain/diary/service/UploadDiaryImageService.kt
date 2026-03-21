@@ -8,7 +8,6 @@ import modeep.hear.domain.diary.port.`in`.UploadDiaryImageUseCase
 import modeep.hear.domain.diary.port.out.DiaryPort
 import modeep.hear.domain.diary.vo.DiaryImageStatus
 import modeep.hear.domain.diary.vo.DiarySourceType
-import modeep.hear.domain.user.exception.UserErrorCode
 import modeep.hear.global.error.exception.BusinessException
 import modeep.hear.infrastructure.adapter.`in`.diary.dto.request.UploadDiaryImageRequest
 import modeep.hear.infrastructure.adapter.`in`.diary.dto.response.UploadDiaryImageResponse
@@ -25,7 +24,7 @@ class UploadDiaryImageService(
 ) : UploadDiaryImageUseCase {
     override fun execute(
         diaryId: UUID,
-        requests: List<UploadDiaryImageRequest>,
+        requests: List<UploadDiaryImageRequest>
     ): List<UploadDiaryImageResponse> {
         // 검증 로직
         val user = securityPort.getCurrentUser()
@@ -49,7 +48,7 @@ class UploadDiaryImageService(
                         imageUrl = imageUrl,
                         order = request.order,
                         sourceType = DiarySourceType.MANUAL,
-                        diaryImageStatus = DiaryImageStatus.COMPLETED,
+                        diaryImageStatus = DiaryImageStatus.COMPLETED
                     )
                     diary.addImage(newImage)
                 }
@@ -60,7 +59,8 @@ class UploadDiaryImageService(
                         ?: throw BusinessException(DiaryErrorCode.IMAGE_NOT_FOUND)
                     // s3 삭제
                     target.imageUrl?.let {
-                        s3Url -> s3Port.delete(s3Url)
+                            s3Url ->
+                        s3Port.delete(s3Url)
                     }
                     diary.removeImage(target)
                 }
@@ -93,7 +93,7 @@ class UploadDiaryImageService(
                 id = diaryImage.id,
                 url = diaryImage.imageUrl,
                 order = diaryImage.order,
-                type = diaryImage.sourceType,
+                type = diaryImage.sourceType
             )
         }
     }

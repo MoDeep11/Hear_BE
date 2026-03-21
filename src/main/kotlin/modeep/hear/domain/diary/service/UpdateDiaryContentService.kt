@@ -4,7 +4,6 @@ import modeep.hear.domain.auth.port.out.SecurityPort
 import modeep.hear.domain.diary.exception.DiaryErrorCode
 import modeep.hear.domain.diary.port.`in`.UpdateDiaryContentUseCase
 import modeep.hear.domain.diary.port.out.DiaryPort
-import modeep.hear.domain.user.exception.UserErrorCode
 import modeep.hear.global.error.exception.BusinessException
 import modeep.hear.infrastructure.adapter.`in`.diary.dto.request.UpdateDiaryContentRequest
 import org.springframework.stereotype.Service

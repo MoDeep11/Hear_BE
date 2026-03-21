@@ -9,7 +9,7 @@ data class UploadDiaryImageResponse(
     val id: UUID,
     val url: String,
     val order: Int,
-    val type: DiarySourceType = DiarySourceType.MANUAL,
+    val type: DiarySourceType = DiarySourceType.MANUAL
 ) {
     companion object {
         fun toResponse(
