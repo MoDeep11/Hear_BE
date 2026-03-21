@@ -18,7 +18,8 @@ interface DiaryRepository : JpaRepository<DiaryJpaEntity, UUID> {
     )
     fun findByIdWithImages(id: UUID): DiaryJpaEntity?
 
-    @Query(value = """
+    @Query(
+        value = """
         SELECT d.id FROM diaries d
         WHERE d.created_at >= :start AND d.created_at < :end
         AND (:imageType IS NULL OR d.source_type = :imageType)
@@ -29,7 +30,9 @@ interface DiaryRepository : JpaRepository<DiaryJpaEntity, UUID> {
         ))
         AND (:tag IS NULL OR d.tags ? :tag)
         ORDER BY d.created_at DESC
-    """, nativeQuery = true)
+    """,
+        nativeQuery = true
+    )
     fun findIdsByFilters(
         @Param("start") start: LocalDateTime,
         @Param("end") end: LocalDateTime,
@@ -39,11 +42,13 @@ interface DiaryRepository : JpaRepository<DiaryJpaEntity, UUID> {
         pageable: Pageable
     ): List<UUID>
 
-    @Query("""
+    @Query(
+        """
         SELECT DISTINCT d FROM DiaryJpaEntity d
         LEFT JOIN FETCH d.diaryImages
         WHERE d.id IN :ids
         ORDER BY d.baseTime.createdAt DESC
-    """)
+    """
+    )
     fun findAllByIdInWithImages(@Param("ids") ids: List<UUID>): List<DiaryJpaEntity>
 }

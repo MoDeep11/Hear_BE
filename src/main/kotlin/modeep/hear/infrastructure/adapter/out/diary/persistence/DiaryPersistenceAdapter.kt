@@ -37,4 +37,13 @@ class DiaryPersistenceAdapter(
         return repo.findAllByIdInWithImages(ids)
             .map { it.let(mapper::toModel) }
     }
+
+    // --Command--//
+    override fun save(diary: Diary) {
+        repo.save(mapper.toEntity(diary))
+    }
+
+    override fun deleteById(diaryId: UUID) {
+        repo.deleteById(diaryId)
+    }
 }

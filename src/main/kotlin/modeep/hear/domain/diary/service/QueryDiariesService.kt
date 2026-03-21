@@ -25,14 +25,14 @@ class QueryDiariesService(
         } else {
             Sort.Direction.DESC
         }
-        val pageable = PageRequest.of(0, request.limit, Sort.by(direction, "created_at"))  // SQL 컬럼명
+        val pageable = PageRequest.of(0, request.limit, Sort.by(direction, "created_at")) // SQL 컬럼명
 
         val ids = queryDiaryPort.findIdsByFilters(
             yearMonth = request.resolvedYearMonth,
             hasPhoto = request.hasPhoto,
             imageType = request.imageType,
             tag = request.tag,
-            pageable = pageable,
+            pageable = pageable
         )
         if (ids.isEmpty()) return emptyList()
 

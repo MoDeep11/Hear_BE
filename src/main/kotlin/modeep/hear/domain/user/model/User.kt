@@ -10,7 +10,7 @@ import java.util.UUID
 
 @Aggregate
 data class User(
-    val id: UUID? = null,
+    val id: UUID,
     val email: String,
     private var password: String,
     val role: Role,
