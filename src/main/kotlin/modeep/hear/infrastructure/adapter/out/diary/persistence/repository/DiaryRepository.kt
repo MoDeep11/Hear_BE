@@ -28,10 +28,10 @@ interface DiaryRepository : JpaRepository<DiaryJpaEntity, UUID> {
             WHERE diary_id = d.id
             AND image_url IS NOT NULL
         ))
-        AND (:tag IS NULL OR d.tags ? :tag)
+        -- '?' 연산자 대신 jsonb_exists 함수 사용
+        AND (:tag IS NULL OR jsonb_exists(d.tags, :tag))
         ORDER BY d.created_at DESC
-    """,
-        nativeQuery = true
+    """, nativeQuery = true
     )
     fun findIdsByFilters(
         @Param("start") start: LocalDateTime,
