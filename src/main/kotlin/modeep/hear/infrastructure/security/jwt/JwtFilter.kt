@@ -19,9 +19,17 @@ class JwtFilter(
     override fun shouldNotFilter(request: HttpServletRequest): Boolean {
         val path = request.requestURI
         val excludePath = listOf(
+            // swagger
+            "/v3/api-docs/**",
+            "/swagger-ui/**",
+            "/swagger-ui.html",
+
+            // auth
             "/api/v1/auth/login",
             "/api/v1/auth/reissue",
-            "/api/v1/auth/register"
+            "/api/v1/auth/register",
+            "/api/v1/auth/email",
+            "/api/v1/auth/email-tickets",
         )
         return excludePath.any { path.startsWith(it) }
     }

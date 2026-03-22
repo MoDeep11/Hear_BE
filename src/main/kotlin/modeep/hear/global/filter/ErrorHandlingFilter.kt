@@ -17,7 +17,6 @@ import java.nio.charset.StandardCharsets
 
 private val log = KotlinLogging.logger {}
 
-@Component
 class ErrorHandlingFilter(
     private val objectMapper: ObjectMapper,
     @param:Qualifier("handlerExceptionResolver")

@@ -112,4 +112,4 @@ api:
 logging:
   level:
     root: ERROR
-    modeep.hear: DEBUG
+    modeep.hear: INFO

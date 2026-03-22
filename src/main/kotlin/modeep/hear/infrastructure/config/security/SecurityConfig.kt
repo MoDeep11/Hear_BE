@@ -43,15 +43,21 @@ class SecurityConfig(
             }
             .authorizeHttpRequests { auth ->
                 auth
+                    // preflight
                     .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                     // Swagger API
                     .requestMatchers(
                         "/v3/api-docs/**",
                         "/swagger-ui/**",
-                        "/swagger-ui.html"
+                        "/swagger-ui.html/**"
                     ).permitAll()
                     // auth
-                    .requestMatchers("/auth/**").permitAll()
+                    .requestMatchers(
+                        "/api/v1/auth/login/**",
+                        "/api/v1/auth/reissue/**",
+                        "/api/v1/auth/register/**",
+                        "/api/v1/auth/email/**",
+                        "/api/v1/auth/email-tickets/**").permitAll()
                     .anyRequest().authenticated()
             }
             .with(FilterConfig(
