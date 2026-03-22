@@ -43,3 +43,6 @@ out/
 postgres_data/
 
 **/src/main/kotlin/modeep/hear/test
+
+**/src/main/resources/application-dev.yml
+**/src/main/resources/application-prod.yml
