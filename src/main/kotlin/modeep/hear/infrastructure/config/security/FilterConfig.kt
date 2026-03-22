@@ -1,12 +1,28 @@
 package modeep.hear.infrastructure.config.security
 
-import org.springframework.security.config.annotation.SecurityConfigurerAdapter
+import com.fasterxml.jackson.databind.ObjectMapper
+import modeep.hear.global.filter.ErrorHandlingFilter
+import modeep.hear.infrastructure.security.jwt.JwtAdapter
+import modeep.hear.infrastructure.security.jwt.JwtFilter
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
-import org.springframework.security.web.DefaultSecurityFilterChain
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
+import org.springframework.web.servlet.HandlerExceptionResolver
+import kotlin.jvm.java
 
-class FilterConfig : SecurityConfigurerAdapter<DefaultSecurityFilterChain, HttpSecurity>() {
+class FilterConfig(
+    private val jwtAdapter: JwtAdapter,
+    private val objectMapper: ObjectMapper,
+    private val exceptionResolver: HandlerExceptionResolver
+) : AbstractHttpConfigurer<FilterConfig, HttpSecurity>() {
     override fun configure(http: HttpSecurity) {
-        // todo: filter 추가 후 addFilterBefore()로 필터 설정
-        http.csrf { it.disable() }
+        val jwtFilter = JwtFilter(jwtAdapter)
+        val errorHandlingFilter = ErrorHandlingFilter(
+            objectMapper = objectMapper,
+            exceptionResolver = exceptionResolver
+        )
+
+        http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter::class.java)
+            .addFilterBefore(errorHandlingFilter, JwtFilter::class.java)
     }
 }

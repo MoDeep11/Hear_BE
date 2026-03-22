@@ -1,8 +1,10 @@
 package modeep.hear.infrastructure.config.security
 
+import com.fasterxml.jackson.databind.ObjectMapper
+import modeep.hear.infrastructure.security.jwt.JwtAdapter
+import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
-import org.springframework.context.annotation.Profile
 import org.springframework.http.HttpMethod
 import org.springframework.security.config.Customizer
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
@@ -12,19 +14,23 @@ import org.springframework.security.config.http.SessionCreationPolicy
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.security.web.SecurityFilterChain
+import org.springframework.web.servlet.HandlerExceptionResolver
 
-@Profile("!test")
 @Configuration
 @EnableWebSecurity
 class SecurityConfig(
-    private val corsConfig: CorsConfig
+    private val corsConfig: CorsConfig,
+    private val jwtAdapter: JwtAdapter,
+    private val objectMapper: ObjectMapper,
+    @param:Qualifier("handlerExceptionResolver")
+    private val exceptionResolver: HandlerExceptionResolver
 ) {
     @Bean
     fun passwordEncoder(): PasswordEncoder = BCryptPasswordEncoder()
 
     @Bean
     fun configure(http: HttpSecurity): SecurityFilterChain {
-        http.csrf { it.disable() }
+        return http.csrf { it.disable() }
             .cors { it.configurationSource(corsConfig.corsConfigurationSource()) }
             .formLogin { it.disable() }
             .logout { it.disable() }
@@ -37,13 +43,16 @@ class SecurityConfig(
             }
             .authorizeHttpRequests { auth ->
                 auth
-                    .requestMatchers(HttpMethod.OPTIONS, "**").permitAll()
+                    .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                     // auth
-                    .requestMatchers(HttpMethod.GET, "/auth/**").permitAll()
+                    .requestMatchers("/auth/**").permitAll()
+                    .anyRequest().authenticated()
             }
-            .with(FilterConfig(), Customizer.withDefaults())
+            .with(FilterConfig(
+                jwtAdapter = jwtAdapter,
+                objectMapper = objectMapper,
+                exceptionResolver = exceptionResolver
+            ), Customizer.withDefaults())
             .build()
-
-        return http.build()
     }
 }
