@@ -1,8 +1,10 @@
 services:
   # 1. PostgreSQL 데이터베이스
   postgres:
-    image: 'postgres:latest'
+    image: 'postgres:16-alpine'
     container_name: postgres-db
+    env_file:
+      - .env
     environment:
       POSTGRES_DB: ${POSTGRES_NAME}
       POSTGRES_USER: ${POSTGRES_USER}
@@ -21,7 +23,7 @@ services:
 
   # 2. Redis 캐시/메시지 브로커
   redis:
-    image: 'redis:latest'
+    image: 'redis:7-alpine'
     container_name: redis-cache
     ports:
       - '6379:6379'
@@ -29,24 +31,25 @@ services:
       - hear-network
 
   # 3. 코틀린 스프링 부트 애플리케이션
-#  app:
-#    build: .
-#    container_name: hear-app
-#    ports:
-#      - '8080:8080'
-#    environment:
-#      # DB 설정 (호스트를 서비스명인 'postgres'로 지정)
-#      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/${POSTGRES_NAME}
-#      SPRING_DATASOURCE_USERNAME: ${POSTGRES_USER}
-#      SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD}
-#      # Redis 설정 (호스트를 서비스명인 'redis'로 지정)
-#      SPRING_DATA_REDIS_HOST: redis
-#      SPRING_DATA_REDIS_PORT: 6379
-#    depends_on:
-#      - postgres
-#      - redis
-#    networks:
-#      - hear-network
+  app:
+    build: .
+    image: 'kusuri12/hear-spring-application:1.0'
+    profiles:
+      - prod
+    container_name: hear-app
+    ports:
+      - '8080:8080'
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/${POSTGRES_NAME}
+      SPRING_DATASOURCE_USERNAME: ${POSTGRES_USER}
+      SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD}
+    env_file:
+      - .env
+    depends_on:
+      - postgres
+      - redis
+    networks:
+      - hear-network
 
 networks:
   hear-network:
