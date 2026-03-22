@@ -30,4 +30,8 @@ class UserPersistenceAdapter(
         val userEntity = mapper.toEntity(user)
         repository.save(userEntity)
     }
+
+    override fun delete(userId: UUID) {
+        repository.deleteById(userId)
+    }
 }
