@@ -25,7 +25,7 @@ class UserMapperImpl(
         return UserJpaEntity(
             id = model.id,
             email = model.email,
-            password = model.password,
+            password = model.getPassword(),
             role = model.role,
             status = model.status,
             isEmailSubscribed = model.isEmailSubscribed

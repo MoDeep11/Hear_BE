@@ -22,5 +22,5 @@ class AiImageTaskJpaEntity(
     @Column(name = "status", nullable = false, length = 16)
     val status: AiImageTaskStatus = AiImageTaskStatus.RESERVED,
 
-    id: UUID? = null
+    id: UUID
 ) : BaseEntity(id)

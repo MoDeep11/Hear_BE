@@ -31,5 +31,5 @@ class UserJpaEntity(
     @Column(name = "is_email_subscribed", nullable = false)
     val isEmailSubscribed: Boolean = false,
 
-    id: UUID? = null
+    id: UUID
 ) : BaseEntity(id)

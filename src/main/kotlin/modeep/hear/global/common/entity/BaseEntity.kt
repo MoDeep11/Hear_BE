@@ -9,7 +9,7 @@ import java.util.UUID
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener::class)
 abstract class BaseEntity(
-    id: UUID? = null
+    id: UUID
 ) : BaseUUIDEntity(id) {
     @Embedded
     var baseTime: JpaBaseTime = JpaBaseTime()

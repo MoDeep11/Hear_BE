@@ -33,5 +33,5 @@ class MessageJpaEntity(
     @Column(name = "duration")
     val duration: Int? = 0,
 
-    id: UUID? = null
+    id: UUID
 ) : BaseEntity(id)

@@ -36,5 +36,5 @@ class MonthlyStatisticJpaEntity(
     @Column(name = "emotion_distribution", columnDefinition = "jsonb", nullable = false)
     var emotionDistribution: EmotionDistribution,
 
-    id: UUID? = null
+    id: UUID
 ) : BaseUUIDEntity(id)

@@ -9,12 +9,12 @@ import java.util.UUID
 
 @MappedSuperclass
 abstract class BaseUUIDEntity(
-    id: UUID? = null
+    id: UUID
 ) {
     @Id
     @GeneratedValue
     @UuidGenerator
     @Column(name = "id", nullable = false)
-    var id: UUID? = id
+    var id: UUID = id
         protected set // 외부 수정 방지
 }

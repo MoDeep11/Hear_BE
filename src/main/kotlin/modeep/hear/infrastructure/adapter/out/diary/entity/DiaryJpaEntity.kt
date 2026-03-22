@@ -42,16 +42,22 @@ class DiaryJpaEntity(
 
     @OneToMany(mappedBy = "diary", cascade = [CascadeType.ALL], orphanRemoval = true)
     @OrderBy("order ASC")
-    private val diaryImages: MutableList<DiaryImageJpaEntity> = mutableListOf(),
+    val diaryImages: MutableList<DiaryImageJpaEntity> = mutableListOf(),
 
-    id: UUID? = null
+    id: UUID
 ) : BaseEntity(id) {
 
-    fun addImage(url: String) {
-        val diaryImage = DiaryImageJpaEntity(
-            imageUrl = url,
-            diary = this
-        )
-        diaryImages.add(diaryImage)
+    fun addImage(
+        diaryImage: DiaryImageJpaEntity,
+    ) {
+        this.diaryImages.add(diaryImage)
+        if (diaryImage.diary != this) {
+            diaryImage.assignDiary(this)
+        }
+    }
+
+    fun updateImages(newImages: List<DiaryImageJpaEntity>) {
+        this.diaryImages.clear()
+        newImages.forEach { this.addImage(it) }
     }
 }

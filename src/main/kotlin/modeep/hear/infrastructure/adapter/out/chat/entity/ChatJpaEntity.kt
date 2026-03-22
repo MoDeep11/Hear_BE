@@ -19,5 +19,5 @@ class ChatJpaEntity(
     @Column(name = "status", nullable = false, length = 16)
     val status: ChatStatus = ChatStatus.ONGOING,
 
-    id: UUID? = null
+    id: UUID
 ) : BaseEntity(id)

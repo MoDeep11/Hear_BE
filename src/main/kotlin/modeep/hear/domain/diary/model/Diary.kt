@@ -10,7 +10,7 @@ import java.util.UUID
 
 @Aggregate
 data class Diary(
-    val id: UUID? = null,
+    val id: UUID,
     val userId: UUID? = null,
     var content: String,
     val emotion: Emotion,

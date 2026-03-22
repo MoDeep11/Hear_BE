@@ -18,7 +18,7 @@ import java.util.UUID
 class DiaryImageJpaEntity(
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "diary_id")
-    val diary: DiaryJpaEntity? = null,
+    var diary: DiaryJpaEntity? = null,
 
     @Column(name = "image_url", length = 512)
     val imageUrl: String? = null,
@@ -34,5 +34,17 @@ class DiaryImageJpaEntity(
     @Column(name = "status", nullable = false, length = 16)
     val diaryImageStatus: DiaryImageStatus = DiaryImageStatus.PROCESSING,
 
-    id: UUID? = null
-) : BaseEntity(id)
+    id: UUID
+) : BaseEntity(id) {
+
+    fun assignDiary(diary: DiaryJpaEntity) {
+
+        this.diary?.diaryImages?.remove(this)
+
+        this.diary = diary
+
+        if (!diary.diaryImages.contains(this)) {
+            diary.addImage(this)
+        }
+    }
+}
