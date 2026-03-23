@@ -1,6 +1,7 @@
 package modeep.hear.infrastructure.config.security
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import modeep.hear.infrastructure.config.security.constant.SecurityConstants
 import modeep.hear.infrastructure.security.jwt.JwtAdapter
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.context.annotation.Bean
@@ -45,20 +46,7 @@ class SecurityConfig(
                 auth
                     // preflight
                     .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                    // Swagger API
-                    .requestMatchers(
-                        "/v3/api-docs/**",
-                        "/swagger-ui/**",
-                        "/swagger-ui.html/**"
-                    ).permitAll()
-                    // auth
-                    .requestMatchers(
-                        "/api/v1/auth/login/**",
-                        "/api/v1/auth/reissue/**",
-                        "/api/v1/auth/register/**",
-                        "/api/v1/auth/email/**",
-                        "/api/v1/auth/email-tickets/**"
-                    ).permitAll()
+                    .requestMatchers(*SecurityConstants.PERMIT_PATHS.toTypedArray()).permitAll()
                     .anyRequest().authenticated()
             }
             .with(

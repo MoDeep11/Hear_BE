@@ -5,7 +5,9 @@ import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
 import modeep.hear.domain.auth.exception.AuthErrorCode
 import modeep.hear.global.error.exception.BusinessException
+import modeep.hear.infrastructure.config.security.constant.SecurityConstants
 import org.springframework.security.core.context.SecurityContextHolder
+import org.springframework.util.AntPathMatcher
 import org.springframework.web.filter.OncePerRequestFilter
 
 class JwtFilter(
@@ -14,24 +16,12 @@ class JwtFilter(
 
     companion object {
         private const val HEADER = "Authorization"
+        private val pathMatcher = AntPathMatcher()
     }
 
     override fun shouldNotFilter(request: HttpServletRequest): Boolean {
         val path = request.requestURI
-        val excludePath = listOf(
-            // swagger
-            "/v3/api-docs/**",
-            "/swagger-ui/**",
-            "/swagger-ui.html",
-
-            // auth
-            "/api/v1/auth/login",
-            "/api/v1/auth/reissue",
-            "/api/v1/auth/register",
-            "/api/v1/auth/email",
-            "/api/v1/auth/email-tickets"
-        )
-        return excludePath.any { path.startsWith(it) }
+        return SecurityConstants.PERMIT_PATHS.any { pattern -> pathMatcher.match(pattern, path) }
     }
 
     override fun doFilterInternal(

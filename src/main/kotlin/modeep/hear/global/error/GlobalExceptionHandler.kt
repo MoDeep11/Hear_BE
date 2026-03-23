@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.MethodArgumentNotValidException
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.RestControllerAdvice
+import org.springframework.web.servlet.resource.NoResourceFoundException
 
 private val log = KotlinLogging.logger {}
 
@@ -87,6 +88,19 @@ class GlobalExceptionHandler(
                 ErrorResponse(
                     code = "ILLEGAL_ARGUMENT_ERROR",
                     message = "입력값이 유효하지 않습니다.",
+                    path = request.requestURI
+                )
+            )
+    }
+
+    @ExceptionHandler(NoResourceFoundException::class)
+    fun handleNoResourceFoundException(e: NoResourceFoundException, request: HttpServletRequest): ResponseEntity<Any> {
+        log.warn { "Resource not found: ${e.resourcePath}" }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+            .body(
+                ErrorResponse(
+                    code = "RESOURCE_NOT_FOUND",
+                    message = "리소스를 찾을 수 없습니다.",
                     path = request.requestURI
                 )
             )
