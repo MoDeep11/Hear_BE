@@ -18,7 +18,8 @@ import java.time.Duration
 @Configuration
 @EnableCaching
 @EnableRedisRepositories(
-    enableKeyspaceEvents = RedisKeyValueAdapter.EnableKeyspaceEvents.ON_STARTUP
+    enableKeyspaceEvents = RedisKeyValueAdapter.EnableKeyspaceEvents.ON_STARTUP,
+    basePackages = ["modeep.hear.infrastructure.adapter.out.auth.persistence.repository"]
 )
 class RedisConfig(
     private val redisProperties: RedisProperties

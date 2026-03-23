@@ -50,10 +50,6 @@ dependencies {
     implementation(libs.spring.boot.starter.mail)
     developmentOnly(libs.spring.boot.devtools)
 
-    // OAuth2
-//    implementation(libs.oauth2.client)
-//    implementation(libs.oauth2.resource.server)
-
     // jwt
     implementation(libs.jjwt.api)
     runtimeOnly(libs.jjwt.impl)
@@ -89,6 +85,7 @@ dependencies {
     implementation(libs.aws.s3)
     implementation(libs.openapi)
     implementation(libs.spring.cloud.openfeign)
+    // implementation(libs.spring.cloud.starter.loadbalancer)
 
     // Monitoring
     implementation(libs.sentry)

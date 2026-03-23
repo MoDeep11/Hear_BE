@@ -2,11 +2,8 @@ package modeep.hear.infrastructure.adapter.out.diary.mapper
 
 import modeep.hear.domain.diary.model.Diary
 import modeep.hear.domain.diary.model.DiaryImage
-import modeep.hear.global.common.mapper.BaseTimeMapper
 import modeep.hear.infrastructure.adapter.out.diary.entity.DiaryImageJpaEntity
 import modeep.hear.infrastructure.adapter.out.diary.entity.DiaryJpaEntity
-import org.mapstruct.Mapper
-import org.mapstruct.Mapping
 
 interface DiaryMapper {
     fun toModel(entity: DiaryJpaEntity): Diary

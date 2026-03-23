@@ -13,6 +13,5 @@ class S3StubAdapter : S3Port {
     }
 
     override fun delete(s3Url: String) {
-
     }
 }

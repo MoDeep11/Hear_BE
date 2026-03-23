@@ -29,7 +29,7 @@ class JwtFilter(
             "/api/v1/auth/reissue",
             "/api/v1/auth/register",
             "/api/v1/auth/email",
-            "/api/v1/auth/email-tickets",
+            "/api/v1/auth/email-tickets"
         )
         return excludePath.any { path.startsWith(it) }
     }

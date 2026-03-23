@@ -14,7 +14,7 @@ private val log = KotlinLogging.logger {}
 @EnableAsync
 class AsyncConfig {
     @Bean(name = ["discordAsyncExecutor"])
-    fun threadPoolTaskExecutor(): Executor {
+    fun discordAsyncExecutor(): Executor {
         val executor = ThreadPoolTaskExecutor()
         executor.corePoolSize = 5
         executor.maxPoolSize = 10
@@ -24,6 +24,25 @@ class AsyncConfig {
         executor.setRejectedExecutionHandler { runnable, exec ->
             log.warn { "에러 알림 큐 포화: 작업 드랍됨 (Active: ${exec.activeCount})" }
         }
+
+        executor.initialize()
+        return executor
+    }
+
+    @Bean(name = ["calendarAsyncExecutor"])
+    fun calendarAsyncExecutor(): Executor {
+        val executor = ThreadPoolTaskExecutor()
+        executor.corePoolSize = 4
+        executor.maxPoolSize = 20
+        executor.queueCapacity = 50
+        executor.setThreadNamePrefix("CalendarAsync-")
+
+        // 앱 종료 시 진행 중인 작업은 마저 끝내고 닫기
+        executor.setWaitForTasksToCompleteOnShutdown(true)
+        executor.setAwaitTerminationSeconds(60)
+
+        // 큐가 꽉 찼을 때 호출한 스레드(메인 스레드 등)가 직접 그 작업을 처리하게 함
+        executor.setRejectedExecutionHandler(ThreadPoolExecutor.CallerRunsPolicy())
 
         executor.initialize()
         return executor

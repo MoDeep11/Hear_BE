@@ -31,7 +31,8 @@ interface DiaryRepository : JpaRepository<DiaryJpaEntity, UUID> {
         -- '?' 연산자 대신 jsonb_exists 함수 사용
         AND (:tag IS NULL OR jsonb_exists(d.tags, :tag))
         ORDER BY d.created_at DESC
-    """, nativeQuery = true
+    """,
+        nativeQuery = true
     )
     fun findIdsByFilters(
         @Param("start") start: LocalDateTime,

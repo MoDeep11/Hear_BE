@@ -11,6 +11,9 @@ spring:
     username: ${SPRING_DATASOURCE_USERNAME}
     password: ${SPRING_DATASOURCE_PASSWORD}
     driver-class-name: org.postgresql.Driver
+    hikari:
+      initialization-fail-timeout: 0
+      connection-timeout: 20000
 
   # JPA & Hibernate
   jpa:
@@ -55,6 +58,9 @@ spring:
     compose:
       enabled: true
       file: compose.yaml
+      lifecycle-management: start_only  # 실행 유지
+      readiness:
+        wait: never
 
   # aws cloud
   cloud.aws:

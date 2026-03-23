@@ -38,7 +38,6 @@ class DiaryImageJpaEntity(
 ) : BaseEntity(id) {
 
     fun assignDiary(diary: DiaryJpaEntity) {
-
         this.diary?.diaryImages?.remove(this)
 
         this.diary = diary

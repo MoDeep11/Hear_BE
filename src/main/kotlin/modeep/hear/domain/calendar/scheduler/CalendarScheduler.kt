@@ -7,6 +7,7 @@ import modeep.hear.global.error.ExceptionNotifier
 import modeep.hear.global.error.exception.BusinessException
 import org.springframework.boot.context.event.ApplicationReadyEvent
 import org.springframework.context.event.EventListener
+import org.springframework.scheduling.annotation.Async
 import org.springframework.scheduling.annotation.Scheduled
 import org.springframework.stereotype.Component
 import java.time.LocalDate
@@ -18,7 +19,7 @@ class CalendarScheduler(
     private val syncCalendarUseCase: SyncCalendarUseCase,
     private val exceptionNotifier: ExceptionNotifier
 ) {
-
+    @Async("calendarAsyncExecutor")
     @EventListener(ApplicationReadyEvent::class)
     fun initCalendarData() {
         val targetYear = LocalDate.now().year

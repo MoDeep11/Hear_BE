@@ -89,6 +89,7 @@ spring-security-test = { group = "org.springframework.security", name = "spring-
 # spring cloud
 spring-cloud-openfeign = { group = "org.springframework.cloud", name = "spring-cloud-starter-openfeign" }
 spring-cloud-bom = { group = "org.springframework.cloud", name = "spring-cloud-dependencies", version.ref = "springCloud" }
+spring-cloud-starter-loadbalancer = { group = "org.springframework.cloud", name = "spring-cloud-starter-loadbalancer" }
 
 # QueryDLS
 querydsl-jpa = { group = "com.querydsl", name = "querydsl-jpa", version.ref = "querydsl" }

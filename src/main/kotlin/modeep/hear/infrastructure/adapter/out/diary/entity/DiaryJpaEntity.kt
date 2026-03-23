@@ -48,7 +48,7 @@ class DiaryJpaEntity(
 ) : BaseEntity(id) {
 
     fun addImage(
-        diaryImage: DiaryImageJpaEntity,
+        diaryImage: DiaryImageJpaEntity
     ) {
         this.diaryImages.add(diaryImage)
         if (diaryImage.diary != this) {
