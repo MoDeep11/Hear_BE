@@ -8,11 +8,10 @@ import modeep.hear.domain.s3.port.out.S3Port
 import modeep.hear.global.error.exception.BusinessException
 import modeep.hear.infrastructure.adapter.`in`.s3.dto.request.GetPreSignedUrlRequest
 import modeep.hear.infrastructure.adapter.`in`.s3.dto.response.GetPresignedUrlResponse
-import modeep.hear.infrastructure.adapter.out.s3.S3Adapter
-import java.time.LocalDate
-import java.time.format.DateTimeFormatter
+import org.springframework.stereotype.Service
 import java.util.UUID
 
+@Service
 class GetPreSignedUrlService(
     private val s3Port: S3Port,
     private val securityPort: SecurityPort
