@@ -7,14 +7,12 @@ import modeep.hear.domain.user.model.User
 import modeep.hear.global.error.exception.BusinessException
 import modeep.hear.infrastructure.adapter.out.user.mapper.UserMapper
 import modeep.hear.infrastructure.adapter.out.user.persistence.repository.UserRepository
-import org.springframework.context.annotation.Profile
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Component
 import java.util.UUID
 
-@Profile("!dev")
 @Component
 class SecurityAdapter(
     private val repo: UserRepository,

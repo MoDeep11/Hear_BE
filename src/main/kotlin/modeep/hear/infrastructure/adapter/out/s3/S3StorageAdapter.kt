@@ -53,6 +53,11 @@ class S3StorageAdapter(
     }
 
     private fun extractKeyFromUrl(s3Url: String): String {
-        return s3Url.substringAfter("${awsProperties.s3.bucket}.s3.${awsProperties.region.static}.amazonaws.com/")
+        val expectedPrefix = "${awsProperties.s3.bucket}.s3.${awsProperties.region.static}.amazonaws.com/"
+        return if (s3Url.contains(expectedPrefix)) {
+            s3Url.substringAfter(expectedPrefix)
+        } else {
+            throw BusinessException(AwsErrorCode.INVALID_S3_URL)
+        }
     }
 }
