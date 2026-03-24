@@ -39,14 +39,10 @@ class UploadDiaryImageService(
         requests.forEach { request ->
             when {
                 // 1. 새 이미지 추가
-                request.image != null && request.id == null && !request.isDeleted -> {
-                    // s3 업로드
-                    val fileData = request.toDomainFile(request.image)
-                    val imageUrl = s3Port.upload(fileData)
-
+                !request.imageUrl.isNullOrBlank() && request.id == null && !request.isDeleted -> {
                     val newImage = DiaryImage.create(
                         diaryId = diary.id,
-                        imageUrl = imageUrl,
+                        imageUrl = request.imageUrl,
                         order = request.order,
                         sourceType = DiarySourceType.MANUAL,
                         diaryImageStatus = DiaryImageStatus.COMPLETED
@@ -55,7 +51,7 @@ class UploadDiaryImageService(
                 }
 
                 // 2. 기존 이미지 삭제
-                request.image == null && request.id != null && request.isDeleted -> {
+                request.imageUrl.isNullOrBlank() && request.id != null && request.isDeleted -> {
                     val target = diaryImages.find { it.id == request.id }
                         ?: throw BusinessException(DiaryErrorCode.IMAGE_NOT_FOUND)
                     // s3 삭제
@@ -67,7 +63,7 @@ class UploadDiaryImageService(
                 }
 
                 // 3. 이미지 순서 변경
-                request.image == null && request.id != null && !request.isDeleted -> {
+                request.imageUrl.isNullOrBlank() && request.id != null && !request.isDeleted -> {
                     val target = diaryImages.find { it.id == request.id }
                         ?: throw BusinessException(DiaryErrorCode.IMAGE_NOT_FOUND)
 
@@ -106,4 +102,4 @@ class UploadDiaryImageService(
     }
 }
 
-// TODO: 이벤트 발행 방식으로 transaction 밖에서 s3 처리하도록 변경
+// TODO: 이벤트 발행 방식으로 transaction 밖에서 s3 삭제 처리하도록 변경

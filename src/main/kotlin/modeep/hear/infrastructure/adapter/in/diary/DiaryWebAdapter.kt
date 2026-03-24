@@ -56,7 +56,7 @@ class DiaryWebAdapter(
     @PatchMapping("/{diary_id}/images")
     override fun uploadDiaryImage(
         @PathVariable("diary_id") diaryId: UUID,
-        @ModelAttribute @Valid
+        @RequestBody @Valid
         requests: List<UploadDiaryImageRequest>
     ): ResponseEntity<ApiResult<List<UploadDiaryImageResponse>>> {
         return ResponseEntity.ok(
