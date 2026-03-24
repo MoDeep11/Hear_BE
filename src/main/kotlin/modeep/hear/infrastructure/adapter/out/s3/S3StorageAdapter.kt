@@ -4,7 +4,7 @@ import modeep.hear.domain.s3.exception.AwsErrorCode
 import modeep.hear.domain.s3.model.FileData
 import modeep.hear.domain.s3.port.out.S3Port
 import modeep.hear.global.error.exception.BusinessException
-import modeep.hear.infrastructure.adapter.`in`.s3.dto.response.GetPresignedUrlResponse
+import modeep.hear.infrastructure.adapter.`in`.s3.dto.response.GeneratePresignedUrlResponse
 import modeep.hear.infrastructure.config.aws.properties.AwsProperties
 import org.springframework.stereotype.Component
 import software.amazon.awssdk.core.exception.SdkException
@@ -21,7 +21,7 @@ class S3StorageAdapter(
     private val s3Client: S3Client,
     private val awsProperties: AwsProperties
 ) : S3Port {
-    override fun getPreSignedUrl(file: FileData): GetPresignedUrlResponse {
+    override fun generatePreSignedUrl(file: FileData): GeneratePresignedUrlResponse {
         val putObjectRequest = PutObjectRequest.builder()
             .bucket(awsProperties.s3.bucket)
             .key(file.filePath)
@@ -34,7 +34,7 @@ class S3StorageAdapter(
             .build()
 
         val finalUrl = s3Presigner.presignPutObject(presignRequest).url().toString()
-        return GetPresignedUrlResponse(finalUrl)
+        return GeneratePresignedUrlResponse(finalUrl, file.filePath)
     }
 
     override fun delete(s3Url: String) {
