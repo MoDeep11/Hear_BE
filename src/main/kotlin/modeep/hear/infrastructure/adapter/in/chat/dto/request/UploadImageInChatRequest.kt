@@ -5,5 +5,5 @@ import jakarta.validation.constraints.NotEmpty
 
 data class UploadImageInChatRequest(
     @field:NotEmpty
-    val imageUrls: List<@NotBlank String>,
+    val imageUrls: List<@NotBlank String>
 )

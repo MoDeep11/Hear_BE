@@ -1,9 +1,6 @@
 package modeep.hear.domain.chat.port.`in`
 
-import modeep.hear.infrastructure.adapter.`in`.chat.dto.request.CreateMessageRequest
 import modeep.hear.infrastructure.adapter.`in`.chat.dto.request.CreateVoiceMessageRequest
-import modeep.hear.infrastructure.adapter.`in`.chat.dto.response.CreateChatResponse
-import modeep.hear.infrastructure.adapter.`in`.chat.dto.response.CreateMessageResponse
 import modeep.hear.infrastructure.adapter.`in`.chat.dto.response.CreateVoiceMessageResponse
 import java.util.UUID
 

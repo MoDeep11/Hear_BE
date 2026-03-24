@@ -10,4 +10,3 @@ data class CreateMessageResponse(
     val createdAt: LocalDateTime,
     val suggestion: SuggestionType? = null
 )
-

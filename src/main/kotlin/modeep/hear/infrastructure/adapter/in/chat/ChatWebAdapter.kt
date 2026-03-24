@@ -23,9 +23,7 @@ import java.util.UUID
 
 @RestController
 @RequestMapping("api/v1/chats")
-class ChatWebAdapter(
-
-) : ChatApiDocument {
+class ChatWebAdapter() : ChatApiDocument {
     @PostMapping
     override fun createChat(): ResponseEntity<ApiResult<CreateChatResponse>> {
         TODO("Not yet implemented")
@@ -41,7 +39,8 @@ class ChatWebAdapter(
     @PostMapping("/{chat_id}/messages")
     override fun createMessage(
         @PathVariable("chat_id") chatId: UUID,
-        @RequestBody @Valid request: CreateMessageRequest
+        @RequestBody @Valid
+        request: CreateMessageRequest
     ): ResponseEntity<ApiResult<CreateMessageResponse>> {
         TODO("Not yet implemented")
     }
@@ -49,7 +48,8 @@ class ChatWebAdapter(
     @PostMapping("/{chat_id}/voice")
     override fun createVoiceMessage(
         @PathVariable("chat_id") chatId: UUID,
-        @RequestBody @Valid request: CreateVoiceMessageRequest
+        @RequestBody @Valid
+        request: CreateVoiceMessageRequest
     ): ResponseEntity<ApiResult<CreateVoiceMessageResponse>> {
         TODO("Not yet implemented")
     }
@@ -57,7 +57,8 @@ class ChatWebAdapter(
     @PostMapping("/{chat_id}/images")
     override fun uploadImageInChat(
         @PathVariable("chat_id") chatId: UUID,
-        @RequestBody @Valid request: UploadImageInChatRequest
+        @RequestBody @Valid
+        request: UploadImageInChatRequest
     ): ResponseEntity<ApiResult<UploadImageInChatResponse>> {
         TODO("Not yet implemented")
     }

@@ -7,8 +7,18 @@ import java.util.UUID
 
 @Aggregate
 data class Chat(
-    val id: UUID? = null,
-    val userId: UUID? = null,
+    val id: UUID,
+    val userId: UUID,
     val status: ChatStatus = ChatStatus.ONGOING,
     val baseTime: BaseTime
-)
+) {
+    companion object {
+        fun create(userId: UUID): Chat {
+            return Chat(
+                id = UUID.randomUUID(),
+                userId = userId,
+                baseTime = BaseTime()
+            )
+        }
+    }
+}
