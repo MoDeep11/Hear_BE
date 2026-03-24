@@ -1,9 +1,6 @@
 package modeep.hear.infrastructure.adapter.`in`.diary.dto.request
 
 import jakarta.validation.constraints.Min
-import modeep.hear.domain.s3.model.FileData
-import org.springframework.http.MediaType
-import org.springframework.web.multipart.MultipartFile
 import java.util.UUID
 
 data class UploadDiaryImageRequest(

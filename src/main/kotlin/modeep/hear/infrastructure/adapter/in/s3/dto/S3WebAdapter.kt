@@ -17,7 +17,8 @@ class S3WebAdapter(
     private val getPreSignedUrlUseCase: GetPreSignedUrlUseCase
 ) : S3ApiDocument {
     override fun getPresignedUrl(
-        @RequestBody @Valid request: GetPreSignedUrlRequest
+        @RequestBody @Valid
+        request: GetPreSignedUrlRequest
     ): ResponseEntity<ApiResult<GetPresignedUrlResponse>> {
         return ResponseEntity.ok(
             ApiResult(

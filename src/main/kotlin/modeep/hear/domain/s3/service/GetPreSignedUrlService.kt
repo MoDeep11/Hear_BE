@@ -18,7 +18,7 @@ class GetPreSignedUrlService(
 ) : GetPreSignedUrlUseCase {
     companion object {
         private val allowedTypes = listOf("image/jpeg", "image/jpg", "image/png", "image/webp", "image/gif")
-        private const val MAX_FILE_SIZE = 1024 * 1024 * 10L  // 10MB
+        private const val MAX_FILE_SIZE = 1024 * 1024 * 10L // 10MB
     }
 
     override fun execute(request: GetPreSignedUrlRequest): GetPresignedUrlResponse {

@@ -13,5 +13,5 @@ enum class ServiceType(
     AI_TEXT("ai-text/"),
     AI_DOCUMENT("ai-document/"),
     AI_CHAT("ai-chat/"),
-    AI_CHAT_HISTORY("ai-chat-history/"),
+    AI_CHAT_HISTORY("ai-chat-history/")
 }

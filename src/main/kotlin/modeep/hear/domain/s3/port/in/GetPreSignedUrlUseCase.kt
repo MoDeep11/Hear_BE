@@ -6,4 +6,3 @@ import modeep.hear.infrastructure.adapter.`in`.s3.dto.response.GetPresignedUrlRe
 interface GetPreSignedUrlUseCase {
     fun execute(request: GetPreSignedUrlRequest): GetPresignedUrlResponse
 }
-
