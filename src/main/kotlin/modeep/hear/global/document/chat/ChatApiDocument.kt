@@ -19,6 +19,10 @@ interface ChatApiDocument {
 
     fun createChat(): ResponseEntity<ApiResult<CreateChatResponse>>
 
+    fun deleteChat(
+        chatId: UUID
+    ): ResponseEntity<ApiResult<Unit>>
+
     fun createMessage(
         chatId: UUID,
         request: CreateMessageRequest
@@ -38,8 +42,4 @@ interface ChatApiDocument {
         chatId: UUID,
         request: GenerateImageInChatRequest
     ): ResponseEntity<ApiResult<GenerateImageInChatResponse>>
-
-    fun deleteChat(
-        chatId: UUID
-    ): ResponseEntity<ApiResult<Unit>>
 }
