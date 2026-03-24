@@ -7,26 +7,18 @@ import org.springframework.web.multipart.MultipartFile
 import java.util.UUID
 
 data class UploadDiaryImageRequest(
-    val image: MultipartFile?,
+    val imageUrl: String?,
     val id: UUID?,
 
     @field:Min(value = 0)
     val order: Int,
     val isDeleted: Boolean = false
-) {
-    fun toDomainFile(image: MultipartFile): FileData =
-        FileData(
-            fileName = image.originalFilename ?: "unknown",
-            contentType = image.contentType ?: MediaType.APPLICATION_OCTET_STREAM_VALUE,
-            content = image.inputStream,
-            size = image.size
-        )
-}
+)
 
 //    {
 //        // 이미지 추가
 //        "images": "(File Binary)",
-//        "id": null,
+//        "id": null,  // image id
 //        "order": 0,
 //        "isDeleted": false
 //    },
