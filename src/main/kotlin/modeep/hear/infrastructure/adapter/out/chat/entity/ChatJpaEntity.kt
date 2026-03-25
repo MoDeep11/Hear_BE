@@ -27,4 +27,17 @@ class ChatJpaEntity(
     val messages: MutableList<MessageJpaEntity> = mutableListOf(),
 
     id: UUID
-) : BaseEntity(id)
+) : BaseEntity(id) {
+
+    fun addMessage(message: MessageJpaEntity) {
+        this.messages.add(message)
+        if (message.session != this) {
+            message.assignChat(this)
+        }
+    }
+
+    fun updateMessages(newMessages: List<MessageJpaEntity>) {
+        this.messages.clear()
+        newMessages.forEach { this.addMessage(it) }
+    }
+}

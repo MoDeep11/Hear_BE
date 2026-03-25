@@ -18,7 +18,7 @@ import java.util.UUID
 class MessageJpaEntity(
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "session_id", nullable = false)
-    val sessionId: ChatJpaEntity,
+    var session: ChatJpaEntity,
 
     @Enumerated(EnumType.STRING)
     @Column(name = "sender", nullable = false, length = 8)
@@ -38,4 +38,13 @@ class MessageJpaEntity(
     val duration: Long? = null,  // milliseconds
 
     id: UUID
-) : BaseEntity(id)
+) : BaseEntity(id) {
+
+    fun assignChat(chat: ChatJpaEntity) {
+        this.session.messages.remove(this)
+        this.session = chat
+        if (!chat.messages.contains(this)) {
+            chat.addMessage(this)
+        }
+    }
+}

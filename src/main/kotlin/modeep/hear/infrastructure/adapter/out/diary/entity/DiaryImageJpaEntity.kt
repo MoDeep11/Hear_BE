@@ -39,9 +39,7 @@ class DiaryImageJpaEntity(
 
     fun assignDiary(diary: DiaryJpaEntity) {
         this.diary?.diaryImages?.remove(this)
-
         this.diary = diary
-
         if (!diary.diaryImages.contains(this)) {
             diary.addImage(this)
         }

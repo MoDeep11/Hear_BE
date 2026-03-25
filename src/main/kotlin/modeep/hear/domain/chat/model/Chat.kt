@@ -1,10 +1,9 @@
 package modeep.hear.domain.chat.model
 
+import modeep.hear.domain.chat.exception.ChatErrorCode
 import modeep.hear.domain.chat.vo.ChatStatus
 import modeep.hear.domain.common.annotation.Aggregate
 import modeep.hear.domain.common.vo.BaseTime
-import modeep.hear.domain.diary.exception.DiaryErrorCode
-import modeep.hear.domain.diary.model.DiaryImage
 import modeep.hear.global.error.exception.BusinessException
 import java.util.UUID
 
@@ -28,7 +27,7 @@ data class Chat(
 
     fun validateOwner(currentUserId: UUID) {
         if (this.userId != currentUserId) {
-            throw BusinessException(DiaryErrorCode.CANNOT_ACCESS_DIARY)
+            throw BusinessException(ChatErrorCode.CANNOT_ACCESS_CHAT)
         }
     }
 

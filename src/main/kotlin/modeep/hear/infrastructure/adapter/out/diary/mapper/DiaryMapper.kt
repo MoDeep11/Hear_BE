@@ -9,8 +9,4 @@ interface DiaryMapper {
     fun toModel(entity: DiaryJpaEntity): Diary
 
     fun toEntity(model: Diary): DiaryJpaEntity
-
-    fun toImageModel(entity: DiaryImageJpaEntity): DiaryImage
-
-    fun toImageEntity(model: DiaryImage): DiaryImageJpaEntity
 }

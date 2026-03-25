@@ -24,7 +24,7 @@ class DiaryMapperImpl(
             sourceType = entity.sourceType,
             sessionId = entity.sessionId,
             diaryImages = entity.diaryImages
-                .map { toImageModel(it) }
+                .map { img -> img.toModel() }
                 .toMutableList()
         )
     }
@@ -41,37 +41,34 @@ class DiaryMapperImpl(
         )
 
         val imageEntities = model.diaryImages.map { imageModel ->
-            val imageEntity = toImageEntity(imageModel)
-
-            imageEntity.assignDiary(diaryEntity)
-
-            imageEntity
-        }.toMutableList()
+            imageModel.toEntity(diaryEntity)
+        }
 
         diaryEntity.updateImages(imageEntities)
 
         return diaryEntity
     }
 
-    override fun toImageModel(entity: DiaryImageJpaEntity): DiaryImage {
+    fun DiaryImageJpaEntity.toModel(): DiaryImage {
         return DiaryImage(
-            id = entity.id,
-            diaryId = entity.diary?.id,
-            imageUrl = entity.imageUrl,
-            order = entity.order,
-            sourceType = entity.sourceType,
-            diaryImageStatus = entity.diaryImageStatus,
-            baseTime = baseTimeMapper.toModel(entity.baseTime)
+            id = this.id,
+            diaryId = this.diary?.id,
+            imageUrl = this.imageUrl,
+            order = this.order,
+            sourceType = this.sourceType,
+            diaryImageStatus = this.diaryImageStatus,
+            baseTime = baseTimeMapper.toModel(this.baseTime)
         )
     }
 
-    override fun toImageEntity(model: DiaryImage): DiaryImageJpaEntity {
+    fun DiaryImage.toEntity(diary: DiaryJpaEntity?): DiaryImageJpaEntity {
         return DiaryImageJpaEntity(
-            id = model.id,
-            imageUrl = model.imageUrl,
-            order = model.order,
-            sourceType = model.sourceType,
-            diaryImageStatus = model.diaryImageStatus
+            id = this.id,
+            diary = diary,
+            imageUrl = this.imageUrl,
+            order = this.order,
+            sourceType = this.sourceType,
+            diaryImageStatus = this.diaryImageStatus
         )
     }
 }
