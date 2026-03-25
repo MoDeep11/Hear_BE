@@ -57,6 +57,7 @@ class DiaryMapperImpl(
             order = this.order,
             sourceType = this.sourceType,
             diaryImageStatus = this.diaryImageStatus,
+            sessionId = this.sessionId,
             baseTime = baseTimeMapper.toModel(this.baseTime)
         )
     }
@@ -68,6 +69,7 @@ class DiaryMapperImpl(
             imageUrl = this.imageUrl,
             order = this.order,
             sourceType = this.sourceType,
+            sessionId = this.sessionId,
             diaryImageStatus = this.diaryImageStatus
         )
     }

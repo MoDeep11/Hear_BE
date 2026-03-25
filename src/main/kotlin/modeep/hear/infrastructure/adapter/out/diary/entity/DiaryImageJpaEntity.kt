@@ -34,6 +34,9 @@ class DiaryImageJpaEntity(
     @Column(name = "status", nullable = false, length = 16)
     val diaryImageStatus: DiaryImageStatus = DiaryImageStatus.PROCESSING,
 
+    @Column(name = "session_id")
+    val sessionId: UUID? = null,
+
     id: UUID
 ) : BaseEntity(id) {
 
