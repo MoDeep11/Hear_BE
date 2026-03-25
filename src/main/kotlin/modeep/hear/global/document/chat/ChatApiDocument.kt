@@ -19,7 +19,7 @@ interface ChatApiDocument {
 
     fun createChat(): ResponseEntity<ApiResult<CreateChatResponse>>
 
-    fun deleteChat(
+    fun completeChat(
         chatId: UUID
     ): ResponseEntity<ApiResult<Unit>>
 

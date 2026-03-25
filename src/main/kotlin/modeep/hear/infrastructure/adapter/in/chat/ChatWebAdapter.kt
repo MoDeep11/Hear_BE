@@ -13,7 +13,7 @@ import modeep.hear.infrastructure.adapter.`in`.chat.dto.response.CreateVoiceMess
 import modeep.hear.infrastructure.adapter.`in`.chat.dto.response.GenerateImageInChatResponse
 import modeep.hear.infrastructure.adapter.`in`.chat.dto.response.UploadImageInChatResponse
 import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.DeleteMapping
+import org.springframework.web.bind.annotation.PatchMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
@@ -29,8 +29,8 @@ class ChatWebAdapter() : ChatApiDocument {
         TODO("Not yet implemented")
     }
 
-    @DeleteMapping("/{chat_id}")
-    override fun deleteChat(
+    @PatchMapping("/{chat_id}")
+    override fun completeChat(
         @PathVariable("chat_id") chatId: UUID
     ): ResponseEntity<ApiResult<Unit>> {
         TODO("Not yet implemented")
