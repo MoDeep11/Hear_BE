@@ -51,7 +51,7 @@ class CreateVoiceMessageService(
         )
 
         chat.addMessage(userMessage)
-        chat.addMessage(aiStubMessage)
+        // chat.addMessage(aiStubMessage)
         chatPort.save(chat)
 
         return CreateVoiceMessageResponse(
