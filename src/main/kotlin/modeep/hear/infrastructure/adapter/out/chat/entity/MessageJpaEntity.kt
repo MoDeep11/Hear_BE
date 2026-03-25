@@ -17,7 +17,7 @@ import java.util.UUID
 @Table(name = "messages")
 class MessageJpaEntity(
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "session_id", nullable = false)
+    @JoinColumn(name = "chat_id", nullable = false)
     var session: ChatJpaEntity,
 
     @Enumerated(EnumType.STRING)

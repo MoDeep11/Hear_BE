@@ -5,7 +5,7 @@ import java.util.UUID
 
 data class UploadDiaryImageRequest(
     val imageUrl: String?,
-    val id: UUID?,
+    val id: UUID? = null,
 
     @field:Min(value = 0)
     val order: Int,

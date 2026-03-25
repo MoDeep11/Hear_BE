@@ -6,12 +6,12 @@ import modeep.hear.global.document.chat.ChatApiDocument
 import modeep.hear.infrastructure.adapter.`in`.chat.dto.request.CreateMessageRequest
 import modeep.hear.infrastructure.adapter.`in`.chat.dto.request.CreateVoiceMessageRequest
 import modeep.hear.infrastructure.adapter.`in`.chat.dto.request.GenerateImageInChatRequest
-import modeep.hear.infrastructure.adapter.`in`.chat.dto.request.UploadImageInChatRequest
 import modeep.hear.infrastructure.adapter.`in`.chat.dto.response.CreateChatResponse
 import modeep.hear.infrastructure.adapter.`in`.chat.dto.response.CreateMessageResponse
 import modeep.hear.infrastructure.adapter.`in`.chat.dto.response.CreateVoiceMessageResponse
 import modeep.hear.infrastructure.adapter.`in`.chat.dto.response.GenerateImageInChatResponse
-import modeep.hear.infrastructure.adapter.`in`.chat.dto.response.UploadImageInChatResponse
+import modeep.hear.infrastructure.adapter.`in`.diary.dto.request.UploadDiaryImageRequest
+import modeep.hear.infrastructure.adapter.`in`.diary.dto.response.UploadDiaryImageResponse
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.PatchMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -58,8 +58,8 @@ class ChatWebAdapter() : ChatApiDocument {
     override fun uploadImageInChat(
         @PathVariable("chat_id") chatId: UUID,
         @RequestBody @Valid
-        request: UploadImageInChatRequest
-    ): ResponseEntity<ApiResult<UploadImageInChatResponse>> {
+        request: UploadDiaryImageRequest
+    ): ResponseEntity<ApiResult<UploadDiaryImageResponse>> {
         TODO("Not yet implemented")
     }
 

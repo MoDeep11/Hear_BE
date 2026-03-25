@@ -6,7 +6,9 @@ import modeep.hear.domain.common.vo.Emotion
 import modeep.hear.domain.diary.exception.DiaryErrorCode
 import modeep.hear.domain.diary.vo.DiarySourceType
 import modeep.hear.global.error.exception.BusinessException
+import modeep.hear.infrastructure.adapter.out.diary.entity.DiaryImageJpaEntity
 import java.util.UUID
+import kotlin.collections.forEach
 
 @Aggregate
 data class Diary(
@@ -53,11 +55,19 @@ data class Diary(
 
     fun addImage(image: DiaryImage) {
         if (diaryImages.size >= 10) throw BusinessException(DiaryErrorCode.TOO_MANY_IMAGES)
-        diaryImages.add(image)
+        this.diaryImages.add(image)
+        if (image.diaryId != this.id) {
+            image.assignDiary(this)
+        }
     }
 
     fun removeImage(image: DiaryImage) {
         diaryImages.remove(image)
+    }
+
+    fun updateImages(newImages: List<DiaryImage>) {
+        this.diaryImages.clear()
+        newImages.forEach { this.addImage(it) }
     }
 
     fun validateOwner(currentUserId: UUID) {

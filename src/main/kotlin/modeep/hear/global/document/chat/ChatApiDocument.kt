@@ -5,12 +5,12 @@ import modeep.hear.global.common.response.ApiResult
 import modeep.hear.infrastructure.adapter.`in`.chat.dto.request.CreateMessageRequest
 import modeep.hear.infrastructure.adapter.`in`.chat.dto.request.CreateVoiceMessageRequest
 import modeep.hear.infrastructure.adapter.`in`.chat.dto.request.GenerateImageInChatRequest
-import modeep.hear.infrastructure.adapter.`in`.chat.dto.request.UploadImageInChatRequest
 import modeep.hear.infrastructure.adapter.`in`.chat.dto.response.CreateChatResponse
 import modeep.hear.infrastructure.adapter.`in`.chat.dto.response.CreateMessageResponse
 import modeep.hear.infrastructure.adapter.`in`.chat.dto.response.CreateVoiceMessageResponse
 import modeep.hear.infrastructure.adapter.`in`.chat.dto.response.GenerateImageInChatResponse
-import modeep.hear.infrastructure.adapter.`in`.chat.dto.response.UploadImageInChatResponse
+import modeep.hear.infrastructure.adapter.`in`.diary.dto.request.UploadDiaryImageRequest
+import modeep.hear.infrastructure.adapter.`in`.diary.dto.response.UploadDiaryImageResponse
 import org.springframework.http.ResponseEntity
 import java.util.UUID
 
@@ -35,8 +35,8 @@ interface ChatApiDocument {
 
     fun uploadImageInChat(
         chatId: UUID,
-        request: UploadImageInChatRequest
-    ): ResponseEntity<ApiResult<UploadImageInChatResponse>>
+        request: UploadDiaryImageRequest
+    ): ResponseEntity<ApiResult<UploadDiaryImageResponse>>
 
     fun generateImageInChat(
         chatId: UUID,
