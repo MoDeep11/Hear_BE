@@ -4,7 +4,7 @@ import modeep.hear.domain.auth.port.out.SecurityPort
 import modeep.hear.domain.chat.exception.ChatErrorCode
 import modeep.hear.domain.chat.model.AiImageTask
 import modeep.hear.domain.chat.port.`in`.GenerateImageInChatUseCase
-import modeep.hear.domain.chat.port.out.ChatPort
+import modeep.hear.domain.chat.port.out.CommandAiImageTaskPort
 import modeep.hear.domain.chat.port.out.QueryChatPort
 import modeep.hear.domain.chat.vo.AiImageTaskStatus
 import modeep.hear.global.error.exception.BusinessException
@@ -15,10 +15,11 @@ import org.springframework.transaction.annotation.Transactional
 import java.util.UUID
 
 @Service
-@Transactional(readOnly = true)
+@Transactional
 class GenerateImageInChatService(
     private val securityPort: SecurityPort,
     private val chatPort: QueryChatPort,
+    private val commandAiImageTaskPort: CommandAiImageTaskPort
 ) : GenerateImageInChatUseCase {
     override fun execute(
         chatId: UUID,
@@ -32,6 +33,8 @@ class GenerateImageInChatService(
             sessionId = chatId,
             status = AiImageTaskStatus.RESERVED
         )
+
+        commandAiImageTaskPort.save(task)
 
         // todo: ai 서버로 요청
 
