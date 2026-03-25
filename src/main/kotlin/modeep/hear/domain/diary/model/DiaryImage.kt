@@ -3,7 +3,6 @@ package modeep.hear.domain.diary.model
 import modeep.hear.domain.common.vo.BaseTime
 import modeep.hear.domain.diary.vo.DiaryImageStatus
 import modeep.hear.domain.diary.vo.DiarySourceType
-import modeep.hear.infrastructure.adapter.out.diary.entity.DiaryJpaEntity
 import java.util.UUID
 
 data class DiaryImage(

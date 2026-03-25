@@ -1,11 +1,9 @@
 package modeep.hear.infrastructure.adapter.out.diary.mapper
 
 import modeep.hear.domain.diary.model.Diary
-import modeep.hear.domain.diary.model.DiaryImage
 import modeep.hear.domain.user.exception.UserErrorCode
 import modeep.hear.global.common.mapper.BaseTimeMapper
 import modeep.hear.global.error.exception.BusinessException
-import modeep.hear.infrastructure.adapter.out.diary.entity.DiaryImageJpaEntity
 import modeep.hear.infrastructure.adapter.out.diary.entity.DiaryJpaEntity
 import org.springframework.stereotype.Component
 

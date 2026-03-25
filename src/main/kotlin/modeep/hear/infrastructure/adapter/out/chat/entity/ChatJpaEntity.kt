@@ -23,7 +23,7 @@ class ChatJpaEntity(
     val status: ChatStatus = ChatStatus.ONGOING,
 
     @OneToMany(mappedBy = "session", cascade = [CascadeType.ALL], orphanRemoval = true)
-    @OrderBy("createdAt DESC")  // 최신순 정렬
+    @OrderBy("createdAt DESC") // 최신순 정렬
     val messages: MutableList<MessageJpaEntity> = mutableListOf(),
 
     id: UUID

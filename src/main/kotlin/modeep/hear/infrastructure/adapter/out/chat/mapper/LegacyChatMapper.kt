@@ -1,16 +1,14 @@
 package modeep.hear.infrastructure.adapter.out.chat.mapper
 
 import modeep.hear.domain.chat.model.Chat
-import modeep.hear.global.common.mapper.BaseTimeMapper
 import modeep.hear.infrastructure.adapter.out.chat.entity.ChatJpaEntity
-import org.mapstruct.Mapper
 import org.mapstruct.Mapping
 
-@Deprecated("not used")
-//@Mapper(
+// @Mapper(
 //    componentModel = "spring",
 //    uses = [BaseTimeMapper::class]
-//)
+// )
+@Deprecated("not used")
 interface LegacyChatMapper {
     fun toModel(entity: ChatJpaEntity): Chat
 

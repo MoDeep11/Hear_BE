@@ -35,7 +35,7 @@ class MessageJpaEntity(
     val voiceUrl: String? = null,
 
     @Column(name = "duration")
-    val duration: Long? = null,  // milliseconds
+    val duration: Long? = null, // milliseconds
 
     id: UUID
 ) : BaseEntity(id) {

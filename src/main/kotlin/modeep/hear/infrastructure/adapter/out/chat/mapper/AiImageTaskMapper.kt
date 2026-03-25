@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component
 class AiImageTaskMapper(
     private val baseTimeMapper: BaseTimeMapper
 ) {
-    fun toModel(entity: AiImageTaskJpaEntity) : AiImageTask {
+    fun toModel(entity: AiImageTaskJpaEntity): AiImageTask {
         return AiImageTask(
             id = entity.id,
             sessionId = entity.sessionId,
@@ -19,7 +19,7 @@ class AiImageTaskMapper(
         )
     }
 
-    fun toEntity(model: AiImageTask) : AiImageTaskJpaEntity {
+    fun toEntity(model: AiImageTask): AiImageTaskJpaEntity {
         return AiImageTaskJpaEntity(
             sessionId = model.sessionId,
             diaryId = model.diaryId,

@@ -5,5 +5,5 @@ import jakarta.validation.constraints.NotBlank
 data class CreateVoiceMessageRequest(
     @field:NotBlank
     val voiceUrl: String,
-    val duration: Long = 0L  // milliseconds
+    val duration: Long = 0L // milliseconds
 )

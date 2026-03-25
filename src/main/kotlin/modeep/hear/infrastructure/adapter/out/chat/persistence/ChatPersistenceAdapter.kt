@@ -12,7 +12,7 @@ class ChatPersistenceAdapter(
     private val repo: ChatRepository,
     private val mapper: ChatMapper
 ) : ChatPort {
-    //--Query--//
+    // --Query--//
     override fun findById(chatId: UUID): Chat {
         TODO("Not yet implemented")
     }
@@ -21,7 +21,7 @@ class ChatPersistenceAdapter(
         TODO("Not yet implemented")
     }
 
-    //--Command--//
+    // --Command--//
     override fun save(chat: Chat) {
         TODO("Not yet implemented")
     }

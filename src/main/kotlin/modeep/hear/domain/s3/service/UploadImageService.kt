@@ -12,13 +12,12 @@ import org.springframework.stereotype.Service
 
 @Service
 class UploadImageService(
-    private val s3Port: S3Port,
+    private val s3Port: S3Port
 ) : UploadImageUseCase {
     override fun execute(
         diaryImages: MutableList<DiaryImage>?,
         requests: List<UploadDiaryImageRequest>
     ): List<DiaryImage> {
-
         val images = diaryImages ?: mutableListOf()
 
         requests.forEach { request ->

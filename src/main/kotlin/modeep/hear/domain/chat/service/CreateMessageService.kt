@@ -10,7 +10,6 @@ import modeep.hear.infrastructure.adapter.`in`.chat.dto.request.CreateMessageReq
 import modeep.hear.infrastructure.adapter.`in`.chat.dto.response.CreateMessageResponse
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import java.time.LocalDateTime
 import java.util.UUID
 
 @Service
@@ -31,7 +30,7 @@ class CreateMessageService(
             sessionId = chatId,
             sender = Sender.USER,
             message = request.message,
-            messageType = MessageType.TEXT,
+            messageType = MessageType.TEXT
         )
 
         // todo: ai 서버와 소통
@@ -40,7 +39,7 @@ class CreateMessageService(
             sessionId = chatId,
             sender = Sender.AI,
             message = "AI 답변입니다. todo: ai 답변을 받도록 변경",
-            messageType = MessageType.TEXT,
+            messageType = MessageType.TEXT
         )
 
         chat.addMessage(userMessage)

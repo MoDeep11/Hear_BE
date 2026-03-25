@@ -15,14 +15,14 @@ data class AiImageTask(
         fun create(
             sessionId: UUID? = null,
             diaryId: UUID? = null,
-            status: AiImageTaskStatus = AiImageTaskStatus.RESERVED,
-        ) : AiImageTask =
+            status: AiImageTaskStatus = AiImageTaskStatus.RESERVED
+        ): AiImageTask =
             AiImageTask(
                 id = UUID.randomUUID(),
                 sessionId = sessionId,
                 diaryId = diaryId,
                 status = status,
-                baseTime = BaseTime(),
+                baseTime = BaseTime()
             )
     }
 }

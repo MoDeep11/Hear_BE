@@ -10,9 +10,9 @@ import modeep.hear.global.common.response.ApiResult
 import modeep.hear.global.document.diary.DiaryApiDocument
 import modeep.hear.infrastructure.adapter.`in`.diary.dto.request.QueryDiariesRequest
 import modeep.hear.infrastructure.adapter.`in`.diary.dto.request.UpdateDiaryContentRequest
-import modeep.hear.infrastructure.adapter.`in`.s3.dto.request.UploadDiaryImageRequest
 import modeep.hear.infrastructure.adapter.`in`.diary.dto.response.QueryDiariesResponse
 import modeep.hear.infrastructure.adapter.`in`.diary.dto.response.QueryDiaryDetailResponse
+import modeep.hear.infrastructure.adapter.`in`.s3.dto.request.UploadDiaryImageRequest
 import modeep.hear.infrastructure.adapter.`in`.s3.dto.response.UploadDiaryImageResponse
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.DeleteMapping

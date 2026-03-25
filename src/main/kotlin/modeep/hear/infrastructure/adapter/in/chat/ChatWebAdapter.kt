@@ -35,13 +35,15 @@ class ChatWebAdapter(
     private val createMessageUseCase: CreateMessageUseCase,
     private val createVoiceMessageUseCase: CreateVoiceMessageUseCase,
     private val uploadImageInChatUseCase: UploadImageInChatUseCase,
-    private val generateImageInChatUseCase: GenerateImageInChatUseCase,
+    private val generateImageInChatUseCase: GenerateImageInChatUseCase
 ) : ChatApiDocument {
     @PostMapping
     override fun createChat(): ResponseEntity<ApiResult<CreateChatResponse>> {
-        return ResponseEntity.ok(ApiResult(
-            data = createChatUseCase.execute()
-        ))
+        return ResponseEntity.ok(
+            ApiResult(
+                data = createChatUseCase.execute()
+            )
+        )
     }
 
     @PatchMapping("/{chat_id}")
@@ -58,9 +60,11 @@ class ChatWebAdapter(
         @RequestBody @Valid
         request: CreateMessageRequest
     ): ResponseEntity<ApiResult<CreateMessageResponse>> {
-        return ResponseEntity.ok(ApiResult(
-            data = createMessageUseCase.execute(chatId, request)
-        ))
+        return ResponseEntity.ok(
+            ApiResult(
+                data = createMessageUseCase.execute(chatId, request)
+            )
+        )
     }
 
     @PostMapping("/{chat_id}/voice")
@@ -69,9 +73,11 @@ class ChatWebAdapter(
         @RequestBody @Valid
         request: CreateVoiceMessageRequest
     ): ResponseEntity<ApiResult<CreateVoiceMessageResponse>> {
-        return ResponseEntity.ok(ApiResult(
-            data = createVoiceMessageUseCase.execute(chatId, request)
-        ))
+        return ResponseEntity.ok(
+            ApiResult(
+                data = createVoiceMessageUseCase.execute(chatId, request)
+            )
+        )
     }
 
     @PostMapping("/{chat_id}/images")
@@ -80,9 +86,11 @@ class ChatWebAdapter(
         @RequestBody @Valid
         request: List<UploadDiaryImageRequest>
     ): ResponseEntity<ApiResult<List<UploadDiaryImageResponse>>> {
-        return ResponseEntity.ok(ApiResult(
-            data = uploadImageInChatUseCase.execute(chatId, request)
-        ))
+        return ResponseEntity.ok(
+            ApiResult(
+                data = uploadImageInChatUseCase.execute(chatId, request)
+            )
+        )
     }
 
     @PostMapping("/{chat_id}/messages/generations")
@@ -90,8 +98,10 @@ class ChatWebAdapter(
         @PathVariable("chat_id") chatId: UUID,
         @RequestBody request: GenerateImageInChatRequest
     ): ResponseEntity<ApiResult<GenerateImageInChatResponse>> {
-        return ResponseEntity.ok(ApiResult(
-            data = generateImageInChatUseCase.execute(chatId, request)
-        ))
+        return ResponseEntity.ok(
+            ApiResult(
+                data = generateImageInChatUseCase.execute(chatId, request)
+            )
+        )
     }
 }

@@ -6,7 +6,6 @@ import modeep.hear.domain.common.vo.Emotion
 import modeep.hear.domain.diary.exception.DiaryErrorCode
 import modeep.hear.domain.diary.vo.DiarySourceType
 import modeep.hear.global.error.exception.BusinessException
-import modeep.hear.infrastructure.adapter.out.diary.entity.DiaryImageJpaEntity
 import java.util.UUID
 import kotlin.collections.forEach
 

@@ -1,8 +1,6 @@
 package modeep.hear.infrastructure.adapter.out.diary.mapper
 
 import modeep.hear.domain.diary.model.Diary
-import modeep.hear.domain.diary.model.DiaryImage
-import modeep.hear.infrastructure.adapter.out.diary.entity.DiaryImageJpaEntity
 import modeep.hear.infrastructure.adapter.out.diary.entity.DiaryJpaEntity
 
 interface DiaryMapper {

@@ -7,11 +7,9 @@ import modeep.hear.domain.chat.port.out.ChatPort
 import modeep.hear.domain.chat.vo.MessageType
 import modeep.hear.domain.chat.vo.Sender
 import modeep.hear.infrastructure.adapter.`in`.chat.dto.request.CreateVoiceMessageRequest
-import modeep.hear.infrastructure.adapter.`in`.chat.dto.response.CreateMessageResponse
 import modeep.hear.infrastructure.adapter.`in`.chat.dto.response.CreateVoiceMessageResponse
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import java.time.LocalDateTime
 import java.util.UUID
 
 @Service
@@ -34,7 +32,7 @@ class CreateVoiceMessageService(
             message = "알 수 없음",
             messageType = MessageType.VOICE,
             voiceUrl = request.voiceUrl,
-            duration = request.duration,
+            duration = request.duration
         )
 
         // todo: ai 서버와 소통
@@ -47,7 +45,7 @@ class CreateVoiceMessageService(
             message = "todo: ai 답변 메시지",
             messageType = MessageType.VOICE,
             voiceUrl = "https://example.com/ai-voice.mp3",
-            duration = 30000,
+            duration = 30000
         )
 
         chat.addMessage(userMessage)
