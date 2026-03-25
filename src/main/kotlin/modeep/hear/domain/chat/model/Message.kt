@@ -14,7 +14,7 @@ data class Message(
     val message: String,
     val messageType: MessageType,
     val voiceUrl: String? = null,
-    val duration: Int? = null, // 음성 재생 시간
+    val duration: Long? = null, // 음성 재생 시간, milliseconds
     val baseTime: BaseTime
 ) {
     companion object {
@@ -24,7 +24,7 @@ data class Message(
             message: String,
             messageType: MessageType,
             voiceUrl: String? = null,
-            duration: Int? = null
+            duration: Long? = null
         ): Message {
             return Message(
                 id = UUID.randomUUID(),
@@ -38,4 +38,7 @@ data class Message(
             )
         }
     }
+
+    fun updateMessage(message: String) =
+        this.copy(message = message)
 }
