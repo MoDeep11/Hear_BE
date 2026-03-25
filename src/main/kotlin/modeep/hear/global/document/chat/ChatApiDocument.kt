@@ -35,8 +35,8 @@ interface ChatApiDocument {
 
     fun uploadImageInChat(
         chatId: UUID,
-        request: UploadDiaryImageRequest
-    ): ResponseEntity<ApiResult<UploadDiaryImageResponse>>
+        request: List<UploadDiaryImageRequest>
+    ): ResponseEntity<ApiResult<List<UploadDiaryImageResponse>>>
 
     fun generateImageInChat(
         chatId: UUID,

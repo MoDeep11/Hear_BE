@@ -8,5 +8,5 @@ interface UploadImageInChatUseCase {
     fun execute(
         chatId: UUID,
         request: List<UploadDiaryImageRequest>
-    ) : UploadDiaryImageResponse
+    ) : List<UploadDiaryImageResponse>
 }
