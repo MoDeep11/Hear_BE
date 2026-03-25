@@ -16,9 +16,7 @@ class CompleteChatService(
     override fun execute(chatId: UUID) {
         val user = securityPort.getCurrentUser()
         val chat = chatPort.findById(chatId)
-        if (user.id != chat.userId) {
-            chat.validateOwner(user.id)
-        }
+        chat.validateOwner(user.id)
 
         chat.completeChat()
         chatPort.save(chat)

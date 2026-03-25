@@ -8,12 +8,34 @@ import java.util.UUID
 
 @Aggregate
 data class Message(
-    val id: UUID? = null,
+    val id: UUID,
     val sessionId: UUID,
     val sender: Sender,
     val message: String,
-    val messageType: MessageType = MessageType.TEXT,
+    val messageType: MessageType,
     val voiceUrl: String? = null,
-    val duration: Int? = 0, // 음성 재생 시간
+    val duration: Int? = null, // 음성 재생 시간
     val baseTime: BaseTime
-)
+) {
+    companion object {
+        fun create(
+            sessionId: UUID,
+            sender: Sender,
+            message: String,
+            messageType: MessageType,
+            voiceUrl: String? = null,
+            duration: Int? = null
+        ): Message {
+            return Message(
+                id = UUID.randomUUID(),
+                sessionId = sessionId,
+                sender = sender,
+                message = message,
+                messageType = messageType,
+                voiceUrl = voiceUrl,
+                duration = duration,
+                baseTime = BaseTime()
+            )
+        }
+    }
+}
