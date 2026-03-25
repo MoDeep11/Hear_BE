@@ -1,6 +1,12 @@
 package modeep.hear.infrastructure.adapter.`in`.chat
 
 import jakarta.validation.Valid
+import modeep.hear.domain.chat.port.`in`.CompleteChatUseCase
+import modeep.hear.domain.chat.port.`in`.CreateChatUseCase
+import modeep.hear.domain.chat.port.`in`.CreateMessageUseCase
+import modeep.hear.domain.chat.port.`in`.CreateVoiceMessageUseCase
+import modeep.hear.domain.chat.port.`in`.GenerateImageInChatUseCase
+import modeep.hear.domain.diary.port.`in`.UploadDiaryImageUseCase
 import modeep.hear.global.common.response.ApiResult
 import modeep.hear.global.document.chat.ChatApiDocument
 import modeep.hear.infrastructure.adapter.`in`.chat.dto.request.CreateMessageRequest
@@ -10,8 +16,8 @@ import modeep.hear.infrastructure.adapter.`in`.chat.dto.response.CreateChatRespo
 import modeep.hear.infrastructure.adapter.`in`.chat.dto.response.CreateMessageResponse
 import modeep.hear.infrastructure.adapter.`in`.chat.dto.response.CreateVoiceMessageResponse
 import modeep.hear.infrastructure.adapter.`in`.chat.dto.response.GenerateImageInChatResponse
-import modeep.hear.infrastructure.adapter.`in`.diary.dto.request.UploadDiaryImageRequest
-import modeep.hear.infrastructure.adapter.`in`.diary.dto.response.UploadDiaryImageResponse
+import modeep.hear.infrastructure.adapter.`in`.s3.dto.request.UploadDiaryImageRequest
+import modeep.hear.infrastructure.adapter.`in`.s3.dto.response.UploadDiaryImageResponse
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.PatchMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -23,7 +29,13 @@ import java.util.UUID
 
 @RestController
 @RequestMapping("api/v1/chats")
-class ChatWebAdapter() : ChatApiDocument {
+class ChatWebAdapter(
+    private val completeChatUseCase: CompleteChatUseCase,
+    private val createChatUseCase: CreateChatUseCase,
+    private val createMessageUseCase: CreateMessageUseCase,
+    private val createVoiceMessageUseCase: CreateVoiceMessageUseCase,
+    private val generateImageInChatUseCase: GenerateImageInChatUseCase,
+) : ChatApiDocument {
     @PostMapping
     override fun createChat(): ResponseEntity<ApiResult<CreateChatResponse>> {
         TODO("Not yet implemented")
@@ -33,7 +45,8 @@ class ChatWebAdapter() : ChatApiDocument {
     override fun completeChat(
         @PathVariable("chat_id") chatId: UUID
     ): ResponseEntity<ApiResult<Unit>> {
-        TODO("Not yet implemented")
+        completeChatUseCase.execute(chatId)
+        return ResponseEntity.ok(ApiResult())
     }
 
     @PostMapping("/{chat_id}/messages")
@@ -42,7 +55,9 @@ class ChatWebAdapter() : ChatApiDocument {
         @RequestBody @Valid
         request: CreateMessageRequest
     ): ResponseEntity<ApiResult<CreateMessageResponse>> {
-        TODO("Not yet implemented")
+        return ResponseEntity.ok(ApiResult(
+            data = createMessageUseCase.execute(chatId, request)
+        ))
     }
 
     @PostMapping("/{chat_id}/voice")
@@ -51,7 +66,9 @@ class ChatWebAdapter() : ChatApiDocument {
         @RequestBody @Valid
         request: CreateVoiceMessageRequest
     ): ResponseEntity<ApiResult<CreateVoiceMessageResponse>> {
-        TODO("Not yet implemented")
+        return ResponseEntity.ok(ApiResult(
+            data = createVoiceMessageUseCase.execute(chatId, request)
+        ))
     }
 
     @PostMapping("/{chat_id}/images")
@@ -68,6 +85,8 @@ class ChatWebAdapter() : ChatApiDocument {
         @PathVariable("chat_id") chatId: UUID,
         @RequestBody request: GenerateImageInChatRequest
     ): ResponseEntity<ApiResult<GenerateImageInChatResponse>> {
-        TODO("Not yet implemented")
+        return ResponseEntity.ok(ApiResult(
+            data = generateImageInChatUseCase.execute(chatId, request)
+        ))
     }
 }

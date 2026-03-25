@@ -1,4 +1,4 @@
-package modeep.hear.infrastructure.adapter.`in`.diary.dto.response
+package modeep.hear.infrastructure.adapter.`in`.s3.dto.response
 
 import modeep.hear.domain.diary.exception.DiaryErrorCode
 import modeep.hear.domain.diary.vo.DiarySourceType

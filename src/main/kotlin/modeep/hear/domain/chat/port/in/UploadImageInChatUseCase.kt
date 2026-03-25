@@ -1,12 +1,12 @@
-package modeep.hear.domain.diary.port.`in`
+package modeep.hear.domain.chat.port.`in`
 
 import modeep.hear.infrastructure.adapter.`in`.s3.dto.request.UploadDiaryImageRequest
 import modeep.hear.infrastructure.adapter.`in`.s3.dto.response.UploadDiaryImageResponse
 import java.util.UUID
 
-interface UploadDiaryImageUseCase {
+interface UploadImageInChatUseCase {
     fun execute(
-        diaryId: UUID,
-        requests: List<UploadDiaryImageRequest>
-    ): List<UploadDiaryImageResponse>
+        chatId: UUID,
+        request: List<UploadDiaryImageRequest>
+    ) : UploadDiaryImageResponse
 }
