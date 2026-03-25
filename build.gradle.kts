@@ -48,6 +48,7 @@ dependencies {
     implementation(libs.redis)
     implementation(libs.cache)
     implementation(libs.spring.boot.starter.mail)
+    implementation(libs.spring.boot.starter.webflux)
     developmentOnly(libs.spring.boot.devtools)
 
     // jwt
