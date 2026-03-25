@@ -65,8 +65,9 @@ data class Diary(
     }
 
     fun updateImages(newImages: List<DiaryImage>) {
+        val imagesToAdd = newImages.toList()
         this.diaryImages.clear()
-        newImages.forEach { this.addImage(it) }
+        imagesToAdd.forEach { this.addImage(it) }
     }
 
     fun validateOwner(currentUserId: UUID) {

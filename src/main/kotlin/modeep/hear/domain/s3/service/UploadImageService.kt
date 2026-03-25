@@ -19,6 +19,7 @@ class UploadImageService(
         requests: List<UploadDiaryImageRequest>
     ): List<DiaryImage> {
         val images = diaryImages ?: mutableListOf()
+        val urlsToDelete = mutableSetOf<String>()
 
         requests.forEach { request ->
             when {
@@ -37,9 +38,7 @@ class UploadImageService(
                 request.imageUrl.isNullOrBlank() && request.id != null && request.isDeleted -> {
                     val target = images.find { it.id == request.id }
                         ?: throw BusinessException(DiaryErrorCode.IMAGE_NOT_FOUND)
-                    target.imageUrl?.let { s3Url ->
-                        s3Port.delete(s3Url)
-                    }
+                    target.imageUrl?.let { urlsToDelete.add(it) }
                     images.remove(target)
                 }
 
@@ -63,12 +62,18 @@ class UploadImageService(
         // 순서가 꼬엿을 경우를 대비해 인덱스 재정렬
         reorderImagesSafely(images)
 
+        urlsToDelete.forEach { url ->
+            s3Port.delete(url)
+        }
+
         return images
     }
 
     private fun reorderImagesSafely(diaryImages: MutableList<DiaryImage>) {
-        diaryImages.sortedBy { it.order }.forEachIndexed { index, img ->
-            img.updateOrder(index)
-        }
+        val reordered = diaryImages
+            .sortedBy { it.order }
+            .mapIndexed { index, img -> img.updateOrder(index) }
+        diaryImages.clear()
+        diaryImages.addAll(reordered)
     }
 }
