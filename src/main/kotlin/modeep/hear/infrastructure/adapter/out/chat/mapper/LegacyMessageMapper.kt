@@ -6,11 +6,12 @@ import modeep.hear.infrastructure.adapter.out.chat.entity.MessageJpaEntity
 import org.mapstruct.Mapper
 import org.mapstruct.Mapping
 
-@Mapper(
-    componentModel = "spring",
-    uses = [BaseTimeMapper::class]
-)
-interface MessageMapper {
+@Deprecated("not used")
+//@Mapper(
+//    componentModel = "spring",
+//    uses = [BaseTimeMapper::class]
+//)
+interface LegacyMessageMapper {
     fun toModel(entity: MessageJpaEntity): Message
 
     // baseTime 매핑 무시: Spring에서 관리
