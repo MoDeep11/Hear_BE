@@ -11,7 +11,8 @@ import org.springframework.stereotype.Component
 
 @Component
 class DiaryMapperImpl(
-    private val baseTimeMapper: BaseTimeMapper
+    private val baseTimeMapper: BaseTimeMapper,
+    private val diaryImageMapper: DiaryImageMapper
 ) : DiaryMapper {
     override fun toModel(entity: DiaryJpaEntity): Diary {
         return Diary(
@@ -24,7 +25,7 @@ class DiaryMapperImpl(
             sourceType = entity.sourceType,
             sessionId = entity.sessionId,
             diaryImages = entity.diaryImages
-                .map { img -> img.toModel() }
+                .map { diaryImageMapper.toModel(it) }
                 .toMutableList()
         )
     }
@@ -40,37 +41,12 @@ class DiaryMapperImpl(
             id = model.id
         )
 
-        val imageEntities = model.diaryImages.map { imageModel ->
-            imageModel.toEntity(diaryEntity)
+        val imageEntities = model.diaryImages.map {
+            diaryImageMapper.toEntity(it, diaryEntity)
         }
 
         diaryEntity.updateImages(imageEntities)
 
         return diaryEntity
-    }
-
-    fun DiaryImageJpaEntity.toModel(): DiaryImage {
-        return DiaryImage(
-            id = this.id,
-            diaryId = this.diary?.id,
-            imageUrl = this.imageUrl,
-            order = this.order,
-            sourceType = this.sourceType,
-            diaryImageStatus = this.diaryImageStatus,
-            sessionId = this.sessionId,
-            baseTime = baseTimeMapper.toModel(this.baseTime)
-        )
-    }
-
-    fun DiaryImage.toEntity(diary: DiaryJpaEntity?): DiaryImageJpaEntity {
-        return DiaryImageJpaEntity(
-            id = this.id,
-            diary = diary,
-            imageUrl = this.imageUrl,
-            order = this.order,
-            sourceType = this.sourceType,
-            sessionId = this.sessionId,
-            diaryImageStatus = this.diaryImageStatus
-        )
     }
 }
