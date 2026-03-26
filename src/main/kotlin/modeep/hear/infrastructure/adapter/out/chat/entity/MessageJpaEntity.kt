@@ -4,6 +4,9 @@ import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.EnumType
 import jakarta.persistence.Enumerated
+import jakarta.persistence.FetchType
+import jakarta.persistence.JoinColumn
+import jakarta.persistence.ManyToOne
 import jakarta.persistence.Table
 import modeep.hear.domain.chat.vo.MessageType
 import modeep.hear.domain.chat.vo.Sender
@@ -13,8 +16,9 @@ import java.util.UUID
 @Entity
 @Table(name = "messages")
 class MessageJpaEntity(
-    @Column(name = "session_id", nullable = false)
-    val sessionId: UUID,
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "chat_id", nullable = false)
+    var chat: ChatJpaEntity,
 
     @Enumerated(EnumType.STRING)
     @Column(name = "sender", nullable = false, length = 8)
@@ -31,7 +35,16 @@ class MessageJpaEntity(
     val voiceUrl: String? = null,
 
     @Column(name = "duration")
-    val duration: Int? = 0,
+    val duration: Long? = null, // milliseconds
 
     id: UUID
-) : BaseEntity(id)
+) : BaseEntity(id) {
+
+    fun assignChat(chat: ChatJpaEntity) {
+        this.chat.messages.remove(this)
+        this.chat = chat
+        if (!chat.messages.contains(this)) {
+            chat.addMessage(this)
+        }
+    }
+}

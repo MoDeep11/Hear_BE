@@ -12,8 +12,8 @@ import java.util.UUID
 @Entity
 @Table(name = "ai_image_tasks")
 class AiImageTaskJpaEntity(
-    @Column(name = "session_id")
-    val sessionId: UUID? = null,
+    @Column(name = "chat_id")
+    val chatId: UUID? = null,
 
     @Column(name = "diary_id")
     val diaryId: UUID? = null,

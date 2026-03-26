@@ -2,18 +2,33 @@ package modeep.hear.infrastructure.adapter.out.chat.mapper
 
 import modeep.hear.domain.chat.model.Message
 import modeep.hear.global.common.mapper.BaseTimeMapper
+import modeep.hear.infrastructure.adapter.out.chat.entity.ChatJpaEntity
 import modeep.hear.infrastructure.adapter.out.chat.entity.MessageJpaEntity
-import org.mapstruct.Mapper
-import org.mapstruct.Mapping
+import org.springframework.stereotype.Component
+import java.util.UUID
 
-@Mapper(
-    componentModel = "spring",
-    uses = [BaseTimeMapper::class]
-)
-interface MessageMapper {
-    fun toModel(entity: MessageJpaEntity): Message
+@Component
+class MessageMapper(
+    private val baseTimeMapper: BaseTimeMapper
+) {
+    fun toModel(chatId: UUID, entity: MessageJpaEntity): Message = Message(
+        id = entity.id,
+        chatId = chatId,
+        sender = entity.sender,
+        message = entity.message,
+        messageType = entity.messageType,
+        voiceUrl = entity.voiceUrl,
+        duration = entity.duration,
+        baseTime = baseTimeMapper.toModel(entity.baseTime)
+    )
 
-    // baseTime 매핑 무시: Spring에서 관리
-    @Mapping(target = "baseTime", ignore = true)
-    fun toEntity(model: Message): MessageJpaEntity
+    fun toEntity(chat: ChatJpaEntity, model: Message): MessageJpaEntity = MessageJpaEntity(
+        id = model.id,
+        chat = chat,
+        sender = model.sender,
+        message = model.message,
+        messageType = model.messageType,
+        voiceUrl = model.voiceUrl,
+        duration = model.duration
+    )
 }

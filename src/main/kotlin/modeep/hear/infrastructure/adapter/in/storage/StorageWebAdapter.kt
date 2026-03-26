@@ -1,0 +1,34 @@
+package modeep.hear.infrastructure.adapter.`in`.storage
+
+import jakarta.validation.Valid
+import modeep.hear.domain.storage.port.`in`.GenerateUploadUrlUseCase
+import modeep.hear.global.common.response.ApiResult
+import modeep.hear.global.document.storage.StorageApiDocument
+import modeep.hear.infrastructure.adapter.`in`.storage.dto.request.GenerateUploadUrlRequest
+import modeep.hear.infrastructure.adapter.`in`.storage.dto.response.GenerateUploadUrlResponse
+import org.springframework.http.ResponseEntity
+import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RestController
+
+@RestController
+@RequestMapping("/api/v1/storage")
+class StorageWebAdapter(
+    private val generateUploadUrlUseCase: GenerateUploadUrlUseCase
+) : StorageApiDocument {
+
+    @PostMapping("/upload-url")
+    override fun generateUploadUrl(
+        @RequestBody @Valid
+        request: GenerateUploadUrlRequest
+    ): ResponseEntity<ApiResult<GenerateUploadUrlResponse>> {
+        return ResponseEntity.ok(
+            ApiResult(
+                data = generateUploadUrlUseCase.execute(request)
+            )
+        )
+    }
+}
+
+// TODO: aws lambda로 동시성 처리 시도, Cleanup Scheduler로 DB에 없는 S3 파일들을 찾아 삭제

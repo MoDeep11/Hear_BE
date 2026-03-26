@@ -32,6 +32,6 @@ class UserPersistenceAdapter(
     }
 
     override fun delete(userId: UUID) {
-        repository.deleteById(userId)
+        repository.deleteIfExists(userId)
     }
 }

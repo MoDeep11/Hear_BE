@@ -10,10 +10,10 @@ import modeep.hear.global.common.response.ApiResult
 import modeep.hear.global.document.diary.DiaryApiDocument
 import modeep.hear.infrastructure.adapter.`in`.diary.dto.request.QueryDiariesRequest
 import modeep.hear.infrastructure.adapter.`in`.diary.dto.request.UpdateDiaryContentRequest
-import modeep.hear.infrastructure.adapter.`in`.diary.dto.request.UploadDiaryImageRequest
 import modeep.hear.infrastructure.adapter.`in`.diary.dto.response.QueryDiariesResponse
 import modeep.hear.infrastructure.adapter.`in`.diary.dto.response.QueryDiaryDetailResponse
-import modeep.hear.infrastructure.adapter.`in`.diary.dto.response.UploadDiaryImageResponse
+import modeep.hear.infrastructure.adapter.`in`.storage.dto.request.UploadDiaryImageRequest
+import modeep.hear.infrastructure.adapter.`in`.storage.dto.response.UploadDiaryImageResponse
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping

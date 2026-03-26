@@ -1,5 +1,6 @@
 package modeep.hear.global.util
 
+import modeep.hear.domain.storage.exception.StorageErrorCode
 import modeep.hear.domain.user.exception.UserErrorCode
 import modeep.hear.global.error.exception.BusinessException
 
@@ -31,4 +32,17 @@ fun String.checkBlank(label: String) {
             "$label 은 비어있을 수 없습니다."
         )
     }
+}
+
+fun String.generateSafeFileName(): String {
+    val safeName = this.substringAfterLast("/")
+        .substringAfterLast("\\")
+        .replace(Regex("[^A-Za-z0-9._-]"), "_")
+        .trim()
+
+    if (safeName.isBlank() || safeName == "." || safeName == "..") {
+        throw BusinessException(StorageErrorCode.NOT_ALLOW_EXTENSION)
+    }
+
+    return safeName
 }

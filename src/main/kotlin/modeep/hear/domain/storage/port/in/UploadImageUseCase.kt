@@ -1,0 +1,11 @@
+package modeep.hear.domain.storage.port.`in`
+
+import modeep.hear.domain.diary.model.DiaryImage
+import modeep.hear.infrastructure.adapter.`in`.storage.dto.request.UploadDiaryImageRequest
+
+interface UploadImageUseCase {
+    fun execute(
+        diaryImages: MutableList<DiaryImage>? = null,
+        requests: List<UploadDiaryImageRequest>
+    ): List<DiaryImage>
+}

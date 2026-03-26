@@ -20,16 +20,11 @@ class UpdateDiaryContentService(
         diaryId: UUID,
         request: UpdateDiaryContentRequest
     ) {
-        val user = securityPort.getCurrentUser()
         val diary = diaryPort.findById(diaryId)
             ?: throw BusinessException(DiaryErrorCode.DIARY_NOT_FOUND)
-        diary.validateOwner(
-            currentUserId = user.id
-        )
+        diary.validateOwner(securityPort.getCurrentUser().id)
 
-        diary.updateContent(
-            request.content
-        )
+        diary.updateContent(request.content)
 
         diaryPort.save(diary)
     }
