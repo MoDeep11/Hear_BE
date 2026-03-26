@@ -66,6 +66,7 @@ data class Diary(
 
     fun updateImages(newImages: List<DiaryImage>) {
         val imagesToAdd = newImages.toList()
+        if (imagesToAdd.size > 10) throw BusinessException(DiaryErrorCode.TOO_MANY_IMAGES)
         this.diaryImages.clear()
         imagesToAdd.forEach { this.addImage(it) }
     }

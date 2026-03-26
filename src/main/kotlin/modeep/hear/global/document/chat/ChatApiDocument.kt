@@ -9,8 +9,8 @@ import modeep.hear.infrastructure.adapter.`in`.chat.dto.response.CreateChatRespo
 import modeep.hear.infrastructure.adapter.`in`.chat.dto.response.CreateMessageResponse
 import modeep.hear.infrastructure.adapter.`in`.chat.dto.response.CreateVoiceMessageResponse
 import modeep.hear.infrastructure.adapter.`in`.chat.dto.response.GenerateImageInChatResponse
-import modeep.hear.infrastructure.adapter.`in`.s3.dto.request.UploadDiaryImageRequest
-import modeep.hear.infrastructure.adapter.`in`.s3.dto.response.UploadDiaryImageResponse
+import modeep.hear.infrastructure.adapter.`in`.storage.dto.request.UploadDiaryImageRequest
+import modeep.hear.infrastructure.adapter.`in`.storage.dto.response.UploadDiaryImageResponse
 import org.springframework.http.ResponseEntity
 import java.util.UUID
 

@@ -1,4 +1,4 @@
-package modeep.hear.infrastructure.adapter.`in`.s3.dto.response
+package modeep.hear.infrastructure.adapter.`in`.storage.dto.response
 
 data class GenerateUploadUrlResponse(
     val url: String,

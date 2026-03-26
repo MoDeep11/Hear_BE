@@ -1,11 +1,11 @@
-package modeep.hear.infrastructure.adapter.`in`.s3
+package modeep.hear.infrastructure.adapter.`in`.storage
 
 import jakarta.validation.Valid
 import modeep.hear.domain.storage.port.`in`.GenerateUploadUrlUseCase
 import modeep.hear.global.common.response.ApiResult
-import modeep.hear.global.document.s3.StorageApiDocument
-import modeep.hear.infrastructure.adapter.`in`.s3.dto.request.GenerateUploadUrlRequest
-import modeep.hear.infrastructure.adapter.`in`.s3.dto.response.GenerateUploadUrlResponse
+import modeep.hear.global.document.storage.StorageApiDocument
+import modeep.hear.infrastructure.adapter.`in`.storage.dto.request.GenerateUploadUrlRequest
+import modeep.hear.infrastructure.adapter.`in`.storage.dto.response.GenerateUploadUrlResponse
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody

@@ -1,10 +1,10 @@
-package modeep.hear.infrastructure.adapter.out.s3
+package modeep.hear.infrastructure.adapter.out.storage
 
 import modeep.hear.domain.storage.exception.StorageErrorCode
 import modeep.hear.domain.storage.port.out.StoragePort
 import modeep.hear.domain.storage.vo.FileData
 import modeep.hear.global.error.exception.BusinessException
-import modeep.hear.infrastructure.adapter.`in`.s3.dto.response.GenerateUploadUrlResponse
+import modeep.hear.infrastructure.adapter.`in`.storage.dto.response.GenerateUploadUrlResponse
 import modeep.hear.infrastructure.config.aws.properties.AwsProperties
 import org.springframework.stereotype.Component
 import software.amazon.awssdk.core.exception.SdkException

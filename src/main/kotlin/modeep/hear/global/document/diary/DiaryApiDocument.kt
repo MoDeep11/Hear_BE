@@ -6,8 +6,8 @@ import modeep.hear.infrastructure.adapter.`in`.diary.dto.request.QueryDiariesReq
 import modeep.hear.infrastructure.adapter.`in`.diary.dto.request.UpdateDiaryContentRequest
 import modeep.hear.infrastructure.adapter.`in`.diary.dto.response.QueryDiariesResponse
 import modeep.hear.infrastructure.adapter.`in`.diary.dto.response.QueryDiaryDetailResponse
-import modeep.hear.infrastructure.adapter.`in`.s3.dto.request.UploadDiaryImageRequest
-import modeep.hear.infrastructure.adapter.`in`.s3.dto.response.UploadDiaryImageResponse
+import modeep.hear.infrastructure.adapter.`in`.storage.dto.request.UploadDiaryImageRequest
+import modeep.hear.infrastructure.adapter.`in`.storage.dto.response.UploadDiaryImageResponse
 import org.springframework.http.ResponseEntity
 import java.util.UUID
 

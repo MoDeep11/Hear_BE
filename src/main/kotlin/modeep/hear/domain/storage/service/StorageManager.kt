@@ -2,7 +2,8 @@ package modeep.hear.domain.storage.service
 
 import modeep.hear.domain.storage.exception.StorageErrorCode
 import modeep.hear.global.error.exception.BusinessException
-import modeep.hear.infrastructure.adapter.`in`.s3.dto.request.GenerateUploadUrlRequest
+import modeep.hear.global.util.generateSafeFileName
+import modeep.hear.infrastructure.adapter.`in`.storage.dto.request.GenerateUploadUrlRequest
 import org.springframework.stereotype.Component
 import java.util.UUID
 
@@ -16,7 +17,7 @@ class StorageManager {
     fun generatePath(userId: UUID, request: GenerateUploadUrlRequest): String {
         validate(request)
 
-        val uniqueFileName = "${UUID.randomUUID()}-${request.fileName}"
+        val uniqueFileName = "${UUID.randomUUID()}-${request.fileName.generateSafeFileName()}"
         val path = "${request.type.folder}/$userId/$uniqueFileName"
 
         return path

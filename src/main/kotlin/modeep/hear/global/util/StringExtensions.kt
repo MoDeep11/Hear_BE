@@ -1,5 +1,6 @@
 package modeep.hear.global.util
 
+import modeep.hear.domain.storage.exception.StorageErrorCode
 import modeep.hear.domain.user.exception.UserErrorCode
 import modeep.hear.global.error.exception.BusinessException
 
@@ -32,3 +33,9 @@ fun String.checkBlank(label: String) {
         )
     }
 }
+
+fun String.generateSafeFileName(): String =
+    this.substringAfterLast("/")
+        .substringAfterLast("\\")
+        .replace(Regex("[^A-Za-z0-9._-]"), "_")
+        .ifBlank { throw BusinessException(StorageErrorCode.NOT_ALLOW_EXTENSION) }

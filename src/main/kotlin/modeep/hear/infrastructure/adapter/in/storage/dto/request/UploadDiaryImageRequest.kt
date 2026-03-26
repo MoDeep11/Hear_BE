@@ -1,4 +1,4 @@
-package modeep.hear.infrastructure.adapter.`in`.s3.dto.request
+package modeep.hear.infrastructure.adapter.`in`.storage.dto.request
 
 import jakarta.validation.constraints.Min
 import modeep.hear.domain.storage.vo.ImageAction

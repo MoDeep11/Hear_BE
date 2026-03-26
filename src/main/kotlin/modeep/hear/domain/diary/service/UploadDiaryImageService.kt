@@ -6,8 +6,8 @@ import modeep.hear.domain.diary.port.`in`.UploadDiaryImageUseCase
 import modeep.hear.domain.diary.port.out.DiaryPort
 import modeep.hear.domain.storage.port.`in`.UploadImageUseCase
 import modeep.hear.global.error.exception.BusinessException
-import modeep.hear.infrastructure.adapter.`in`.s3.dto.request.UploadDiaryImageRequest
-import modeep.hear.infrastructure.adapter.`in`.s3.dto.response.UploadDiaryImageResponse
+import modeep.hear.infrastructure.adapter.`in`.storage.dto.request.UploadDiaryImageRequest
+import modeep.hear.infrastructure.adapter.`in`.storage.dto.response.UploadDiaryImageResponse
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.util.UUID
