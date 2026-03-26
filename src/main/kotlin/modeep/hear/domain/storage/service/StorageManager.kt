@@ -1,7 +1,6 @@
 package modeep.hear.domain.storage.service
 
 import modeep.hear.domain.storage.exception.StorageErrorCode
-import modeep.hear.domain.storage.port.out.StoragePort
 import modeep.hear.global.error.exception.BusinessException
 import modeep.hear.infrastructure.adapter.`in`.s3.dto.request.GenerateUploadUrlRequest
 import org.springframework.stereotype.Component
@@ -18,7 +17,7 @@ class StorageManager {
         validate(request)
 
         val uniqueFileName = "${UUID.randomUUID()}-${request.fileName}"
-        val path = "${request.type.folder}/${userId}/$uniqueFileName"
+        val path = "${request.type.folder}/$userId/$uniqueFileName"
 
         return path
     }
