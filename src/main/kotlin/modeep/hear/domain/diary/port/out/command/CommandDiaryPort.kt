@@ -6,5 +6,5 @@ import java.util.UUID
 interface CommandDiaryPort {
     fun save(diary: Diary)
 
-    fun delete(diaryId: UUID)
+    fun deleteById(diaryId: UUID)
 }
