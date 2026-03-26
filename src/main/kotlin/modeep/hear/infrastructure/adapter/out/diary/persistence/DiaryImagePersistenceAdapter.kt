@@ -16,7 +16,11 @@ class DiaryImagePersistenceAdapter(
     // --Query--//
     override fun findAllByChatId(chatId: UUID): List<DiaryImage> {
         return repo.findAllByChatId(chatId)
-            .map(mapper::toModel)
+            .map{img ->
+                mapper.toModel(
+                    entity = img
+                )
+            }
     }
 
     // --Command--//

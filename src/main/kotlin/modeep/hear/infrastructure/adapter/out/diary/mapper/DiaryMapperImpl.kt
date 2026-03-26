@@ -23,14 +23,14 @@ class DiaryMapperImpl(
             sourceType = entity.sourceType,
             chatId = entity.chatId,
             diaryImages = entity.diaryImages
-                .map { diaryImageMapper.toModel(it) }
+                .map { diaryImageMapper.toModel(entity.id, it) }
                 .toMutableList()
         )
     }
 
     override fun toEntity(model: Diary): DiaryJpaEntity {
         val diaryEntity = DiaryJpaEntity(
-            userId = model.userId ?: throw BusinessException(UserErrorCode.USER_NOT_FOUND),
+            userId = model.userId,
             content = model.content,
             emotion = model.emotion,
             tags = model.tags,

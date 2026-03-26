@@ -6,6 +6,7 @@ import modeep.hear.global.common.mapper.BaseTimeMapper
 import modeep.hear.infrastructure.adapter.out.chat.entity.ChatJpaEntity
 import modeep.hear.infrastructure.adapter.out.chat.entity.MessageJpaEntity
 import org.springframework.stereotype.Component
+import java.util.UUID
 
 @Component
 class ChatMapperImpl(
@@ -18,7 +19,7 @@ class ChatMapperImpl(
             status = entity.status,
             baseTime = baseTimeMapper.toModel(entity.baseTime),
             messages = entity.messages
-                .map { msg -> msg.toModel() }
+                .map { msg -> msg.toModel(entity.id) }
                 .toMutableList()
         )
 
@@ -38,9 +39,9 @@ class ChatMapperImpl(
         return chatEntity
     }
 
-    fun MessageJpaEntity.toModel(): Message = Message(
+    private fun MessageJpaEntity.toModel(chatId: UUID): Message = Message(
         id = this.id,
-        chatId = this.chat.id,
+        chatId = chatId,
         sender = this.sender,
         message = this.message,
         messageType = this.messageType,
@@ -49,7 +50,7 @@ class ChatMapperImpl(
         baseTime = baseTimeMapper.toModel(this.baseTime)
     )
 
-    fun Message.toEntity(chat: ChatJpaEntity): MessageJpaEntity = MessageJpaEntity(
+    private fun Message.toEntity(chat: ChatJpaEntity): MessageJpaEntity = MessageJpaEntity(
         id = this.id,
         chat = chat,
         sender = this.sender,

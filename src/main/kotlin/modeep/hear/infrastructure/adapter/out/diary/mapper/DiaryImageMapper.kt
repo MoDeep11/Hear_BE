@@ -5,15 +5,16 @@ import modeep.hear.global.common.mapper.BaseTimeMapper
 import modeep.hear.infrastructure.adapter.out.diary.entity.DiaryImageJpaEntity
 import modeep.hear.infrastructure.adapter.out.diary.entity.DiaryJpaEntity
 import org.springframework.stereotype.Component
+import java.util.UUID
 
 @Component
 class DiaryImageMapper(
     private val baseTimeMapper: BaseTimeMapper
 ) {
-    fun toModel(entity: DiaryImageJpaEntity): DiaryImage {
+    fun toModel(diaryId: UUID? = null, entity: DiaryImageJpaEntity): DiaryImage {
         return DiaryImage(
             id = entity.id,
-            diaryId = entity.diary?.id,
+            diaryId = diaryId,
             imageUrl = entity.imageUrl,
             order = entity.order,
             sourceType = entity.sourceType,
