@@ -43,7 +43,7 @@ class DiaryPersistenceAdapter(
         repo.save(mapper.toEntity(diary))
     }
 
-    override fun deleteById(diaryId: UUID) {
-        repo.deleteIfExists(diaryId)
+    override fun delete(diaryId: UUID) {
+        repo.deleteById(diaryId)
     }
 }

@@ -53,8 +53,4 @@ interface DiaryRepository : JpaRepository<DiaryJpaEntity, UUID> {
     """
     )
     fun findAllByIdInWithImages(@Param("ids") ids: List<UUID>): List<DiaryJpaEntity>
-
-    @Modifying
-    @Query("DELETE FROM DiaryJpaEntity d WHERE d.id = :id")
-    fun deleteIfExists(id: UUID)
 }
