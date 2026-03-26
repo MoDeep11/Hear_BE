@@ -1,4 +1,4 @@
-package modeep.hear.domain.diary.port.out
+package modeep.hear.domain.diary.port.out.query
 
 import modeep.hear.domain.diary.model.Diary
 import modeep.hear.domain.diary.vo.DiarySourceType

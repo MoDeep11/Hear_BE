@@ -1,4 +1,4 @@
-package modeep.hear.domain.chat.port.out
+package modeep.hear.domain.chat.port.out.query
 
 import modeep.hear.domain.chat.model.Chat
 import java.util.UUID

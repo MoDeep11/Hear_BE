@@ -1,4 +1,4 @@
-package modeep.hear.domain.diary.port.out
+package modeep.hear.domain.diary.port.out.query
 
 import modeep.hear.domain.diary.model.DiaryImage
 import java.util.UUID

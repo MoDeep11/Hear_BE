@@ -2,6 +2,7 @@ package modeep.hear.infrastructure.adapter.out.chat.mapper
 
 import modeep.hear.domain.chat.model.Chat
 import modeep.hear.domain.chat.model.Message
+import modeep.hear.domain.chat.vo.ChatStatus
 import modeep.hear.global.common.mapper.BaseTimeMapper
 import modeep.hear.infrastructure.adapter.out.chat.entity.ChatJpaEntity
 import modeep.hear.infrastructure.adapter.out.chat.entity.MessageJpaEntity

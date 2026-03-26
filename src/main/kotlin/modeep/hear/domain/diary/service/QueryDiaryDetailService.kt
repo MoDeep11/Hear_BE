@@ -3,7 +3,7 @@ package modeep.hear.domain.diary.service
 import modeep.hear.domain.auth.port.out.SecurityPort
 import modeep.hear.domain.diary.exception.DiaryErrorCode
 import modeep.hear.domain.diary.port.`in`.QueryDiaryDetailUseCase
-import modeep.hear.domain.diary.port.out.QueryDiaryPort
+import modeep.hear.domain.diary.port.out.query.QueryDiaryPort
 import modeep.hear.global.error.exception.BusinessException
 import modeep.hear.infrastructure.adapter.`in`.diary.dto.response.QueryDiaryDetailResponse
 import org.springframework.stereotype.Service

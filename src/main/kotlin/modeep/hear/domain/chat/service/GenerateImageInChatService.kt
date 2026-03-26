@@ -4,8 +4,8 @@ import modeep.hear.domain.auth.port.out.SecurityPort
 import modeep.hear.domain.chat.exception.ChatErrorCode
 import modeep.hear.domain.chat.model.AiImageTask
 import modeep.hear.domain.chat.port.`in`.GenerateImageInChatUseCase
-import modeep.hear.domain.chat.port.out.CommandAiImageTaskPort
-import modeep.hear.domain.chat.port.out.QueryChatPort
+import modeep.hear.domain.chat.port.out.command.CommandAiImageTaskPort
+import modeep.hear.domain.chat.port.out.query.QueryChatPort
 import modeep.hear.domain.chat.vo.AiImageTaskStatus
 import modeep.hear.global.error.exception.BusinessException
 import modeep.hear.infrastructure.adapter.`in`.chat.dto.request.GenerateImageInChatRequest

@@ -4,7 +4,8 @@ import modeep.hear.domain.auth.port.out.SecurityPort
 import modeep.hear.domain.chat.exception.ChatErrorCode
 import modeep.hear.domain.chat.model.Message
 import modeep.hear.domain.chat.port.`in`.CreateMessageUseCase
-import modeep.hear.domain.chat.port.out.ChatPort
+import modeep.hear.domain.chat.port.out.MessagePort
+import modeep.hear.domain.chat.port.out.query.QueryChatPort
 import modeep.hear.domain.chat.vo.MessageType
 import modeep.hear.domain.chat.vo.Sender
 import modeep.hear.global.error.exception.BusinessException
@@ -18,14 +19,15 @@ import java.util.UUID
 @Transactional
 class CreateMessageService(
     private val securityPort: SecurityPort,
-    private val chatPort: ChatPort
+    private val messagePort: MessagePort,
+    private val queryChatPort: QueryChatPort
 ) : CreateMessageUseCase {
     override fun execute(
         chatId: UUID,
         request: CreateMessageRequest
     ): CreateMessageResponse {
         val user = securityPort.getCurrentUser()
-        val chat = chatPort.findById(chatId) ?: throw BusinessException(ChatErrorCode.CHAT_NOT_FOUND)
+        val chat = queryChatPort.findById(chatId) ?: throw BusinessException(ChatErrorCode.CHAT_NOT_FOUND)
         chat.validateOwner(user.id)
 
         val userMessage = Message.create(
@@ -44,9 +46,8 @@ class CreateMessageService(
             messageType = MessageType.TEXT
         )
 
-        chat.addMessage(userMessage)
-        // chat.addMessage(aiStubMessage)
-        chatPort.save(chat)
+        messagePort.save(userMessage)
+        messagePort.save(aiStubMessage)
 
         return CreateMessageResponse(
             chatId = chatId,

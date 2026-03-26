@@ -1,4 +1,4 @@
-package modeep.hear.domain.diary.port.out
+package modeep.hear.domain.diary.port.out.command
 
 import modeep.hear.domain.diary.model.Diary
 import java.util.UUID
