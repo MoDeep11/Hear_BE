@@ -3,6 +3,7 @@ package modeep.hear.infrastructure.adapter.out.diary.persistence.repository
 import modeep.hear.infrastructure.adapter.out.diary.entity.DiaryJpaEntity
 import org.springframework.data.domain.Pageable
 import org.springframework.data.jpa.repository.JpaRepository
+import org.springframework.data.jpa.repository.Modifying
 import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.query.Param
 import java.time.LocalDateTime
@@ -52,4 +53,8 @@ interface DiaryRepository : JpaRepository<DiaryJpaEntity, UUID> {
     """
     )
     fun findAllByIdInWithImages(@Param("ids") ids: List<UUID>): List<DiaryJpaEntity>
+
+    @Modifying
+    @Query("DELETE FROM DiaryJpaEntity d WHERE d.id = :id")
+    fun deleteIfExists(id: UUID)
 }

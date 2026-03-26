@@ -44,6 +44,6 @@ class DiaryPersistenceAdapter(
     }
 
     override fun deleteById(diaryId: UUID) {
-        repo.deleteById(diaryId)
+        repo.deleteIfExists(diaryId)
     }
 }

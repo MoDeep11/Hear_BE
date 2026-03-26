@@ -30,6 +30,6 @@ class DiaryImagePersistenceAdapter(
     }
 
     override fun delete(diaryImageId: UUID) {
-        repo.deleteById(diaryImageId)
+        repo.deleteIfExists(diaryImageId)
     }
 }
