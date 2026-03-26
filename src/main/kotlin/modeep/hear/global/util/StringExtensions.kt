@@ -34,8 +34,15 @@ fun String.checkBlank(label: String) {
     }
 }
 
-fun String.generateSafeFileName(): String =
-    this.substringAfterLast("/")
+fun String.generateSafeFileName(): String {
+    val safeName = this.substringAfterLast("/")
         .substringAfterLast("\\")
         .replace(Regex("[^A-Za-z0-9._-]"), "_")
-        .ifBlank { throw BusinessException(StorageErrorCode.NOT_ALLOW_EXTENSION) }
+        .trim()
+
+    if (safeName.isBlank() || safeName == "." || safeName == "..") {
+        throw BusinessException(StorageErrorCode.NOT_ALLOW_EXTENSION)
+    }
+
+    return safeName
+}
