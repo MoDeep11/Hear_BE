@@ -5,5 +5,5 @@ import org.springframework.data.jpa.repository.JpaRepository
 import java.util.UUID
 
 interface DiaryImageRepository : JpaRepository<DiaryImageJpaEntity, UUID> {
-    fun findBySessionId(sessionId: UUID): DiaryImageJpaEntity?
+    fun findAllBySessionId(sessionId: UUID): List<DiaryImageJpaEntity>
 }

@@ -23,7 +23,7 @@ class DiaryImageMapper(
         )
     }
 
-    fun toEntity(model: DiaryImage, diary: DiaryJpaEntity?): DiaryImageJpaEntity {
+    fun toEntity(model: DiaryImage, diary: DiaryJpaEntity? = null): DiaryImageJpaEntity {
         return DiaryImageJpaEntity(
             id = model.id,
             diary = diary,

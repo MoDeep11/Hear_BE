@@ -14,11 +14,17 @@ class DiaryImagePersistenceAdapter(
 ) : DiaryImagePort {
 
     // --Query--//
-    override fun findBySessionId(sessionId: UUID): DiaryImage? {
-        return repo.findBySessionId(sessionId)?.let { mapper.toModel(it) }
+    override fun findAllBySessionId(sessionId: UUID): List<DiaryImage> {
+        return repo.findAllBySessionId(sessionId)
+            .map(mapper::toModel)
     }
 
     // --Command--//
+    override fun saveAll(diaryImages: List<DiaryImage>) {
+        val savedDiaryImages = diaryImages.map { mapper.toEntity(it) }
+        repo.saveAll(savedDiaryImages)
+    }
+
     override fun delete(diaryImageId: UUID) {
         repo.deleteById(diaryImageId)
     }
