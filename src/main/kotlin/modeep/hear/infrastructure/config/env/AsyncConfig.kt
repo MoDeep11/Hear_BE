@@ -67,7 +67,7 @@ class AsyncConfig {
         executor.corePoolSize = 5
         executor.maxPoolSize = 15
         executor.queueCapacity = 200
-        executor.setThreadNamePrefix("MailAsync-")
+        executor.setThreadNamePrefix("StorageAsync-")
         executor.setRejectedExecutionHandler(ThreadPoolExecutor.CallerRunsPolicy())
 
         executor.initialize()
