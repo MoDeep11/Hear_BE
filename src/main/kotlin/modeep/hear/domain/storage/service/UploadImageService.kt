@@ -7,6 +7,7 @@ import modeep.hear.domain.diary.vo.DiarySourceType
 import modeep.hear.domain.storage.port.`in`.UploadImageUseCase
 import modeep.hear.domain.storage.port.out.StoragePort
 import modeep.hear.global.error.exception.BusinessException
+import modeep.hear.domain.storage.vo.ImageAction
 import modeep.hear.infrastructure.adapter.`in`.s3.dto.request.UploadDiaryImageRequest
 import org.springframework.stereotype.Service
 
@@ -22,9 +23,9 @@ class UploadImageService(
         val urlsToDelete = mutableSetOf<String>()
 
         requests.forEach { request ->
-            when {
+            when (request.action) {
                 // 1. 새 이미지 추가
-                !request.imageUrl.isNullOrBlank() && request.id == null && !request.isDeleted -> {
+                ImageAction.ADD -> {
                     val newImage = DiaryImage.create(
                         imageUrl = request.imageUrl,
                         order = request.order,
@@ -35,7 +36,7 @@ class UploadImageService(
                 }
 
                 // 2. 기존 이미지 삭제
-                request.imageUrl.isNullOrBlank() && request.id != null && request.isDeleted -> {
+                ImageAction.DELETE -> {
                     val target = images.find { it.id == request.id }
                         ?: throw BusinessException(DiaryErrorCode.IMAGE_NOT_FOUND)
                     target.imageUrl?.let { urlsToDelete.add(it) }
@@ -43,18 +44,11 @@ class UploadImageService(
                 }
 
                 // 3. 이미지 순서 변경
-                request.imageUrl.isNullOrBlank() && request.id != null && !request.isDeleted -> {
+                ImageAction.UPDATE_ORDER -> {
                     val target = images.find { it.id == request.id }
                         ?: throw BusinessException(DiaryErrorCode.IMAGE_NOT_FOUND)
 
                     target.updateOrder(order = request.order)
-                }
-
-                else -> {
-                    throw BusinessException(
-                        DiaryErrorCode.INVALID_VALUE,
-                        "잘못된 image 수정 요청입니다."
-                    )
                 }
             }
         }
