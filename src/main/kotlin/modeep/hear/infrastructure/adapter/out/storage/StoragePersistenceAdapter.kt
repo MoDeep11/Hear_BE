@@ -1,5 +1,6 @@
 package modeep.hear.infrastructure.adapter.out.storage
 
+import io.github.oshai.kotlinlogging.KotlinLogging
 import modeep.hear.domain.storage.exception.StorageErrorCode
 import modeep.hear.domain.storage.port.out.StoragePort
 import modeep.hear.domain.storage.vo.FileData
@@ -16,6 +17,8 @@ import software.amazon.awssdk.services.s3.model.PutObjectRequest
 import software.amazon.awssdk.services.s3.presigner.S3Presigner
 import software.amazon.awssdk.services.s3.presigner.model.PutObjectPresignRequest
 import java.time.Duration
+
+private val log = KotlinLogging.logger {}
 
 @Component
 class StoragePersistenceAdapter(
@@ -42,24 +45,33 @@ class StoragePersistenceAdapter(
     override fun deleteAll(urls: List<String>) {
         if (urls.isEmpty()) return
 
-        val keys = urls.map { url ->
-            val key = extractKeyFromUrl(url)
-            ObjectIdentifier.builder().key(key).build()
-        }
+        urls.chunked(1000).forEach { chunk ->
+            val keys = urls.map { url ->
+                val key = extractKeyFromUrl(url)
+                ObjectIdentifier.builder().key(key).build()
+            }
 
-        val deleteObjectsRequest = DeleteObjectsRequest.builder()
-            .bucket(awsProperties.s3.bucket)
-            .delete(
-                Delete.builder()
-                    .objects(keys)
-                    .build()
-            )
-            .build()
+            val deleteObjectsRequest = DeleteObjectsRequest.builder()
+                .bucket(awsProperties.s3.bucket)
+                .delete(
+                    Delete.builder()
+                        .objects(keys)
+                        .build()
+                )
+                .build()
 
-        try {
-            s3Client.deleteObjects(deleteObjectsRequest)
-        } catch (e: SdkException) {
-            throw BusinessException(StorageErrorCode.FILE_DELETE_FAILED)
+            try {
+                val response = s3Client.deleteObjects(deleteObjectsRequest)
+                if (response.hasErrors()) {
+                    response.errors().forEach { error ->
+                        log.error { "S3 삭제 실패 - Key: ${error.key()}, Message: ${error.message()}" }
+                    }
+                }
+            } catch (e: SdkException) {
+                log.error { "S3 파일 삭제 실패: ${e.message}" }
+                throw BusinessException(StorageErrorCode.FILE_DELETE_FAILED)
+            }
+
         }
     }
 
