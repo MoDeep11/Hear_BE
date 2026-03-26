@@ -1,4 +1,4 @@
-package modeep.hear.domain.s3.model
+package modeep.hear.domain.storage.vo
 
 data class FileData(
     val filePath: String,

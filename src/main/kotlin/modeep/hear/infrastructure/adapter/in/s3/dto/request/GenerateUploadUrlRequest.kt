@@ -1,9 +1,9 @@
 package modeep.hear.infrastructure.adapter.`in`.s3.dto.request
 
 import jakarta.validation.constraints.NotBlank
-import modeep.hear.domain.s3.model.ServiceType
+import modeep.hear.domain.storage.vo.ServiceType
 
-data class GeneratePreSignedUrlRequest(
+data class GenerateUploadUrlRequest(
     @field:NotBlank
     val fileName: String,
     @field:NotBlank

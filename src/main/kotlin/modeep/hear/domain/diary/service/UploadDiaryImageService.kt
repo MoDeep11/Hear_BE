@@ -4,7 +4,7 @@ import modeep.hear.domain.auth.port.out.SecurityPort
 import modeep.hear.domain.diary.exception.DiaryErrorCode
 import modeep.hear.domain.diary.port.`in`.UploadDiaryImageUseCase
 import modeep.hear.domain.diary.port.out.DiaryPort
-import modeep.hear.domain.s3.port.`in`.UploadImageUseCase
+import modeep.hear.domain.storage.port.`in`.UploadImageUseCase
 import modeep.hear.global.error.exception.BusinessException
 import modeep.hear.infrastructure.adapter.`in`.s3.dto.request.UploadDiaryImageRequest
 import modeep.hear.infrastructure.adapter.`in`.s3.dto.response.UploadDiaryImageResponse

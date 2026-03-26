@@ -1,4 +1,4 @@
-package modeep.hear.domain.s3.model
+package modeep.hear.domain.storage.vo
 
 enum class ServiceType(
     val folder: String

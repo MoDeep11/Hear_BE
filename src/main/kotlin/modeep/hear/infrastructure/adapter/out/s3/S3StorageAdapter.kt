@@ -1,10 +1,10 @@
 package modeep.hear.infrastructure.adapter.out.s3
 
-import modeep.hear.domain.s3.exception.AwsErrorCode
-import modeep.hear.domain.s3.model.FileData
-import modeep.hear.domain.s3.port.out.S3Port
+import modeep.hear.domain.storage.exception.StorageErrorCode
+import modeep.hear.domain.storage.vo.FileData
+import modeep.hear.domain.storage.port.out.StoragePort
 import modeep.hear.global.error.exception.BusinessException
-import modeep.hear.infrastructure.adapter.`in`.s3.dto.response.GeneratePresignedUrlResponse
+import modeep.hear.infrastructure.adapter.`in`.s3.dto.response.GenerateUploadUrlResponse
 import modeep.hear.infrastructure.config.aws.properties.AwsProperties
 import org.springframework.stereotype.Component
 import software.amazon.awssdk.core.exception.SdkException
@@ -20,8 +20,8 @@ class S3StorageAdapter(
     private val s3Presigner: S3Presigner,
     private val s3Client: S3Client,
     private val awsProperties: AwsProperties
-) : S3Port {
-    override fun generatePreSignedUrl(file: FileData): GeneratePresignedUrlResponse {
+) : StoragePort {
+    override fun generateUploadUrl(file: FileData): GenerateUploadUrlResponse {
         val putObjectRequest = PutObjectRequest.builder()
             .bucket(awsProperties.s3.bucket)
             .key(file.filePath)
@@ -34,7 +34,7 @@ class S3StorageAdapter(
             .build()
 
         val finalUrl = s3Presigner.presignPutObject(presignRequest).url().toString()
-        return GeneratePresignedUrlResponse(finalUrl, file.filePath)
+        return GenerateUploadUrlResponse(finalUrl, file.filePath)
     }
 
     override fun delete(s3Url: String) {
@@ -48,7 +48,7 @@ class S3StorageAdapter(
         try {
             s3Client.deleteObject(deleteObjectRequest)
         } catch (e: SdkException) {
-            throw BusinessException(AwsErrorCode.FILE_DELETE_FAILED)
+            throw BusinessException(StorageErrorCode.FILE_DELETE_FAILED)
         }
     }
 
@@ -57,7 +57,7 @@ class S3StorageAdapter(
         return if (s3Url.contains(expectedPrefix)) {
             s3Url.substringAfter(expectedPrefix)
         } else {
-            throw BusinessException(AwsErrorCode.INVALID_S3_URL)
+            throw BusinessException(StorageErrorCode.INVALID_URL)
         }
     }
 }

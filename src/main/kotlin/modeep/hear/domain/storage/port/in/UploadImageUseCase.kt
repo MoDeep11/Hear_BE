@@ -1,4 +1,4 @@
-package modeep.hear.domain.s3.port.`in`
+package modeep.hear.domain.storage.port.`in`
 
 import modeep.hear.domain.diary.model.DiaryImage
 import modeep.hear.infrastructure.adapter.`in`.s3.dto.request.UploadDiaryImageRequest

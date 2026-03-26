@@ -1,11 +1,11 @@
 package modeep.hear.infrastructure.adapter.`in`.s3
 
 import jakarta.validation.Valid
-import modeep.hear.domain.s3.port.`in`.GeneratePreSignedUrlUseCase
+import modeep.hear.domain.storage.port.`in`.GenerateUploadUrlUseCase
 import modeep.hear.global.common.response.ApiResult
 import modeep.hear.global.document.s3.S3ApiDocument
-import modeep.hear.infrastructure.adapter.`in`.s3.dto.request.GeneratePreSignedUrlRequest
-import modeep.hear.infrastructure.adapter.`in`.s3.dto.response.GeneratePresignedUrlResponse
+import modeep.hear.infrastructure.adapter.`in`.s3.dto.request.GenerateUploadUrlRequest
+import modeep.hear.infrastructure.adapter.`in`.s3.dto.response.GenerateUploadUrlResponse
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
@@ -15,17 +15,17 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 @RequestMapping("/api/v1/files")
 class S3WebAdapter(
-    private val generatePreSignedUrlUseCase: GeneratePreSignedUrlUseCase
+    private val generateUploadUrlUseCase: GenerateUploadUrlUseCase
 ) : S3ApiDocument {
 
     @PostMapping
     override fun generatePresignedUrl(
         @RequestBody @Valid
-        request: GeneratePreSignedUrlRequest
-    ): ResponseEntity<ApiResult<GeneratePresignedUrlResponse>> {
+        request: GenerateUploadUrlRequest
+    ): ResponseEntity<ApiResult<GenerateUploadUrlResponse>> {
         return ResponseEntity.ok(
             ApiResult(
-                data = generatePreSignedUrlUseCase.execute(request)
+                data = generateUploadUrlUseCase.execute(request)
             )
         )
     }

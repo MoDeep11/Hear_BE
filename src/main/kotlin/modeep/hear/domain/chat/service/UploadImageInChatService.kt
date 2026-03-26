@@ -5,7 +5,7 @@ import modeep.hear.domain.chat.port.`in`.UploadImageInChatUseCase
 import modeep.hear.domain.chat.port.out.ChatPort
 import modeep.hear.domain.diary.model.DiaryImage
 import modeep.hear.domain.diary.port.out.DiaryImagePort
-import modeep.hear.domain.s3.port.`in`.UploadImageUseCase
+import modeep.hear.domain.storage.port.`in`.UploadImageUseCase
 import modeep.hear.infrastructure.adapter.`in`.s3.dto.request.UploadDiaryImageRequest
 import modeep.hear.infrastructure.adapter.`in`.s3.dto.response.UploadDiaryImageResponse
 import org.springframework.stereotype.Service

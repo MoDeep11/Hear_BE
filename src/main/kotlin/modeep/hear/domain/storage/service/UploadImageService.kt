@@ -1,18 +1,18 @@
-package modeep.hear.domain.s3.service
+package modeep.hear.domain.storage.service
 
 import modeep.hear.domain.diary.exception.DiaryErrorCode
 import modeep.hear.domain.diary.model.DiaryImage
 import modeep.hear.domain.diary.vo.DiaryImageStatus
 import modeep.hear.domain.diary.vo.DiarySourceType
-import modeep.hear.domain.s3.port.`in`.UploadImageUseCase
-import modeep.hear.domain.s3.port.out.S3Port
+import modeep.hear.domain.storage.port.`in`.UploadImageUseCase
+import modeep.hear.domain.storage.port.out.StoragePort
 import modeep.hear.global.error.exception.BusinessException
 import modeep.hear.infrastructure.adapter.`in`.s3.dto.request.UploadDiaryImageRequest
 import org.springframework.stereotype.Service
 
 @Service
 class UploadImageService(
-    private val s3Port: S3Port
+    private val storagePort: StoragePort
 ) : UploadImageUseCase {
     override fun execute(
         diaryImages: MutableList<DiaryImage>?,
@@ -63,7 +63,7 @@ class UploadImageService(
         reorderImagesSafely(images)
 
         urlsToDelete.forEach { url ->
-            s3Port.delete(url)
+            storagePort.delete(url)
         }
 
         return images
