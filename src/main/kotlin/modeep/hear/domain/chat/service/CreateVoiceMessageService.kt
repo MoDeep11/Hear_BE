@@ -1,11 +1,13 @@
 package modeep.hear.domain.chat.service
 
 import modeep.hear.domain.auth.port.out.SecurityPort
+import modeep.hear.domain.chat.exception.ChatErrorCode
 import modeep.hear.domain.chat.model.Message
 import modeep.hear.domain.chat.port.`in`.CreateVoiceMessageUseCase
 import modeep.hear.domain.chat.port.out.ChatPort
 import modeep.hear.domain.chat.vo.MessageType
 import modeep.hear.domain.chat.vo.Sender
+import modeep.hear.global.error.exception.BusinessException
 import modeep.hear.infrastructure.adapter.`in`.chat.dto.request.CreateVoiceMessageRequest
 import modeep.hear.infrastructure.adapter.`in`.chat.dto.response.CreateVoiceMessageResponse
 import org.springframework.stereotype.Service
@@ -23,7 +25,7 @@ class CreateVoiceMessageService(
         request: CreateVoiceMessageRequest
     ): CreateVoiceMessageResponse {
         val user = securityPort.getCurrentUser()
-        val chat = chatPort.findById(chatId)
+        val chat = chatPort.findById(chatId) ?: throw BusinessException(ChatErrorCode.CHAT_NOT_FOUND)
         chat.validateOwner(user.id)
 
         val userMessage = Message.create(

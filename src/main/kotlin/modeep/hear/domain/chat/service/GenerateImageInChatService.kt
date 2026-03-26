@@ -26,7 +26,8 @@ class GenerateImageInChatService(
         request: GenerateImageInChatRequest
     ): GenerateImageInChatResponse {
         val user = securityPort.getCurrentUser()
-        chatPort.findById(chatId).validateOwner(user.id)
+        val chat = chatPort.findById(chatId) ?: throw BusinessException(ChatErrorCode.CHAT_NOT_FOUND)
+        chat.validateOwner(user.id)
         if (!request.isReserved) throw BusinessException(ChatErrorCode.INVALID_GENERATION_REQUEST)
 
         val task = AiImageTask.create(

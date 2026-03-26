@@ -1,11 +1,13 @@
 package modeep.hear.domain.chat.service
 
 import modeep.hear.domain.auth.port.out.SecurityPort
+import modeep.hear.domain.chat.exception.ChatErrorCode
 import modeep.hear.domain.chat.port.`in`.UploadImageInChatUseCase
 import modeep.hear.domain.chat.port.out.ChatPort
 import modeep.hear.domain.diary.model.DiaryImage
 import modeep.hear.domain.diary.port.out.DiaryImagePort
 import modeep.hear.domain.storage.port.`in`.UploadImageUseCase
+import modeep.hear.global.error.exception.BusinessException
 import modeep.hear.infrastructure.adapter.`in`.s3.dto.request.UploadDiaryImageRequest
 import modeep.hear.infrastructure.adapter.`in`.s3.dto.response.UploadDiaryImageResponse
 import org.springframework.stereotype.Service
@@ -24,7 +26,8 @@ class UploadImageInChatService(
         chatId: UUID,
         request: List<UploadDiaryImageRequest>
     ): List<UploadDiaryImageResponse> {
-        chatPort.findById(chatId).validateOwner(securityPort.getCurrentUser().id)
+        val chat = chatPort.findById(chatId) ?: throw BusinessException(ChatErrorCode.CHAT_NOT_FOUND)
+        chat.validateOwner(securityPort.getCurrentUser().id)
 
         val images = uploadImageUseCase.execute(
             requests = request

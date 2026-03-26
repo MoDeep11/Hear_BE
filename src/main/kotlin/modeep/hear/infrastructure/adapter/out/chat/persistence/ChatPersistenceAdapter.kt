@@ -4,6 +4,7 @@ import modeep.hear.domain.chat.model.Chat
 import modeep.hear.domain.chat.port.out.ChatPort
 import modeep.hear.infrastructure.adapter.out.chat.mapper.ChatMapper
 import modeep.hear.infrastructure.adapter.out.chat.persistence.repository.ChatRepository
+import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Component
 import java.util.UUID
 
@@ -13,16 +14,15 @@ class ChatPersistenceAdapter(
     private val mapper: ChatMapper
 ) : ChatPort {
     // --Query--//
-    override fun findById(chatId: UUID): Chat {
-        TODO("Not yet implemented")
-    }
+    override fun findById(chatId: UUID): Chat? =
+        repo.findByIdOrNull(chatId)?.let { mapper.toModel(it) }
 
     override fun existsById(chatId: UUID): Boolean {
-        TODO("Not yet implemented")
+        return repo.existsById(chatId)
     }
 
     // --Command--//
     override fun save(chat: Chat) {
-        TODO("Not yet implemented")
+        repo.save(mapper.toEntity(chat))
     }
 }
