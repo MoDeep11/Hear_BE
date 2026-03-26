@@ -19,10 +19,11 @@ class UploadImageService(
         diaryImages: MutableList<DiaryImage>?,
         requests: List<UploadDiaryImageRequest>
     ): List<DiaryImage> {
+        val sortedRequests = requests.sortedByDescending { it.action == ImageAction.DELETE }
         val images = diaryImages ?: mutableListOf()
         val urlsToDelete = mutableSetOf<String>()
 
-        requests.forEach { request ->
+        sortedRequests.forEach { request ->
             when (request.action) {
                 // 1. 새 이미지 추가
                 ImageAction.ADD -> {
