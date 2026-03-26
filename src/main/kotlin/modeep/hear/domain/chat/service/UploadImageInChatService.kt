@@ -39,7 +39,7 @@ class UploadImageInChatService(
                 order = image.order,
                 sourceType = image.sourceType,
                 diaryImageStatus = image.diaryImageStatus,
-                sessionId = chatId
+                chatId = chatId
             )
         }
 

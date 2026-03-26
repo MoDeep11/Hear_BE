@@ -4,7 +4,7 @@ import modeep.hear.domain.chat.vo.SuggestionType
 import java.util.UUID
 
 data class CreateVoiceMessageResponse(
-    val sessionId: UUID,
+    val chatId: UUID,
     val userTranscription: String,
     val aiResponseText: String,
     val aiAudioUrl: String,

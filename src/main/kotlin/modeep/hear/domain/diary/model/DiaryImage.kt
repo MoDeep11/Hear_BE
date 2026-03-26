@@ -12,7 +12,7 @@ data class DiaryImage(
     val order: Int = 0,
     val sourceType: DiarySourceType = DiarySourceType.AI_MADE,
     val diaryImageStatus: DiaryImageStatus = DiaryImageStatus.PROCESSING,
-    val sessionId: UUID? = null,
+    val chatId: UUID? = null,
     val baseTime: BaseTime
 ) {
     companion object {
@@ -22,7 +22,7 @@ data class DiaryImage(
             order: Int,
             sourceType: DiarySourceType = DiarySourceType.AI_MADE,
             diaryImageStatus: DiaryImageStatus = DiaryImageStatus.PROCESSING,
-            sessionId: UUID? = null
+            chatId: UUID? = null
         ): DiaryImage {
             return DiaryImage(
                 id = UUID.randomUUID(),
@@ -31,7 +31,7 @@ data class DiaryImage(
                 order = order,
                 sourceType = sourceType,
                 diaryImageStatus = diaryImageStatus,
-                sessionId = sessionId,
+                chatId = chatId,
                 baseTime = BaseTime()
             )
         }

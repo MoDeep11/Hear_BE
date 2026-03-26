@@ -37,8 +37,8 @@ class DiaryJpaEntity(
     @Column(name = "source_type", nullable = false, length = 16)
     val sourceType: DiarySourceType,
 
-    @Column(name = "session_id")
-    val sessionId: UUID? = null,
+    @Column(name = "chat_id")
+    val chatId: UUID? = null,
 
     @OneToMany(mappedBy = "diary", cascade = [CascadeType.ALL], orphanRemoval = true)
     @OrderBy("order ASC")

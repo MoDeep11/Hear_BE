@@ -31,7 +31,7 @@ class GenerateImageInChatService(
         if (!request.isReserved) throw BusinessException(ChatErrorCode.INVALID_GENERATION_REQUEST)
 
         val task = AiImageTask.create(
-            sessionId = chatId,
+            chatId = chatId,
             status = AiImageTaskStatus.RESERVED
         )
 

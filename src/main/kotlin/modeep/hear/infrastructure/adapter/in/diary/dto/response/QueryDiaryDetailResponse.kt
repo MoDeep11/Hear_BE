@@ -12,7 +12,7 @@ data class QueryDiaryDetailResponse(
     val emotion: Emotion,
     val tags: List<String>?,
     val sourceType: DiarySourceType,
-    val sessionId: UUID? = null,
+    val chatId: UUID? = null,
     val createdAt: LocalDate,
     val updatedAt: LocalDate
 )

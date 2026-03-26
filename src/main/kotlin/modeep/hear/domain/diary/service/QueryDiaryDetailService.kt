@@ -28,7 +28,7 @@ class QueryDiaryDetailService(
             emotion = diary.emotion,
             tags = diary.tags,
             sourceType = diary.sourceType,
-            sessionId = diary.chatId,
+            chatId = diary.chatId,
             createdAt = diary.baseTime.createdAt.toLocalDate(),
             updatedAt = diary.baseTime.updatedAt.toLocalDate()
         )

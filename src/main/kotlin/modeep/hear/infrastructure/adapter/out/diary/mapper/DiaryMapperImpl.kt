@@ -21,7 +21,7 @@ class DiaryMapperImpl(
             tags = entity.tags,
             baseTime = baseTimeMapper.toModel(entity.baseTime), // JpaBaseTime -> BaseTime
             sourceType = entity.sourceType,
-            sessionId = entity.sessionId,
+            chatId = entity.chatId,
             diaryImages = entity.diaryImages
                 .map { diaryImageMapper.toModel(it) }
                 .toMutableList()
@@ -35,7 +35,7 @@ class DiaryMapperImpl(
             emotion = model.emotion,
             tags = model.tags,
             sourceType = model.sourceType,
-            sessionId = model.sessionId,
+            chatId = model.chatId,
             id = model.id
         )
 

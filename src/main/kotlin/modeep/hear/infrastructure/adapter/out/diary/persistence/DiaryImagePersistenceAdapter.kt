@@ -14,8 +14,8 @@ class DiaryImagePersistenceAdapter(
 ) : DiaryImagePort {
 
     // --Query--//
-    override fun findAllBySessionId(sessionId: UUID): List<DiaryImage> {
-        return repo.findAllBySessionId(sessionId)
+    override fun findAllByChatId(chatId: UUID): List<DiaryImage> {
+        return repo.findAllByChatId(chatId)
             .map(mapper::toModel)
     }
 

@@ -6,20 +6,20 @@ import java.util.UUID
 
 data class AiImageTask(
     val id: UUID,
-    val sessionId: UUID? = null,
+    val chatId: UUID? = null,
     val diaryId: UUID? = null,
     val status: AiImageTaskStatus = AiImageTaskStatus.RESERVED,
     val baseTime: BaseTime
 ) {
     companion object {
         fun create(
-            sessionId: UUID? = null,
+            chatId: UUID? = null,
             diaryId: UUID? = null,
             status: AiImageTaskStatus = AiImageTaskStatus.RESERVED
         ): AiImageTask =
             AiImageTask(
                 id = UUID.randomUUID(),
-                sessionId = sessionId,
+                chatId = chatId,
                 diaryId = diaryId,
                 status = status,
                 baseTime = BaseTime()

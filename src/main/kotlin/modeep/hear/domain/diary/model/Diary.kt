@@ -12,13 +12,13 @@ import kotlin.collections.forEach
 @Aggregate
 data class Diary(
     val id: UUID,
-    val userId: UUID? = null,
+    val userId: UUID,
     var content: String,
     val emotion: Emotion,
     val tags: List<String>? = null,
     val baseTime: BaseTime,
     val sourceType: DiarySourceType = DiarySourceType.AI_MADE,
-    val sessionId: UUID? = null,
+    val chatId: UUID? = null,
     val diaryImages: MutableList<DiaryImage> = mutableListOf()
 ) {
     companion object {
@@ -28,7 +28,7 @@ data class Diary(
             emotion: Emotion,
             tags: List<String>? = null,
             sourceType: DiarySourceType = DiarySourceType.MANUAL,
-            sessionId: UUID? = null,
+            chatId: UUID? = null,
             diaryImages: MutableList<DiaryImage> = mutableListOf()
         ): Diary {
             return Diary(
@@ -39,7 +39,7 @@ data class Diary(
                 tags = tags,
                 baseTime = BaseTime(),
                 sourceType = sourceType,
-                sessionId = sessionId,
+                chatId = chatId,
                 diaryImages = diaryImages
             )
         }

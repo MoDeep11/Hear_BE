@@ -18,7 +18,7 @@ class DiaryImageMapper(
             order = entity.order,
             sourceType = entity.sourceType,
             diaryImageStatus = entity.diaryImageStatus,
-            sessionId = entity.sessionId,
+            chatId = entity.chatId,
             baseTime = baseTimeMapper.toModel(entity.baseTime)
         )
     }
@@ -30,7 +30,7 @@ class DiaryImageMapper(
             imageUrl = model.imageUrl,
             order = model.order,
             sourceType = model.sourceType,
-            sessionId = model.sessionId,
+            chatId = model.chatId,
             diaryImageStatus = model.diaryImageStatus
         )
     }

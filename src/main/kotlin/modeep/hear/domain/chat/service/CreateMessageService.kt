@@ -29,7 +29,7 @@ class CreateMessageService(
         chat.validateOwner(user.id)
 
         val userMessage = Message.create(
-            sessionId = chatId,
+            chatId = chatId,
             sender = Sender.USER,
             message = request.message,
             messageType = MessageType.TEXT
@@ -38,7 +38,7 @@ class CreateMessageService(
         // todo: ai 서버와 소통
 
         val aiStubMessage = Message.create(
-            sessionId = chatId,
+            chatId = chatId,
             sender = Sender.AI,
             message = "AI 답변입니다. todo: ai 답변을 받도록 변경",
             messageType = MessageType.TEXT
@@ -49,7 +49,7 @@ class CreateMessageService(
         chatPort.save(chat)
 
         return CreateMessageResponse(
-            sessionId = chatId,
+            chatId = chatId,
             content = aiStubMessage.message,
             createdAt = aiStubMessage.baseTime.createdAt,
             suggestion = null

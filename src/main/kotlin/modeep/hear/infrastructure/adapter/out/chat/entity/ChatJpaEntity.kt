@@ -22,7 +22,7 @@ class ChatJpaEntity(
     @Column(name = "status", nullable = false, length = 16)
     val status: ChatStatus = ChatStatus.ONGOING,
 
-    @OneToMany(mappedBy = "session", cascade = [CascadeType.ALL], orphanRemoval = true)
+    @OneToMany(mappedBy = "chat", cascade = [CascadeType.ALL], orphanRemoval = true)
     @OrderBy("createdAt DESC") // 최신순 정렬
     val messages: MutableList<MessageJpaEntity> = mutableListOf(),
 
@@ -31,7 +31,7 @@ class ChatJpaEntity(
 
     fun addMessage(message: MessageJpaEntity) {
         this.messages.add(message)
-        if (message.session != this) {
+        if (message.chat != this) {
             message.assignChat(this)
         }
     }

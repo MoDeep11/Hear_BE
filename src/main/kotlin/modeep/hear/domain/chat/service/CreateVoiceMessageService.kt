@@ -29,7 +29,7 @@ class CreateVoiceMessageService(
         chat.validateOwner(user.id)
 
         val userMessage = Message.create(
-            sessionId = chatId,
+            chatId = chatId,
             sender = Sender.USER,
             message = "알 수 없음",
             messageType = MessageType.VOICE,
@@ -42,7 +42,7 @@ class CreateVoiceMessageService(
         userMessage.updateMessage(message = "유저의 음성 STT")
 
         val aiStubMessage = Message.create(
-            sessionId = chatId,
+            chatId = chatId,
             sender = Sender.AI,
             message = "todo: ai 답변 메시지",
             messageType = MessageType.VOICE,
@@ -55,7 +55,7 @@ class CreateVoiceMessageService(
         chatPort.save(chat)
 
         return CreateVoiceMessageResponse(
-            sessionId = chatId,
+            chatId = chatId,
             userTranscription = "유저 답변 텍스트",
             aiResponseText = "ai 답변 텍스트",
             aiAudioUrl = aiStubMessage.voiceUrl!!,

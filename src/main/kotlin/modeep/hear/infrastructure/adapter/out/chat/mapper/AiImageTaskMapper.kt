@@ -12,7 +12,7 @@ class AiImageTaskMapper(
     fun toModel(entity: AiImageTaskJpaEntity): AiImageTask {
         return AiImageTask(
             id = entity.id,
-            sessionId = entity.sessionId,
+            chatId = entity.chatId,
             diaryId = entity.diaryId,
             status = entity.status,
             baseTime = baseTimeMapper.toModel(entity.baseTime)
@@ -21,7 +21,7 @@ class AiImageTaskMapper(
 
     fun toEntity(model: AiImageTask): AiImageTaskJpaEntity {
         return AiImageTaskJpaEntity(
-            sessionId = model.sessionId,
+            chatId = model.chatId,
             diaryId = model.diaryId,
             status = model.status,
             id = model.id

@@ -9,7 +9,7 @@ import java.util.UUID
 @Aggregate
 data class Message(
     val id: UUID,
-    val sessionId: UUID,
+    val chatId: UUID,
     val sender: Sender,
     val message: String,
     val messageType: MessageType,
@@ -19,7 +19,7 @@ data class Message(
 ) {
     companion object {
         fun create(
-            sessionId: UUID,
+            chatId: UUID,
             sender: Sender,
             message: String,
             messageType: MessageType,
@@ -28,7 +28,7 @@ data class Message(
         ): Message {
             return Message(
                 id = UUID.randomUUID(),
-                sessionId = sessionId,
+                chatId = chatId,
                 sender = sender,
                 message = message,
                 messageType = messageType,

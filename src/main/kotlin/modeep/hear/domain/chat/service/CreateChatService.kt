@@ -23,7 +23,7 @@ class CreateChatService(
         val initMessage = "안녕하세요! 오늘의 일기를 시작해볼까요?" // todo: 나중에 변경
 
         return CreateChatResponse(
-            sessionId = newChat.id,
+            chatId = newChat.id,
             initialMessage = initMessage,
             createdAt = newChat.baseTime.createdAt
         )

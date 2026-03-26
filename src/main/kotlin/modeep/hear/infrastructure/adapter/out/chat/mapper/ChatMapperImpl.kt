@@ -40,7 +40,7 @@ class ChatMapperImpl(
 
     fun MessageJpaEntity.toModel(): Message = Message(
         id = this.id,
-        sessionId = this.session.id,
+        chatId = this.chat.id,
         sender = this.sender,
         message = this.message,
         messageType = this.messageType,
@@ -49,9 +49,9 @@ class ChatMapperImpl(
         baseTime = baseTimeMapper.toModel(this.baseTime)
     )
 
-    fun Message.toEntity(session: ChatJpaEntity): MessageJpaEntity = MessageJpaEntity(
+    fun Message.toEntity(chat: ChatJpaEntity): MessageJpaEntity = MessageJpaEntity(
         id = this.id,
-        session = session,
+        chat = chat,
         sender = this.sender,
         message = this.message,
         messageType = this.messageType,
