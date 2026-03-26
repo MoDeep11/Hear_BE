@@ -3,7 +3,7 @@ package modeep.hear.infrastructure.adapter.`in`.s3
 import jakarta.validation.Valid
 import modeep.hear.domain.storage.port.`in`.GenerateUploadUrlUseCase
 import modeep.hear.global.common.response.ApiResult
-import modeep.hear.global.document.s3.S3ApiDocument
+import modeep.hear.global.document.s3.StorageApiDocument
 import modeep.hear.infrastructure.adapter.`in`.s3.dto.request.GenerateUploadUrlRequest
 import modeep.hear.infrastructure.adapter.`in`.s3.dto.response.GenerateUploadUrlResponse
 import org.springframework.http.ResponseEntity
@@ -13,13 +13,13 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-@RequestMapping("/api/v1/files")
+@RequestMapping("/api/v1/storage")
 class StorageWebAdapter(
     private val generateUploadUrlUseCase: GenerateUploadUrlUseCase
-) : S3ApiDocument {
+) : StorageApiDocument {
 
-    @PostMapping
-    override fun generatePresignedUrl(
+    @PostMapping("/upload-url")
+    override fun generateUploadUrl(
         @RequestBody @Valid
         request: GenerateUploadUrlRequest
     ): ResponseEntity<ApiResult<GenerateUploadUrlResponse>> {

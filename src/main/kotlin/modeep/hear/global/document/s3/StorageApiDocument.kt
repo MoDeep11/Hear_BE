@@ -7,9 +7,9 @@ import modeep.hear.infrastructure.adapter.`in`.s3.dto.response.GenerateUploadUrl
 import org.springframework.http.ResponseEntity
 
 @Tag(name = "File Upload", description = "File upload를 위한 Pre-signed Url 발급 API")
-interface S3ApiDocument {
+interface StorageApiDocument {
 
-    fun generatePresignedUrl(
+    fun generateUploadUrl(
         request: GenerateUploadUrlRequest
     ): ResponseEntity<ApiResult<GenerateUploadUrlResponse>>
 }

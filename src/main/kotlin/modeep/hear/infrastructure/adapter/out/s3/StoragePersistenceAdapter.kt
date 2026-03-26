@@ -16,7 +16,7 @@ import software.amazon.awssdk.services.s3.presigner.model.PutObjectPresignReques
 import java.time.Duration
 
 @Component
-class S3StorageAdapter(
+class StoragePersistenceAdapter(
     private val s3Presigner: S3Presigner,
     private val s3Client: S3Client,
     private val awsProperties: AwsProperties
