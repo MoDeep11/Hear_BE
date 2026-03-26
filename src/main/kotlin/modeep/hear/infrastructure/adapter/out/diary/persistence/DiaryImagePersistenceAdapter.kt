@@ -2,7 +2,7 @@ package modeep.hear.infrastructure.adapter.out.diary.persistence
 
 import modeep.hear.domain.diary.model.DiaryImage
 import modeep.hear.domain.diary.port.out.DiaryImagePort
-import modeep.hear.infrastructure.adapter.out.diary.mapper.DiaryImageMapper
+import modeep.hear.infrastructure.adapter.out.diary.persistence.mapper.DiaryImageMapper
 import modeep.hear.infrastructure.adapter.out.diary.persistence.repository.DiaryImageRepository
 import org.springframework.stereotype.Component
 import java.util.UUID

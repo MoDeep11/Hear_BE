@@ -9,7 +9,9 @@ import modeep.hear.infrastructure.config.aws.properties.AwsProperties
 import org.springframework.stereotype.Component
 import software.amazon.awssdk.core.exception.SdkException
 import software.amazon.awssdk.services.s3.S3Client
-import software.amazon.awssdk.services.s3.model.DeleteObjectRequest
+import software.amazon.awssdk.services.s3.model.Delete
+import software.amazon.awssdk.services.s3.model.DeleteObjectsRequest
+import software.amazon.awssdk.services.s3.model.ObjectIdentifier
 import software.amazon.awssdk.services.s3.model.PutObjectRequest
 import software.amazon.awssdk.services.s3.presigner.S3Presigner
 import software.amazon.awssdk.services.s3.presigner.model.PutObjectPresignRequest
@@ -37,16 +39,25 @@ class StoragePersistenceAdapter(
         return GenerateUploadUrlResponse(finalUrl, file.filePath)
     }
 
-    override fun delete(s3Url: String) {
-        val key = extractKeyFromUrl(s3Url)
+    override fun deleteAll(urls: List<String>) {
+        if (urls.isEmpty()) return
 
-        val deleteObjectRequest = DeleteObjectRequest.builder()
+        val keys = urls.map { url ->
+            val key = extractKeyFromUrl(url)
+            ObjectIdentifier.builder().key(key).build()
+        }
+
+        val deleteObjectsRequest = DeleteObjectsRequest.builder()
             .bucket(awsProperties.s3.bucket)
-            .key(key)
+            .delete(
+                Delete.builder()
+                    .objects(keys)
+                    .build()
+            )
             .build()
 
         try {
-            s3Client.deleteObject(deleteObjectRequest)
+            s3Client.deleteObjects(deleteObjectsRequest)
         } catch (e: SdkException) {
             throw BusinessException(StorageErrorCode.FILE_DELETE_FAILED)
         }

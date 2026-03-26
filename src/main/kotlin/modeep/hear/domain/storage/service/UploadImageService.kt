@@ -4,16 +4,17 @@ import modeep.hear.domain.diary.exception.DiaryErrorCode
 import modeep.hear.domain.diary.model.DiaryImage
 import modeep.hear.domain.diary.vo.DiaryImageStatus
 import modeep.hear.domain.diary.vo.DiarySourceType
+import modeep.hear.domain.diary.event.DiaryImageDeletedEvent
 import modeep.hear.domain.storage.port.`in`.UploadImageUseCase
-import modeep.hear.domain.storage.port.out.StoragePort
 import modeep.hear.domain.storage.vo.ImageAction
 import modeep.hear.global.error.exception.BusinessException
 import modeep.hear.infrastructure.adapter.`in`.storage.dto.request.UploadDiaryImageRequest
+import org.springframework.context.ApplicationEventPublisher
 import org.springframework.stereotype.Service
 
 @Service
 class UploadImageService(
-    private val storagePort: StoragePort
+    private val eventPublisher: ApplicationEventPublisher,
 ) : UploadImageUseCase {
     override fun execute(
         diaryImages: MutableList<DiaryImage>?,
@@ -57,8 +58,8 @@ class UploadImageService(
         // 순서가 꼬엿을 경우를 대비해 인덱스 재정렬
         reorderImagesSafely(images)
 
-        urlsToDelete.forEach { url ->
-            storagePort.delete(url)
+        if (urlsToDelete.isNotEmpty()) {
+            eventPublisher.publishEvent(DiaryImageDeletedEvent(urlsToDelete.toList()))
         }
 
         return images

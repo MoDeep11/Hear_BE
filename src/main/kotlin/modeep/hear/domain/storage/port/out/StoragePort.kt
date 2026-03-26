@@ -6,5 +6,5 @@ import modeep.hear.infrastructure.adapter.`in`.storage.dto.response.GenerateUplo
 interface StoragePort {
     fun generateUploadUrl(file: FileData): GenerateUploadUrlResponse
 
-    fun delete(s3Url: String)
+    fun deleteAll(urls: List<String>)
 }

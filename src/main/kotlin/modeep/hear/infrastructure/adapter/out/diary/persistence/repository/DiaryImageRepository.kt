@@ -1,6 +1,6 @@
 package modeep.hear.infrastructure.adapter.out.diary.persistence.repository
 
-import modeep.hear.infrastructure.adapter.out.diary.entity.DiaryImageJpaEntity
+import modeep.hear.infrastructure.adapter.out.diary.persistence.entity.DiaryImageJpaEntity
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Modifying
 import org.springframework.data.jpa.repository.Query

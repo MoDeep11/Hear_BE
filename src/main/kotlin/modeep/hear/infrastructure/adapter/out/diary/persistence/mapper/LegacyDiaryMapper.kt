@@ -1,9 +1,9 @@
-package modeep.hear.infrastructure.adapter.out.diary.mapper
+package modeep.hear.infrastructure.adapter.out.diary.persistence.mapper
 
 import modeep.hear.domain.diary.model.Diary
 import modeep.hear.domain.diary.model.DiaryImage
-import modeep.hear.infrastructure.adapter.out.diary.entity.DiaryImageJpaEntity
-import modeep.hear.infrastructure.adapter.out.diary.entity.DiaryJpaEntity
+import modeep.hear.infrastructure.adapter.out.diary.persistence.entity.DiaryImageJpaEntity
+import modeep.hear.infrastructure.adapter.out.diary.persistence.entity.DiaryJpaEntity
 import org.mapstruct.Mapping
 
 // MapStruct가 자동으로 구현

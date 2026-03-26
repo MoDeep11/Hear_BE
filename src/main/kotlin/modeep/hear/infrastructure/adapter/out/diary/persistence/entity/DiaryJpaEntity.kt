@@ -1,4 +1,4 @@
-package modeep.hear.infrastructure.adapter.out.diary.entity
+package modeep.hear.infrastructure.adapter.out.diary.persistence.entity
 
 import jakarta.persistence.CascadeType
 import jakarta.persistence.Column

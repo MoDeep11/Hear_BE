@@ -43,5 +43,3 @@ class UploadDiaryImageService(
         }
     }
 }
-
-// TODO: 이벤트 발행 방식으로 transaction 밖에서 s3 삭제 처리하도록 변경

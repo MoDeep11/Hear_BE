@@ -1,9 +1,9 @@
-package modeep.hear.infrastructure.adapter.out.diary.mapper
+package modeep.hear.infrastructure.adapter.out.diary.persistence.mapper
 
 import modeep.hear.domain.diary.model.DiaryImage
 import modeep.hear.global.common.mapper.BaseTimeMapper
-import modeep.hear.infrastructure.adapter.out.diary.entity.DiaryImageJpaEntity
-import modeep.hear.infrastructure.adapter.out.diary.entity.DiaryJpaEntity
+import modeep.hear.infrastructure.adapter.out.diary.persistence.entity.DiaryImageJpaEntity
+import modeep.hear.infrastructure.adapter.out.diary.persistence.entity.DiaryJpaEntity
 import org.springframework.stereotype.Component
 import java.util.UUID
 

@@ -3,7 +3,7 @@ package modeep.hear.infrastructure.adapter.out.diary.persistence
 import modeep.hear.domain.diary.model.Diary
 import modeep.hear.domain.diary.port.out.DiaryPort
 import modeep.hear.domain.diary.vo.DiarySourceType
-import modeep.hear.infrastructure.adapter.out.diary.mapper.DiaryMapper
+import modeep.hear.infrastructure.adapter.out.diary.persistence.mapper.DiaryMapper
 import modeep.hear.infrastructure.adapter.out.diary.persistence.repository.DiaryRepository
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Component
