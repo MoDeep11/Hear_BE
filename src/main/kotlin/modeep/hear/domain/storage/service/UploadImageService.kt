@@ -47,10 +47,11 @@ class UploadImageService(
 
                 // 3. 이미지 순서 변경
                 ImageAction.UPDATE_ORDER -> {
-                    val target = images.find { it.id == request.id }
-                        ?: throw BusinessException(DiaryErrorCode.IMAGE_NOT_FOUND)
+                    val index = images.indexOfFirst { it.id == request.id }
+                    if (index == -1) throw BusinessException(DiaryErrorCode.IMAGE_NOT_FOUND)
 
-                    target.updateOrder(order = request.order)
+                    // 새로운 순서가 적용된 복사본으로 교체
+                    images[index] = images[index].updateOrder(order = request.order)
                 }
             }
         }
