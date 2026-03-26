@@ -23,10 +23,9 @@ class UploadDiaryImageService(
         diaryId: UUID,
         requests: List<UploadDiaryImageRequest>
     ): List<UploadDiaryImageResponse> {
-        val user = securityPort.getCurrentUser()
         val diary = diaryPort.findById(diaryId)
             ?: throw BusinessException(DiaryErrorCode.DIARY_NOT_FOUND)
-        diary.validateOwner(user.id)
+        diary.validateOwner(securityPort.getCurrentUser().id)
 
         uploadImageUseCase.execute(diary.diaryImages, requests)
 

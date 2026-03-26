@@ -16,12 +16,9 @@ class DeleteDiaryService(
     private val securityPort: SecurityPort
 ) : DeleteDiaryUseCase {
     override fun execute(diaryId: UUID) {
-        val user = securityPort.getCurrentUser()
         val diary = diaryPort.findById(diaryId)
             ?: throw BusinessException(DiaryErrorCode.DIARY_NOT_FOUND)
-        diary.validateOwner(
-            currentUserId = user.id
-        )
+        diary.validateOwner(securityPort.getCurrentUser().id)
 
         diaryPort.deleteById(diaryId)
     }

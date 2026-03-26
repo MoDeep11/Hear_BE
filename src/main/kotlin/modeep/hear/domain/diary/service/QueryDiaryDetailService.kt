@@ -1,5 +1,6 @@
 package modeep.hear.domain.diary.service
 
+import modeep.hear.domain.auth.port.out.SecurityPort
 import modeep.hear.domain.diary.exception.DiaryErrorCode
 import modeep.hear.domain.diary.port.`in`.QueryDiaryDetailUseCase
 import modeep.hear.domain.diary.port.out.QueryDiaryPort
@@ -12,15 +13,13 @@ import java.util.UUID
 @Service
 @Transactional(readOnly = true)
 class QueryDiaryDetailService(
-    private val queryDiaryPort: QueryDiaryPort
+    private val queryDiaryPort: QueryDiaryPort,
+    private val securityPort: SecurityPort
 ) : QueryDiaryDetailUseCase {
     override fun execute(diaryId: UUID): QueryDiaryDetailResponse {
         val diary = queryDiaryPort.findById(diaryId)
             ?: throw BusinessException(DiaryErrorCode.DIARY_NOT_FOUND)
-
-        if (diary.id == null || diary.userId == null) {
-            throw BusinessException(DiaryErrorCode.DIARY_NOT_FOUND)
-        }
+        diary.validateOwner(securityPort.getCurrentUser().id)
 
         return QueryDiaryDetailResponse(
             id = diary.id,
@@ -29,7 +28,7 @@ class QueryDiaryDetailService(
             emotion = diary.emotion,
             tags = diary.tags,
             sourceType = diary.sourceType,
-            sessionId = diary.sessionId,
+            sessionId = diary.chatId,
             createdAt = diary.baseTime.createdAt.toLocalDate(),
             updatedAt = diary.baseTime.updatedAt.toLocalDate()
         )
