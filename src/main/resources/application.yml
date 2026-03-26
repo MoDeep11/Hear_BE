@@ -119,3 +119,7 @@ logging:
   level:
     root: ERROR
     modeep.hear: INFO
+
+internal.api:
+    base-url: ${INTERNAL_API_URL:https://api.default-service.com}
+    timeout: 5000
