@@ -27,9 +27,9 @@ class UploadDiaryImageService(
             ?: throw BusinessException(DiaryErrorCode.DIARY_NOT_FOUND)
         diary.validateOwner(securityPort.getCurrentUser().id)
 
-        uploadImageUseCase.execute(diary.diaryImages, requests)
+        val newDiaryImages = uploadImageUseCase.execute(diary.diaryImages, requests)
 
-        diary.updateImages(diary.diaryImages)
+        diary.updateImages(newDiaryImages)
 
         diaryPort.save(diary)
 
