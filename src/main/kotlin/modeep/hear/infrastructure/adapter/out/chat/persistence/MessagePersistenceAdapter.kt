@@ -11,6 +11,7 @@ import modeep.hear.infrastructure.adapter.out.chat.persistence.repository.ChatRe
 import modeep.hear.infrastructure.adapter.out.chat.persistence.repository.MessageRepository
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Component
+import java.util.UUID
 
 @Component
 class MessagePersistenceAdapter(
@@ -18,6 +19,12 @@ class MessagePersistenceAdapter(
     private val chatRepo: ChatRepository,
     private val mapper: MessageMapper
 ) : QueryMessagePort, CommandMessagePort {
+
+    //--Query--//
+    override fun findAllByChatId(chatId: UUID): List<Message> {
+        return messageRepo.findAllByChatId(chatId)
+            .map { mapper.toModel(chatId, it) }
+    }
 
     //--Command--//
     override fun save(message: Message) {

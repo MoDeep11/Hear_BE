@@ -13,9 +13,11 @@ import reactor.core.publisher.Mono
 import reactor.util.retry.Retry
 import kotlinx.coroutines.reactor.awaitSingle
 import modeep.hear.domain.chat.port.out.external.FetchMessagePort
+import modeep.hear.domain.chat.port.out.query.QueryMessagePort
 import modeep.hear.domain.user.port.out.QueryUserPort
 import modeep.hear.global.error.exception.BusinessException
 import modeep.hear.global.error.exception.GlobalErrorCode
+import modeep.hear.infrastructure.adapter.out.chat.external.dto.vo.History
 import modeep.hear.infrastructure.adapter.out.chat.external.dto.vo.UserInfo
 import org.springframework.web.reactive.function.client.bodyToMono
 import java.time.Duration
@@ -24,8 +26,11 @@ import java.util.UUID
 @Component
 class MessageExternalAdapter (
     private val webClient: WebClient,
+    private val queryMessagePort: QueryMessagePort,
 ) : FetchMessagePort {
     override suspend fun sendMessage(chatId: UUID, message: Message): Message {
+        val histories = queryMessagePort.findAllByChatId(chatId).map(History::from)
+
         val request = SendMessageRequest(
             userInfo = UserInfo(
                 userId = UUID.randomUUID(),
@@ -33,7 +38,7 @@ class MessageExternalAdapter (
             ),
             message = message.message,
             userAudioUrl = message.voiceUrl,
-            history = emptyList(),
+            history = histories,
             chatId = chatId
         )
 
