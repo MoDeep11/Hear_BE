@@ -1,9 +1,9 @@
-package modeep.hear.infrastructure.adapter.out.chat.mapper
+package modeep.hear.infrastructure.adapter.out.chat.persistence.mapper
 
 import modeep.hear.domain.chat.model.Message
 import modeep.hear.global.common.mapper.BaseTimeMapper
-import modeep.hear.infrastructure.adapter.out.chat.entity.ChatJpaEntity
-import modeep.hear.infrastructure.adapter.out.chat.entity.MessageJpaEntity
+import modeep.hear.infrastructure.adapter.out.chat.persistence.entity.ChatJpaEntity
+import modeep.hear.infrastructure.adapter.out.chat.persistence.entity.MessageJpaEntity
 import org.springframework.stereotype.Component
 import java.util.UUID
 

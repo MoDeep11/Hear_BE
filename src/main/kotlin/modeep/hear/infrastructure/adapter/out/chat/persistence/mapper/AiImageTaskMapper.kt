@@ -1,8 +1,8 @@
-package modeep.hear.infrastructure.adapter.out.chat.mapper
+package modeep.hear.infrastructure.adapter.out.chat.persistence.mapper
 
 import modeep.hear.domain.chat.model.AiImageTask
 import modeep.hear.global.common.mapper.BaseTimeMapper
-import modeep.hear.infrastructure.adapter.out.chat.entity.AiImageTaskJpaEntity
+import modeep.hear.infrastructure.adapter.out.chat.persistence.entity.AiImageTaskJpaEntity
 import org.springframework.stereotype.Component
 
 @Component

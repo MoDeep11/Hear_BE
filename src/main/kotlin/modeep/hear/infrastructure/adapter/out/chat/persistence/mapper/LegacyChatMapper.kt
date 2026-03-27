@@ -1,7 +1,7 @@
-package modeep.hear.infrastructure.adapter.out.chat.mapper
+package modeep.hear.infrastructure.adapter.out.chat.persistence.mapper
 
 import modeep.hear.domain.chat.model.Chat
-import modeep.hear.infrastructure.adapter.out.chat.entity.ChatJpaEntity
+import modeep.hear.infrastructure.adapter.out.chat.persistence.entity.ChatJpaEntity
 import org.mapstruct.Mapping
 
 // @Mapper(

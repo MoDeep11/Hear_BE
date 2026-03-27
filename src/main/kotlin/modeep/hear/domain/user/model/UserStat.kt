@@ -5,7 +5,7 @@ import java.time.LocalDateTime
 import java.util.UUID
 
 data class UserStat(
-    val userId: UUID? = null,
+    val userId: UUID,
     val currentStreak: Int = 0,
     val totalDiaries: Int = 0,
     val maxStreak: Int = 0,

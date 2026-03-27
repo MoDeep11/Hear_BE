@@ -2,7 +2,7 @@ package modeep.hear.infrastructure.adapter.out.calendar.external
 
 import feign.FeignException
 import io.github.oshai.kotlinlogging.KotlinLogging
-import modeep.hear.domain.calendar.port.out.FetchExternalCalendarPort
+import modeep.hear.domain.calendar.port.out.FetchCalendarPort
 import modeep.hear.global.error.exception.BusinessException
 import modeep.hear.global.error.exception.GlobalErrorCode
 import modeep.hear.infrastructure.external.openfeign.holiday.HolidayFeignClient
@@ -14,7 +14,7 @@ private val log = KotlinLogging.logger {}
 @Component
 class CalendarExternalAdapter(
     private val holidayFeignClient: HolidayFeignClient
-) : FetchExternalCalendarPort {
+) : FetchCalendarPort {
     override fun fetch(year: Int): Set<LocalDate> {
         val response = try {
             holidayFeignClient.getRestDays(year.toString())

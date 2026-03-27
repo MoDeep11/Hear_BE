@@ -12,7 +12,7 @@ import java.util.UUID
 interface DiaryRepository : JpaRepository<DiaryJpaEntity, UUID> {
     @Query(
         """
-        select d from DiaryJpaEntity d 
+        select d toRequest DiaryJpaEntity d 
         join fetch d.diaryImages 
         where d.id = :id
     """

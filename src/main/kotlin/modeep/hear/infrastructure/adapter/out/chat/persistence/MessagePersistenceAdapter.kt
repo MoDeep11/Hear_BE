@@ -4,7 +4,7 @@ import modeep.hear.domain.chat.exception.ChatErrorCode
 import modeep.hear.domain.chat.model.Message
 import modeep.hear.domain.chat.port.out.MessagePort
 import modeep.hear.global.error.exception.BusinessException
-import modeep.hear.infrastructure.adapter.out.chat.mapper.MessageMapper
+import modeep.hear.infrastructure.adapter.out.chat.persistence.mapper.MessageMapper
 import modeep.hear.infrastructure.adapter.out.chat.persistence.repository.ChatRepository
 import modeep.hear.infrastructure.adapter.out.chat.persistence.repository.MessageRepository
 import org.springframework.data.repository.findByIdOrNull

@@ -8,7 +8,7 @@ import modeep.hear.global.util.checkBlank
 import java.util.UUID
 
 data class UserProfile(
-    val userId: UUID? = null,
+    val userId: UUID,
     val nickname: String,
     val profileImageUrl: String,
     val baseTime: BaseTime

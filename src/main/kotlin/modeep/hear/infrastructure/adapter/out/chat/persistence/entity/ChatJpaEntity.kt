@@ -1,4 +1,4 @@
-package modeep.hear.infrastructure.adapter.out.chat.entity
+package modeep.hear.infrastructure.adapter.out.chat.persistence.entity
 
 import jakarta.persistence.CascadeType
 import jakarta.persistence.Column
