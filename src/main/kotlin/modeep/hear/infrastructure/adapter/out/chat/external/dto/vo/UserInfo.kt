@@ -5,9 +5,9 @@ import java.util.UUID
 data class UserInfo(
     val userId: UUID,
     val nickname: String,
-    val streakDays: Int,
-    val totalDiaries: Int,
-    val maxStreak: Int
+    val streakDays: Int = 0,
+    val totalDiaries: Int = 0,
+    val maxStreak: Int = 0
 ) {
     fun toUserInfo(
         userId: UUID,

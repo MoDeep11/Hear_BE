@@ -3,6 +3,8 @@ package modeep.hear.infrastructure.adapter.out.chat.persistence
 import modeep.hear.domain.chat.exception.ChatErrorCode
 import modeep.hear.domain.chat.model.Message
 import modeep.hear.domain.chat.port.out.MessagePort
+import modeep.hear.domain.chat.port.out.command.CommandMessagePort
+import modeep.hear.domain.chat.port.out.query.QueryMessagePort
 import modeep.hear.global.error.exception.BusinessException
 import modeep.hear.infrastructure.adapter.out.chat.persistence.mapper.MessageMapper
 import modeep.hear.infrastructure.adapter.out.chat.persistence.repository.ChatRepository
@@ -15,7 +17,7 @@ class MessagePersistenceAdapter(
     private val messageRepo: MessageRepository,
     private val chatRepo: ChatRepository,
     private val mapper: MessageMapper
-) : MessagePort {
+) : QueryMessagePort, CommandMessagePort {
 
     //--Command--//
     override fun save(message: Message) {
