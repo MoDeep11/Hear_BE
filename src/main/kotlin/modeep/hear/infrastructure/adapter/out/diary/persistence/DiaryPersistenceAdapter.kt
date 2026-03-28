@@ -42,6 +42,10 @@ class DiaryPersistenceAdapter(
         return repo.findTopByUserIdOrderByBaseTimeCreatedAtDesc(userId)?.let { mapper.toModel(it) }
     }
 
+    override fun countByUserId(userId: UUID): Long {
+        return repo.countByUserId(userId)
+    }
+
     // --Command--//
     override fun save(diary: Diary) {
         repo.save(mapper.toEntity(diary))

@@ -54,4 +54,6 @@ interface DiaryRepository : JpaRepository<DiaryJpaEntity, UUID> {
     fun findAllByIdInWithImages(@Param("ids") ids: List<UUID>): List<DiaryJpaEntity>
 
     fun findTopByUserIdOrderByBaseTimeCreatedAtDesc(userId: UUID) : DiaryJpaEntity?
+
+    fun countByUserId(userId: UUID): Long
 }
