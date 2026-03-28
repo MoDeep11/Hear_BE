@@ -1,6 +1,8 @@
 package modeep.hear.domain.diary.service
 
 import modeep.hear.domain.auth.port.out.SecurityPort
+import modeep.hear.domain.common.event.EventPublisher
+import modeep.hear.domain.diary.event.DiaryDeletedEvent
 import modeep.hear.domain.diary.exception.DiaryErrorCode
 import modeep.hear.domain.diary.port.`in`.DeleteDiaryUseCase
 import modeep.hear.domain.diary.port.out.DiaryPort
@@ -13,13 +15,16 @@ import java.util.UUID
 @Transactional
 class DeleteDiaryService(
     private val diaryPort: DiaryPort,
-    private val securityPort: SecurityPort
+    private val securityPort: SecurityPort,
+    private val eventPublisher: EventPublisher
 ) : DeleteDiaryUseCase {
     override fun execute(diaryId: UUID) {
         val diary = diaryPort.findById(diaryId)
             ?: throw BusinessException(DiaryErrorCode.DIARY_NOT_FOUND)
-        diary.validateOwner(securityPort.getCurrentUser().id)
+        val userId = securityPort.getCurrentUser().id
+        diary.validateOwner(userId)
 
         diaryPort.deleteById(diaryId)
+        eventPublisher.publish(DiaryDeletedEvent(diaryId))
     }
 }
