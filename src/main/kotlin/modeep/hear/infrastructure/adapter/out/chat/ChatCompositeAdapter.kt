@@ -5,9 +5,11 @@ import modeep.hear.domain.chat.port.out.ChatPort
 import modeep.hear.infrastructure.adapter.out.chat.external.ChatExternalAdapter
 import modeep.hear.infrastructure.adapter.out.chat.external.dto.response.InitChatResponse
 import modeep.hear.infrastructure.adapter.out.chat.persistence.ChatPersistenceAdapter
+import org.springframework.context.annotation.Primary
 import org.springframework.stereotype.Component
 import java.util.UUID
 
+@Primary
 @Component
 class ChatCompositeAdapter(
     private val persistenceAdapter: ChatPersistenceAdapter,

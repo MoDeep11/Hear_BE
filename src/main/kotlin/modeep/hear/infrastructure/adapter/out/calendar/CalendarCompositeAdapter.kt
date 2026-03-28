@@ -4,9 +4,11 @@ import modeep.hear.domain.calendar.model.Calendar
 import modeep.hear.domain.calendar.port.out.CalendarPort
 import modeep.hear.infrastructure.adapter.out.calendar.external.CalendarExternalAdapter
 import modeep.hear.infrastructure.adapter.out.calendar.persistence.CalendarPersistenceAdapter
+import org.springframework.context.annotation.Primary
 import org.springframework.stereotype.Component
 import java.time.LocalDate
 
+@Primary
 @Component
 class CalendarCompositeAdapter(
     private val persistenceAdapter: CalendarPersistenceAdapter,
