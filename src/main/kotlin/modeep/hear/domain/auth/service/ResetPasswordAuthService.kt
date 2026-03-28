@@ -5,7 +5,7 @@ import modeep.hear.domain.auth.port.`in`.ResetPasswordAuthUseCase
 import modeep.hear.domain.auth.port.out.PasswordPort
 import modeep.hear.domain.auth.port.out.PasswordResetTicketPort
 import modeep.hear.domain.user.exception.UserErrorCode
-import modeep.hear.domain.user.port.`in`.SaveUserUseCase
+import modeep.hear.domain.user.port.`in`.CreateUserUseCase
 import modeep.hear.domain.user.port.out.query.QueryUserPort
 import modeep.hear.global.error.exception.BusinessException
 import modeep.hear.infrastructure.adapter.`in`.auth.dto.request.ResetPasswordRequest
@@ -17,7 +17,7 @@ import org.springframework.transaction.annotation.Transactional
 class ResetPasswordAuthService(
     private val passwordResetTicketPort: PasswordResetTicketPort,
     private val queryUserPort: QueryUserPort,
-    private val saveUserUseCase: SaveUserUseCase,
+    private val createUserUseCase: CreateUserUseCase,
     private val passwordPort: PasswordPort
 ) : ResetPasswordAuthUseCase {
     override fun execute(request: ResetPasswordRequest) {
@@ -30,7 +30,7 @@ class ResetPasswordAuthService(
             )
 
         user.updatePassword(passwordPort.encode(request.password))
-        saveUserUseCase.execute(user)
+        createUserUseCase.execute(user)
 
         passwordResetTicketPort.deleteByTicket(ticket.ticket)
     }
