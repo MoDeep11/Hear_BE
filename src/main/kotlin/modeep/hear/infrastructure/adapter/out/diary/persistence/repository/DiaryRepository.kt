@@ -3,7 +3,6 @@ package modeep.hear.infrastructure.adapter.out.diary.persistence.repository
 import modeep.hear.infrastructure.adapter.out.diary.persistence.entity.DiaryJpaEntity
 import org.springframework.data.domain.Pageable
 import org.springframework.data.jpa.repository.JpaRepository
-import org.springframework.data.jpa.repository.Modifying
 import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.query.Param
 import java.time.LocalDateTime
@@ -12,7 +11,7 @@ import java.util.UUID
 interface DiaryRepository : JpaRepository<DiaryJpaEntity, UUID> {
     @Query(
         """
-        select d toRequest DiaryJpaEntity d 
+        select d from DiaryJpaEntity d 
         join fetch d.diaryImages 
         where d.id = :id
     """
@@ -53,4 +52,6 @@ interface DiaryRepository : JpaRepository<DiaryJpaEntity, UUID> {
     """
     )
     fun findAllByIdInWithImages(@Param("ids") ids: List<UUID>): List<DiaryJpaEntity>
+
+    fun findTopByUserIdOrderByBaseTimeCreatedAtDesc(userId: UUID) : DiaryJpaEntity?
 }

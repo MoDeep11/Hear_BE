@@ -3,7 +3,7 @@ package modeep.hear.infrastructure.adapter.out.user.persistence
 import modeep.hear.domain.user.model.UserProfile
 import modeep.hear.domain.user.port.out.UserProfilePort
 import modeep.hear.global.common.mapper.BaseTimeMapper
-import modeep.hear.infrastructure.adapter.out.user.entity.UserProfileJpaEntity
+import modeep.hear.infrastructure.adapter.out.user.persistence.entity.UserProfileJpaEntity
 import modeep.hear.infrastructure.adapter.out.user.persistence.repository.UserProfileRepository
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Component

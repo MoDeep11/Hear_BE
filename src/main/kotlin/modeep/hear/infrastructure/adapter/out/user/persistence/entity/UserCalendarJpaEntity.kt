@@ -1,4 +1,4 @@
-package modeep.hear.infrastructure.adapter.out.user.entity
+package modeep.hear.infrastructure.adapter.out.user.persistence.entity
 
 import jakarta.persistence.Column
 import jakarta.persistence.EmbeddedId
@@ -8,7 +8,7 @@ import jakarta.persistence.Enumerated
 import jakarta.persistence.Table
 import modeep.hear.domain.common.vo.Emotion
 import modeep.hear.global.common.entity.BaseTimeEntity
-import modeep.hear.infrastructure.adapter.out.user.entity.id.UserCalendarIdEntity
+import modeep.hear.infrastructure.adapter.out.user.persistence.entity.id.UserCalendarIdEntity
 
 @Entity
 @Table(name = "user_calendars")

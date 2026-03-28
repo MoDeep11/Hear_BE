@@ -1,8 +1,8 @@
-package modeep.hear.infrastructure.adapter.out.user.mapper
+package modeep.hear.infrastructure.adapter.out.user.persistence.mapper
 
 import modeep.hear.domain.user.model.User
 import modeep.hear.global.common.mapper.BaseTimeMapper
-import modeep.hear.infrastructure.adapter.out.user.entity.UserJpaEntity
+import modeep.hear.infrastructure.adapter.out.user.persistence.entity.UserJpaEntity
 import org.springframework.stereotype.Component
 
 @Component

@@ -1,4 +1,4 @@
-package modeep.hear.infrastructure.adapter.out.user.entity.id
+package modeep.hear.infrastructure.adapter.out.user.persistence.entity.id
 
 import jakarta.persistence.Column
 import jakarta.persistence.Embeddable

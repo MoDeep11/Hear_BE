@@ -38,6 +38,10 @@ class DiaryPersistenceAdapter(
             .map { it.let(mapper::toModel) }
     }
 
+    override fun findTopByUserIdOrderByCreatedAtDesc(userId: UUID): Diary? {
+        return repo.findTopByUserIdOrderByBaseTimeCreatedAtDesc(userId)?.let { mapper.toModel(it) }
+    }
+
     // --Command--//
     override fun save(diary: Diary) {
         repo.save(mapper.toEntity(diary))

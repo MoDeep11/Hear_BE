@@ -1,10 +1,11 @@
-package modeep.hear.infrastructure.adapter.out.user.entity
+package modeep.hear.infrastructure.adapter.out.user.persistence.entity
 
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.Id
 import jakarta.persistence.Table
 import modeep.hear.global.common.entity.BaseTimeEntity
+import java.time.LocalDate
 import java.time.LocalDateTime
 import java.util.UUID
 
@@ -25,5 +26,5 @@ class UserStatJpaEntity(
     var maxStreak: Int = 0,
 
     @Column(name = "last_written_at")
-    var lastWrittenAt: LocalDateTime? = null
+    var lastWrittenAt: LocalDate? = null
 ) : BaseTimeEntity()

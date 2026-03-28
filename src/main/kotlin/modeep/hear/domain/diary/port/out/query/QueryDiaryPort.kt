@@ -18,4 +18,8 @@ interface QueryDiaryPort {
     ): List<UUID>
 
     fun findAllByIdInWithImages(ids: List<UUID>): List<Diary>
+
+    fun findTopByUserIdOrderByCreatedAtDesc(userId: UUID): Diary?
+
+    fun countByUserId(userId: UUID): Long
 }
