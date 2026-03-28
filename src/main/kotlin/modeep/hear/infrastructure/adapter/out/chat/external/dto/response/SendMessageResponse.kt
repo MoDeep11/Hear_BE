@@ -16,8 +16,15 @@ data class SendMessageResponse(
 
     val aiAudioUrl: String? = null,
 
+    val status: SendMessageResponseStatus = SendMessageResponseStatus.CONTINUE,
+
     val suggestion: SuggestionType? = null,
 
     @field:NotBlank
     val chatId: UUID,
 )
+
+enum class SendMessageResponseStatus {
+    CONTINUE,
+    FINISH
+}

@@ -22,7 +22,7 @@ class CreateMessageService(
     private val messagePort: MessagePort,
     private val queryChatPort: QueryChatPort
 ) : CreateMessageUseCase {
-    override fun execute(
+    override suspend fun execute(
         chatId: UUID,
         request: CreateMessageRequest
     ): CreateMessageResponse {
@@ -37,22 +37,15 @@ class CreateMessageService(
             messageType = MessageType.TEXT
         )
 
-        // todo: ai 서버와 소통
-
-        val aiStubMessage = Message.create(
-            chatId = chatId,
-            sender = Sender.AI,
-            message = "AI 답변입니다. todo: ai 답변을 받도록 변경",
-            messageType = MessageType.TEXT
-        )
+        val aiResult = messagePort.sendMessage(chatId, userMessage)
 
         messagePort.save(userMessage)
-        messagePort.save(aiStubMessage)
+        messagePort.save(aiResult.aiMessage)
 
         return CreateMessageResponse(
             chatId = chatId,
-            content = aiStubMessage.message,
-            createdAt = aiStubMessage.baseTime.createdAt,
+            content = aiResult.aiMessage.message,
+            createdAt = aiResult.aiMessage.baseTime.createdAt,
             suggestion = null
         )
     }

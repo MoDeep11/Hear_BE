@@ -1,5 +1,6 @@
 package modeep.hear.infrastructure.adapter.out.chat.external
 
+import jdk.jshell.SourceCodeAnalysis
 import modeep.hear.domain.chat.model.Message
 import modeep.hear.domain.chat.port.out.external.FetchChatPort
 import modeep.hear.domain.chat.vo.MessageType
@@ -15,12 +16,14 @@ import kotlinx.coroutines.reactor.awaitSingle
 import modeep.hear.domain.auth.port.out.SecurityPort
 import modeep.hear.domain.chat.port.out.external.FetchMessagePort
 import modeep.hear.domain.chat.port.out.query.QueryMessagePort
+import modeep.hear.domain.chat.vo.SuggestionType
 import modeep.hear.domain.user.exception.UserErrorCode
 import modeep.hear.domain.user.port.out.query.QueryUserPort
 import modeep.hear.domain.user.port.out.query.QueryUserProfilePort
 import modeep.hear.domain.user.port.out.query.QueryUserStatPort
 import modeep.hear.global.error.exception.BusinessException
 import modeep.hear.global.error.exception.GlobalErrorCode
+import modeep.hear.infrastructure.adapter.out.chat.external.dto.response.SendMessageResponseStatus
 import modeep.hear.infrastructure.adapter.out.chat.external.dto.vo.History
 import modeep.hear.infrastructure.adapter.out.chat.external.dto.vo.UserInfo
 import org.springframework.web.reactive.function.client.bodyToMono
@@ -35,7 +38,7 @@ class MessageExternalAdapter (
     private val queryUserProfilePort: QueryUserProfilePort,
     private val securityPort: SecurityPort,
 ) : FetchMessagePort {
-    override suspend fun sendMessage(chatId: UUID, message: Message): Message {
+    override suspend fun sendMessage(chatId: UUID, message: Message): SendMessageResult {
         val histories = queryMessagePort.findAllByChatId(chatId).map(History::from)
 
         val userId = securityPort.getCurrentUser().id
@@ -72,13 +75,26 @@ class MessageExternalAdapter (
             MessageType.TEXT
         }
 
-        return Message.create(
+        val aiMessage = Message.create(
             chatId = response.chatId,
             sender = Sender.AI,
             message = response.aiResponseText,
             messageType = messageType,
             voiceUrl = response.aiAudioUrl
         )
+
+        return SendMessageResult(
+            userTranscription = response.userTranscription,
+            status = response.status,
+            suggestion = response.suggestion,
+            aiMessage = aiMessage,
+        )
     }
 }
 
+data class SendMessageResult(
+    val userTranscription: String,
+    val status: SendMessageResponseStatus,
+    val suggestion: SuggestionType? = null,
+    val aiMessage: Message
+)

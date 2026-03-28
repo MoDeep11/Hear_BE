@@ -9,6 +9,7 @@ import modeep.hear.domain.chat.port.out.query.QueryChatPort
 import modeep.hear.domain.chat.vo.MessageType
 import modeep.hear.domain.chat.vo.Sender
 import modeep.hear.global.error.exception.BusinessException
+import modeep.hear.global.error.exception.GlobalErrorCode
 import modeep.hear.infrastructure.adapter.`in`.chat.dto.request.CreateVoiceMessageRequest
 import modeep.hear.infrastructure.adapter.`in`.chat.dto.response.CreateVoiceMessageResponse
 import org.springframework.stereotype.Service
@@ -22,7 +23,7 @@ class CreateVoiceMessageService(
     private val messagePort: MessagePort,
     private val queryChatPort: QueryChatPort
 ) : CreateVoiceMessageUseCase {
-    override fun execute(
+    override suspend fun execute(
         chatId: UUID,
         request: CreateVoiceMessageRequest
     ): CreateVoiceMessageResponse {
@@ -33,34 +34,29 @@ class CreateVoiceMessageService(
         val userMessage = Message.create(
             chatId = chatId,
             sender = Sender.USER,
-            message = "알 수 없음",
+            message = "send voice message",
             messageType = MessageType.VOICE,
             voiceUrl = request.voiceUrl,
             duration = request.duration
         )
 
-        // todo: ai 서버와 소통
+        val aiResult = messagePort.sendMessage(chatId, userMessage)
 
-        userMessage.updateMessage(message = "유저의 음성 STT")
-
-        val aiStubMessage = Message.create(
-            chatId = chatId,
-            sender = Sender.AI,
-            message = "todo: ai 답변 메시지",
-            messageType = MessageType.VOICE,
-            voiceUrl = "https://example.com/ai-voice.mp3",
-            duration = 30000
-        )
+        userMessage.updateMessage(message = aiResult.userTranscription)
 
         messagePort.save(userMessage)
-        messagePort.save(aiStubMessage)
+        messagePort.save(aiResult.aiMessage)
+
+        if (aiResult.suggestion != null) {
+
+        }
 
         return CreateVoiceMessageResponse(
             chatId = chatId,
-            userTranscription = "유저 답변 텍스트",
-            aiResponseText = "ai 답변 텍스트",
-            aiAudioUrl = aiStubMessage.voiceUrl!!,
-            suggestion = null
+            userTranscription = userMessage.message,
+            aiResponseText = aiResult.aiMessage.message,
+            aiAudioUrl = aiResult.aiMessage.voiceUrl?: throw BusinessException(GlobalErrorCode.AI_SERVER_ERROR),
+            suggestion = aiResult.suggestion
         )
     }
 }

@@ -5,7 +5,7 @@ import modeep.hear.infrastructure.adapter.`in`.chat.dto.response.CreateMessageRe
 import java.util.UUID
 
 interface CreateMessageUseCase {
-    fun execute(
+    suspend fun execute(
         chatId: UUID,
         request: CreateMessageRequest
     ): CreateMessageResponse

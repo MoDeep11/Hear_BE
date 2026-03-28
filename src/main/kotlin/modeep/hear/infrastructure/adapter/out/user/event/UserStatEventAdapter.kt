@@ -4,8 +4,8 @@ import modeep.hear.domain.diary.port.out.query.QueryDiaryPort
 import modeep.hear.domain.user.exception.UserErrorCode
 import modeep.hear.domain.user.port.out.UserStatPort
 import modeep.hear.global.error.exception.BusinessException
-import modeep.hear.infrastructure.adapter.out.diary.event.DiaryCreatedEvent
-import modeep.hear.infrastructure.adapter.out.diary.event.DiaryDeletedEvent
+import modeep.hear.domain.diary.event.DiaryCreatedEvent
+import modeep.hear.domain.diary.event.DiaryDeletedEvent
 import org.springframework.context.event.EventListener
 import org.springframework.stereotype.Component
 import java.time.LocalDate

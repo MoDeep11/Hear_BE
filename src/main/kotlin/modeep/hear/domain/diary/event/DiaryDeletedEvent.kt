@@ -1,4 +1,4 @@
-package modeep.hear.infrastructure.adapter.out.diary.event
+package modeep.hear.domain.diary.event
 
 import java.util.UUID
 
