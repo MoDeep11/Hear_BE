@@ -7,7 +7,6 @@ import modeep.hear.infrastructure.adapter.`in`.chat.dto.request.CreateVoiceMessa
 import modeep.hear.infrastructure.adapter.`in`.chat.dto.request.GenerateImageInChatRequest
 import modeep.hear.infrastructure.adapter.`in`.chat.dto.response.CreateChatResponse
 import modeep.hear.infrastructure.adapter.`in`.chat.dto.response.CreateMessageResponse
-import modeep.hear.infrastructure.adapter.`in`.chat.dto.response.CreateVoiceMessageResponse
 import modeep.hear.infrastructure.adapter.`in`.chat.dto.response.GenerateImageInChatResponse
 import modeep.hear.infrastructure.adapter.`in`.storage.dto.request.UploadDiaryImageRequest
 import modeep.hear.infrastructure.adapter.`in`.storage.dto.response.UploadDiaryImageResponse
@@ -17,21 +16,21 @@ import java.util.UUID
 @Tag(name = "Chat", description = "Chat 도메인 관련 API")
 interface ChatApiDocument {
 
-    fun createChat(): ResponseEntity<ApiResult<CreateChatResponse>>
+    suspend fun createChat(): ResponseEntity<ApiResult<CreateChatResponse>>
 
     fun completeChat(
         chatId: UUID
     ): ResponseEntity<ApiResult<Unit>>
 
-    fun createMessage(
+    suspend fun createMessage(
         chatId: UUID,
         request: CreateMessageRequest
     ): ResponseEntity<ApiResult<CreateMessageResponse>>
 
-    fun createVoiceMessage(
+    suspend fun createVoiceMessage(
         chatId: UUID,
         request: CreateVoiceMessageRequest
-    ): ResponseEntity<ApiResult<CreateVoiceMessageResponse>>
+    ): ResponseEntity<ApiResult<CreateMessageResponse>>
 
     fun uploadImageInChat(
         chatId: UUID,
