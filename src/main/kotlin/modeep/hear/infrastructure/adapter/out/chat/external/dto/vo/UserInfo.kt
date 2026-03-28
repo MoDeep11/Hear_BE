@@ -1,5 +1,6 @@
 package modeep.hear.infrastructure.adapter.out.chat.external.dto.vo
 
+import modeep.hear.domain.user.model.UserStat
 import java.util.UUID
 
 data class UserInfo(
@@ -9,17 +10,17 @@ data class UserInfo(
     val totalDiaries: Int = 0,
     val maxStreak: Int = 0
 ) {
-    fun toUserInfo(
-        userId: UUID,
-        nickname: String,
-        streakDays: Int,
-        totalDiaries: Int,
-        maxStreak: Int
-    ) = UserInfo(
-        userId = userId,
-        nickname = nickname,
-        streakDays = streakDays,
-        totalDiaries = totalDiaries,
-        maxStreak = maxStreak
-    )
+    companion object {
+        fun of(
+            userId: UUID,
+            nickname: String,
+            userStat: UserStat
+        ) = UserInfo(
+            userId = userId,
+            nickname = nickname,
+            streakDays = userStat.currentStreak,
+            totalDiaries = userStat.totalDiaries,
+            maxStreak = userStat.maxStreak
+        )
+    }
 }

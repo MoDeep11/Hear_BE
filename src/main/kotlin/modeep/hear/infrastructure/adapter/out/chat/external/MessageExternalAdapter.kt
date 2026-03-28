@@ -12,9 +12,13 @@ import org.springframework.web.reactive.function.client.bodyToMono
 import reactor.core.publisher.Mono
 import reactor.util.retry.Retry
 import kotlinx.coroutines.reactor.awaitSingle
+import modeep.hear.domain.auth.port.out.SecurityPort
 import modeep.hear.domain.chat.port.out.external.FetchMessagePort
 import modeep.hear.domain.chat.port.out.query.QueryMessagePort
+import modeep.hear.domain.user.exception.UserErrorCode
 import modeep.hear.domain.user.port.out.query.QueryUserPort
+import modeep.hear.domain.user.port.out.query.QueryUserProfilePort
+import modeep.hear.domain.user.port.out.query.QueryUserStatPort
 import modeep.hear.global.error.exception.BusinessException
 import modeep.hear.global.error.exception.GlobalErrorCode
 import modeep.hear.infrastructure.adapter.out.chat.external.dto.vo.History
@@ -27,16 +31,19 @@ import java.util.UUID
 class MessageExternalAdapter (
     private val webClient: WebClient,
     private val queryMessagePort: QueryMessagePort,
+    private val queryUserStatPort: QueryUserStatPort,
+    private val queryUserProfilePort: QueryUserProfilePort,
+    private val securityPort: SecurityPort,
 ) : FetchMessagePort {
     override suspend fun sendMessage(chatId: UUID, message: Message): Message {
         val histories = queryMessagePort.findAllByChatId(chatId).map(History::from)
 
-        // todo: 유저 프로필이랑 스탯 가져오는 포트 생성하기
+        val userId = securityPort.getCurrentUser().id
+        val nickname = queryUserProfilePort.findByUserId(userId)?.nickname ?: throw BusinessException(UserErrorCode.USER_PROFILE_NOT_FOUND)
+        val userStat = queryUserStatPort.findByUserId(userId) ?: throw BusinessException(UserErrorCode.USER_STAT_NOT_FOUND)
+
         val request = SendMessageRequest(
-            userInfo = UserInfo(
-                userId = UUID.randomUUID(),
-                nickname = "stub",
-            ),
+            userInfo = UserInfo.of(userId, nickname, userStat),
             message = message.message,
             userAudioUrl = message.voiceUrl,
             history = histories,
