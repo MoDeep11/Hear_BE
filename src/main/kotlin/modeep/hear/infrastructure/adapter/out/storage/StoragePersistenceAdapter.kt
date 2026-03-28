@@ -71,7 +71,6 @@ class StoragePersistenceAdapter(
                 log.error { "S3 파일 삭제 실패: ${e.message}" }
                 throw BusinessException(StorageErrorCode.FILE_DELETE_FAILED)
             }
-
         }
     }
 

@@ -4,7 +4,6 @@ import modeep.hear.domain.auth.port.out.SecurityPort
 import modeep.hear.domain.chat.model.Chat
 import modeep.hear.domain.chat.port.`in`.CreateChatUseCase
 import modeep.hear.domain.chat.port.out.ChatPort
-import modeep.hear.domain.chat.port.out.command.CommandChatPort
 import modeep.hear.infrastructure.adapter.`in`.chat.dto.response.CreateChatResponse
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -13,7 +12,7 @@ import org.springframework.transaction.annotation.Transactional
 @Transactional
 class CreateChatService(
     private val securityPort: SecurityPort,
-    private val chatPort: ChatPort,
+    private val chatPort: ChatPort
 ) : CreateChatUseCase {
     override suspend fun execute(): CreateChatResponse {
         val user = securityPort.getCurrentUser()

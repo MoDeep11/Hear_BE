@@ -28,7 +28,7 @@ class UserStatPersistenceAdapter(
         }
     }
 
-    //-Command--//
+    // -Command--//
     override fun save(userStat: UserStat) {
         repo.save(
             UserStatJpaEntity(
@@ -36,7 +36,7 @@ class UserStatPersistenceAdapter(
                 currentStreak = userStat.currentStreak,
                 totalDiaries = userStat.totalDiaries,
                 maxStreak = userStat.maxStreak,
-                lastWrittenAt = userStat.lastWrittenAt,
+                lastWrittenAt = userStat.lastWrittenAt
             )
         )
     }

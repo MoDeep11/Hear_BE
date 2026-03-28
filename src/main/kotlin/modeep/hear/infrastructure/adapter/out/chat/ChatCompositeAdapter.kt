@@ -15,7 +15,7 @@ class ChatCompositeAdapter(
     private val persistenceAdapter: ChatPersistenceAdapter,
     private val externalAdapter: ChatExternalAdapter
 ) : ChatPort {
-    //--Persistence--//
+    // --Persistence--//
     override fun findById(chatId: UUID): Chat? =
         persistenceAdapter.findById(chatId)
 
@@ -25,7 +25,7 @@ class ChatCompositeAdapter(
     override fun save(chat: Chat) =
         persistenceAdapter.save(chat)
 
-    //--External--//
+    // --External--//
     override suspend fun initChat(chatId: UUID): InitChatResponse =
         externalAdapter.initChat(chatId)
 }

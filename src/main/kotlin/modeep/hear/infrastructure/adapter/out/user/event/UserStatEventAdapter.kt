@@ -1,11 +1,11 @@
 package modeep.hear.infrastructure.adapter.out.user.event
 
+import modeep.hear.domain.diary.event.DiaryCreatedEvent
+import modeep.hear.domain.diary.event.DiaryDeletedEvent
 import modeep.hear.domain.diary.port.out.query.QueryDiaryPort
 import modeep.hear.domain.user.exception.UserErrorCode
 import modeep.hear.domain.user.port.out.UserStatPort
 import modeep.hear.global.error.exception.BusinessException
-import modeep.hear.domain.diary.event.DiaryCreatedEvent
-import modeep.hear.domain.diary.event.DiaryDeletedEvent
 import org.springframework.context.event.EventListener
 import org.springframework.stereotype.Component
 import java.time.LocalDate
@@ -13,7 +13,7 @@ import java.time.LocalDate
 @Component
 class UserStatEventAdapter(
     private val userStatPort: UserStatPort,
-    private val queryDiaryPort: QueryDiaryPort,
+    private val queryDiaryPort: QueryDiaryPort
 ) {
     @EventListener
     fun onDiaryDeleted(event: DiaryDeletedEvent) {
@@ -29,7 +29,7 @@ class UserStatEventAdapter(
 
         val userStatDecreased = userStat.decreaseDiaryCount(
             totalDiaries = totalCount.toInt(),
-            previousLastWrittenAt = lastWrittenAt?.toLocalDate(),
+            previousLastWrittenAt = lastWrittenAt?.toLocalDate()
         )
 
         userStatPort.save(userStatDecreased)
@@ -50,4 +50,3 @@ class UserStatEventAdapter(
 
 // 인덱스 걸어서 조회 속도 높이기
 // CREATE INDEX idx_user_diary_created ON diaries (user_id, created_at DESC);
-

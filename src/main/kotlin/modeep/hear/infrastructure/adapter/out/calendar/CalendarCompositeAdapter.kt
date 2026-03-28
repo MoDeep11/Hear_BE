@@ -14,7 +14,7 @@ class CalendarCompositeAdapter(
     private val persistenceAdapter: CalendarPersistenceAdapter,
     private val externalAdapter: CalendarExternalAdapter
 ) : CalendarPort {
-    //--Persistence--//
+    // --Persistence--//
     override fun countByCalendarDateBetween(start: LocalDate, end: LocalDate): Long =
         persistenceAdapter.countByCalendarDateBetween(start, end)
 
@@ -30,7 +30,7 @@ class CalendarCompositeAdapter(
     override fun deleteByCalendarDateBetween(start: LocalDate, end: LocalDate) =
         persistenceAdapter.deleteByCalendarDateBetween(start, end)
 
-    //--External--//
+    // --External--//
     override fun fetch(year: Int): Set<LocalDate> =
         externalAdapter.fetch(year)
 }

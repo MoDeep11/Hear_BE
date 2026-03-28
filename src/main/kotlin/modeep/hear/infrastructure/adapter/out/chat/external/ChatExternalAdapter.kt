@@ -20,13 +20,13 @@ import java.time.Duration
 import java.util.UUID
 
 @Component
-class ChatExternalAdapter (
+class ChatExternalAdapter(
     private val webClient: WebClient,
     private val queryUserStatPort: QueryUserStatPort,
     private val queryUserProfilePort: QueryUserProfilePort,
-    private val securityPort: SecurityPort,
+    private val securityPort: SecurityPort
 ) : FetchChatPort {
-    override suspend fun initChat(chatId: UUID) : InitChatResponse {
+    override suspend fun initChat(chatId: UUID): InitChatResponse {
         val userId = securityPort.getCurrentUser().id
         val nickname = queryUserProfilePort.findByUserId(userId)?.nickname ?: throw BusinessException(UserErrorCode.USER_PROFILE_NOT_FOUND)
         val userStat = queryUserStatPort.findByUserId(userId) ?: throw BusinessException(UserErrorCode.USER_STAT_NOT_FOUND)
@@ -40,16 +40,16 @@ class ChatExternalAdapter (
             .uri("/internal/v1/chats")
             .bodyValue(req)
             .retrieve()
-            .onStatus({ it.is5xxServerError }) {res ->
+            .onStatus({ it.is5xxServerError }) { res ->
                 res.bodyToMono<String>().flatMap {
                     Mono.error(BusinessException(GlobalErrorCode.AI_SERVER_ERROR))
                 }
             }
             .bodyToMono<InitChatResponse>()
-            .retryWhen(Retry.backoff(3, Duration.ofSeconds(2))
-                .filter { it is RuntimeException }
+            .retryWhen(
+                Retry.backoff(3, Duration.ofSeconds(2))
+                    .filter { it is RuntimeException }
             )
             .awaitSingle()
     }
 }
-

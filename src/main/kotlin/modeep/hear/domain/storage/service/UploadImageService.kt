@@ -1,11 +1,11 @@
 package modeep.hear.domain.storage.service
 
 import modeep.hear.domain.common.event.EventPublisher
+import modeep.hear.domain.diary.event.DiaryImageDeletedEvent
 import modeep.hear.domain.diary.exception.DiaryErrorCode
 import modeep.hear.domain.diary.model.DiaryImage
 import modeep.hear.domain.diary.vo.DiaryImageStatus
 import modeep.hear.domain.diary.vo.DiarySourceType
-import modeep.hear.domain.diary.event.DiaryImageDeletedEvent
 import modeep.hear.domain.storage.port.`in`.UploadImageUseCase
 import modeep.hear.domain.storage.vo.ImageAction
 import modeep.hear.global.error.exception.BusinessException
@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service
 
 @Service
 class UploadImageService(
-    private val eventPublisher: EventPublisher,
+    private val eventPublisher: EventPublisher
 ) : UploadImageUseCase {
     override fun execute(
         diaryImages: MutableList<DiaryImage>?,

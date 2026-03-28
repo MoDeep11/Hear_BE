@@ -12,12 +12,9 @@ import modeep.hear.global.error.exception.BusinessException
 import modeep.hear.global.error.exception.GlobalErrorCode
 import modeep.hear.infrastructure.adapter.`in`.chat.dto.request.CreateVoiceMessageRequest
 import modeep.hear.infrastructure.adapter.`in`.chat.dto.response.CreateVoiceMessageResponse
-import org.springframework.stereotype.Service
-import org.springframework.transaction.annotation.Transactional
 import java.util.UUID
 
-@Service
-@Transactional
+@Deprecated("use CreateMessageService instead")
 class CreateVoiceMessageService(
     private val securityPort: SecurityPort,
     private val messagePort: MessagePort,
@@ -48,14 +45,13 @@ class CreateVoiceMessageService(
         messagePort.save(aiResult.aiMessage)
 
         if (aiResult.suggestion != null) {
-
         }
 
         return CreateVoiceMessageResponse(
             chatId = chatId,
             userTranscription = userMessage.message,
             aiResponseText = aiResult.aiMessage.message,
-            aiAudioUrl = aiResult.aiMessage.voiceUrl?: throw BusinessException(GlobalErrorCode.AI_SERVER_ERROR),
+            aiAudioUrl = aiResult.aiMessage.voiceUrl ?: throw BusinessException(GlobalErrorCode.AI_SERVER_ERROR),
             suggestion = aiResult.suggestion
         )
     }

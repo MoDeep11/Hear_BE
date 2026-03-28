@@ -4,6 +4,5 @@ import modeep.hear.infrastructure.adapter.out.chat.external.dto.response.InitCha
 import java.util.UUID
 
 interface FetchChatPort {
-    suspend fun initChat(chatId: UUID) : InitChatResponse
-
+    suspend fun initChat(chatId: UUID): InitChatResponse
 }

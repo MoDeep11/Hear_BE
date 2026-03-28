@@ -2,7 +2,6 @@ package modeep.hear.infrastructure.adapter.out.chat.persistence
 
 import modeep.hear.domain.chat.exception.ChatErrorCode
 import modeep.hear.domain.chat.model.Message
-import modeep.hear.domain.chat.port.out.MessagePort
 import modeep.hear.domain.chat.port.out.command.CommandMessagePort
 import modeep.hear.domain.chat.port.out.query.QueryMessagePort
 import modeep.hear.global.error.exception.BusinessException
@@ -20,13 +19,13 @@ class MessagePersistenceAdapter(
     private val mapper: MessageMapper
 ) : QueryMessagePort, CommandMessagePort {
 
-    //--Query--//
+    // --Query--//
     override fun findAllByChatId(chatId: UUID): List<Message> {
         return messageRepo.findAllByChatId(chatId)
             .map { mapper.toModel(chatId, it) }
     }
 
-    //--Command--//
+    // --Command--//
     override fun save(message: Message) {
         val chat = chatRepo.findByIdOrNull(message.chatId)
             ?: throw BusinessException(ChatErrorCode.CHAT_NOT_FOUND)

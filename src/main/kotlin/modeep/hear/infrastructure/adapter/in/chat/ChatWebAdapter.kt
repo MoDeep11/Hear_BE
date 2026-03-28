@@ -62,7 +62,7 @@ class ChatWebAdapter(
     ): ResponseEntity<ApiResult<CreateMessageResponse>> {
         return ResponseEntity.ok(
             ApiResult(
-                data = createMessageUseCase.execute(chatId, request)
+                data = createMessageUseCase.executeText(chatId, request)
             )
         )
     }

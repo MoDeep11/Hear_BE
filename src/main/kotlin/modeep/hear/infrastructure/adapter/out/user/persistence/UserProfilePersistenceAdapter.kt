@@ -30,7 +30,7 @@ class UserProfilePersistenceAdapter(
             UserProfileJpaEntity(
                 userId = userProfile.userId,
                 nickname = userProfile.nickname,
-                profileImageUrl = userProfile.profileImageUrl,
+                profileImageUrl = userProfile.profileImageUrl
             )
         )
     }

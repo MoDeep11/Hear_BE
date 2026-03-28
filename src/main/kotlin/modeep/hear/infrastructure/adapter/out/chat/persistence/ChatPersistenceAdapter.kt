@@ -1,7 +1,6 @@
 package modeep.hear.infrastructure.adapter.out.chat.persistence
 
 import modeep.hear.domain.chat.model.Chat
-import modeep.hear.domain.chat.port.out.ChatPort
 import modeep.hear.domain.chat.port.out.command.CommandChatPort
 import modeep.hear.domain.chat.port.out.query.QueryChatPort
 import modeep.hear.infrastructure.adapter.out.chat.persistence.mapper.ChatMapper

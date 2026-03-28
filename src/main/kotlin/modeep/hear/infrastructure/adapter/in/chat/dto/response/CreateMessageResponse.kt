@@ -6,7 +6,10 @@ import java.util.UUID
 
 data class CreateMessageResponse(
     val chatId: UUID,
-    val content: String,
-    val createdAt: LocalDateTime,
-    val suggestion: SuggestionType? = null
+    val userContent: String,
+    val aiContent: String,
+    val aiAudioUrl: String?,
+    val suggestion: SuggestionType? = null,
+    val userCreatedAt: LocalDateTime,
+    val aiCreatedAt: LocalDateTime
 )

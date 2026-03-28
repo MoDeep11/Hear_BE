@@ -2,7 +2,6 @@ package modeep.hear.domain.user.model
 
 import modeep.hear.domain.common.vo.BaseTime
 import java.time.LocalDate
-import java.time.LocalDateTime
 import java.util.UUID
 
 data class UserStat(
@@ -21,7 +20,6 @@ data class UserStat(
     }
 
     fun increaseDiaryCount(now: LocalDate): UserStat {
-
         // 연속 작성 여부 확인
         val newStreak = when {
             lastWrittenAt == null -> 1 // 처음 쓰는 경우
@@ -77,7 +75,7 @@ data class UserStat(
         totalDiaries: Int = this.totalDiaries,
         maxStreak: Int = this.maxStreak,
         lastWrittenAt: LocalDate? = this.lastWrittenAt
-    ) : UserStat {
+    ): UserStat {
         return this.copy(
             currentStreak = currentStreak,
             totalDiaries = totalDiaries,

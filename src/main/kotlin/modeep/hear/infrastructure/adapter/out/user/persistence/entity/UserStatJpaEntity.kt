@@ -6,7 +6,6 @@ import jakarta.persistence.Id
 import jakarta.persistence.Table
 import modeep.hear.global.common.entity.BaseTimeEntity
 import java.time.LocalDate
-import java.time.LocalDateTime
 import java.util.UUID
 
 @Entity
