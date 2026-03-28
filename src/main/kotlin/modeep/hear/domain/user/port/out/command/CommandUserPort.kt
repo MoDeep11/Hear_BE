@@ -1,4 +1,4 @@
-package modeep.hear.domain.user.port.out
+package modeep.hear.domain.user.port.out.command
 
 import modeep.hear.domain.user.model.User
 import java.util.UUID

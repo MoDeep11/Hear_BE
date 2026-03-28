@@ -12,6 +12,13 @@ data class UserStat(
     val lastWrittenAt: LocalDateTime? = null,
     val baseTime: BaseTime
 ) {
+    companion object {
+        fun create(userId: UUID): UserStat = UserStat(
+            userId = userId,
+            baseTime = BaseTime()
+        )
+    }
+
     fun increaseDiaryCount(now: LocalDateTime): UserStat {
         // 연속 작성 여부 확인
         val newStreak = when {

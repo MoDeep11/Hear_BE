@@ -13,12 +13,7 @@ import java.util.UUID
 class UserStatJpaEntity(
     @Id
     @Column(name = "user_id")
-    val userId: UUID? = null,
-
-//    @MapsId
-//    @OneToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "user_id")
-//    val user: UserJpaEntity,
+    val userId: UUID,
 
     @Column(name = "current_streak")
     var currentStreak: Int = 0,

@@ -6,7 +6,7 @@ import modeep.hear.domain.auth.port.out.PasswordPort
 import modeep.hear.domain.auth.port.out.PasswordResetTicketPort
 import modeep.hear.domain.user.exception.UserErrorCode
 import modeep.hear.domain.user.port.`in`.SaveUserUseCase
-import modeep.hear.domain.user.port.out.QueryUserPort
+import modeep.hear.domain.user.port.out.query.QueryUserPort
 import modeep.hear.global.error.exception.BusinessException
 import modeep.hear.infrastructure.adapter.`in`.auth.dto.request.ResetPasswordRequest
 import org.springframework.stereotype.Service

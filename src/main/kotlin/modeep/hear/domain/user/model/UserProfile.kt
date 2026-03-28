@@ -22,9 +22,9 @@ data class UserProfile(
             )
         }
     }
+
     companion object {
-        fun create(nickname: String?): UserProfile {
-            val userId = UUID.randomUUID()
+        fun create(userId: UUID, nickname: String?): UserProfile {
             return UserProfile(
                 userId = userId,
                 nickname = nickname
@@ -36,4 +36,10 @@ data class UserProfile(
             )
         }
     }
+
+    fun updateNickname(nickname: String) =
+        this.copy(nickname = nickname)
+
+    fun updateProfileImageUrl(profileImageUrl: String) =
+        this.copy(profileImageUrl = profileImageUrl)
 }

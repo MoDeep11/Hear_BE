@@ -14,7 +14,7 @@ import reactor.util.retry.Retry
 import kotlinx.coroutines.reactor.awaitSingle
 import modeep.hear.domain.chat.port.out.external.FetchMessagePort
 import modeep.hear.domain.chat.port.out.query.QueryMessagePort
-import modeep.hear.domain.user.port.out.QueryUserPort
+import modeep.hear.domain.user.port.out.query.QueryUserPort
 import modeep.hear.global.error.exception.BusinessException
 import modeep.hear.global.error.exception.GlobalErrorCode
 import modeep.hear.infrastructure.adapter.out.chat.external.dto.vo.History
@@ -31,6 +31,7 @@ class MessageExternalAdapter (
     override suspend fun sendMessage(chatId: UUID, message: Message): Message {
         val histories = queryMessagePort.findAllByChatId(chatId).map(History::from)
 
+        // todo: 유저 프로필이랑 스탯 가져오는 포트 생성하기
         val request = SendMessageRequest(
             userInfo = UserInfo(
                 userId = UUID.randomUUID(),
