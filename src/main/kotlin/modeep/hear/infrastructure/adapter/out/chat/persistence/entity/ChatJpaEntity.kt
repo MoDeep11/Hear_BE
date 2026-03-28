@@ -20,7 +20,7 @@ class ChatJpaEntity(
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false, length = 16)
-    val status: ChatStatus = ChatStatus.ONGOING,
+    val status: ChatStatus = ChatStatus.CONTINUE,
 
     @OneToMany(mappedBy = "chat", cascade = [CascadeType.ALL], orphanRemoval = true)
     @OrderBy("createdAt DESC") // 최신순 정렬

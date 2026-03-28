@@ -6,16 +6,15 @@ enum class ChatStatus(
     override val isFinalState: Boolean,
     override val label: String
 ) : ModelStatus {
-    ONGOING(false, "진행 중"),
-    COMPLETED(true, "완료"),
-    ABANDONED(true, "삭제 예정");
+    CONTINUE(false, "진행 중"),
+    FINISH(true, "완료");
 
     override fun canTransitionTo(next: ModelStatus): Boolean {
         if (this.isFinalState) return false
 
         return if (next is ChatStatus) {
             when (this) {
-                ONGOING -> true
+                CONTINUE -> true
                 else -> false
             }
         } else {

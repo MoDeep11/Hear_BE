@@ -3,6 +3,7 @@ package modeep.hear.domain.chat.service
 import modeep.hear.domain.auth.port.out.SecurityPort
 import modeep.hear.domain.chat.exception.ChatErrorCode
 import modeep.hear.domain.chat.model.Message
+import modeep.hear.domain.chat.port.dto.result.SendMessageResult
 import modeep.hear.domain.chat.port.`in`.CreateMessageUseCase
 import modeep.hear.domain.chat.port.out.MessagePort
 import modeep.hear.domain.chat.port.out.query.QueryChatPort
@@ -68,6 +69,7 @@ class CreateMessageService(
         type: MessageType
     ): CreateMessageResponse {
         val aiResult = messagePort.sendMessage(chatId, userMessage)
+        validateResult(type, aiResult)
 
         messagePort.save(userMessage)
         messagePort.save(aiResult.aiMessage)
@@ -77,15 +79,20 @@ class CreateMessageService(
             userContent = userMessage.message,
             aiContent = aiResult.aiMessage.message,
             aiAudioUrl = aiResult.aiMessage.voiceUrl,
+            status = aiResult.status,
             suggestion = aiResult.suggestion,
             userCreatedAt = userMessage.baseTime.createdAt,
             aiCreatedAt = aiResult.aiMessage.baseTime.createdAt
         )
     }
 
-    private fun validateVoiceType(type: MessageType, voiceUrl: String?) {
-        if (type == MessageType.VOICE && voiceUrl != null) {
-            throw BusinessException(GlobalErrorCode.AI_SERVER_ERROR)
+    private fun validateResult(type: MessageType, aiResult: SendMessageResult) {
+        when (type) {
+            MessageType.TEXT -> return
+            MessageType.VOICE ->
+                if (aiResult.aiMessage.voiceUrl == null) {
+                    throw BusinessException(GlobalErrorCode.AI_SERVER_ERROR)
+                }
         }
     }
 }
