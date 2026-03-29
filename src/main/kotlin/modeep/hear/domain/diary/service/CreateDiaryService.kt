@@ -21,7 +21,7 @@ class CreateDiaryService(
         val (histories, userInfo) = getData.getUserInfoWithHistories(chatId)
         val diary = diaryPort.generateDiary(chatId, histories, userInfo)
 
-        diaryCommandService.saveDiary(diary, chatId, userId)
+        diaryCommandService.createDiary(diary, chatId, userId)
 
         return CreateDiaryResponse.from(diary)
     }

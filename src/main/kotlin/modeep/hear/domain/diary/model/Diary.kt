@@ -19,7 +19,8 @@ data class Diary(
     val baseTime: BaseTime,
     val sourceType: DiarySourceType = DiarySourceType.AI_MADE,
     val chatId: UUID? = null,
-    val diaryImages: MutableList<DiaryImage> = mutableListOf()
+    val diaryImages: MutableList<DiaryImage> = mutableListOf(),
+    var diaryAiComment: DiaryAiComment? = null
 ) {
     companion object {
         fun create(

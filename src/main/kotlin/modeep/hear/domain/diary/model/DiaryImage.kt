@@ -1,10 +1,12 @@
 package modeep.hear.domain.diary.model
 
+import modeep.hear.domain.common.annotation.Aggregate
 import modeep.hear.domain.common.vo.BaseTime
 import modeep.hear.domain.diary.vo.DiaryImageStatus
 import modeep.hear.domain.diary.vo.DiarySourceType
 import java.util.UUID
 
+@Aggregate
 data class DiaryImage(
     val id: UUID,
     var diaryId: UUID? = null,
