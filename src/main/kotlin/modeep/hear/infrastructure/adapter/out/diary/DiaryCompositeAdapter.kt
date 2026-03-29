@@ -1,16 +1,19 @@
 package modeep.hear.infrastructure.adapter.out.diary
 
 import modeep.hear.domain.diary.model.Diary
+import modeep.hear.domain.diary.model.DiaryAiComment
 import modeep.hear.domain.diary.port.out.DiaryPort
 import modeep.hear.domain.diary.vo.DiarySourceType
 import modeep.hear.infrastructure.adapter.out.diary.external.DiaryExternalAdapter
 import modeep.hear.infrastructure.adapter.out.diary.persistence.DiaryPersistenceAdapter
+import org.springframework.context.annotation.Primary
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Component
 import java.time.LocalDate
 import java.time.YearMonth
 import java.util.UUID
 
+@Primary
 @Component
 class DiaryCompositeAdapter(
     private val persistenceAdapter: DiaryPersistenceAdapter,
@@ -49,4 +52,11 @@ class DiaryCompositeAdapter(
 
     override fun deleteById(diaryId: UUID) =
         persistenceAdapter.deleteById(diaryId)
+
+    //--External--//
+    override suspend fun generateDiary(chatId: UUID): Diary =
+        externalAdapter.generateDiary(chatId)
+
+    override suspend fun addComment(diaryId: UUID): DiaryAiComment =
+        externalAdapter.addComment(diaryId)
 }

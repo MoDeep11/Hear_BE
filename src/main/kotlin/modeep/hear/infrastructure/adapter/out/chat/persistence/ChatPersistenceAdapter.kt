@@ -11,7 +11,6 @@ import org.springframework.transaction.annotation.Transactional
 import java.util.UUID
 
 @Component
-@Transactional(readOnly = true)
 class ChatPersistenceAdapter(
     private val repo: ChatRepository,
     private val mapper: ChatMapper
@@ -25,12 +24,10 @@ class ChatPersistenceAdapter(
     }
 
     // --Command--//
-    @Transactional
     override fun save(chat: Chat) {
         repo.save(mapper.toEntity(chat))
     }
 
-    @Transactional
     override fun delete(chatId: UUID) {
         repo.deleteById(chatId)
     }

@@ -15,7 +15,7 @@ data class Diary(
     val userId: UUID,
     var content: String,
     val emotion: Emotion,
-    val tags: List<String>? = null,
+    val tags: List<String>,
     val baseTime: BaseTime,
     val sourceType: DiarySourceType = DiarySourceType.AI_MADE,
     val chatId: UUID? = null,
@@ -26,7 +26,7 @@ data class Diary(
             userId: UUID,
             content: String,
             emotion: Emotion,
-            tags: List<String>? = null,
+            tags: List<String>,
             sourceType: DiarySourceType = DiarySourceType.MANUAL,
             chatId: UUID? = null,
             diaryImages: MutableList<DiaryImage> = mutableListOf()

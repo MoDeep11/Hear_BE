@@ -15,7 +15,6 @@ import org.springframework.transaction.annotation.Transactional
 import java.util.UUID
 
 @Component
-@Transactional(readOnly = true)
 class SecurityAdapter(
     private val repo: UserRepository,
     private val mapper: UserMapper,
@@ -29,20 +28,20 @@ class SecurityAdapter(
     }
 
     override fun getCurrentUser(): User {
-        val userId = getUserId()?.takeIf { it.isNotBlank() }?.let {
-            runCatching { UUID.fromString(it) }.getOrNull()
-        } ?: throw BusinessException(UserErrorCode.USER_NOT_FOUND)
+        val userId = getCurrentUserId()
 
         val entity = repo.findByIdOrNull(userId)
             ?: throw BusinessException(UserErrorCode.USER_NOT_FOUND)
         return mapper.toModel(entity)
     }
 
-    fun getUserId(): String? {
+    override fun getCurrentUserId(): UUID {
         val auth = SecurityContextHolder.getContext().authentication
-        if (auth == null || !auth.isAuthenticated || auth.name == "anonymousUser") {
-            return null
+        if (auth == null || !auth.isAuthenticated || auth.name == "anonymousUser" || auth.name.isNull(NotBlank())) {
+            throw BusinessException(UserErrorCode.USER_NOT_FOUND)
         }
-        return auth.name
+
+        return runCatching { UUID.fromString(auth.name) }
+            .getOrElse { throw BusinessException(UserErrorCode.USER_NOT_FOUND) }
     }
 }

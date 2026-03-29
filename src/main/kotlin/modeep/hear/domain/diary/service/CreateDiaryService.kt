@@ -2,26 +2,28 @@ package modeep.hear.domain.diary.service
 
 import modeep.hear.domain.auth.port.out.SecurityPort
 import modeep.hear.domain.common.event.EventPublisher
-import modeep.hear.domain.diary.event.DiaryCreatedEvent
 import modeep.hear.domain.diary.port.`in`.CreateDiaryUseCase
 import modeep.hear.domain.diary.port.out.DiaryPort
-import modeep.hear.infrastructure.adapter.`in`.diary.dto.request.CreateDiaryRequest
+import modeep.hear.domain.diary.port.out.external.FetchDiaryPort
+import modeep.hear.domain.diary.port.out.query.QueryDiaryImagePort
 import modeep.hear.infrastructure.adapter.`in`.diary.dto.response.CreateDiaryResponse
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import java.util.UUID
 
 @Service
-@Transactional
 class CreateDiaryService(
-    private val diaryPort: DiaryPort,
+    private val diaryPort: FetchDiaryPort,
     private val securityPort: SecurityPort,
-    private val eventPublisher: EventPublisher
+    private val diaryCommandService: DiaryCommandService,
 ) : CreateDiaryUseCase {
-    override fun execute(request: CreateDiaryRequest): CreateDiaryResponse {
-        val userId = securityPort.getCurrentUser().id
+    override suspend fun execute(chatId: UUID): CreateDiaryResponse {
+        val userId = securityPort.getCurrentUserId()
 
-        eventPublisher.publish(DiaryCreatedEvent(userId))
+        val diary = diaryPort.generateDiary(chatId)
 
-        TODO()
+        diaryCommandService.saveDiary(diary, chatId, userId)
+
+        return CreateDiaryResponse.from(diary)
     }
 }
