@@ -9,6 +9,7 @@ import modeep.hear.domain.chat.port.out.MessagePort
 import modeep.hear.domain.chat.port.out.query.QueryChatPort
 import modeep.hear.domain.chat.vo.MessageType
 import modeep.hear.domain.chat.vo.Sender
+import modeep.hear.domain.common.component.GetDataForRequestComponent
 import modeep.hear.global.error.exception.BusinessException
 import modeep.hear.global.error.exception.GlobalErrorCode
 import modeep.hear.infrastructure.adapter.`in`.chat.dto.request.CreateMessageRequest
@@ -23,7 +24,8 @@ import java.util.UUID
 class CreateMessageService(
     private val securityPort: SecurityPort,
     private val messagePort: MessagePort,
-    private val queryChatPort: QueryChatPort
+    private val queryChatPort: QueryChatPort,
+    private val getData: GetDataForRequestComponent
 ) : CreateMessageUseCase {
     override suspend fun executeText(
         chatId: UUID,
@@ -68,7 +70,14 @@ class CreateMessageService(
         userMessage: Message,
         type: MessageType
     ): CreateMessageResponse {
-        val aiResult = messagePort.sendMessage(chatId, userMessage)
+        val (his, userInfo) = getData.getUserInfoWithHistories(chatId)
+        val aiResult = messagePort.sendMessage(
+            chatId,
+            his,
+            userInfo,
+            userMessage
+        )
+
         validateResult(type, aiResult)
 
         messagePort.save(userMessage)

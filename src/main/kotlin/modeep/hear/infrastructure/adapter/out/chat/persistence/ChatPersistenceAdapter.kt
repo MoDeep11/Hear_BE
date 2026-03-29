@@ -7,7 +7,6 @@ import modeep.hear.infrastructure.adapter.out.chat.persistence.mapper.ChatMapper
 import modeep.hear.infrastructure.adapter.out.chat.persistence.repository.ChatRepository
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Component
-import org.springframework.transaction.annotation.Transactional
 import java.util.UUID
 
 @Component

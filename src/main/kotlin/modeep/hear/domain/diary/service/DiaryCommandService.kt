@@ -13,7 +13,7 @@ import java.util.UUID
 class DiaryCommandService(
     private val queryDiaryImagePort: QueryDiaryImagePort,
     private val diaryPort: DiaryPort,
-    private val eventPublisher: EventPublisher,
+    private val eventPublisher: EventPublisher
 ) {
     @Transactional
     suspend fun saveDiary(diary: Diary, chatId: UUID, userId: UUID) {

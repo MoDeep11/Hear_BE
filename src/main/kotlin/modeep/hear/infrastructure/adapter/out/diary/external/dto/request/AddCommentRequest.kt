@@ -9,5 +9,5 @@ data class AddCommentRequest(
     val nickname: String,
     val emotion: Emotion,
     val content: String,
-    val imageUrls: List<String>,
+    val imageUrls: List<String>
 )

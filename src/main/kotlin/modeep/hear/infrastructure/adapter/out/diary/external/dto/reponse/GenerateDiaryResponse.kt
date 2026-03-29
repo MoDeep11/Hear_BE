@@ -11,5 +11,5 @@ data class GenerateDiaryResponse(
     val content: String,
     val emotion: Emotion,
     @field:NotEmpty
-    val tags: List<@NotBlank String>,
+    val tags: List<@NotBlank String>
 )

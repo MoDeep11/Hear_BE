@@ -1,25 +1,17 @@
 package modeep.hear.infrastructure.adapter.out.chat.external
 
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.reactor.awaitSingle
-import kotlinx.coroutines.withContext
-import modeep.hear.domain.auth.port.out.SecurityPort
 import modeep.hear.domain.chat.model.Message
 import modeep.hear.domain.chat.port.dto.result.SendMessageResult
 import modeep.hear.domain.chat.port.out.external.FetchMessagePort
 import modeep.hear.domain.chat.vo.MessageType
 import modeep.hear.domain.chat.vo.Sender
-import modeep.hear.domain.user.exception.UserErrorCode
-import modeep.hear.domain.user.port.out.query.QueryUserProfilePort
-import modeep.hear.domain.user.port.out.query.QueryUserStatPort
 import modeep.hear.global.error.exception.BusinessException
 import modeep.hear.global.error.exception.GlobalErrorCode
 import modeep.hear.infrastructure.adapter.out.chat.external.dto.request.SendMessageRequest
 import modeep.hear.infrastructure.adapter.out.chat.external.dto.response.SendMessageResponse
 import modeep.hear.infrastructure.adapter.out.chat.external.dto.vo.History
 import modeep.hear.infrastructure.adapter.out.chat.external.dto.vo.UserInfo
-import modeep.hear.infrastructure.adapter.out.chat.persistence.mapper.MessageMapper
-import modeep.hear.infrastructure.adapter.out.chat.persistence.repository.MessageRepository
 import org.springframework.stereotype.Component
 import org.springframework.web.reactive.function.client.WebClient
 import org.springframework.web.reactive.function.client.bodyToMono
@@ -30,28 +22,14 @@ import java.util.UUID
 
 @Component
 class MessageExternalAdapter(
-    private val webClient: WebClient,
-    private val repo: MessageRepository,
-    private val mapper: MessageMapper,
-    private val queryUserStatPort: QueryUserStatPort,
-    private val queryUserProfilePort: QueryUserProfilePort,
-    private val securityPort: SecurityPort
+    private val webClient: WebClient
 ) : FetchMessagePort {
-    override suspend fun sendMessage(chatId: UUID, message: Message): SendMessageResult {
-        // 블로킹 호출을 IO 디스패처로 격리
-        val (histories, userInfo) = withContext(Dispatchers.IO) {
-            val messages = repo.findAllByChatIdOrderByBaseTimeCreatedAtAsc(chatId).map { mapper.toModel(chatId, it) }
-            val histories = messages.map(History::from)
-
-            val user = securityPort.getCurrentUser()
-            val profile = queryUserProfilePort.findByUserId(user.id)
-                ?: throw BusinessException(UserErrorCode.USER_PROFILE_NOT_FOUND)
-            val stat = queryUserStatPort.findByUserId(user.id)
-                ?: throw BusinessException(UserErrorCode.USER_STAT_NOT_FOUND)
-
-            histories to UserInfo.of(user.id, profile.nickname, stat)
-        }
-
+    override suspend fun sendMessage(
+        chatId: UUID,
+        histories: List<History>,
+        userInfo: UserInfo,
+        message: Message
+    ): SendMessageResult {
         val request = SendMessageRequest(
             userInfo = userInfo,
             message = message.message,

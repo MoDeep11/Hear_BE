@@ -5,5 +5,5 @@ import modeep.hear.infrastructure.adapter.out.chat.external.dto.vo.UserInfo
 
 data class GenerateDiaryRequest(
     val userInfo: UserInfo,
-    val history: List<History>,
+    val history: List<History>
 )

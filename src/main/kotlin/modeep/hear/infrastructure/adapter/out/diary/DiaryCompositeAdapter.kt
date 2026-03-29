@@ -4,6 +4,8 @@ import modeep.hear.domain.diary.model.Diary
 import modeep.hear.domain.diary.model.DiaryAiComment
 import modeep.hear.domain.diary.port.out.DiaryPort
 import modeep.hear.domain.diary.vo.DiarySourceType
+import modeep.hear.infrastructure.adapter.out.chat.external.dto.vo.History
+import modeep.hear.infrastructure.adapter.out.chat.external.dto.vo.UserInfo
 import modeep.hear.infrastructure.adapter.out.diary.external.DiaryExternalAdapter
 import modeep.hear.infrastructure.adapter.out.diary.persistence.DiaryPersistenceAdapter
 import org.springframework.context.annotation.Primary
@@ -19,7 +21,7 @@ class DiaryCompositeAdapter(
     private val persistenceAdapter: DiaryPersistenceAdapter,
     private val externalAdapter: DiaryExternalAdapter
 ) : DiaryPort {
-    //--Persistence--//
+    // --Persistence--//
     override fun findById(diaryId: UUID): Diary? =
         persistenceAdapter.findById(diaryId)
 
@@ -53,10 +55,17 @@ class DiaryCompositeAdapter(
     override fun deleteById(diaryId: UUID) =
         persistenceAdapter.deleteById(diaryId)
 
-    //--External--//
-    override suspend fun generateDiary(chatId: UUID): Diary =
-        externalAdapter.generateDiary(chatId)
+    // --External--//
+    override suspend fun generateDiary(
+        chatId: UUID,
+        histories: List<History>,
+        userInfo: UserInfo
+    ): Diary =
+        externalAdapter.generateDiary(chatId, histories, userInfo)
 
-    override suspend fun addComment(diaryId: UUID): DiaryAiComment =
-        externalAdapter.addComment(diaryId)
+    override suspend fun addComment(
+        userInfo: UserInfo,
+        diary: Diary
+    ): DiaryAiComment =
+        externalAdapter.addComment(userInfo, diary)
 }
