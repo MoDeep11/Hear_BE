@@ -71,4 +71,9 @@ interface DiaryRepository : JpaRepository<DiaryJpaEntity, UUID> {
         baseTimeCreatedAtAfter: LocalDateTime,
         baseTimeCreatedAtBefore: LocalDateTime
     ): Boolean
+
+    fun findAllByBaseTime_CreatedAtBetween(
+        baseTimeCreatedAtAfter: LocalDateTime,
+        baseTimeCreatedAtBefore: LocalDateTime
+    ): MutableList<DiaryJpaEntity>
 }

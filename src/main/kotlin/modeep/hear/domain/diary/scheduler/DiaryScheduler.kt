@@ -36,7 +36,7 @@ class DiaryScheduler(
                     launch { // 각 일기를 개별 코루틴으로 실행 (병렬)
                         runCatching {
                             createDiaryAiCommentUseCase.execute(diary)
-                        }.onSuccess{
+                        }.onSuccess {
                             log.info { "Successfully added AI Comment: [${diary.id}]" }
                         }.onFailure { e ->
                             log.error(e) { "Failed to add AI Comment for diary: [${diary.id}]" }

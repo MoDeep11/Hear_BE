@@ -1,18 +1,9 @@
 package modeep.hear.domain.chat.service
 
 import modeep.hear.domain.auth.port.out.SecurityPort
-import modeep.hear.domain.chat.exception.ChatErrorCode
-import modeep.hear.domain.chat.model.Message
 import modeep.hear.domain.chat.port.`in`.CreateVoiceMessageUseCase
 import modeep.hear.domain.chat.port.out.MessagePort
 import modeep.hear.domain.chat.port.out.query.QueryChatPort
-import modeep.hear.domain.chat.vo.MessageType
-import modeep.hear.domain.chat.vo.Sender
-import modeep.hear.global.error.exception.BusinessException
-import modeep.hear.global.error.exception.GlobalErrorCode
-import modeep.hear.infrastructure.adapter.`in`.chat.dto.request.CreateVoiceMessageRequest
-import modeep.hear.infrastructure.adapter.`in`.chat.dto.response.CreateVoiceMessageResponse
-import java.util.UUID
 
 @Deprecated(
     message = "use CreateMessageService instead",

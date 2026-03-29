@@ -15,7 +15,8 @@ data class CreateDiaryAiCommentResult(
                 diaryId = diaryAiComment.diaryId,
                 aiComment = diaryAiComment.content
                     ?: throw BusinessException(
-                        DiaryErrorCode.INVALID_VALUE, "AI의 피드백을 찾을 수 없습니다."
+                        DiaryErrorCode.INVALID_VALUE,
+                        "AI의 피드백을 찾을 수 없습니다."
                     )
             )
     }

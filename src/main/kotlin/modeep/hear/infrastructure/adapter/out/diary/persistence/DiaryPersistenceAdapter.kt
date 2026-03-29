@@ -10,6 +10,7 @@ import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Component
 import java.time.LocalDate
+import java.time.LocalDateTime
 import java.time.LocalTime
 import java.time.YearMonth
 import java.util.UUID
@@ -56,6 +57,13 @@ class DiaryPersistenceAdapter(
 
     override fun countByUserId(userId: UUID): Long {
         return repo.countByUserId(userId)
+    }
+
+    override fun findAllByCreatedAtBetween(
+        start: LocalDateTime,
+        end: LocalDateTime
+    ): List<Diary> {
+        return repo.findAllByBaseTime_CreatedAtBetween(start, end).map { mapper.toModel(it) }
     }
 
     // --Command--//

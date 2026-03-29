@@ -25,13 +25,14 @@ class CreateMessageService(
     private val securityPort: SecurityPort,
     private val messagePort: MessagePort,
     private val queryChatPort: QueryChatPort,
-    private val getData: GetDataForRequestComponent
+    private val getData: GetDataForRequestComponent,
+    private val checkUserWithChatService: CheckUserWithChatService
 ) : CreateMessageUseCase {
     override suspend fun executeText(
         chatId: UUID,
         request: CreateMessageRequest
     ): CreateMessageResponse {
-        validateOwner(chatId)
+        checkUserWithChatService.executeWithSuspend(chatId)
         val userMessage = Message.create(
             chatId = chatId,
             sender = Sender.USER,

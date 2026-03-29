@@ -5,13 +5,11 @@ import modeep.hear.domain.diary.model.Diary
 import modeep.hear.domain.diary.model.DiaryAiComment
 import modeep.hear.domain.diary.port.out.external.FetchDiaryPort
 import modeep.hear.domain.diary.vo.DiaryAiCommentStatus
-import modeep.hear.domain.diary.vo.DiarySourceType
 import modeep.hear.global.error.exception.BusinessException
 import modeep.hear.global.error.exception.GlobalErrorCode
 import modeep.hear.infrastructure.adapter.out.chat.external.dto.vo.History
 import modeep.hear.infrastructure.adapter.out.chat.external.dto.vo.UserInfo
 import modeep.hear.infrastructure.adapter.out.diary.external.dto.reponse.AddCommentResponse
-import modeep.hear.infrastructure.adapter.out.diary.external.dto.reponse.GenerateDiaryResponse
 import modeep.hear.infrastructure.adapter.out.diary.external.dto.request.AddCommentRequest
 import modeep.hear.infrastructure.adapter.out.diary.external.dto.request.GenerateDiaryRequest
 import org.springframework.stereotype.Component
@@ -30,36 +28,18 @@ class DiaryExternalAdapter(
         chatId: UUID,
         histories: List<History>,
         userInfo: UserInfo
-    ): Diary {
+    ) {
         val req = GenerateDiaryRequest(
             userInfo = userInfo,
             history = histories
         )
 
-        val res = webClient.post()
+        webClient.post()
             .uri("/internal/v1/diaries/generations")
             .bodyValue(req)
             .retrieve()
-            .onStatus({ it.is5xxServerError }) { res ->
-                res.bodyToMono<String>().flatMap {
-                    Mono.error(BusinessException(GlobalErrorCode.AI_SERVER_ERROR))
-                }
-            }
-            .bodyToMono<GenerateDiaryResponse>()
-            .retryWhen(
-                Retry.backoff(3, Duration.ofSeconds(2))
-                    .filter { it is RuntimeException }
-            )
-            .awaitSingle()
-
-        return Diary.create(
-            userId = userInfo.userId,
-            content = res.content,
-            emotion = res.emotion,
-            tags = res.tags,
-            sourceType = DiarySourceType.AI_MADE,
-            chatId = chatId
-        )
+            .toBodilessEntity()
+            .subscribe()
     }
 
     override suspend fun addComment(userInfo: UserInfo, diary: Diary): DiaryAiComment {

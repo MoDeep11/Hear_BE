@@ -11,7 +11,7 @@ interface FetchDiaryPort {
         chatId: UUID,
         histories: List<History>,
         userInfo: UserInfo
-    ): Diary
+    )
 
     suspend fun addComment(userInfo: UserInfo, diary: Diary): DiaryAiComment
 }

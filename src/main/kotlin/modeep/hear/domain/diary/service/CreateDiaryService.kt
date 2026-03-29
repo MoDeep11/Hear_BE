@@ -1,27 +1,46 @@
 package modeep.hear.domain.diary.service
 
 import modeep.hear.domain.auth.port.out.SecurityPort
-import modeep.hear.domain.common.component.GetDataForRequestComponent
+import modeep.hear.domain.chat.exception.ChatErrorCode
+import modeep.hear.domain.chat.port.out.query.QueryChatPort
+import modeep.hear.domain.common.event.EventPublisher
+import modeep.hear.domain.diary.event.DiaryCreatedEvent
+import modeep.hear.domain.diary.model.Diary
 import modeep.hear.domain.diary.port.`in`.CreateDiaryUseCase
-import modeep.hear.domain.diary.port.out.external.FetchDiaryPort
+import modeep.hear.domain.diary.port.out.command.CommandDiaryPort
+import modeep.hear.domain.diary.port.out.query.QueryDiaryImagePort
+import modeep.hear.global.error.exception.BusinessException
+import modeep.hear.infrastructure.adapter.`in`.diary.dto.request.CreateDiaryRequest
 import modeep.hear.infrastructure.adapter.`in`.diary.dto.response.CreateDiaryResponse
 import org.springframework.stereotype.Service
-import java.util.UUID
 
 @Service
 class CreateDiaryService(
-    private val diaryPort: FetchDiaryPort,
     private val securityPort: SecurityPort,
-    private val diaryCommandService: DiaryCommandService,
-    private val getData: GetDataForRequestComponent
+    private val queryDiaryImagePort: QueryDiaryImagePort,
+    private val eventPublisher: EventPublisher,
+    private val commandDiaryPort: CommandDiaryPort,
+    private val queryChatPort: QueryChatPort
 ) : CreateDiaryUseCase {
-    override suspend fun execute(chatId: UUID): CreateDiaryResponse {
-        val userId = securityPort.getCurrentUserId()
+    override suspend fun execute(request: CreateDiaryRequest): CreateDiaryResponse {
+        val userId = securityPort.getCurrentUser().id
+        val chatId = request.chatId
+        if (queryChatPort.existsById(chatId)) throw BusinessException(ChatErrorCode.CHAT_NOT_FOUND)
 
-        val (histories, userInfo) = getData.getUserInfoWithHistories(chatId)
-        val diary = diaryPort.generateDiary(chatId, histories, userInfo)
+        val diary = Diary.create(
+            userId = userId,
+            content = request.content,
+            emotion = request.emotion,
+            tags = request.tags,
+            sourceType = request.sourceType,
+            chatId = chatId
+        )
 
-        diaryCommandService.createDiary(diary, chatId, userId)
+        val images = queryDiaryImagePort.findAllByChatId(chatId)
+        diary.updateImages(images)
+
+        commandDiaryPort.save(diary)
+        eventPublisher.publish(DiaryCreatedEvent(userId))
 
         return CreateDiaryResponse.from(diary)
     }

@@ -4,7 +4,6 @@ import modeep.hear.domain.common.component.GetDataForRequestComponent
 import modeep.hear.domain.diary.model.Diary
 import modeep.hear.domain.diary.port.`in`.CreateDiaryAiCommentUseCase
 import modeep.hear.domain.diary.port.out.DiaryPort
-import modeep.hear.domain.diary.port.out.external.FetchDiaryPort
 import org.springframework.stereotype.Service
 
 @Service

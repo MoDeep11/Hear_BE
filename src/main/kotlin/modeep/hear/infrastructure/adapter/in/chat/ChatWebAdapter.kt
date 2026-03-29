@@ -1,9 +1,9 @@
 package modeep.hear.infrastructure.adapter.`in`.chat
 
 import jakarta.validation.Valid
-import modeep.hear.domain.chat.port.`in`.CompleteChatUseCase
 import modeep.hear.domain.chat.port.`in`.CreateChatUseCase
 import modeep.hear.domain.chat.port.`in`.CreateMessageUseCase
+import modeep.hear.domain.chat.port.`in`.FinishChatUseCase
 import modeep.hear.domain.chat.port.`in`.GenerateImageInChatUseCase
 import modeep.hear.domain.chat.port.`in`.UploadImageInChatUseCase
 import modeep.hear.global.common.response.ApiResult
@@ -28,7 +28,7 @@ import java.util.UUID
 @RestController
 @RequestMapping("api/v1/chats")
 class ChatWebAdapter(
-    private val completeChatUseCase: CompleteChatUseCase,
+    private val finishChatUseCase: FinishChatUseCase,
     private val createChatUseCase: CreateChatUseCase,
     private val createMessageUseCase: CreateMessageUseCase,
     private val uploadImageInChatUseCase: UploadImageInChatUseCase,
@@ -44,11 +44,17 @@ class ChatWebAdapter(
     }
 
     @PatchMapping("/{chat_id}")
-    override fun completeChat(
+    override suspend fun completeChat(
         @PathVariable("chat_id") chatId: UUID
     ): ResponseEntity<ApiResult<Unit>> {
-        completeChatUseCase.execute(chatId)
-        return ResponseEntity.ok(ApiResult())
+        finishChatUseCase.execute(chatId)
+        return ResponseEntity.ok(
+            ApiResult(
+                status = 202,
+                message = "PENDING",
+                data = Unit
+            )
+        )
     }
 
     @PostMapping("/{chat_id}/messages")

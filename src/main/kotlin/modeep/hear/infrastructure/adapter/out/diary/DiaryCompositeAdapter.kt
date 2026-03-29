@@ -12,6 +12,7 @@ import org.springframework.context.annotation.Primary
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Component
 import java.time.LocalDate
+import java.time.LocalDateTime
 import java.time.YearMonth
 import java.util.UUID
 
@@ -49,6 +50,12 @@ class DiaryCompositeAdapter(
     override fun countByUserId(userId: UUID): Long =
         persistenceAdapter.countByUserId(userId)
 
+    override fun findAllByCreatedAtBetween(
+        start: LocalDateTime,
+        end: LocalDateTime
+    ): List<Diary> =
+        persistenceAdapter.findAllByCreatedAtBetween(start, end)
+
     override fun save(diary: Diary) =
         persistenceAdapter.save(diary)
 
@@ -60,8 +67,7 @@ class DiaryCompositeAdapter(
         chatId: UUID,
         histories: List<History>,
         userInfo: UserInfo
-    ): Diary =
-        externalAdapter.generateDiary(chatId, histories, userInfo)
+    ) = externalAdapter.generateDiary(chatId, histories, userInfo)
 
     override suspend fun addComment(
         userInfo: UserInfo,

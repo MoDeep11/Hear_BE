@@ -1,8 +1,17 @@
 package modeep.hear.infrastructure.adapter.`in`.diary.dto.request
 
-import modeep.hear.domain.chat.vo.ChatStatus
+import jakarta.validation.constraints.NotBlank
+import jakarta.validation.constraints.NotEmpty
+import modeep.hear.domain.common.vo.Emotion
+import modeep.hear.domain.diary.vo.DiarySourceType
+import java.util.UUID
 
-@Deprecated("Not used")
 data class CreateDiaryRequest(
-    val status: ChatStatus
+    @field:NotBlank
+    val content: String,
+    val emotion: Emotion,
+    @field:NotEmpty
+    val tags: List<@NotBlank String>,
+    val sourceType: DiarySourceType = DiarySourceType.AI_MADE,
+    val chatId: UUID
 )
