@@ -4,7 +4,10 @@ import modeep.hear.infrastructure.adapter.`in`.chat.dto.request.CreateVoiceMessa
 import modeep.hear.infrastructure.adapter.`in`.chat.dto.response.CreateVoiceMessageResponse
 import java.util.UUID
 
-@Deprecated("use CreateMessageUseCase instead")
+@Deprecated(
+    message = "use CreateMessageUseCase instead",
+    replaceWith = ReplaceWith("CreateMessageResponse")
+)
 interface CreateVoiceMessageUseCase {
     suspend fun execute(
         chatId: UUID,

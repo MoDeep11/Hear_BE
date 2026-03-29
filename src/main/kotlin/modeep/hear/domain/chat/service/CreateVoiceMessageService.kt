@@ -14,7 +14,10 @@ import modeep.hear.infrastructure.adapter.`in`.chat.dto.request.CreateVoiceMessa
 import modeep.hear.infrastructure.adapter.`in`.chat.dto.response.CreateVoiceMessageResponse
 import java.util.UUID
 
-@Deprecated("use CreateMessageService instead")
+@Deprecated(
+    message = "use CreateMessageService instead",
+    replaceWith = ReplaceWith("CreateMessageResponse")
+)
 class CreateVoiceMessageService(
     private val securityPort: SecurityPort,
     private val messagePort: MessagePort,

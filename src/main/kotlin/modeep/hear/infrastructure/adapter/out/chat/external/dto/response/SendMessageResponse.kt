@@ -14,10 +14,9 @@ data class SendMessageResponse(
 
     val aiAudioUrl: String? = null,
 
-    val status: ChatStatus = ChatStatus.CONTINUE,
+    val status: ChatStatus,
 
     val suggestion: SuggestionType? = null,
 
-    @field:NotBlank
     val chatId: UUID
 )
