@@ -36,8 +36,13 @@ data class UserStat(
         )
     }
 
-    fun decreaseDiaryCount(totalDiaries: Int, previousLastWrittenAt: LocalDate?): UserStat {
-        if (previousLastWrittenAt == null || totalDiaries == 0) {
+    fun decreaseDiaryCount(
+        totalDiaries: Int,
+        latestWrittenAt: LocalDate?,
+        calculatedStreak: Int // 재계산된 스트릭 값을 주입받음
+    ): UserStat {
+        // 1. 데이터가 하나도 없는 경우 초기화
+        if (latestWrittenAt == null || totalDiaries == 0) {
             return this.copy(
                 totalDiaries = 0,
                 currentStreak = 0,
@@ -45,18 +50,11 @@ data class UserStat(
             )
         }
 
-        val now = LocalDate.now()
-
-        val newStreak = when {
-            isToday(previousLastWrittenAt, now) -> this.currentStreak // 오늘 기록이 여전히 있음 (유지)
-            isYesterday(previousLastWrittenAt, now) -> this.currentStreak // 어제 기록이 최신임 (유지)
-            else -> 0 // 그보다 전이 최신이면 스트릭은 끊긴 상태임
-        }
-
+        // 2. 외부에서 계산해서 넘겨준 정확한 값들로 상태를 동기화
         return this.copy(
             totalDiaries = totalDiaries,
-            lastWrittenAt = previousLastWrittenAt,
-            currentStreak = newStreak
+            lastWrittenAt = latestWrittenAt,
+            currentStreak = calculatedStreak
         )
     }
 
@@ -68,6 +66,10 @@ data class UserStat(
     private fun isYesterday(target: LocalDate? = this.lastWrittenAt, now: LocalDate): Boolean {
         val date = target ?: return false
         return date.plusDays(1) == now
+    }
+
+    fun updateTotalCountOnly(totalDiaries: Int): UserStat {
+        return this.copy(totalDiaries = totalDiaries)
     }
 
     fun update(

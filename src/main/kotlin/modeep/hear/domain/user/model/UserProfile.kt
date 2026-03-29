@@ -37,8 +37,11 @@ data class UserProfile(
         }
     }
 
-    fun updateNickname(nickname: String) =
-        this.copy(nickname = nickname)
+    fun updateNickname(nickname: String): UserProfile {
+        val trimmed = nickname.trim().takeIf { it.isNotEmpty() }
+            ?: throw BusinessException(UserErrorCode.INVALID_VALUE, "nickname은 비어있을 수 없습니다.")
+        return this.copy(nickname = trimmed)
+    }
 
     fun updateProfileImageUrl(profileImageUrl: String) =
         this.copy(profileImageUrl = profileImageUrl)

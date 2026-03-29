@@ -44,9 +44,6 @@ class CreateVoiceMessageService(
         messagePort.save(userMessage)
         messagePort.save(aiResult.aiMessage)
 
-        if (aiResult.suggestion != null) {
-        }
-
         return CreateVoiceMessageResponse(
             chatId = chatId,
             userTranscription = userMessage.message,

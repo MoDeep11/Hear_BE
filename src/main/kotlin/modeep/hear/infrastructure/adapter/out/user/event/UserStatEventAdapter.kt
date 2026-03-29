@@ -21,15 +21,26 @@ class UserStatEventAdapter(
 
         val userStat = userStatPort.findByUserId(userId)
             ?: throw BusinessException(UserErrorCode.USER_STAT_NOT_FOUND)
+        val now = LocalDate.now()
 
-        val latestDiary = queryDiaryPort.findTopByUserIdOrderByCreatedAtDesc(userId)
-        val totalCount = queryDiaryPort.countByUserId(userId)
+        // 지운 일기가 오늘 작성한 일기가 아니거나 오늘 쓴 일기가 남아있을 경우
+        if (event.deletedTime != now || queryDiaryPort.existsByUserIdAndDate(userId, now)) {
+            val totalCount = queryDiaryPort.countByUserId(userId)
 
-        val lastWrittenAt = latestDiary?.baseTime?.createdAt
+            val updatedStat = userStat.updateTotalCountOnly(totalCount.toInt())
+            userStatPort.save(updatedStat)
+            return
+        }
+
+        val fetchLimit = (userStat.currentStreak + 10).coerceAtMost(100)
+        val recentDates = queryDiaryPort.findRecentDatesByUserId(userId, fetchLimit)
+
+        val newStreak = CurrentStreakCalculator.calculate(recentDates, now)
 
         val userStatDecreased = userStat.decreaseDiaryCount(
-            totalDiaries = totalCount.toInt(),
-            previousLastWrittenAt = lastWrittenAt?.toLocalDate()
+            totalDiaries = queryDiaryPort.countByUserId(userId).toInt(),
+            latestWrittenAt = recentDates.firstOrNull(),
+            calculatedStreak = newStreak,
         )
 
         userStatPort.save(userStatDecreased)

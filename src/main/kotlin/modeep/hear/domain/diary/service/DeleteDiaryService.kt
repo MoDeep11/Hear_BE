@@ -25,6 +25,6 @@ class DeleteDiaryService(
         diary.validateOwner(userId)
 
         diaryPort.deleteById(diaryId)
-        eventPublisher.publish(DiaryDeletedEvent(diaryId))
+        eventPublisher.publish(DiaryDeletedEvent(diaryId, diary.baseTime.createdAt))
     }
 }
