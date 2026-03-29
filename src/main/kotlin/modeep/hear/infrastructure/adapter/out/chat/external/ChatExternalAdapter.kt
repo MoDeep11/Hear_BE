@@ -1,6 +1,8 @@
 package modeep.hear.infrastructure.adapter.out.chat.external
 
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.reactor.awaitSingle
+import kotlinx.coroutines.withContext
 import modeep.hear.domain.auth.port.out.SecurityPort
 import modeep.hear.domain.chat.port.out.external.FetchChatPort
 import modeep.hear.domain.user.exception.UserErrorCode
@@ -27,14 +29,18 @@ class ChatExternalAdapter(
     private val securityPort: SecurityPort
 ) : FetchChatPort {
     override suspend fun initChat(chatId: UUID): InitChatResponse {
-        val userId = securityPort.getCurrentUser().id
-        val nickname = queryUserProfilePort.findByUserId(userId)?.nickname ?: throw BusinessException(UserErrorCode.USER_PROFILE_NOT_FOUND)
-        val userStat = queryUserStatPort.findByUserId(userId) ?: throw BusinessException(UserErrorCode.USER_STAT_NOT_FOUND)
+        val req = withContext(Dispatchers.IO) {
+            val userId = securityPort.getCurrentUser().id
+            val nickname = queryUserProfilePort.findByUserId(userId)?.nickname
+                ?: throw BusinessException(UserErrorCode.USER_PROFILE_NOT_FOUND)
+            val userStat = queryUserStatPort.findByUserId(userId)
+                ?: throw BusinessException(UserErrorCode.USER_STAT_NOT_FOUND)
 
-        val req = InitChatRequest(
-            chatId = chatId,
-            userInfo = UserInfo.of(userId, nickname, userStat)
-        )
+            InitChatRequest(
+                chatId = chatId,
+                userInfo = UserInfo.of(userId, nickname, userStat)
+            )
+        }
 
         return webClient.post()
             .uri("/internal/v1/chats")
