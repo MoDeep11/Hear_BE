@@ -2,12 +2,12 @@ package modeep.hear.global.document.chat
 
 import io.swagger.v3.oas.annotations.tags.Tag
 import modeep.hear.global.common.response.ApiResult
+import modeep.hear.infrastructure.adapter.`in`.chat.dto.request.CreateAiImageTaskRequest
 import modeep.hear.infrastructure.adapter.`in`.chat.dto.request.CreateMessageRequest
 import modeep.hear.infrastructure.adapter.`in`.chat.dto.request.CreateVoiceMessageRequest
-import modeep.hear.infrastructure.adapter.`in`.chat.dto.request.GenerateImageInChatRequest
+import modeep.hear.infrastructure.adapter.`in`.chat.dto.response.CreateAiImageTaskResponse
 import modeep.hear.infrastructure.adapter.`in`.chat.dto.response.CreateChatResponse
 import modeep.hear.infrastructure.adapter.`in`.chat.dto.response.CreateMessageResponse
-import modeep.hear.infrastructure.adapter.`in`.chat.dto.response.GenerateImageInChatResponse
 import modeep.hear.infrastructure.adapter.`in`.storage.dto.request.UploadDiaryImageRequest
 import modeep.hear.infrastructure.adapter.`in`.storage.dto.response.UploadDiaryImageResponse
 import org.springframework.http.ResponseEntity
@@ -37,8 +37,8 @@ interface ChatApiDocument {
         request: List<UploadDiaryImageRequest>
     ): ResponseEntity<ApiResult<List<UploadDiaryImageResponse>>>
 
-    fun generateImageInChat(
+    fun createAiImageTaskInChat(
         chatId: UUID,
-        request: GenerateImageInChatRequest
-    ): ResponseEntity<ApiResult<GenerateImageInChatResponse>>
+        request: CreateAiImageTaskRequest
+    ): ResponseEntity<ApiResult<CreateAiImageTaskResponse>>
 }
