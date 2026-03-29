@@ -18,7 +18,7 @@ class DeleteUserService(
     private val commandUserPort: CommandUserPort,
     private val securityPort: SecurityPort,
     private val passwordPort: PasswordPort,
-    private val logoutAuthUseCase: LogoutAuthUseCase,
+    private val logoutAuthUseCase: LogoutAuthUseCase
 ) : DeleteUserUseCase {
     override fun execute(
         accessToken: String,

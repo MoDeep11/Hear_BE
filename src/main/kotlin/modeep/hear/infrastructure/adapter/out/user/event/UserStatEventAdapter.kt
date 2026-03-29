@@ -40,7 +40,7 @@ class UserStatEventAdapter(
         val userStatDecreased = userStat.decreaseDiaryCount(
             totalDiaries = queryDiaryPort.countByUserId(userId).toInt(),
             latestWrittenAt = recentDates.firstOrNull(),
-            calculatedStreak = newStreak,
+            calculatedStreak = newStreak
         )
 
         userStatPort.save(userStatDecreased)
