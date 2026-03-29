@@ -1,5 +1,9 @@
 package modeep.hear.infrastructure.adapter.out.diary.external
 
+import io.github.oshai.kotlinlogging.KotlinLogging
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.reactor.awaitSingle
 import modeep.hear.domain.diary.model.Diary
 import modeep.hear.domain.diary.model.DiaryAiComment
@@ -14,11 +18,14 @@ import modeep.hear.infrastructure.adapter.out.diary.external.dto.request.AddComm
 import modeep.hear.infrastructure.adapter.out.diary.external.dto.request.GenerateDiaryRequest
 import org.springframework.stereotype.Component
 import org.springframework.web.reactive.function.client.WebClient
+import org.springframework.web.reactive.function.client.awaitBodilessEntity
 import org.springframework.web.reactive.function.client.bodyToMono
 import reactor.core.publisher.Mono
 import reactor.util.retry.Retry
 import java.time.Duration
 import java.util.UUID
+
+private val log = KotlinLogging.logger {}
 
 @Component
 class DiaryExternalAdapter(
@@ -34,12 +41,17 @@ class DiaryExternalAdapter(
             history = histories
         )
 
-        webClient.post()
-            .uri("/internal/v1/diaries/generations")
-            .bodyValue(req)
-            .retrieve()
-            .toBodilessEntity()
-            .subscribe()
+        CoroutineScope(Dispatchers.IO).launch {
+            runCatching {
+                webClient.post()
+                    .uri("/internal/v1/diaries/generations")
+                    .bodyValue(req)
+                    .retrieve()
+                    .awaitBodilessEntity()
+            }.onFailure {
+                log.error(it) { "일기 생성 요청 실패: ${chatId}" }
+            }
+        }
     }
 
     override suspend fun addComment(userInfo: UserInfo, diary: Diary): DiaryAiComment {

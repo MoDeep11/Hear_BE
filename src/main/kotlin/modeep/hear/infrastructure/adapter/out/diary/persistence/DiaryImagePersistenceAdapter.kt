@@ -2,6 +2,8 @@ package modeep.hear.infrastructure.adapter.out.diary.persistence
 
 import modeep.hear.domain.diary.model.DiaryImage
 import modeep.hear.domain.diary.port.out.DiaryImagePort
+import modeep.hear.domain.diary.port.out.command.CommandDiaryImagePort
+import modeep.hear.domain.diary.port.out.query.QueryDiaryImagePort
 import modeep.hear.infrastructure.adapter.out.diary.persistence.mapper.DiaryImageMapper
 import modeep.hear.infrastructure.adapter.out.diary.persistence.repository.DiaryImageRepository
 import org.springframework.stereotype.Component
@@ -11,7 +13,7 @@ import java.util.UUID
 class DiaryImagePersistenceAdapter(
     private val repo: DiaryImageRepository,
     private val mapper: DiaryImageMapper
-) : DiaryImagePort {
+) : QueryDiaryImagePort, CommandDiaryImagePort {
 
     // --Query--//
     override fun findAllByChatId(chatId: UUID): List<DiaryImage> {
