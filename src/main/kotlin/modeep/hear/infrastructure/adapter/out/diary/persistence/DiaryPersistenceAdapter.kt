@@ -2,6 +2,8 @@ package modeep.hear.infrastructure.adapter.out.diary.persistence
 
 import modeep.hear.domain.diary.model.Diary
 import modeep.hear.domain.diary.port.out.DiaryPort
+import modeep.hear.domain.diary.port.out.command.CommandDiaryPort
+import modeep.hear.domain.diary.port.out.query.QueryDiaryPort
 import modeep.hear.domain.diary.vo.DiarySourceType
 import modeep.hear.infrastructure.adapter.out.diary.persistence.mapper.DiaryMapper
 import modeep.hear.infrastructure.adapter.out.diary.persistence.repository.DiaryRepository
@@ -17,7 +19,7 @@ import java.util.UUID
 class DiaryPersistenceAdapter(
     private val repo: DiaryRepository,
     private val mapper: DiaryMapper
-) : DiaryPort {
+) : QueryDiaryPort, CommandDiaryPort {
     // --Query--//
     override fun findById(diaryId: UUID): Diary? {
         return repo.findByIdWithImages(diaryId) ?.let { mapper.toModel(it) }
