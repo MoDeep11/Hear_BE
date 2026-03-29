@@ -18,8 +18,8 @@ class WebClientConfig(
     fun externalWebClient(builder: WebClient.Builder): WebClient {
         // 타임아웃 설정을 위한 HttpClient 구성
         val httpClient = HttpClient.create()
-            .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, properties.timeout.toInt())
-            .responseTimeout(Duration.ofMillis(properties.timeout))
+            .responseTimeout(properties.timeout)
+            .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, properties.timeout.toMillis().toInt())
 
         return builder
             .baseUrl(properties.baseUrl) // 환경변수에서 가져온 URL 적용
