@@ -6,6 +6,7 @@ enum class ChatStatus(
     override val isFinalState: Boolean,
     override val label: String
 ) : ModelStatus {
+    READY(false, "외부 서버 준비 중"),
     CONTINUE(false, "진행 중"),
     FINISH(true, "완료");
 
@@ -14,8 +15,8 @@ enum class ChatStatus(
 
         return if (next is ChatStatus) {
             when (this) {
-                CONTINUE -> true
-                else -> false
+                FINISH -> false
+                else -> true
             }
         } else {
             false

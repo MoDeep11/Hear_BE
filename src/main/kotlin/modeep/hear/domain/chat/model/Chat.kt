@@ -11,7 +11,7 @@ import java.util.UUID
 data class Chat(
     val id: UUID,
     val userId: UUID,
-    val status: ChatStatus = ChatStatus.CONTINUE,
+    var status: ChatStatus = ChatStatus.READY,
     val baseTime: BaseTime,
     val messages: MutableList<Message> = mutableListOf()
 ) {
@@ -29,6 +29,11 @@ data class Chat(
         if (this.userId != currentUserId) {
             throw BusinessException(ChatErrorCode.CANNOT_ACCESS_CHAT)
         }
+    }
+
+    fun okChat(): Chat {
+        this.status = ChatStatus.CONTINUE
+        return this
     }
 
     fun completeChat(): Chat =
