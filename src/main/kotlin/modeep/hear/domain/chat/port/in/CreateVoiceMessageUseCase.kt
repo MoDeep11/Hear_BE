@@ -9,8 +9,8 @@ import java.util.UUID
     replaceWith = ReplaceWith("CreateMessageResponse")
 )
 interface CreateVoiceMessageUseCase {
-    suspend fun execute(
-        chatId: UUID,
-        request: CreateVoiceMessageRequest
-    ): CreateVoiceMessageResponse
+//    suspend fun execute(
+//        chatId: UUID,
+//        request: CreateVoiceMessageRequest
+//    ): CreateVoiceMessageResponse
 }
