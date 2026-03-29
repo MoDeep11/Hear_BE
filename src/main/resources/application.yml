@@ -121,5 +121,5 @@ logging:
     modeep.hear: INFO
 
 external.api:
-    base-url: ${INTERNAL_API_URL:https://api.default-service.com}
+    base-url: ${INTERNAL_API_URL}
     timeout: 5000

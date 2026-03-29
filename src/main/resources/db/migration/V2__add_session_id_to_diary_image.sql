@@ -1,1 +1,1 @@
-ALTER TABLE diary_image ADD COLUMN session_id UUID;
+ALTER TABLE diary_images ADD COLUMN session_id UUID;

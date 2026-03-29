@@ -1,5 +1,6 @@
 package modeep.hear.infrastructure.config.webflux
 
+import io.netty.channel.ChannelOption
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.http.HttpHeaders
@@ -17,6 +18,7 @@ class WebClientConfig(
     fun externalWebClient(builder: WebClient.Builder): WebClient {
         // 타임아웃 설정을 위한 HttpClient 구성
         val httpClient = HttpClient.create()
+            .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, properties.timeout.toInt())
             .responseTimeout(Duration.ofMillis(properties.timeout))
 
         return builder

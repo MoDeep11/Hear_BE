@@ -7,7 +7,6 @@ import modeep.hear.domain.auth.port.out.SecurityPort
 import modeep.hear.domain.chat.model.Message
 import modeep.hear.domain.chat.port.dto.result.SendMessageResult
 import modeep.hear.domain.chat.port.out.external.FetchMessagePort
-import modeep.hear.domain.chat.port.out.query.QueryMessagePort
 import modeep.hear.domain.chat.vo.MessageType
 import modeep.hear.domain.chat.vo.Sender
 import modeep.hear.domain.user.exception.UserErrorCode
@@ -19,6 +18,8 @@ import modeep.hear.infrastructure.adapter.out.chat.external.dto.request.SendMess
 import modeep.hear.infrastructure.adapter.out.chat.external.dto.response.SendMessageResponse
 import modeep.hear.infrastructure.adapter.out.chat.external.dto.vo.History
 import modeep.hear.infrastructure.adapter.out.chat.external.dto.vo.UserInfo
+import modeep.hear.infrastructure.adapter.out.chat.persistence.mapper.MessageMapper
+import modeep.hear.infrastructure.adapter.out.chat.persistence.repository.MessageRepository
 import org.springframework.stereotype.Component
 import org.springframework.web.reactive.function.client.WebClient
 import org.springframework.web.reactive.function.client.bodyToMono
@@ -30,7 +31,8 @@ import java.util.UUID
 @Component
 class MessageExternalAdapter(
     private val webClient: WebClient,
-    private val queryMessagePort: QueryMessagePort,
+    private val repo: MessageRepository,
+    private val mapper: MessageMapper,
     private val queryUserStatPort: QueryUserStatPort,
     private val queryUserProfilePort: QueryUserProfilePort,
     private val securityPort: SecurityPort
@@ -38,7 +40,7 @@ class MessageExternalAdapter(
     override suspend fun sendMessage(chatId: UUID, message: Message): SendMessageResult {
         // 블로킹 호출을 IO 디스패처로 격리
         val (histories, userInfo) = withContext(Dispatchers.IO) {
-            val messages = queryMessagePort.findAllByChatId(chatId)
+            val messages = repo.findAllByChatIdOrderByBaseTimeCreatedAtAsc(chatId).map { mapper.toModel(chatId, it) }
             val histories = messages.map(History::from)
 
             val user = securityPort.getCurrentUser()

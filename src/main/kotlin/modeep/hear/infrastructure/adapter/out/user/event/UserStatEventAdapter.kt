@@ -56,6 +56,3 @@ class UserStatEventAdapter(
         userStatPort.save(userStatIncreased)
     }
 }
-
-// 인덱스 걸어서 조회 속도 높이기
-// CREATE INDEX idx_user_diary_created ON diaries (user_id, created_at DESC);
