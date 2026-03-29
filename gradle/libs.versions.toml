@@ -4,6 +4,7 @@ springBoot = "3.5.11"
 dependencyManagement = "1.1.7"
 ktlint = "11.5.1"
 kotlin-logging = "7.0.3"
+kotlinxCoroutines = "1.8.1"
 mapstruct = "1.5.5.Final"
 swagger = "2.8.15"
 jjwt = "0.12.6"
@@ -27,8 +28,10 @@ ktlint = { id = "org.jlleitschuh.gradle.ktlint", version.ref = "ktlint" }
 # spring boot
 spring-boot-web = { group = "org.springframework.boot", name = "spring-boot-starter-web" }
 spring-boot-security = { group = "org.springframework.boot", name = "spring-boot-starter-security" }
+spring-boot-starter-webflux = { group = "org.springframework.boot", name = "spring-boot-starter-webflux" }
 spring-boot-validation = { group = "org.springframework.boot", name = "spring-boot-starter-validation" }
-spring-boot-devtools = { group = "org.springframework.boot", name = "spring-boot-devtools", version.ref = "springBoot" }
+spring-boot-devtools = { group = "org.springframework.boot", name = "spring-boot-devtools" }
+kotlinx-coroutines-reactor = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-reactor", version.ref = "kotlinxCoroutines" }
 
 # jpa
 jpa = { group = "org.springframework.boot", name = "spring-boot-starter-data-jpa" }

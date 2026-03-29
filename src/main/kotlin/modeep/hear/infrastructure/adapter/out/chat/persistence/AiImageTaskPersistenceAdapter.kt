@@ -2,7 +2,7 @@ package modeep.hear.infrastructure.adapter.out.chat.persistence
 
 import modeep.hear.domain.chat.model.AiImageTask
 import modeep.hear.domain.chat.port.out.AiImageTaskPort
-import modeep.hear.infrastructure.adapter.out.chat.mapper.AiImageTaskMapper
+import modeep.hear.infrastructure.adapter.out.chat.persistence.mapper.AiImageTaskMapper
 import modeep.hear.infrastructure.adapter.out.chat.persistence.repository.AiImageTaskRepository
 import org.springframework.stereotype.Component
 

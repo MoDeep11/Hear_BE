@@ -4,7 +4,6 @@ import jakarta.validation.Valid
 import modeep.hear.domain.chat.port.`in`.CompleteChatUseCase
 import modeep.hear.domain.chat.port.`in`.CreateChatUseCase
 import modeep.hear.domain.chat.port.`in`.CreateMessageUseCase
-import modeep.hear.domain.chat.port.`in`.CreateVoiceMessageUseCase
 import modeep.hear.domain.chat.port.`in`.GenerateImageInChatUseCase
 import modeep.hear.domain.chat.port.`in`.UploadImageInChatUseCase
 import modeep.hear.global.common.response.ApiResult
@@ -14,7 +13,6 @@ import modeep.hear.infrastructure.adapter.`in`.chat.dto.request.CreateVoiceMessa
 import modeep.hear.infrastructure.adapter.`in`.chat.dto.request.GenerateImageInChatRequest
 import modeep.hear.infrastructure.adapter.`in`.chat.dto.response.CreateChatResponse
 import modeep.hear.infrastructure.adapter.`in`.chat.dto.response.CreateMessageResponse
-import modeep.hear.infrastructure.adapter.`in`.chat.dto.response.CreateVoiceMessageResponse
 import modeep.hear.infrastructure.adapter.`in`.chat.dto.response.GenerateImageInChatResponse
 import modeep.hear.infrastructure.adapter.`in`.storage.dto.request.UploadDiaryImageRequest
 import modeep.hear.infrastructure.adapter.`in`.storage.dto.response.UploadDiaryImageResponse
@@ -33,12 +31,11 @@ class ChatWebAdapter(
     private val completeChatUseCase: CompleteChatUseCase,
     private val createChatUseCase: CreateChatUseCase,
     private val createMessageUseCase: CreateMessageUseCase,
-    private val createVoiceMessageUseCase: CreateVoiceMessageUseCase,
     private val uploadImageInChatUseCase: UploadImageInChatUseCase,
     private val generateImageInChatUseCase: GenerateImageInChatUseCase
 ) : ChatApiDocument {
     @PostMapping
-    override fun createChat(): ResponseEntity<ApiResult<CreateChatResponse>> {
+    override suspend fun createChat(): ResponseEntity<ApiResult<CreateChatResponse>> {
         return ResponseEntity.ok(
             ApiResult(
                 data = createChatUseCase.execute()
@@ -55,27 +52,27 @@ class ChatWebAdapter(
     }
 
     @PostMapping("/{chat_id}/messages")
-    override fun createMessage(
+    override suspend fun createMessage(
         @PathVariable("chat_id") chatId: UUID,
         @RequestBody @Valid
         request: CreateMessageRequest
     ): ResponseEntity<ApiResult<CreateMessageResponse>> {
         return ResponseEntity.ok(
             ApiResult(
-                data = createMessageUseCase.execute(chatId, request)
+                data = createMessageUseCase.executeText(chatId, request)
             )
         )
     }
 
     @PostMapping("/{chat_id}/voice")
-    override fun createVoiceMessage(
+    override suspend fun createVoiceMessage(
         @PathVariable("chat_id") chatId: UUID,
         @RequestBody @Valid
         request: CreateVoiceMessageRequest
-    ): ResponseEntity<ApiResult<CreateVoiceMessageResponse>> {
+    ): ResponseEntity<ApiResult<CreateMessageResponse>> {
         return ResponseEntity.ok(
             ApiResult(
-                data = createVoiceMessageUseCase.execute(chatId, request)
+                data = createMessageUseCase.executeVoice(chatId, request)
             )
         )
     }

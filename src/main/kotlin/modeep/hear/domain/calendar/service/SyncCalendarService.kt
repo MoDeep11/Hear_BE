@@ -3,7 +3,7 @@ package modeep.hear.domain.calendar.service
 import io.github.oshai.kotlinlogging.KotlinLogging
 import modeep.hear.domain.calendar.model.Calendar
 import modeep.hear.domain.calendar.port.`in`.SyncCalendarUseCase
-import modeep.hear.domain.calendar.port.out.FetchExternalCalendarPort
+import modeep.hear.domain.calendar.port.out.FetchCalendarPort
 import modeep.hear.domain.calendar.service.component.QueryCalendarComponent
 import modeep.hear.domain.calendar.service.component.SaveCalendarComponent
 import modeep.hear.global.util.ProfileUtil
@@ -13,7 +13,7 @@ private val log = KotlinLogging.logger {}
 
 @Service
 class SyncCalendarService(
-    private val fetchExternalCalendarPort: FetchExternalCalendarPort,
+    private val fetchCalendarPort: FetchCalendarPort,
     private val queryCalendarComponent: QueryCalendarComponent,
     private val saveCalendarComponent: SaveCalendarComponent,
     private val profileUtil: ProfileUtil
@@ -28,7 +28,7 @@ class SyncCalendarService(
 
         log.info { "$year 데이터 동기화 시작..." }
         val holidays = if (profileUtil.isProd) {
-            fetchExternalCalendarPort.fetch(year)
+            fetchCalendarPort.fetch(year)
         } else {
             emptySet()
         }

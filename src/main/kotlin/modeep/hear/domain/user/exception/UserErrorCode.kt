@@ -14,5 +14,7 @@ enum class UserErrorCode(
     EMAIL_ALREADY_EXISTS(HttpStatus.CONFLICT, "USER_002", "이미 가입된 이메일입니다."),
 
     EMAIL_NOT_FOUND(HttpStatus.NOT_FOUND, "USER_003", "해당 이메일의 사용자를 찾을 수 없습니다."),
-    USER_NOT_FOUND(HttpStatus.NOT_FOUND, "USER_004", "해당 사용자를 찾을 수 없습니다.")
+    USER_NOT_FOUND(HttpStatus.NOT_FOUND, "USER_004", "해당 사용자를 찾을 수 없습니다."),
+    USER_STAT_NOT_FOUND(HttpStatus.NOT_FOUND, "USER_005", "해당 사용자를 찾을 수 없습니다."),
+    USER_PROFILE_NOT_FOUND(HttpStatus.NOT_FOUND, "USER_006", "해당 사용자를 찾을 수 없습니다.")
 }

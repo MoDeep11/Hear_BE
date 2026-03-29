@@ -1,6 +1,8 @@
 package modeep.hear.domain.diary.service
 
 import modeep.hear.domain.auth.port.out.SecurityPort
+import modeep.hear.domain.common.event.EventPublisher
+import modeep.hear.domain.diary.event.DiaryCreatedEvent
 import modeep.hear.domain.diary.port.`in`.CreateDiaryUseCase
 import modeep.hear.domain.diary.port.out.DiaryPort
 import modeep.hear.infrastructure.adapter.`in`.diary.dto.request.CreateDiaryRequest
@@ -12,9 +14,14 @@ import org.springframework.transaction.annotation.Transactional
 @Transactional
 class CreateDiaryService(
     private val diaryPort: DiaryPort,
-    private val securityPort: SecurityPort
+    private val securityPort: SecurityPort,
+    private val eventPublisher: EventPublisher
 ) : CreateDiaryUseCase {
     override fun execute(request: CreateDiaryRequest): CreateDiaryResponse {
+        val userId = securityPort.getCurrentUser().id
+
+        eventPublisher.publish(DiaryCreatedEvent(userId))
+
         TODO()
     }
 }

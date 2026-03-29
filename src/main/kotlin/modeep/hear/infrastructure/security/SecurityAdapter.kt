@@ -5,15 +5,17 @@ import modeep.hear.domain.auth.port.out.SecurityPort
 import modeep.hear.domain.user.exception.UserErrorCode
 import modeep.hear.domain.user.model.User
 import modeep.hear.global.error.exception.BusinessException
-import modeep.hear.infrastructure.adapter.out.user.mapper.UserMapper
+import modeep.hear.infrastructure.adapter.out.user.persistence.mapper.UserMapper
 import modeep.hear.infrastructure.adapter.out.user.persistence.repository.UserRepository
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Component
+import org.springframework.transaction.annotation.Transactional
 import java.util.UUID
 
 @Component
+@Transactional(readOnly = true)
 class SecurityAdapter(
     private val repo: UserRepository,
     private val mapper: UserMapper,

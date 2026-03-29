@@ -5,8 +5,11 @@ import modeep.hear.domain.diary.port.out.DiaryPort
 import modeep.hear.domain.diary.vo.DiarySourceType
 import modeep.hear.infrastructure.adapter.out.diary.persistence.mapper.DiaryMapper
 import modeep.hear.infrastructure.adapter.out.diary.persistence.repository.DiaryRepository
+import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Component
+import java.time.LocalDate
+import java.time.LocalTime
 import java.time.YearMonth
 import java.util.UUID
 
@@ -38,12 +41,28 @@ class DiaryPersistenceAdapter(
             .map { it.let(mapper::toModel) }
     }
 
+    override fun findDistinctDatesByUserId(userId: UUID, limit: Int): List<LocalDate> {
+        val pageable = PageRequest.of(0, limit)
+        return repo.findDistinctDatesByUserId(userId, pageable)
+    }
+
+    override fun existsByUserIdAndDate(userId: UUID, date: LocalDate): Boolean {
+        val start = date.atStartOfDay()
+        val end = date.atTime(LocalTime.MAX)
+
+        return repo.existsByUserIdAndBaseTimeCreatedAtBetween(userId, start, end)
+    }
+
+    override fun countByUserId(userId: UUID): Long {
+        return repo.countByUserId(userId)
+    }
+
     // --Command--//
     override fun save(diary: Diary) {
         repo.save(mapper.toEntity(diary))
     }
 
-    override fun delete(diaryId: UUID) {
+    override fun deleteById(diaryId: UUID) {
         repo.deleteById(diaryId)
     }
 }

@@ -5,7 +5,7 @@ import modeep.hear.domain.auth.port.`in`.LogoutAuthUseCase
 import modeep.hear.domain.auth.port.out.PasswordPort
 import modeep.hear.domain.auth.port.out.SecurityPort
 import modeep.hear.domain.user.port.`in`.DeleteUserUseCase
-import modeep.hear.domain.user.port.out.CommandUserPort
+import modeep.hear.domain.user.port.out.command.CommandUserPort
 import modeep.hear.global.error.exception.BusinessException
 import modeep.hear.infrastructure.adapter.`in`.auth.dto.request.LogoutRequest
 import modeep.hear.infrastructure.adapter.`in`.user.dto.request.DeleteUserRequest

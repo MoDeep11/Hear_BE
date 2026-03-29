@@ -11,7 +11,7 @@ import java.util.UUID
 data class Chat(
     val id: UUID,
     val userId: UUID,
-    val status: ChatStatus = ChatStatus.ONGOING,
+    var status: ChatStatus = ChatStatus.READY,
     val baseTime: BaseTime,
     val messages: MutableList<Message> = mutableListOf()
 ) {
@@ -31,8 +31,13 @@ data class Chat(
         }
     }
 
+    fun okChat(): Chat {
+        this.status = ChatStatus.CONTINUE
+        return this
+    }
+
     fun completeChat(): Chat =
-        this.copy(status = ChatStatus.COMPLETED)
+        this.copy(status = ChatStatus.FINISH)
 
     fun addMessage(message: Message) {
         this.messages.add(message)
