@@ -26,7 +26,7 @@ class UserStatEventAdapter(
             ?: throw BusinessException(UserErrorCode.USER_STAT_NOT_FOUND)
 
         // 지운 일기가 오늘 작성한 일기가 아니거나 오늘 쓴 일기가 남아있을 경우
-        if (event.createdAtOfDiary != now || event.hasTodayDiary) {
+        if (event.createdAtOfDiary.toLocalDate() != now.toLocalDate() || event.hasTodayDiary) {
             val totalCount = event.totalCount
 
             val updatedStat = userStat.updateTotalCountOnly(totalCount)
