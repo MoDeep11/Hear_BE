@@ -9,6 +9,8 @@ import modeep.hear.domain.diary.port.out.DiaryPort
 import modeep.hear.global.error.exception.BusinessException
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import java.time.LocalDate
+import java.time.LocalDateTime
 import java.util.UUID
 
 @Service
@@ -25,6 +27,19 @@ class DeleteDiaryService(
         diary.validateOwner(userId)
 
         diaryPort.deleteById(diaryId)
-        eventPublisher.publish(DiaryDeletedEvent(diaryId, diary.baseTime.createdAt))
+
+        val now = LocalDateTime.now()
+        val hasTodayDiary = diaryPort.existsByUserIdAndDate(userId, now.toLocalDate())
+        val totalCount = diaryPort.countByUserId(userId).toInt()
+        val recentDates = diaryPort.findRecentDatesByUserId(userId, 100)
+
+        eventPublisher.publish(DiaryDeletedEvent(
+            now = now,
+            userId = userId,
+            createdAtOfDiary = diary.baseTime.createdAt,
+            hasTodayDiary = hasTodayDiary,
+            totalCount = totalCount,
+            recentDates = recentDates
+        ))
     }
 }

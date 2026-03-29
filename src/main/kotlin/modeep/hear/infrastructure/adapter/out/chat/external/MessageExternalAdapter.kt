@@ -1,6 +1,8 @@
 package modeep.hear.infrastructure.adapter.out.chat.external
 
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.reactor.awaitSingle
+import kotlinx.coroutines.withContext
 import modeep.hear.domain.auth.port.out.SecurityPort
 import modeep.hear.domain.chat.model.Message
 import modeep.hear.domain.chat.port.dto.result.SendMessageResult
@@ -34,14 +36,22 @@ class MessageExternalAdapter(
     private val securityPort: SecurityPort
 ) : FetchMessagePort {
     override suspend fun sendMessage(chatId: UUID, message: Message): SendMessageResult {
-        val histories = queryMessagePort.findAllByChatId(chatId).map(History::from)
+        // 블로킹 호출을 IO 디스패처로 격리
+        val (histories, userInfo) = withContext(Dispatchers.IO) {
+            val messages = queryMessagePort.findAllByChatId(chatId)
+            val histories = messages.map(History::from)
 
-        val userId = securityPort.getCurrentUser().id
-        val nickname = queryUserProfilePort.findByUserId(userId)?.nickname ?: throw BusinessException(UserErrorCode.USER_PROFILE_NOT_FOUND)
-        val userStat = queryUserStatPort.findByUserId(userId) ?: throw BusinessException(UserErrorCode.USER_STAT_NOT_FOUND)
+            val user = securityPort.getCurrentUser()
+            val profile = queryUserProfilePort.findByUserId(user.id)
+                ?: throw BusinessException(UserErrorCode.USER_PROFILE_NOT_FOUND)
+            val stat = queryUserStatPort.findByUserId(user.id)
+                ?: throw BusinessException(UserErrorCode.USER_STAT_NOT_FOUND)
+
+            histories to UserInfo.of(user.id, profile.nickname, stat)
+        }
 
         val request = SendMessageRequest(
-            userInfo = UserInfo.of(userId, nickname, userStat),
+            userInfo = userInfo,
             message = message.message,
             userAudioUrl = message.voiceUrl,
             history = histories,
@@ -58,24 +68,17 @@ class MessageExternalAdapter(
                 }
             }
             .bodyToMono<SendMessageResponse>()
-            // 지수 백오프(Exponential Backoff) 전략으로 3번 재시도
             .retryWhen(
                 Retry.backoff(3, Duration.ofSeconds(2))
                     .filter { it is RuntimeException }
             )
             .awaitSingle()
 
-        val messageType = if (response.aiAudioUrl != null) {
-            MessageType.VOICE
-        } else {
-            MessageType.TEXT
-        }
-
         val aiMessage = Message.create(
             chatId = response.chatId,
             sender = Sender.AI,
             message = response.aiResponseText,
-            messageType = messageType,
+            messageType = if (response.aiAudioUrl != null) MessageType.VOICE else MessageType.TEXT,
             voiceUrl = response.aiAudioUrl
         )
 

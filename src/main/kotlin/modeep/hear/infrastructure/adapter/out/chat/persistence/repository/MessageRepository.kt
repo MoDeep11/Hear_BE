@@ -5,5 +5,5 @@ import org.springframework.data.jpa.repository.JpaRepository
 import java.util.UUID
 
 interface MessageRepository : JpaRepository<MessageJpaEntity, UUID> {
-    fun findAllByChatId(chatId: UUID): MutableList<MessageJpaEntity>
+    fun findAllByChatIdOrderByBaseTimeCreatedAtAsc(chatId: UUID): List<MessageJpaEntity>
 }

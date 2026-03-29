@@ -2,7 +2,6 @@ package modeep.hear.infrastructure.adapter.out.user.event
 
 import modeep.hear.domain.diary.event.DiaryCreatedEvent
 import modeep.hear.domain.diary.event.DiaryDeletedEvent
-import modeep.hear.domain.diary.port.out.query.QueryDiaryPort
 import modeep.hear.domain.user.exception.UserErrorCode
 import modeep.hear.domain.user.port.out.UserStatPort
 import modeep.hear.global.error.exception.BusinessException
@@ -13,19 +12,18 @@ import java.time.LocalDate
 @Component
 class UserStatEventAdapter(
     private val userStatPort: UserStatPort,
-    private val queryDiaryPort: QueryDiaryPort
 ) {
     @EventListener
     fun onDiaryDeleted(event: DiaryDeletedEvent) {
         val userId = event.userId
+        val now = event.now
 
         val userStat = userStatPort.findByUserId(userId)
             ?: throw BusinessException(UserErrorCode.USER_STAT_NOT_FOUND)
-        val now = LocalDate.now()
 
         // 지운 일기가 오늘 작성한 일기가 아니거나 오늘 쓴 일기가 남아있을 경우
-        if (event.deletedTime != now || queryDiaryPort.existsByUserIdAndDate(userId, now)) {
-            val totalCount = queryDiaryPort.countByUserId(userId)
+        if (event.createdAtOfDiary != now || event.hasTodayDiary) {
+            val totalCount = event.totalCount
 
             val updatedStat = userStat.updateTotalCountOnly(totalCount.toInt())
             userStatPort.save(updatedStat)
@@ -33,12 +31,12 @@ class UserStatEventAdapter(
         }
 
         val fetchLimit = (userStat.currentStreak + 10).coerceAtMost(100)
-        val recentDates = queryDiaryPort.findRecentDatesByUserId(userId, fetchLimit)
+        val recentDates = event.recentDates.take(fetchLimit)
 
-        val newStreak = CurrentStreakCalculator.calculate(recentDates, now)
+        val newStreak = CurrentStreakCalculator.calculate(recentDates, now.toLocalDate())
 
         val userStatDecreased = userStat.decreaseDiaryCount(
-            totalDiaries = queryDiaryPort.countByUserId(userId).toInt(),
+            totalDiaries = event.totalCount,
             latestWrittenAt = recentDates.firstOrNull(),
             calculatedStreak = newStreak
         )
