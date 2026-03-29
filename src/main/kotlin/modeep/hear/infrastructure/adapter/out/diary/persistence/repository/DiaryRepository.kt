@@ -5,6 +5,7 @@ import org.springframework.data.domain.Pageable
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.query.Param
+import java.time.LocalDate
 import java.time.LocalDateTime
 import java.util.UUID
 
@@ -55,8 +56,15 @@ interface DiaryRepository : JpaRepository<DiaryJpaEntity, UUID> {
 
     fun countByUserId(userId: UUID): Long
 
-    @Query("SELECT d.baseTime.createdAt FROM DiaryJpaEntity d WHERE d.userId = :userId ORDER BY d.baseTime.createdAt DESC")
-    fun findRecentCreatedAts(userId: UUID, pageable: Pageable): List<LocalDateTime>
+    @Query(
+        """
+        SELECT DISTINCT CAST(d.baseTime.createdAt AS date) 
+        FROM DiaryJpaEntity d 
+        WHERE d.userId = :userId 
+        ORDER BY CAST(d.baseTime.createdAt AS date) DESC
+    """
+    )
+    fun findDistinctDatesByUserId(userId: UUID, pageable: Pageable): List<LocalDate>
 
     fun existsByUserIdAndBaseTimeCreatedAtBetween(
         userId: UUID,

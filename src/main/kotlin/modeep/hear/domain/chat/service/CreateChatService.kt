@@ -16,7 +16,7 @@ private val log = KotlinLogging.logger {}
 @Service
 class CreateChatService(
     private val securityPort: SecurityPort,
-    private val chatPort: ChatPort,
+    private val chatPort: ChatPort
 ) : CreateChatUseCase {
     override suspend fun execute(): CreateChatResponse {
         val user = securityPort.getCurrentUser()

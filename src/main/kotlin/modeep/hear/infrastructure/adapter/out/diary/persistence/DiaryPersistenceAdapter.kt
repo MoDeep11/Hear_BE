@@ -41,11 +41,9 @@ class DiaryPersistenceAdapter(
             .map { it.let(mapper::toModel) }
     }
 
-    override fun findRecentDatesByUserId(userId: UUID, limit: Int): List<LocalDate> {
+    override fun findDistinctDatesByUserId(userId: UUID, limit: Int): List<LocalDate> {
         val pageable = PageRequest.of(0, limit)
-        val dateTimes = repo.findRecentCreatedAts(userId, pageable)
-
-        return dateTimes.map { it.toLocalDate() }.distinct()
+        return repo.findDistinctDatesByUserId(userId, pageable)
     }
 
     override fun existsByUserIdAndDate(userId: UUID, date: LocalDate): Boolean {

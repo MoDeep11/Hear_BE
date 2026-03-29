@@ -2,18 +2,22 @@ package modeep.hear.infrastructure.adapter.out.user.event
 
 import modeep.hear.domain.diary.event.DiaryCreatedEvent
 import modeep.hear.domain.diary.event.DiaryDeletedEvent
+import modeep.hear.domain.diary.port.out.query.QueryDiaryPort
 import modeep.hear.domain.user.exception.UserErrorCode
 import modeep.hear.domain.user.port.out.UserStatPort
 import modeep.hear.global.error.exception.BusinessException
 import org.springframework.context.event.EventListener
 import org.springframework.stereotype.Component
+import org.springframework.transaction.event.TransactionPhase
+import org.springframework.transaction.event.TransactionalEventListener
 import java.time.LocalDate
 
 @Component
 class UserStatEventAdapter(
     private val userStatPort: UserStatPort,
+    private val queryDiaryPort: QueryDiaryPort
 ) {
-    @EventListener
+    @TransactionalEventListener(phase = TransactionPhase.BEFORE_COMMIT)
     fun onDiaryDeleted(event: DiaryDeletedEvent) {
         val userId = event.userId
         val now = event.now
@@ -25,13 +29,13 @@ class UserStatEventAdapter(
         if (event.createdAtOfDiary != now || event.hasTodayDiary) {
             val totalCount = event.totalCount
 
-            val updatedStat = userStat.updateTotalCountOnly(totalCount.toInt())
+            val updatedStat = userStat.updateTotalCountOnly(totalCount)
             userStatPort.save(updatedStat)
             return
         }
 
-        val fetchLimit = (userStat.currentStreak + 10).coerceAtMost(100)
-        val recentDates = event.recentDates.take(fetchLimit)
+        val fetchLimit = (userStat.currentStreak + 20).coerceAtLeast(100)
+        val recentDates = queryDiaryPort.findDistinctDatesByUserId(event.userId, fetchLimit)
 
         val newStreak = CurrentStreakCalculator.calculate(recentDates, now.toLocalDate())
 

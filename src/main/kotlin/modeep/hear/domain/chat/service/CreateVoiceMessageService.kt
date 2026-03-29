@@ -41,6 +41,8 @@ class CreateVoiceMessageService(
         )
 
         val aiResult = messagePort.sendMessage(chatId, userMessage)
+        val aiAudioUrl = aiResult.aiMessage.voiceUrl
+            ?: throw BusinessException(GlobalErrorCode.AI_SERVER_ERROR)
 
         userMessage.updateMessage(message = aiResult.userTranscription)
 
@@ -51,7 +53,7 @@ class CreateVoiceMessageService(
             chatId = chatId,
             userTranscription = userMessage.message,
             aiResponseText = aiResult.aiMessage.message,
-            aiAudioUrl = aiResult.aiMessage.voiceUrl ?: throw BusinessException(GlobalErrorCode.AI_SERVER_ERROR),
+            aiAudioUrl = aiAudioUrl,
             suggestion = aiResult.suggestion
         )
     }

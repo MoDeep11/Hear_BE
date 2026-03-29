@@ -25,6 +25,9 @@ class ChatCompositeAdapter(
     override fun save(chat: Chat) =
         persistenceAdapter.save(chat)
 
+    override fun delete(chatId: UUID) =
+        persistenceAdapter.delete(chatId)
+
     // --External--//
     override suspend fun initChat(chatId: UUID): InitChatResponse =
         externalAdapter.initChat(chatId)

@@ -20,7 +20,7 @@ interface QueryDiaryPort {
 
     fun findAllByIdInWithImages(ids: List<UUID>): List<Diary>
 
-    fun findRecentDatesByUserId(userId: UUID, limit: Int): List<LocalDate>
+    fun findDistinctDatesByUserId(userId: UUID, limit: Int): List<LocalDate>
 
     fun existsByUserIdAndDate(userId: UUID, date: LocalDate): Boolean
 
