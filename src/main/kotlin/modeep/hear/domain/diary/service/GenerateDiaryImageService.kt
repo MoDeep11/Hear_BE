@@ -2,7 +2,7 @@ package modeep.hear.domain.diary.service
 
 import modeep.hear.domain.diary.port.`in`.GenerateDiaryImageUseCase
 import modeep.hear.domain.diary.port.out.external.FetchDiaryImagePort
-import modeep.hear.infrastructure.adapter.out.diary.external.dto.request.GenerateImageRequest
+import modeep.hear.infrastructure.adapter.out.diary.external.dto.request.GenerateDiaryImageRequest
 import org.springframework.stereotype.Service
 import java.util.UUID
 
@@ -16,7 +16,7 @@ class GenerateDiaryImageService(
     ) {
         val (diary, userId) = diaryCommandService.getDiaryWithUserId(diaryId)
 
-        val req = GenerateImageRequest(
+        val req = GenerateDiaryImageRequest(
             diaryId = diaryId,
             userId = userId,
             emotion = diary.emotion,

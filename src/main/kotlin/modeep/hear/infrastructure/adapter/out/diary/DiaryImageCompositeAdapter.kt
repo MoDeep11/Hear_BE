@@ -3,7 +3,7 @@ package modeep.hear.infrastructure.adapter.out.diary
 import modeep.hear.domain.diary.model.DiaryImage
 import modeep.hear.domain.diary.port.out.DiaryImagePort
 import modeep.hear.infrastructure.adapter.out.diary.external.DiaryImageExternalAdapter
-import modeep.hear.infrastructure.adapter.out.diary.external.dto.request.GenerateImageRequest
+import modeep.hear.infrastructure.adapter.out.diary.external.dto.request.GenerateDiaryImageRequest
 import modeep.hear.infrastructure.adapter.out.diary.persistence.DiaryImagePersistenceAdapter
 import org.springframework.context.annotation.Primary
 import org.springframework.stereotype.Component
@@ -26,6 +26,6 @@ class DiaryImageCompositeAdapter(
         persistenceAdapter.delete(diaryImageId)
 
     //--External--//
-    override suspend fun generateImage(req: GenerateImageRequest) =
+    override suspend fun generateImage(req: GenerateDiaryImageRequest) =
         externalAdapter.generateImage(req)
 }

@@ -8,7 +8,6 @@ import modeep.hear.domain.chat.port.out.AiImageTaskPort
 import modeep.hear.domain.chat.vo.AiImageTaskStatus
 import modeep.hear.global.error.exception.BusinessException
 import modeep.hear.infrastructure.adapter.`in`.chat.dto.request.CreateAiImageTaskRequest
-import modeep.hear.infrastructure.adapter.`in`.chat.dto.response.CreateAiImageTaskResult
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.util.UUID

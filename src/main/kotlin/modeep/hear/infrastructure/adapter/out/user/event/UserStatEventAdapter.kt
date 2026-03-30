@@ -1,7 +1,7 @@
 package modeep.hear.infrastructure.adapter.out.user.event
 
-import modeep.hear.domain.diary.event.DiaryCreatedEvent
-import modeep.hear.domain.diary.event.DiaryDeletedEvent
+import modeep.hear.domain.user.event.IncreasedUserStatEvent
+import modeep.hear.domain.user.event.DecreasedUserStatEvent
 import modeep.hear.domain.diary.port.out.query.QueryDiaryPort
 import modeep.hear.domain.user.exception.UserErrorCode
 import modeep.hear.domain.user.port.out.UserStatPort
@@ -18,7 +18,7 @@ class UserStatEventAdapter(
     private val queryDiaryPort: QueryDiaryPort
 ) {
     @TransactionalEventListener(phase = TransactionPhase.BEFORE_COMMIT)
-    fun onDiaryDeleted(event: DiaryDeletedEvent) {
+    fun onDiaryDeleted(event: DecreasedUserStatEvent) {
         val userId = event.userId
         val now = event.now
 
@@ -49,7 +49,7 @@ class UserStatEventAdapter(
     }
 
     @EventListener
-    fun onDiaryCreated(event: DiaryCreatedEvent) {
+    fun onDiaryCreated(event: IncreasedUserStatEvent) {
         val userId = event.userId
 
         val userStat = userStatPort.findByUserId(userId)
