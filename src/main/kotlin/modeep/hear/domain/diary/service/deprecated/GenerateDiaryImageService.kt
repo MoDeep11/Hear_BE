@@ -1,12 +1,12 @@
-package modeep.hear.domain.diary.service
+package modeep.hear.domain.diary.service.deprecated
 
-import modeep.hear.domain.diary.port.`in`.GenerateDiaryImageUseCase
+import modeep.hear.domain.diary.port.`in`.deprecated.GenerateDiaryImageUseCase
 import modeep.hear.domain.diary.port.out.external.FetchDiaryImagePort
+import modeep.hear.domain.diary.service.DiaryCommandService
 import modeep.hear.infrastructure.adapter.out.diary.external.dto.request.GenerateDiaryImageRequest
-import org.springframework.stereotype.Service
 import java.util.UUID
 
-@Service
+@Deprecated("Not used anymore")
 class GenerateDiaryImageService(
     private val diaryCommandService: DiaryCommandService,
     private val fetchDiaryImagePort: FetchDiaryImagePort
