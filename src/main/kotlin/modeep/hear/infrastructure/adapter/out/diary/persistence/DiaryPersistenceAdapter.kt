@@ -59,6 +59,12 @@ class DiaryPersistenceAdapter(
         return repo.countByUserId(userId)
     }
 
+    override fun findAllByUserIdAndYearMonth(userId: UUID, yearMonth: YearMonth): List<Diary> {
+        val start = yearMonth.atDay(1).atStartOfDay()
+        val end = yearMonth.plusMonths(1).atDay(1).atStartOfDay()
+        return repo.findAllByUserIdAndBaseTimeCreatedAtBetween(userId, start, end).map { mapper.toModel(it) }
+    }
+
     override fun findAllByCreatedAtBetween(
         start: LocalDateTime,
         end: LocalDateTime

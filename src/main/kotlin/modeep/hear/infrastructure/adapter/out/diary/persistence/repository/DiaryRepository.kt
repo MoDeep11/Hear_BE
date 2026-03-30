@@ -56,6 +56,12 @@ interface DiaryRepository : JpaRepository<DiaryJpaEntity, UUID> {
 
     fun countByUserId(userId: UUID): Long
 
+    fun findAllByUserIdAndBaseTimeCreatedAtBetween(
+        userId: UUID,
+        baseTimeCreatedAtAfter: LocalDateTime,
+        baseTimeCreatedAtBefore: LocalDateTime
+    ): List<DiaryJpaEntity>
+
     @Query(
         """
         SELECT DISTINCT CAST(d.baseTime.createdAt AS date) 

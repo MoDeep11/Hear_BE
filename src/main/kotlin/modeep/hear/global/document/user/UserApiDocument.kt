@@ -15,6 +15,7 @@ import modeep.hear.infrastructure.adapter.`in`.user.dto.request.UpdateNicknameRe
 import modeep.hear.infrastructure.adapter.`in`.user.dto.request.UpdatePasswordRequest
 import modeep.hear.infrastructure.adapter.`in`.user.dto.request.UpdateProfileImageRequest
 import org.springframework.http.ResponseEntity
+import java.time.YearMonth
 
 @Tag(name = "User", description = "User 도메인 관련 API")
 interface UserApiDocument {
@@ -26,7 +27,9 @@ interface UserApiDocument {
 
     fun getProfile() : ResponseEntity<ApiResult<UserProfileResponse>>
 
-    fun getStatistics() : ResponseEntity<ApiResult<UserStatisticsResponse>>
+    fun getStatistics(
+        yearMonth: YearMonth
+    ) : ResponseEntity<ApiResult<UserStatisticsResponse>>
 
     fun getSummary() : ResponseEntity<ApiResult<UserSummaryResponse>>
 

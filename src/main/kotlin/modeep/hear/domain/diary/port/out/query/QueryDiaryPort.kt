@@ -27,5 +27,7 @@ interface QueryDiaryPort {
 
     fun countByUserId(userId: UUID): Long
 
+    fun findAllByUserIdAndYearMonth(userId: UUID, yearMonth: YearMonth): List<Diary>
+
     fun findAllByCreatedAtBetween(start: LocalDateTime, end: LocalDateTime): List<Diary>
 }

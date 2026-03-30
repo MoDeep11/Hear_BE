@@ -2,9 +2,10 @@ package modeep.hear.infrastructure.adapter.`in`.user.dto.response
 
 import modeep.hear.domain.common.vo.EmotionDistribution
 import java.time.LocalDateTime
+import java.time.YearMonth
 
 data class UserStatisticsResponse(
-    val targetYearMonth: String,
+    val targetYearMonth: YearMonth,
     val diaryCount: Int,
     val photoCount: Int,
     val writingRate: Double,
