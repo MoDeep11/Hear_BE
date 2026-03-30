@@ -36,7 +36,7 @@ class SecurityAdapter(
 
     override fun getCurrentUserId(): UUID {
         val auth = SecurityContextHolder.getContext().authentication
-        if (auth == null || !auth.isAuthenticated || auth.name == "anonymousUser" || auth.name.isNotBlank()) {
+        if (auth == null || !auth.isAuthenticated || auth.name == "anonymousUser" || auth.name.isBlank()) {
             throw BusinessException(UserErrorCode.USER_NOT_FOUND)
         }
 

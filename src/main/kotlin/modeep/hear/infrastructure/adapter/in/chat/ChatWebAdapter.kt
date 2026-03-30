@@ -50,7 +50,8 @@ class ChatWebAdapter(
         @PathVariable("chat_id") chatId: UUID
     ): ResponseEntity<ApiResult<Unit>> {
         finishChatUseCase.execute(chatId)
-        return ResponseEntity.ok(
+        return ResponseEntity.status(HttpStatus.ACCEPTED)
+            .body(
             ApiResult(
                 status = 202,
                 message = AiImageTaskStatus.RESERVED.name,

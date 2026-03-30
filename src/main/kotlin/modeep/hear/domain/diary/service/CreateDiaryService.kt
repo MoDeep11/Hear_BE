@@ -30,7 +30,7 @@ class CreateDiaryService(
     override suspend fun execute(request: CreateDiaryRequest): CreateDiaryResponse {
         val userId = securityPort.getCurrentUser().id
         val chatId = request.chatId
-        if (queryChatPort.existsById(chatId)) throw BusinessException(ChatErrorCode.CHAT_NOT_FOUND)
+        if (!queryChatPort.existsById(chatId)) throw BusinessException(ChatErrorCode.CHAT_NOT_FOUND)
 
         val diary = Diary.create(
             userId = userId,
