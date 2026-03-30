@@ -102,7 +102,8 @@ class ChatWebAdapter(
     @PostMapping("/{chat_id}/images/generations")
     override fun createAiImageTaskInChat(
         @PathVariable("chat_id") chatId: UUID,
-        @RequestBody request: CreateAiImageTaskRequest
+        @RequestBody @Valid
+        request: CreateAiImageTaskRequest
     ): ResponseEntity<ApiResult<CreateAiImageTaskResponse>> {
         val res = createAiImageTaskInChatUseCase.execute(chatId, request)
         return ResponseEntity.status(HttpStatus.ACCEPTED)

@@ -2,11 +2,13 @@ package modeep.hear.domain.diary.service
 
 import io.github.oshai.kotlinlogging.KotlinLogging
 import modeep.hear.domain.chat.port.out.AiImageTaskPort
+import modeep.hear.domain.diary.exception.DiaryErrorCode
 import modeep.hear.domain.diary.model.DiaryImage
 import modeep.hear.domain.diary.port.`in`.CallbackGenerationDiaryImageUseCase
 import modeep.hear.domain.diary.port.out.DiaryImagePort
 import modeep.hear.domain.diary.vo.DiaryImageStatus
 import modeep.hear.domain.diary.vo.DiarySourceType
+import modeep.hear.global.error.exception.BusinessException
 import modeep.hear.infrastructure.adapter.`in`.diary.dto.request.CallbackGenerationDiaryImageRequest
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -36,22 +38,22 @@ class CallbackGenerationDiaryImageService(
             diaryImageStatus = DiaryImageStatus.SUCCESS
         )
 
-        diaryImagePort.save(image)
-        completeTask(diaryId)
+        completeTask(diaryId, image)
     }
 
-    private suspend fun checkStatus(status: DiaryImageStatus) {
+    private fun checkStatus(status: DiaryImageStatus) {
         if (status != DiaryImageStatus.SUCCESS) {
-            throw Exception("Failed to generate diary image")
+            throw BusinessException(DiaryErrorCode.DIARY_IMAGE_GENERATION_FAILED)
         }
     }
 
-    private suspend fun completeTask(diaryId: UUID) {
+    private suspend fun completeTask(diaryId: UUID, image: DiaryImage) {
         val task = taskPort.findByDiaryId(diaryId)
             ?: run {
-                log.error { "Task not found: diaryId=[$diaryId]" }
+                log.info { "Skip duplicate image callback: diaryId=[$diaryId]" }
                 return
             }
+        diaryImagePort.save(image)
         taskPort.delete(task)
     }
 }

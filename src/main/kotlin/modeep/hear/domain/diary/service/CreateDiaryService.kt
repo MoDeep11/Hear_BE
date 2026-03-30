@@ -4,6 +4,7 @@ import modeep.hear.domain.auth.port.out.SecurityPort
 import modeep.hear.domain.chat.exception.ChatErrorCode
 import modeep.hear.domain.chat.port.out.AiImageTaskPort
 import modeep.hear.domain.chat.port.out.query.QueryChatPort
+import modeep.hear.domain.chat.service.CheckUserWithChatService
 import modeep.hear.domain.common.event.EventPublisher
 import modeep.hear.domain.diary.event.GenerateDiaryImageEvent
 import modeep.hear.domain.diary.model.Diary
@@ -25,12 +26,13 @@ class CreateDiaryService(
     private val eventPublisher: EventPublisher,
     private val commandDiaryPort: CommandDiaryPort,
     private val queryChatPort: QueryChatPort,
-    private val taskPort: AiImageTaskPort
+    private val taskPort: AiImageTaskPort,
+    private val checkUserWithChatService: CheckUserWithChatService
 ) : CreateDiaryUseCase {
     override suspend fun execute(request: CreateDiaryRequest): CreateDiaryResponse {
-        val userId = securityPort.getCurrentUser().id
         val chatId = request.chatId
-        if (!queryChatPort.existsById(chatId)) throw BusinessException(ChatErrorCode.CHAT_NOT_FOUND)
+        val (user, chat) = checkUserWithChatService.executeWithSuspend(chatId)
+        val userId = user.id
 
         val diary = Diary.create(
             userId = userId,

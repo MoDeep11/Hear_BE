@@ -27,6 +27,6 @@ class AiImageTaskPersistenceAdapter(
     }
 
     override fun delete(task: AiImageTask) {
-        TODO("Not yet implemented")
+        repo.delete(mapper.toEntity(task))
     }
 }
