@@ -7,8 +7,8 @@ import java.util.UUID
 data class AiImageTask(
     val id: UUID,
     val chatId: UUID? = null,
-    val diaryId: UUID? = null,
-    val status: AiImageTaskStatus = AiImageTaskStatus.RESERVED,
+    private var diaryId: UUID? = null,
+    private var status: AiImageTaskStatus = AiImageTaskStatus.RESERVED,
     val baseTime: BaseTime
 ) {
     companion object {
@@ -24,5 +24,19 @@ data class AiImageTask(
                 status = status,
                 baseTime = BaseTime()
             )
+    }
+
+    fun assignDiary(diaryId: UUID) {
+        this.diaryId = diaryId
+    }
+
+    fun process() {
+        status.canTransitionTo(this.status)
+        status = AiImageTaskStatus.PROCESSING
+    }
+
+    fun complete() {
+        status.canTransitionTo(this.status)
+        status = AiImageTaskStatus.COMPLETED
     }
 }

@@ -1,8 +1,8 @@
 package modeep.hear.infrastructure.adapter.out.user.event
 
-import modeep.hear.domain.user.event.IncreasedUserStatEvent
-import modeep.hear.domain.user.event.DecreasedUserStatEvent
 import modeep.hear.domain.diary.port.out.query.QueryDiaryPort
+import modeep.hear.domain.user.event.DecreasedUserStatEvent
+import modeep.hear.domain.user.event.IncreasedUserStatEvent
 import modeep.hear.domain.user.exception.UserErrorCode
 import modeep.hear.domain.user.port.out.UserStatPort
 import modeep.hear.global.error.exception.BusinessException

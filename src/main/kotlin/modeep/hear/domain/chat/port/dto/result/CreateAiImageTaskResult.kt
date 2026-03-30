@@ -6,15 +6,14 @@ import java.util.UUID
 
 data class CreateAiImageTaskResult(
     val taskId: UUID,
-    val status: AiImageTaskStatus,
+    val status: AiImageTaskStatus
 ) {
     companion object {
         fun from(task: AiImageTask): CreateAiImageTaskResult {
             return CreateAiImageTaskResult(
                 task.id,
-                task.status,
+                task.status
             )
         }
     }
 }
-

@@ -15,7 +15,7 @@ import java.util.UUID
 @Service
 @Transactional
 class CreateAiImageTaskInChatService(
-    private val aiImageTaskPort : AiImageTaskPort,
+    private val aiImageTaskPort: AiImageTaskPort
 ) : CreateAiImageTaskInChatUseCase {
     override fun execute(
         chatId: UUID,
@@ -25,7 +25,7 @@ class CreateAiImageTaskInChatService(
 
         val task = AiImageTask.create(
             chatId = chatId,
-            status = AiImageTaskStatus.RESERVED,
+            status = AiImageTaskStatus.RESERVED
         )
 
         aiImageTaskPort.save(task)

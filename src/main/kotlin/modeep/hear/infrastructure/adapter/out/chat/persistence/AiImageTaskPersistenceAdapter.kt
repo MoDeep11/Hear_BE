@@ -12,9 +12,10 @@ class AiImageTaskPersistenceAdapter(
     private val mapper: AiImageTaskMapper,
     private val repo: AiImageTaskRepository
 ) : AiImageTaskPort {
-    //--Query--//
-    override fun existsByChatId(chatId: UUID): Boolean =
-        repo.existsByChatId(chatId)
+    // --Query--//
+    override fun findByChatId(chatId: UUID): AiImageTask? {
+        return repo.findByChatId(chatId)?.let { mapper.toModel(it) }
+    }
 
     // --Command--//
     override fun save(task: AiImageTask) {

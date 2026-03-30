@@ -4,13 +4,14 @@ import modeep.hear.domain.auth.port.out.SecurityPort
 import modeep.hear.domain.chat.exception.ChatErrorCode
 import modeep.hear.domain.chat.port.out.AiImageTaskPort
 import modeep.hear.domain.chat.port.out.query.QueryChatPort
+import modeep.hear.domain.chat.vo.AiImageTaskStatus
 import modeep.hear.domain.common.event.EventPublisher
 import modeep.hear.domain.diary.event.GenerateDiaryImageEvent
-import modeep.hear.domain.user.event.IncreasedUserStatEvent
 import modeep.hear.domain.diary.model.Diary
 import modeep.hear.domain.diary.port.`in`.CreateDiaryUseCase
 import modeep.hear.domain.diary.port.out.command.CommandDiaryPort
 import modeep.hear.domain.diary.port.out.query.QueryDiaryImagePort
+import modeep.hear.domain.user.event.IncreasedUserStatEvent
 import modeep.hear.global.error.exception.BusinessException
 import modeep.hear.infrastructure.adapter.`in`.diary.dto.request.CreateDiaryRequest
 import modeep.hear.infrastructure.adapter.`in`.diary.dto.response.CreateDiaryResponse
@@ -47,7 +48,12 @@ class CreateDiaryService(
         commandDiaryPort.save(diary)
         eventPublisher.publish(IncreasedUserStatEvent(userId))
 
-        if (taskPort.existsByChatId(chatId)) {
+        val task = taskPort.findByChatId(chatId)
+        if (task != null) {
+            task.assignDiary(diary.id)
+            task.process()
+            taskPort.save(task)
+
             eventPublisher.publish(GenerateDiaryImageEvent(userId, chatId, diary))
         }
 

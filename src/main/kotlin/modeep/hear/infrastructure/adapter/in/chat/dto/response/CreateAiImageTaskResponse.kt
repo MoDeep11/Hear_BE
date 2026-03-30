@@ -4,7 +4,7 @@ import modeep.hear.domain.chat.port.dto.result.CreateAiImageTaskResult
 import java.util.UUID
 
 data class CreateAiImageTaskResponse(
-    val taskId: UUID,
+    val taskId: UUID
 ) {
     companion object {
         fun from(res: CreateAiImageTaskResult): CreateAiImageTaskResponse {

@@ -49,7 +49,7 @@ class DiaryExternalAdapter(
                     .retrieve()
                     .awaitBodilessEntity()
             }.onFailure {
-                log.error(it) { "일기 생성 요청 실패: ${chatId}" }
+                log.error(it) { "일기 생성 요청 실패: $chatId" }
             }
         }
     }

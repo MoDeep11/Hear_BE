@@ -9,10 +9,10 @@ import java.util.UUID
 @Service
 class GenerateDiaryImageService(
     private val diaryCommandService: DiaryCommandService,
-    private val fetchDiaryImagePort: FetchDiaryImagePort,
+    private val fetchDiaryImagePort: FetchDiaryImagePort
 ) : GenerateDiaryImageUseCase {
     override suspend fun execute(
-        diaryId: UUID,
+        diaryId: UUID
     ) {
         val (diary, userId) = diaryCommandService.getDiaryWithUserId(diaryId)
 
@@ -20,7 +20,7 @@ class GenerateDiaryImageService(
             diaryId = diaryId,
             userId = userId,
             emotion = diary.emotion,
-            content = diary.content,
+            content = diary.content
         )
 
         fetchDiaryImagePort.generateImage(req)

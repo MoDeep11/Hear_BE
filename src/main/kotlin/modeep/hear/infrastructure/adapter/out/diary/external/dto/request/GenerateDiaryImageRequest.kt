@@ -11,12 +11,12 @@ data class GenerateDiaryImageRequest(
     val content: String
 ) {
     companion object {
-        fun from(event: GenerateDiaryImageEvent)
-        = GenerateDiaryImageRequest(
-            diaryId = event.diary.id,
-            userId = event.userId,
-            emotion = event.diary.emotion,
-            content = event.diary.content
-        )
+        fun from(event: GenerateDiaryImageEvent) =
+            GenerateDiaryImageRequest(
+                diaryId = event.diary.id,
+                userId = event.userId,
+                emotion = event.diary.emotion,
+                content = event.diary.content
+            )
     }
 }

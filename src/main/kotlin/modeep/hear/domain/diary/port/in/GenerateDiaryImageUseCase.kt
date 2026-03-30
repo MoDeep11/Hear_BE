@@ -4,6 +4,6 @@ import java.util.UUID
 
 interface GenerateDiaryImageUseCase {
     suspend fun execute(
-        diaryId: UUID,
+        diaryId: UUID
     )
 }

@@ -15,7 +15,7 @@ class DiaryImageCompositeAdapter(
     private val persistenceAdapter: DiaryImagePersistenceAdapter,
     private val externalAdapter: DiaryImageExternalAdapter
 ) : DiaryImagePort {
-    //--Persistence--//
+    // --Persistence--//
     override fun findAllByChatId(chatId: UUID): List<DiaryImage> =
         persistenceAdapter.findAllByChatId(chatId)
 
@@ -25,7 +25,7 @@ class DiaryImageCompositeAdapter(
     override fun delete(diaryImageId: UUID) =
         persistenceAdapter.delete(diaryImageId)
 
-    //--External--//
+    // --External--//
     override suspend fun generateImage(req: GenerateDiaryImageRequest) =
         externalAdapter.generateImage(req)
 }

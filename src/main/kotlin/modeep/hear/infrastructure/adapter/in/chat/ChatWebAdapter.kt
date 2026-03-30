@@ -104,10 +104,12 @@ class ChatWebAdapter(
     ): ResponseEntity<ApiResult<CreateAiImageTaskResponse>> {
         val res = createAiImageTaskInChatUseCase.execute(chatId, request)
         return ResponseEntity.status(HttpStatus.ACCEPTED)
-            .body(ApiResult(
-                data = CreateAiImageTaskResponse.from(res),
-                status = 202,
-                message = res.status.name
-            ))
+            .body(
+                ApiResult(
+                    data = CreateAiImageTaskResponse.from(res),
+                    status = 202,
+                    message = res.status.name
+                )
+            )
     }
 }

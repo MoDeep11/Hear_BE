@@ -5,4 +5,3 @@ import modeep.hear.infrastructure.adapter.out.diary.external.dto.request.Generat
 interface FetchDiaryImagePort {
     suspend fun generateImage(req: GenerateDiaryImageRequest)
 }
-
