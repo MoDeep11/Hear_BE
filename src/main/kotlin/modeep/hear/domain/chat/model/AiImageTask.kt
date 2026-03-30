@@ -7,8 +7,8 @@ import java.util.UUID
 data class AiImageTask(
     val id: UUID,
     val chatId: UUID? = null,
-    private var diaryId: UUID? = null,
-    private var status: AiImageTaskStatus = AiImageTaskStatus.RESERVED,
+    var diaryId: UUID? = null,
+    var status: AiImageTaskStatus = AiImageTaskStatus.RESERVED,
     val baseTime: BaseTime
 ) {
     companion object {
