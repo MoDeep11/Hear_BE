@@ -5,4 +5,6 @@ import java.util.UUID
 
 interface QueryAiImageTaskPort {
     fun findByChatId(chatId: UUID): AiImageTask?
+
+    fun findByDiaryId(diaryId: UUID): AiImageTask?
 }
