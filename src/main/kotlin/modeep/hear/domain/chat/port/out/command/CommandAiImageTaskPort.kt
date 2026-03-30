@@ -4,4 +4,6 @@ import modeep.hear.domain.chat.model.AiImageTask
 
 interface CommandAiImageTaskPort {
     fun save(task: AiImageTask)
+
+    fun delete(task: AiImageTask)
 }

@@ -1,5 +1,5 @@
 package modeep.hear.infrastructure.adapter.`in`.chat.dto.request
 
-data class GenerateImageInChatRequest(
+data class CreateAiImageTaskRequest(
     val isReserved: Boolean = true
 )

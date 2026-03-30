@@ -14,6 +14,9 @@ object SecurityConstants {
         "/api/v1/auth/register/**",
         "/api/v1/auth/email/**",
         "/api/v1/auth/email-tickets/**",
-        "/api/v1/auth/password-resets/**"
+        "/api/v1/auth/password-resets/**",
+
+        // Internal API
+        "/internal/v1/**",
     )
 }

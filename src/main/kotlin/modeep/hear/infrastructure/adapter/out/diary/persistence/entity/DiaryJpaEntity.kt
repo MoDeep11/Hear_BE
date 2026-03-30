@@ -6,6 +6,7 @@ import jakarta.persistence.Entity
 import jakarta.persistence.EnumType
 import jakarta.persistence.Enumerated
 import jakarta.persistence.OneToMany
+import jakarta.persistence.OneToOne
 import jakarta.persistence.OrderBy
 import jakarta.persistence.Table
 import modeep.hear.domain.common.vo.Emotion
@@ -30,8 +31,8 @@ class DiaryJpaEntity(
     val emotion: Emotion,
 
     @JdbcTypeCode(SqlTypes.JSON) // jsonb 타입
-    @Column(name = "tags", columnDefinition = "jsonb")
-    val tags: List<String>? = null,
+    @Column(name = "tags", nullable = false, columnDefinition = "jsonb")
+    val tags: List<String> = emptyList(),
 
     @Enumerated(EnumType.STRING)
     @Column(name = "source_type", nullable = false, length = 16)
@@ -43,6 +44,9 @@ class DiaryJpaEntity(
     @OneToMany(mappedBy = "diary", cascade = [CascadeType.ALL], orphanRemoval = true)
     @OrderBy("order ASC")
     val diaryImages: MutableList<DiaryImageJpaEntity> = mutableListOf(),
+
+    @OneToOne(mappedBy = "diary", cascade = [CascadeType.ALL], orphanRemoval = true)
+    var diaryAiComment: DiaryAiCommentJpaEntity? = null,
 
     id: UUID
 ) : BaseEntity(id) {

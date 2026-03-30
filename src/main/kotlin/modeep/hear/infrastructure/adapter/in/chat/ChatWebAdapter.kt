@@ -1,21 +1,23 @@
 package modeep.hear.infrastructure.adapter.`in`.chat
 
 import jakarta.validation.Valid
-import modeep.hear.domain.chat.port.`in`.CompleteChatUseCase
+import modeep.hear.domain.chat.port.`in`.CreateAiImageTaskInChatUseCase
 import modeep.hear.domain.chat.port.`in`.CreateChatUseCase
 import modeep.hear.domain.chat.port.`in`.CreateMessageUseCase
-import modeep.hear.domain.chat.port.`in`.GenerateImageInChatUseCase
+import modeep.hear.domain.chat.port.`in`.FinishChatUseCase
 import modeep.hear.domain.chat.port.`in`.UploadImageInChatUseCase
+import modeep.hear.domain.chat.vo.AiImageTaskStatus
 import modeep.hear.global.common.response.ApiResult
 import modeep.hear.global.document.chat.ChatApiDocument
+import modeep.hear.infrastructure.adapter.`in`.chat.dto.request.CreateAiImageTaskRequest
 import modeep.hear.infrastructure.adapter.`in`.chat.dto.request.CreateMessageRequest
 import modeep.hear.infrastructure.adapter.`in`.chat.dto.request.CreateVoiceMessageRequest
-import modeep.hear.infrastructure.adapter.`in`.chat.dto.request.GenerateImageInChatRequest
+import modeep.hear.infrastructure.adapter.`in`.chat.dto.response.CreateAiImageTaskResponse
 import modeep.hear.infrastructure.adapter.`in`.chat.dto.response.CreateChatResponse
 import modeep.hear.infrastructure.adapter.`in`.chat.dto.response.CreateMessageResponse
-import modeep.hear.infrastructure.adapter.`in`.chat.dto.response.GenerateImageInChatResponse
 import modeep.hear.infrastructure.adapter.`in`.storage.dto.request.UploadDiaryImageRequest
 import modeep.hear.infrastructure.adapter.`in`.storage.dto.response.UploadDiaryImageResponse
+import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.PatchMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -28,11 +30,11 @@ import java.util.UUID
 @RestController
 @RequestMapping("api/v1/chats")
 class ChatWebAdapter(
-    private val completeChatUseCase: CompleteChatUseCase,
+    private val finishChatUseCase: FinishChatUseCase,
     private val createChatUseCase: CreateChatUseCase,
     private val createMessageUseCase: CreateMessageUseCase,
     private val uploadImageInChatUseCase: UploadImageInChatUseCase,
-    private val generateImageInChatUseCase: GenerateImageInChatUseCase
+    private val createAiImageTaskInChatUseCase: CreateAiImageTaskInChatUseCase
 ) : ChatApiDocument {
     @PostMapping
     override suspend fun createChat(): ResponseEntity<ApiResult<CreateChatResponse>> {
@@ -44,11 +46,18 @@ class ChatWebAdapter(
     }
 
     @PatchMapping("/{chat_id}")
-    override fun completeChat(
+    override suspend fun finishChat(
         @PathVariable("chat_id") chatId: UUID
     ): ResponseEntity<ApiResult<Unit>> {
-        completeChatUseCase.execute(chatId)
-        return ResponseEntity.ok(ApiResult())
+        finishChatUseCase.execute(chatId)
+        return ResponseEntity.status(HttpStatus.ACCEPTED)
+            .body(
+            ApiResult(
+                status = 202,
+                message = AiImageTaskStatus.RESERVED.name,
+                data = Unit
+            )
+        )
     }
 
     @PostMapping("/{chat_id}/messages")
@@ -90,15 +99,20 @@ class ChatWebAdapter(
         )
     }
 
-    @PostMapping("/{chat_id}/messages/generations")
-    override fun generateImageInChat(
+    @PostMapping("/{chat_id}/images/generations")
+    override fun createAiImageTaskInChat(
         @PathVariable("chat_id") chatId: UUID,
-        @RequestBody request: GenerateImageInChatRequest
-    ): ResponseEntity<ApiResult<GenerateImageInChatResponse>> {
-        return ResponseEntity.ok(
-            ApiResult(
-                data = generateImageInChatUseCase.execute(chatId, request)
+        @RequestBody @Valid
+        request: CreateAiImageTaskRequest
+    ): ResponseEntity<ApiResult<CreateAiImageTaskResponse>> {
+        val res = createAiImageTaskInChatUseCase.execute(chatId, request)
+        return ResponseEntity.status(HttpStatus.ACCEPTED)
+            .body(
+                ApiResult(
+                    data = CreateAiImageTaskResponse.from(res),
+                    status = 202,
+                    message = res.status.name
+                )
             )
-        )
     }
 }

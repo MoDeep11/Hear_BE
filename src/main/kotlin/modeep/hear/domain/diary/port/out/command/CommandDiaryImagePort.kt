@@ -6,5 +6,7 @@ import java.util.UUID
 interface CommandDiaryImagePort {
     fun saveAll(diaryImages: List<DiaryImage>)
 
+    fun save(diaryImage: DiaryImage)
+
     fun delete(diaryImageId: UUID)
 }

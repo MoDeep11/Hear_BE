@@ -4,8 +4,8 @@ import io.github.oshai.kotlinlogging.KotlinLogging
 import modeep.hear.domain.auth.port.out.SecurityPort
 import modeep.hear.domain.chat.model.Chat
 import modeep.hear.domain.chat.port.`in`.CreateChatUseCase
-import modeep.hear.domain.chat.port.out.ChatPort
-import modeep.hear.domain.chat.vo.ChatStatus
+import modeep.hear.domain.chat.port.out.external.FetchChatPort
+import modeep.hear.domain.common.component.GetDataForRequestComponent
 import modeep.hear.global.error.exception.BusinessException
 import modeep.hear.global.error.exception.GlobalErrorCode
 import modeep.hear.infrastructure.adapter.`in`.chat.dto.response.CreateChatResponse
@@ -16,30 +16,27 @@ private val log = KotlinLogging.logger {}
 @Service
 class CreateChatService(
     private val securityPort: SecurityPort,
-    private val chatPort: ChatPort
+    private val chatPort: FetchChatPort,
+    private val chatCommandService: ChatCommandService,
+    private val getData: GetDataForRequestComponent
 ) : CreateChatUseCase {
     override suspend fun execute(): CreateChatResponse {
-        val user = securityPort.getCurrentUser()
-        val newChat = Chat.create(user.id)
-        chatPort.save(newChat)
+        val userId = securityPort.getCurrentUserId()
+        val newChat = Chat.create(userId)
 
-        return try {
-            val init = chatPort.initChat(newChat.id)
+        chatCommandService.saveChatWithSuspend(userId, newChat)
 
-            newChat.okChat()
-            chatPort.save(newChat)
-
-            CreateChatResponse(
-                chatId = newChat.id,
-                initialMessage = init.initialMessage,
-                createdAt = newChat.baseTime.createdAt
-            )
+        val initResult = try {
+            chatPort.initChat(newChat.id, getData.getUserInfoOnly())
         } catch (e: Exception) {
-            if (newChat.status == ChatStatus.READY) {
-                runCatching { chatPort.delete(newChat.id) }
-                    .onFailure { log.error { "Failed to rollback chat entity: ${newChat.id}" } }
-            }
+            log.error(e) { "AI Server initialization failed for chatId: ${newChat.id}" }
             throw BusinessException(GlobalErrorCode.AI_SERVER_ERROR)
         }
+
+        return CreateChatResponse(
+            chatId = newChat.id,
+            initialMessage = initResult.initialMessage,
+            createdAt = newChat.baseTime.createdAt
+        )
     }
 }

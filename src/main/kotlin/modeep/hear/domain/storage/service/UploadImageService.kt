@@ -32,7 +32,7 @@ class UploadImageService(
                         imageUrl = request.imageUrl,
                         order = request.order,
                         sourceType = DiarySourceType.MANUAL,
-                        diaryImageStatus = DiaryImageStatus.COMPLETED
+                        diaryImageStatus = DiaryImageStatus.SUCCESS
                     )
                     images.add(newImage)
                 }

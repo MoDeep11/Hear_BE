@@ -4,6 +4,8 @@ import modeep.hear.domain.chat.model.Message
 import modeep.hear.domain.chat.port.dto.result.SendMessageResult
 import modeep.hear.domain.chat.port.out.MessagePort
 import modeep.hear.infrastructure.adapter.out.chat.external.MessageExternalAdapter
+import modeep.hear.infrastructure.adapter.out.chat.external.dto.vo.History
+import modeep.hear.infrastructure.adapter.out.chat.external.dto.vo.UserInfo
 import modeep.hear.infrastructure.adapter.out.chat.persistence.MessagePersistenceAdapter
 import org.springframework.context.annotation.Primary
 import org.springframework.stereotype.Component
@@ -26,7 +28,9 @@ class MessageCompositeAdapter(
     // --External--//
     override suspend fun sendMessage(
         chatId: UUID,
+        histories: List<History>,
+        userInfo: UserInfo,
         message: Message
     ): SendMessageResult =
-        externalAdapter.sendMessage(chatId, message)
+        externalAdapter.sendMessage(chatId, histories, userInfo, message)
 }
