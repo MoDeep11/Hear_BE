@@ -4,7 +4,6 @@ import modeep.hear.domain.auth.port.out.SecurityPort
 import modeep.hear.domain.chat.exception.ChatErrorCode
 import modeep.hear.domain.chat.port.out.AiImageTaskPort
 import modeep.hear.domain.chat.port.out.query.QueryChatPort
-import modeep.hear.domain.chat.vo.AiImageTaskStatus
 import modeep.hear.domain.common.event.EventPublisher
 import modeep.hear.domain.diary.event.GenerateDiaryImageEvent
 import modeep.hear.domain.diary.model.Diary

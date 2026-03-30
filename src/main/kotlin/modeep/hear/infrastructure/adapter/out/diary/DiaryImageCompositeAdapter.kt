@@ -22,6 +22,9 @@ class DiaryImageCompositeAdapter(
     override fun saveAll(diaryImages: List<DiaryImage>) =
         persistenceAdapter.saveAll(diaryImages)
 
+    override fun save(diaryImage: DiaryImage) =
+        persistenceAdapter.save(diaryImage)
+
     override fun delete(diaryImageId: UUID) =
         persistenceAdapter.delete(diaryImageId)
 

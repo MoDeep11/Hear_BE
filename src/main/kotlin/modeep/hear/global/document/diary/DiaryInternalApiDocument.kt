@@ -17,4 +17,3 @@ interface DiaryInternalApiDocument {
         request: CallbackGenerationDiaryImageRequest
     ): ResponseEntity<ApiResult<Unit>>
 }
-

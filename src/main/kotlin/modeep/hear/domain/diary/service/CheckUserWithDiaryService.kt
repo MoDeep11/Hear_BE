@@ -15,11 +15,10 @@ class CheckUserWithDiaryService(
     private val securityPort: SecurityPort,
     private val queryDiaryPort: QueryDiaryPort
 ) {
-    suspend fun executeWithSuspend(diaryId: UUID) : Diary {
+    suspend fun executeWithSuspend(diaryId: UUID): Diary {
         val user = securityPort.getCurrentUser()
         val diary = queryDiaryPort.findById(diaryId) ?: throw BusinessException(ChatErrorCode.CHAT_NOT_FOUND)
         diary.validateOwner(user.id)
-
         return diary
     }
 
