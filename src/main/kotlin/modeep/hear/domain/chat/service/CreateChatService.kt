@@ -24,6 +24,8 @@ class CreateChatService(
         val userId = securityPort.getCurrentUserId()
         val newChat = Chat.create(userId)
 
+        chatCommandService.saveChatWithSuspend(userId, newChat)
+
         val initResult = try {
             chatPort.initChat(newChat.id, getData.getUserInfoOnly())
         } catch (e: Exception) {
@@ -31,6 +33,10 @@ class CreateChatService(
             throw BusinessException(GlobalErrorCode.AI_SERVER_ERROR)
         }
 
-        return chatCommandService.saveChatWithSuspend(userId, newChat, initResult)
+        return CreateChatResponse(
+            chatId = newChat.id,
+            initialMessage = initResult.initialMessage,
+            createdAt = newChat.baseTime.createdAt
+        )
     }
 }

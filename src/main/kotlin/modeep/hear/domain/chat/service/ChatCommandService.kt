@@ -15,18 +15,11 @@ class ChatCommandService(
     @Transactional
     suspend fun saveChatWithSuspend(
         userId: UUID,
-        chat: Chat,
-        init: InitChatResponse
-    ): CreateChatResponse {
+        chat: Chat
+    ) {
         chat.validateOwner(userId)
 
         chat.okChat()
         chatPort.save(chat)
-
-        return CreateChatResponse(
-            chatId = chat.id,
-            initialMessage = init.initialMessage,
-            createdAt = chat.baseTime.createdAt
-        )
     }
 }
