@@ -18,7 +18,7 @@ interface ChatApiDocument {
 
     suspend fun createChat(): ResponseEntity<ApiResult<CreateChatResponse>>
 
-    suspend fun completeChat(
+    suspend fun finishChat(
         chatId: UUID
     ): ResponseEntity<ApiResult<Unit>>
 

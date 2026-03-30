@@ -6,6 +6,7 @@ import modeep.hear.domain.chat.port.`in`.CreateChatUseCase
 import modeep.hear.domain.chat.port.`in`.CreateMessageUseCase
 import modeep.hear.domain.chat.port.`in`.FinishChatUseCase
 import modeep.hear.domain.chat.port.`in`.UploadImageInChatUseCase
+import modeep.hear.domain.chat.vo.AiImageTaskStatus
 import modeep.hear.global.common.response.ApiResult
 import modeep.hear.global.document.chat.ChatApiDocument
 import modeep.hear.infrastructure.adapter.`in`.chat.dto.request.CreateAiImageTaskRequest
@@ -45,14 +46,14 @@ class ChatWebAdapter(
     }
 
     @PatchMapping("/{chat_id}")
-    override suspend fun completeChat(
+    override suspend fun finishChat(
         @PathVariable("chat_id") chatId: UUID
     ): ResponseEntity<ApiResult<Unit>> {
         finishChatUseCase.execute(chatId)
         return ResponseEntity.ok(
             ApiResult(
                 status = 202,
-                message = "PENDING",
+                message = AiImageTaskStatus.RESERVED.name,
                 data = Unit
             )
         )
