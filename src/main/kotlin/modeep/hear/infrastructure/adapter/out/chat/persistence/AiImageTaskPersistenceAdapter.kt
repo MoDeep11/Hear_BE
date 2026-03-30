@@ -17,8 +17,16 @@ class AiImageTaskPersistenceAdapter(
         return repo.findByChatId(chatId)?.let { mapper.toModel(it) }
     }
 
+    override fun findByDiaryId(diaryId: UUID): AiImageTask? {
+        return repo.findByDiaryId(diaryId)?.let { mapper.toModel(it) }
+    }
+
     // --Command--//
     override fun save(task: AiImageTask) {
         repo.save(mapper.toEntity(task))
+    }
+
+    override fun delete(task: AiImageTask) {
+        TODO("Not yet implemented")
     }
 }

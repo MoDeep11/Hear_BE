@@ -6,4 +6,6 @@ import java.util.UUID
 
 interface AiImageTaskRepository : JpaRepository<AiImageTaskJpaEntity, UUID> {
     fun findByChatId(chatId: UUID): AiImageTaskJpaEntity?
+
+    fun findByDiaryId(diaryId: UUID): AiImageTaskJpaEntity?
 }

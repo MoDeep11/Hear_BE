@@ -46,7 +46,7 @@ class DiaryJpaEntity(
     val diaryImages: MutableList<DiaryImageJpaEntity> = mutableListOf(),
 
     @OneToOne(mappedBy = "diary", cascade = [CascadeType.ALL], orphanRemoval = true)
-    val diaryAiComment: DiaryAiCommentJpaEntity? = null,
+    var diaryAiComment: DiaryAiCommentJpaEntity? = null,
 
     id: UUID
 ) : BaseEntity(id) {

@@ -1,7 +1,9 @@
 package modeep.hear.infrastructure.adapter.out.diary.persistence.mapper
 
 import modeep.hear.domain.diary.model.Diary
+import modeep.hear.domain.diary.model.DiaryAiComment
 import modeep.hear.global.common.mapper.BaseTimeMapper
+import modeep.hear.infrastructure.adapter.out.diary.persistence.entity.DiaryAiCommentJpaEntity
 import modeep.hear.infrastructure.adapter.out.diary.persistence.entity.DiaryJpaEntity
 import org.springframework.stereotype.Component
 
@@ -22,7 +24,15 @@ class DiaryMapperImpl(
             chatId = entity.chatId,
             diaryImages = entity.diaryImages
                 .map { diaryImageMapper.toModel(entity.id, it) }
-                .toMutableList()
+                .toMutableList(),
+            diaryAiComment = entity.diaryAiComment?.let {
+                DiaryAiComment(
+                    content = it.content,
+                    status = it.status,
+                    diaryId = it.diaryId,
+                    baseTime = baseTimeMapper.toModel(it.baseTime)
+                )
+            },
         )
     }
 
@@ -40,9 +50,16 @@ class DiaryMapperImpl(
         val imageEntities = model.diaryImages.map {
             diaryImageMapper.toEntity(it, diaryEntity)
         }
-
         diaryEntity.updateImages(imageEntities)
 
+        model.diaryAiComment?.let { comment ->
+            diaryEntity.diaryAiComment = DiaryAiCommentJpaEntity(
+                diaryId = diaryEntity.id,
+                diary = diaryEntity,
+                content = comment.content,
+                status = comment.status
+            )
+        }
         return diaryEntity
     }
 }
