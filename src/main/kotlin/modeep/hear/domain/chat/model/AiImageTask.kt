@@ -31,12 +31,16 @@ data class AiImageTask(
     }
 
     fun process() {
-        status.canTransitionTo(this.status)
+        if (!status.canTransitionTo(AiImageTaskStatus.PROCESSING)) {
+            throw IllegalStateException("Cannot transition from $status to PROCESSING")
+        }
         status = AiImageTaskStatus.PROCESSING
     }
 
     fun complete() {
-        status.canTransitionTo(this.status)
+        if (!status.canTransitionTo(AiImageTaskStatus.COMPLETED)) {
+            throw IllegalStateException("Cannot transition from $status to COMPLETED")
+        }
         status = AiImageTaskStatus.COMPLETED
     }
 }
