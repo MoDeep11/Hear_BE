@@ -72,7 +72,7 @@ CREATE TABLE messages
     message      VARCHAR(1000) NOT NULL,
     message_type VARCHAR(8)    NOT NULL,
     voice_url    VARCHAR(512),
-    duration     INTEGER,
+    duration     BIGINT,
     created_at   TIMESTAMP WITHOUT TIME ZONE NOT NULL,
     updated_at   TIMESTAMP WITHOUT TIME ZONE NOT NULL,
     CONSTRAINT pk_messages PRIMARY KEY (id)
@@ -80,14 +80,14 @@ CREATE TABLE messages
 
 CREATE TABLE monthly_statistics
 (
-    id                   UUID         NOT NULL,
-    user_id              UUID         NOT NULL,
-    target_year_month    VARCHAR(255) NOT NULL,
-    diary_count          INTEGER      NOT NULL,
-    photo_count          INTEGER      NOT NULL,
-    writing_rate         FLOAT        NOT NULL,
+    id                   UUID    NOT NULL,
+    user_id              UUID    NOT NULL,
+    target_year_month    date    NOT NULL,
+    diary_count          INTEGER NOT NULL,
+    photo_count          INTEGER NOT NULL,
+    writing_rate         FLOAT   NOT NULL,
     ai_report_content    VARCHAR(1000),
-    emotion_distribution JSONB        NOT NULL,
+    emotion_distribution JSONB   NOT NULL,
     CONSTRAINT pk_monthly_statistics PRIMARY KEY (id)
 );
 
@@ -142,3 +142,18 @@ ALTER TABLE users
 
 ALTER TABLE diary_images
     ADD CONSTRAINT FK_DIARY_IMAGES_ON_DIARY FOREIGN KEY (diary_id) REFERENCES diaries (id);
+
+ALTER TABLE messages
+    ADD CONSTRAINT FK_MESSAGES_ON_SESSION FOREIGN KEY (session_id) REFERENCES chats (id);
+
+ALTER TABLE monthly_statistics
+    ALTER COLUMN emotion_distribution SET DATA TYPE jsonb
+    USING emotion_distribution::jsonb;
+
+ALTER TABLE monthly_statistics
+    ALTER COLUMN emotion_distribution SET DATA TYPE jsonb
+    USING emotion_distribution::jsonb;
+
+ALTER TABLE diaries
+    ALTER COLUMN tags SET DATA TYPE jsonb
+    USING tags::jsonb;

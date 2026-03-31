@@ -119,3 +119,7 @@ logging:
   level:
     root: ERROR
     modeep.hear: INFO
+
+external.api:
+    base-url: ${INTERNAL_API_URL}
+    timeout: 5s

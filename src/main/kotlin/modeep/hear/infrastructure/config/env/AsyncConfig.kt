@@ -60,4 +60,17 @@ class AsyncConfig {
         executor.initialize()
         return executor
     }
+
+    @Bean(name = ["storageAsyncExecutor"])
+    fun storageAsyncExecutor(): Executor {
+        val executor = ThreadPoolTaskExecutor()
+        executor.corePoolSize = 5
+        executor.maxPoolSize = 15
+        executor.queueCapacity = 200
+        executor.setThreadNamePrefix("StorageAsync-")
+        executor.setRejectedExecutionHandler(ThreadPoolExecutor.CallerRunsPolicy())
+
+        executor.initialize()
+        return executor
+    }
 }

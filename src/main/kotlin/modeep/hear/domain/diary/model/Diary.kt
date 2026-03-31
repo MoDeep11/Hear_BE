@@ -7,27 +7,29 @@ import modeep.hear.domain.diary.exception.DiaryErrorCode
 import modeep.hear.domain.diary.vo.DiarySourceType
 import modeep.hear.global.error.exception.BusinessException
 import java.util.UUID
+import kotlin.collections.forEach
 
 @Aggregate
 data class Diary(
     val id: UUID,
-    val userId: UUID? = null,
+    val userId: UUID,
     var content: String,
     val emotion: Emotion,
-    val tags: List<String>? = null,
+    val tags: List<String>,
     val baseTime: BaseTime,
     val sourceType: DiarySourceType = DiarySourceType.AI_MADE,
-    val sessionId: UUID? = null,
-    val diaryImages: MutableList<DiaryImage> = mutableListOf()
+    val chatId: UUID? = null,
+    val diaryImages: MutableList<DiaryImage> = mutableListOf(),
+    var diaryAiComment: DiaryAiComment? = null
 ) {
     companion object {
         fun create(
             userId: UUID,
             content: String,
             emotion: Emotion,
-            tags: List<String>? = null,
+            tags: List<String>,
             sourceType: DiarySourceType = DiarySourceType.MANUAL,
-            sessionId: UUID? = null,
+            chatId: UUID? = null,
             diaryImages: MutableList<DiaryImage> = mutableListOf()
         ): Diary {
             return Diary(
@@ -38,7 +40,7 @@ data class Diary(
                 tags = tags,
                 baseTime = BaseTime(),
                 sourceType = sourceType,
-                sessionId = sessionId,
+                chatId = chatId,
                 diaryImages = diaryImages
             )
         }
@@ -53,11 +55,21 @@ data class Diary(
 
     fun addImage(image: DiaryImage) {
         if (diaryImages.size >= 10) throw BusinessException(DiaryErrorCode.TOO_MANY_IMAGES)
-        diaryImages.add(image)
+        this.diaryImages.add(image)
+        if (image.diaryId != this.id) {
+            image.assignDiary(this)
+        }
     }
 
     fun removeImage(image: DiaryImage) {
         diaryImages.remove(image)
+    }
+
+    fun updateImages(newImages: List<DiaryImage>) {
+        val imagesToAdd = newImages.toList()
+        if (imagesToAdd.size > 10) throw BusinessException(DiaryErrorCode.TOO_MANY_IMAGES)
+        this.diaryImages.clear()
+        imagesToAdd.forEach { this.addImage(it) }
     }
 
     fun validateOwner(currentUserId: UUID) {

@@ -2,7 +2,7 @@ package modeep.hear.infrastructure.adapter.out.user.persistence
 
 import modeep.hear.domain.user.model.User
 import modeep.hear.domain.user.port.out.UserPort
-import modeep.hear.infrastructure.adapter.out.user.mapper.UserMapper
+import modeep.hear.infrastructure.adapter.out.user.persistence.mapper.UserMapper
 import modeep.hear.infrastructure.adapter.out.user.persistence.repository.UserRepository
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Component
@@ -32,6 +32,6 @@ class UserPersistenceAdapter(
     }
 
     override fun delete(userId: UUID) {
-        repository.deleteById(userId)
+        repository.deleteIfExists(userId)
     }
 }

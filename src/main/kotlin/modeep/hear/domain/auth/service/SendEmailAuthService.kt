@@ -8,7 +8,7 @@ import modeep.hear.domain.auth.port.out.EmailVerificationPort
 import modeep.hear.domain.auth.port.out.MailExternalPort
 import modeep.hear.domain.auth.port.out.PasswordResetTicketPort
 import modeep.hear.domain.user.exception.UserErrorCode
-import modeep.hear.domain.user.port.out.QueryUserPort
+import modeep.hear.domain.user.port.out.query.QueryUserPort
 import modeep.hear.global.error.exception.BusinessException
 import modeep.hear.global.util.VerificationCodeGenerator
 import modeep.hear.infrastructure.adapter.`in`.auth.dto.EmailRequestType

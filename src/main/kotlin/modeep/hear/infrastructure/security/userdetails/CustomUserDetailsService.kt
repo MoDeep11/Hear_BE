@@ -1,7 +1,7 @@
 package modeep.hear.infrastructure.security.userdetails
 
 import modeep.hear.domain.user.exception.UserErrorCode
-import modeep.hear.domain.user.port.out.QueryUserPort
+import modeep.hear.domain.user.port.out.query.QueryUserPort
 import modeep.hear.global.error.exception.BusinessException
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.core.userdetails.UserDetailsService

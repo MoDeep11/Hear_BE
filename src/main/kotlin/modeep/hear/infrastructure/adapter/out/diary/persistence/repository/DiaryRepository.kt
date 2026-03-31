@@ -1,10 +1,11 @@
 package modeep.hear.infrastructure.adapter.out.diary.persistence.repository
 
-import modeep.hear.infrastructure.adapter.out.diary.entity.DiaryJpaEntity
+import modeep.hear.infrastructure.adapter.out.diary.persistence.entity.DiaryJpaEntity
 import org.springframework.data.domain.Pageable
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.query.Param
+import java.time.LocalDate
 import java.time.LocalDateTime
 import java.util.UUID
 
@@ -52,4 +53,50 @@ interface DiaryRepository : JpaRepository<DiaryJpaEntity, UUID> {
     """
     )
     fun findAllByIdInWithImages(@Param("ids") ids: List<UUID>): List<DiaryJpaEntity>
+
+    fun countByUserId(userId: UUID): Long
+
+    @Query(
+        """
+        SELECT COUNT(DISTINCT d.id) FROM DiaryJpaEntity d
+        JOIN d.diaryImages i
+        WHERE d.userId = :userId
+        AND d.baseTime.createdAt >= :start
+        AND d.baseTime.createdAt < :end
+        AND i.sourceType = 'AI_MADE'
+        AND i.imageUrl IS NOT NULL
+    """
+    )
+    fun countByUserIdAndCreatedAtBetweenWithAiImage(
+        @Param("userId") userId: UUID,
+        @Param("start") start: LocalDateTime,
+        @Param("end") end: LocalDateTime
+    ): Int
+
+    fun findAllByUserIdAndBaseTimeCreatedAtGreaterThanEqualAndBaseTimeCreatedAtLessThan(
+        userId: UUID,
+        baseTimeCreatedAtAfter: LocalDateTime,
+        baseTimeCreatedAtBefore: LocalDateTime
+    ): List<DiaryJpaEntity>
+
+    @Query(
+        """
+        SELECT DISTINCT CAST(d.baseTime.createdAt AS date) 
+        FROM DiaryJpaEntity d 
+        WHERE d.userId = :userId 
+        ORDER BY CAST(d.baseTime.createdAt AS date) DESC
+    """
+    )
+    fun findDistinctDatesByUserId(userId: UUID, pageable: Pageable): List<LocalDate>
+
+    fun existsByUserIdAndBaseTimeCreatedAtBetween(
+        userId: UUID,
+        baseTimeCreatedAtAfter: LocalDateTime,
+        baseTimeCreatedAtBefore: LocalDateTime
+    ): Boolean
+
+    fun findAllByBaseTime_CreatedAtBetween(
+        baseTimeCreatedAtAfter: LocalDateTime,
+        baseTimeCreatedAtBefore: LocalDateTime
+    ): MutableList<DiaryJpaEntity>
 }

@@ -5,7 +5,7 @@ import modeep.hear.domain.auth.port.out.SecurityPort
 import modeep.hear.domain.user.exception.UserErrorCode
 import modeep.hear.domain.user.model.User
 import modeep.hear.global.error.exception.BusinessException
-import modeep.hear.infrastructure.adapter.out.user.mapper.UserMapper
+import modeep.hear.infrastructure.adapter.out.user.persistence.mapper.UserMapper
 import modeep.hear.infrastructure.adapter.out.user.persistence.repository.UserRepository
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.security.core.context.SecurityContextHolder
@@ -27,20 +27,20 @@ class SecurityAdapter(
     }
 
     override fun getCurrentUser(): User {
-        val userId = getUserId()?.takeIf { it.isNotBlank() }?.let {
-            runCatching { UUID.fromString(it) }.getOrNull()
-        } ?: throw BusinessException(UserErrorCode.USER_NOT_FOUND)
+        val userId = getCurrentUserId()
 
         val entity = repo.findByIdOrNull(userId)
             ?: throw BusinessException(UserErrorCode.USER_NOT_FOUND)
         return mapper.toModel(entity)
     }
 
-    fun getUserId(): String? {
+    override fun getCurrentUserId(): UUID {
         val auth = SecurityContextHolder.getContext().authentication
-        if (auth == null || !auth.isAuthenticated || auth.name == "anonymousUser") {
-            return null
+        if (auth == null || !auth.isAuthenticated || auth.name == "anonymousUser" || auth.name.isBlank()) {
+            throw BusinessException(UserErrorCode.USER_NOT_FOUND)
         }
-        return auth.name
+
+        return runCatching { UUID.fromString(auth.name) }
+            .getOrElse { throw BusinessException(UserErrorCode.USER_NOT_FOUND) }
     }
 }

@@ -7,6 +7,6 @@ enum class DiaryImageStatus(
     override val label: String
 ) : ModelStatus {
     PROCESSING(false, "진행 중"),
-    COMPLETED(true, "완료"),
+    SUCCESS(true, "완료"),
     FAILED(false, "실패")
 }

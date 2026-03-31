@@ -1,12 +1,17 @@
 package modeep.hear.infrastructure.adapter.out.diary.persistence
 
 import modeep.hear.domain.diary.model.Diary
-import modeep.hear.domain.diary.port.out.DiaryPort
+import modeep.hear.domain.diary.port.out.command.CommandDiaryPort
+import modeep.hear.domain.diary.port.out.query.QueryDiaryPort
 import modeep.hear.domain.diary.vo.DiarySourceType
-import modeep.hear.infrastructure.adapter.out.diary.mapper.DiaryMapper
+import modeep.hear.infrastructure.adapter.out.diary.persistence.mapper.DiaryMapper
 import modeep.hear.infrastructure.adapter.out.diary.persistence.repository.DiaryRepository
+import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Component
+import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.LocalTime
 import java.time.YearMonth
 import java.util.UUID
 
@@ -14,7 +19,7 @@ import java.util.UUID
 class DiaryPersistenceAdapter(
     private val repo: DiaryRepository,
     private val mapper: DiaryMapper
-) : DiaryPort {
+) : QueryDiaryPort, CommandDiaryPort {
     // --Query--//
     override fun findById(diaryId: UUID): Diary? {
         return repo.findByIdWithImages(diaryId) ?.let { mapper.toModel(it) }
@@ -36,6 +41,41 @@ class DiaryPersistenceAdapter(
     override fun findAllByIdInWithImages(ids: List<UUID>): List<Diary> {
         return repo.findAllByIdInWithImages(ids)
             .map { it.let(mapper::toModel) }
+    }
+
+    override fun findDistinctDatesByUserId(userId: UUID, limit: Int): List<LocalDate> {
+        val pageable = PageRequest.of(0, limit)
+        return repo.findDistinctDatesByUserId(userId, pageable)
+    }
+
+    override fun existsByUserIdAndDate(userId: UUID, date: LocalDate): Boolean {
+        val start = date.atStartOfDay()
+        val end = date.atTime(LocalTime.MAX)
+
+        return repo.existsByUserIdAndBaseTimeCreatedAtBetween(userId, start, end)
+    }
+
+    override fun countByUserId(userId: UUID): Long {
+        return repo.countByUserId(userId)
+    }
+
+    override fun findAllByUserIdAndYearMonth(userId: UUID, yearMonth: YearMonth): List<Diary> {
+        val start = yearMonth.atDay(1).atStartOfDay()
+        val end = yearMonth.plusMonths(1).atDay(1).atStartOfDay()
+        return repo.findAllByUserIdAndBaseTimeCreatedAtGreaterThanEqualAndBaseTimeCreatedAtLessThan(userId, start, end).map { mapper.toModel(it) }
+    }
+
+    override fun countByUserIdAndYearMonthWithAiImage(userId: UUID, yearMonth: YearMonth): Int {
+        val start = yearMonth.atDay(1).atStartOfDay()
+        val end = yearMonth.plusMonths(1).atDay(1).atStartOfDay()
+        return repo.countByUserIdAndCreatedAtBetweenWithAiImage(userId, start, end)
+    }
+
+    override fun findAllByCreatedAtBetween(
+        start: LocalDateTime,
+        end: LocalDateTime
+    ): List<Diary> {
+        return repo.findAllByBaseTime_CreatedAtBetween(start, end).map { mapper.toModel(it) }
     }
 
     // --Command--//
