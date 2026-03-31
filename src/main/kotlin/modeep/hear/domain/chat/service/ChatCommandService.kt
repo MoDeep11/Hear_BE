@@ -11,13 +11,24 @@ class ChatCommandService(
     private val chatPort: ChatPort
 ) {
     @Transactional
-    suspend fun saveChatWithSuspend(
+    suspend fun okChatWithSuspend(
         userId: UUID,
         chat: Chat
     ) {
         chat.validateOwner(userId)
 
         chat.okChat()
+        chatPort.save(chat)
+    }
+
+    @Transactional
+    suspend fun finishChatWithSuspend(
+        userId: UUID,
+        chat: Chat
+    ) {
+        chat.validateOwner(userId)
+
+        chat.finishChat()
         chatPort.save(chat)
     }
 }

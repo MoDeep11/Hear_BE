@@ -36,7 +36,7 @@ data class Chat(
         return this
     }
 
-    fun completeChat(): Chat =
+    fun finishChat(): Chat =
         this.copy(status = ChatStatus.FINISH)
 
     fun addMessage(message: Message) {

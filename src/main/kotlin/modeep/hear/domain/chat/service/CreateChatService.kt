@@ -24,7 +24,7 @@ class CreateChatService(
         val userId = securityPort.getCurrentUserId()
         val newChat = Chat.create(userId)
 
-        chatCommandService.saveChatWithSuspend(userId, newChat)
+        chatCommandService.okChatWithSuspend(userId, newChat)
 
         val initResult = try {
             chatPort.initChat(newChat.id, getData.getUserInfoOnly())

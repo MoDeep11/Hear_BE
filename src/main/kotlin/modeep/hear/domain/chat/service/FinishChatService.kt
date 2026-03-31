@@ -10,10 +10,12 @@ import java.util.UUID
 class FinishChatService(
     private val checkUserWithChatService: CheckUserWithChatService,
     private val fetchDiaryPort: FetchDiaryPort,
+    private val chatCommandService: ChatCommandService,
     private val getData: GetDataForRequestComponent
 ) : FinishChatUseCase {
     override suspend fun execute(chatId: UUID) {
-        checkUserWithChatService.executeWithSuspend(chatId)
+        val (user, chat) = checkUserWithChatService.executeWithSuspend(chatId)
+        chatCommandService.finishChatWithSuspend(user.id, chat)
         val (histories, userInfo) = getData.getUserInfoWithHistories(chatId)
         fetchDiaryPort.generateDiary(chatId, histories, userInfo)
     }
