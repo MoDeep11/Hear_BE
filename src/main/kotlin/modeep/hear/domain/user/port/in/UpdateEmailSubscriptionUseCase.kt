@@ -4,5 +4,5 @@ import modeep.hear.infrastructure.adapter.`in`.user.dto.request.UpdateEmailSubsc
 import modeep.hear.infrastructure.adapter.`in`.user.dto.response.UpdateEmailSubscriptionResponse
 
 interface UpdateEmailSubscriptionUseCase {
-    fun execute(request: UpdateEmailSubscriptionRequest) : UpdateEmailSubscriptionResponse
+    fun execute(request: UpdateEmailSubscriptionRequest): UpdateEmailSubscriptionResponse
 }

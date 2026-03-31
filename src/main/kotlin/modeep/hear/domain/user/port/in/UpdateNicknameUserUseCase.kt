@@ -4,5 +4,5 @@ import modeep.hear.infrastructure.adapter.`in`.user.dto.request.UpdateNicknameRe
 import modeep.hear.infrastructure.adapter.`in`.user.dto.response.UpdateNicknameResponse
 
 interface UpdateNicknameUserUseCase {
-    fun execute(request: UpdateNicknameRequest) : UpdateNicknameResponse
+    fun execute(request: UpdateNicknameRequest): UpdateNicknameResponse
 }

@@ -52,12 +52,12 @@ class ChatWebAdapter(
         finishChatUseCase.execute(chatId)
         return ResponseEntity.status(HttpStatus.ACCEPTED)
             .body(
-            ApiResult(
-                status = 202,
-                message = AiImageTaskStatus.RESERVED.name,
-                data = Unit
+                ApiResult(
+                    status = 202,
+                    message = AiImageTaskStatus.RESERVED.name,
+                    data = Unit
+                )
             )
-        )
     }
 
     @PostMapping("/{chat_id}/messages")

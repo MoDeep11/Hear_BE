@@ -15,7 +15,7 @@ import java.time.YearMonth
 class GetUserStatisticsService(
     private val monthlyStatisticPort: MonthlyStatisticPort,
     private val securityPort: SecurityPort,
-    private val getEmotionDistributionService: GetEmotionDistributionService,
+    private val getEmotionDistributionService: GetEmotionDistributionService
 ) : GetUserStatisticsUseCase {
     override fun execute(
         yearMonth: YearMonth

@@ -17,6 +17,6 @@ object SecurityConstants {
         "/api/v1/auth/password-resets/**",
 
         // Internal API
-        "/internal/v1/**",
+        "/internal/v1/**"
     )
 }

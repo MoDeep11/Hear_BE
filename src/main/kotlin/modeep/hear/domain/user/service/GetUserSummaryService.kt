@@ -1,9 +1,6 @@
 package modeep.hear.domain.user.service
 
 import modeep.hear.domain.auth.port.out.SecurityPort
-import modeep.hear.domain.common.vo.Emotion
-import modeep.hear.domain.common.vo.EmotionDistribution
-import modeep.hear.domain.diary.port.out.query.QueryDiaryPort
 import modeep.hear.domain.user.exception.UserErrorCode
 import modeep.hear.domain.user.port.`in`.GetUserSummaryUseCase
 import modeep.hear.domain.user.port.out.MonthlyStatisticPort
@@ -20,7 +17,7 @@ class GetUserSummaryService(
     private val monthlyStatisticPort: MonthlyStatisticPort,
     private val queryUserStatPort: QueryUserStatPort,
     private val securityPort: SecurityPort,
-    private val getEmotionDistributionService: GetEmotionDistributionService,
+    private val getEmotionDistributionService: GetEmotionDistributionService
 ) : GetUserSummaryUseCase {
     override fun execute(): UserSummaryResponse {
         val yearMonth = YearMonth.now()

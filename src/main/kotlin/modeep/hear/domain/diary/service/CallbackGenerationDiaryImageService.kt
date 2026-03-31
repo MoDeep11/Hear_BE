@@ -21,7 +21,7 @@ private val log = KotlinLogging.logger {}
 class CallbackGenerationDiaryImageService(
     private val checkUserWithDiaryService: CheckUserWithDiaryService,
     private val diaryImagePort: DiaryImagePort,
-    private val taskPort: AiImageTaskPort,
+    private val taskPort: AiImageTaskPort
 ) : CallbackGenerationDiaryImageUseCase {
     override suspend fun execute(
         diaryId: UUID,

@@ -4,5 +4,5 @@ import modeep.hear.infrastructure.adapter.`in`.user.dto.request.UpdatePasswordRe
 import modeep.hear.infrastructure.adapter.`in`.user.dto.response.UpdatePasswordResponse
 
 interface UpdatePasswordUseCase {
-    fun execute(request: UpdatePasswordRequest) : UpdatePasswordResponse
+    fun execute(request: UpdatePasswordRequest): UpdatePasswordResponse
 }

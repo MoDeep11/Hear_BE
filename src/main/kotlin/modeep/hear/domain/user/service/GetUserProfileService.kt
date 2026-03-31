@@ -26,7 +26,7 @@ class GetUserProfileService(
             nickname = profile.nickname,
             profileImageUrl = profile.profileImageUrl,
             createdAt = profile.baseTime.createdAt,
-            updatedAt = profile.baseTime.updatedAt,
+            updatedAt = profile.baseTime.updatedAt
         )
     }
 }

@@ -5,14 +5,10 @@ import jakarta.persistence.EmbeddedId
 import jakarta.persistence.Entity
 import jakarta.persistence.Table
 import modeep.hear.domain.common.vo.EmotionDistribution
-import modeep.hear.global.common.entity.BaseEntity
 import modeep.hear.global.common.entity.BaseTimeEntity
-import modeep.hear.global.common.entity.BaseUUIDEntity
 import modeep.hear.infrastructure.adapter.out.user.persistence.entity.id.MonthlyStatisticId
 import org.hibernate.annotations.JdbcTypeCode
 import org.hibernate.type.SqlTypes
-import java.time.YearMonth
-import java.util.UUID
 
 @Entity
 @Table(name = "monthly_statistics")
@@ -35,6 +31,6 @@ class MonthlyStatisticJpaEntity(
 
     @JdbcTypeCode(SqlTypes.JSON) // jsonb 타입
     @Column(name = "emotion_distribution", columnDefinition = "jsonb", nullable = false)
-    var emotionDistribution: EmotionDistribution,
+    var emotionDistribution: EmotionDistribution
 
 ) : BaseTimeEntity()

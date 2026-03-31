@@ -9,7 +9,7 @@ import java.util.UUID
 
 data class UserProfile(
     val userId: UUID,
-    val nickname: String,
+    var nickname: String,
     val profileImageUrl: String,
     val baseTime: BaseTime
 ) {

@@ -1,7 +1,6 @@
 package modeep.hear.domain.diary.service
 
 import modeep.hear.domain.auth.port.out.SecurityPort
-import modeep.hear.domain.chat.exception.ChatErrorCode
 import modeep.hear.domain.chat.port.out.AiImageTaskPort
 import modeep.hear.domain.chat.port.out.query.QueryChatPort
 import modeep.hear.domain.chat.service.CheckUserWithChatService
@@ -12,7 +11,6 @@ import modeep.hear.domain.diary.port.`in`.CreateDiaryUseCase
 import modeep.hear.domain.diary.port.out.command.CommandDiaryPort
 import modeep.hear.domain.diary.port.out.query.QueryDiaryImagePort
 import modeep.hear.domain.user.event.IncreasedUserStatEvent
-import modeep.hear.global.error.exception.BusinessException
 import modeep.hear.infrastructure.adapter.`in`.diary.dto.request.CreateDiaryRequest
 import modeep.hear.infrastructure.adapter.`in`.diary.dto.response.CreateDiaryResponse
 import org.springframework.stereotype.Service

@@ -32,7 +32,7 @@ class DiaryMapperImpl(
                     diaryId = it.diaryId,
                     baseTime = baseTimeMapper.toModel(it.baseTime)
                 )
-            },
+            }
         )
     }
 

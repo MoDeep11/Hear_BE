@@ -14,8 +14,7 @@ import java.time.LocalDateTime
 class UpdateEmailSubscriptionService(
     private val commandUserPort: CommandUserPort,
     private val securityPort: SecurityPort
-) : UpdateEmailSubscriptionUseCase
-{
+) : UpdateEmailSubscriptionUseCase {
     override fun execute(request: UpdateEmailSubscriptionRequest): UpdateEmailSubscriptionResponse {
         val user = securityPort.getCurrentUser()
         user.isEmailSubscribed = request.isSubscribed

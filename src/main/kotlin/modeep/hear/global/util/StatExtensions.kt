@@ -2,7 +2,6 @@ package modeep.hear.global.util
 
 import modeep.hear.domain.user.exception.UserErrorCode
 import modeep.hear.global.error.exception.BusinessException
-import java.time.LocalDate
 import java.time.YearMonth
 import kotlin.math.round
 

@@ -4,5 +4,5 @@ import modeep.hear.infrastructure.adapter.`in`.user.dto.request.UpdateProfileIma
 import modeep.hear.infrastructure.adapter.`in`.user.dto.response.UpdateProfileImageResponse
 
 interface UpdateProfileImageUseCase {
-    fun execute(request: UpdateProfileImageRequest) : UpdateProfileImageResponse
+    fun execute(request: UpdateProfileImageRequest): UpdateProfileImageResponse
 }

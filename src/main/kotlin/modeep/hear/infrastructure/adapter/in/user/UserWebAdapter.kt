@@ -50,7 +50,8 @@ class UserWebAdapter(
     }
 
     override fun getStatistics(
-        @RequestParam @DateTimeFormat(pattern = "yyyy-MM")
+        @RequestParam
+        @DateTimeFormat(pattern = "yyyy-MM")
         yearMonth: YearMonth
     ): ResponseEntity<ApiResult<UserStatisticsResponse>> {
         TODO("Not yet implemented")
@@ -61,25 +62,29 @@ class UserWebAdapter(
     }
 
     override fun updateNickname(
-        @RequestBody @Valid request: UpdateNicknameRequest
+        @RequestBody @Valid
+        request: UpdateNicknameRequest
     ): ResponseEntity<ApiResult<UpdateNicknameResponse>> {
         TODO("Not yet implemented")
     }
 
     override fun updateProfileImage(
-        @RequestBody @Valid request: UpdateProfileImageRequest
+        @RequestBody @Valid
+        request: UpdateProfileImageRequest
     ): ResponseEntity<ApiResult<UpdateProfileImageResponse>> {
         TODO("Not yet implemented")
     }
 
     override fun updatePassword(
-        @RequestBody @Valid request: UpdatePasswordRequest
+        @RequestBody @Valid
+        request: UpdatePasswordRequest
     ): ResponseEntity<ApiResult<UpdatePasswordResponse>> {
         TODO("Not yet implemented")
     }
 
     override fun updateEmailSubscription(
-        @RequestBody @Valid request: UpdateEmailSubscriptionRequest
+        @RequestBody @Valid
+        request: UpdateEmailSubscriptionRequest
     ): ResponseEntity<ApiResult<UpdateEmailSubscriptionResponse>> {
         TODO("Not yet implemented")
     }

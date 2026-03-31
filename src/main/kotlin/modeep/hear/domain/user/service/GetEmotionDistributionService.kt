@@ -11,12 +11,12 @@ import java.util.UUID
 @Service
 @Transactional(readOnly = true)
 class GetEmotionDistributionService(
-    private val queryDiaryPort: QueryDiaryPort,
+    private val queryDiaryPort: QueryDiaryPort
 ) {
     fun execute(
         userId: UUID,
         yearMonth: YearMonth
-    ) : EmotionDistribution {
+    ): EmotionDistribution {
         val monthlyDiaries = queryDiaryPort.findAllByUserIdAndYearMonth(userId, yearMonth)
         val emotions: List<Emotion> = monthlyDiaries.map { it.emotion }
         return EmotionDistribution.create(
