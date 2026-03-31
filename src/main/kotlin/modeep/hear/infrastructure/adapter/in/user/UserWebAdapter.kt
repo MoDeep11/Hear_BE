@@ -26,6 +26,8 @@ import modeep.hear.infrastructure.adapter.`in`.user.dto.response.UserSummaryResp
 import org.springframework.format.annotation.DateTimeFormat
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.DeleteMapping
+import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PatchMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestHeader
 import org.springframework.web.bind.annotation.RequestMapping
@@ -59,12 +61,14 @@ class UserWebAdapter(
         return ResponseEntity.ok(ApiResult())
     }
 
+    @GetMapping
     override fun getProfile(): ResponseEntity<ApiResult<UserProfileResponse>> {
         return ResponseEntity.ok(ApiResult(
             data = getUserProfileUseCase.execute()
         ))
     }
 
+    @GetMapping("/statistics")
     override fun getStatistics(
         @RequestParam
         @DateTimeFormat(pattern = "yyyy-MM")
@@ -74,11 +78,13 @@ class UserWebAdapter(
             data =  getUserStatisticsUseCase.execute(yearMonth)))
     }
 
+    @GetMapping("/summary")
     override fun getSummary(): ResponseEntity<ApiResult<UserSummaryResponse>> {
         return ResponseEntity.ok(ApiResult(
             data = getUserSummaryUseCase.execute()))
     }
 
+    @PatchMapping("/nickname")
     override fun updateNickname(
         @RequestBody @Valid
         request: UpdateNicknameRequest
@@ -87,6 +93,7 @@ class UserWebAdapter(
             data = updateNicknameUserUseCase.execute(request)))
     }
 
+    @PatchMapping("/profile-image")
     override fun updateProfileImage(
         @RequestBody @Valid
         request: UpdateProfileImageRequest
@@ -95,6 +102,7 @@ class UserWebAdapter(
             data = updateProfileImageUseCase.execute(request)))
     }
 
+    @PatchMapping("/password")
     override fun updatePassword(
         @RequestBody @Valid
         request: UpdatePasswordRequest
@@ -103,6 +111,7 @@ class UserWebAdapter(
             data = updatePasswordUseCase.execute(request)))
     }
 
+    @PatchMapping("/email-subscription")
     override fun updateEmailSubscription(
         @RequestBody @Valid
         request: UpdateEmailSubscriptionRequest
