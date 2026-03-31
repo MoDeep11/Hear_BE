@@ -56,6 +56,12 @@ class DiaryCompositeAdapter(
     ): List<Diary> =
         persistenceAdapter.findAllByUserIdAndYearMonth(userId, yearMonth)
 
+    override fun countByUserIdAndYearMonthWithAiImage(
+        userId: UUID,
+        yearMonth: YearMonth
+    ): Int =
+        persistenceAdapter.countByUserIdAndYearMonthWithAiImage(userId, yearMonth)
+
     override fun findAllByCreatedAtBetween(
         start: LocalDateTime,
         end: LocalDateTime
