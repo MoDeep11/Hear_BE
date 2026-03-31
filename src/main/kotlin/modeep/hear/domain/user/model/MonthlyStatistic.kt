@@ -21,7 +21,7 @@ data class MonthlyStatistic(
         photoCount.validateNotNegative("photoCount")
     }
 
-    val writingRate: Float
+    val writingRate: Double
         get() = targetYearMonth.calculateWritingRate(diaryCount)
 
     companion object {

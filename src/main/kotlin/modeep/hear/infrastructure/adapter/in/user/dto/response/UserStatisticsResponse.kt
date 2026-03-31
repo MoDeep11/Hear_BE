@@ -9,7 +9,7 @@ data class UserStatisticsResponse(
     val diaryCount: Int,
     val photoCount: Int,
     val writingRate: Double,
-    val aiReportContent: String,
+    val aiReportContent: String?,
     val emotionDistribution: EmotionDistribution,
     val createdAt: LocalDateTime
 )

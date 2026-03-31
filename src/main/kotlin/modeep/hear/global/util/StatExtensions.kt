@@ -6,15 +6,15 @@ import java.time.LocalDate
 import java.time.YearMonth
 import kotlin.math.round
 
-fun YearMonth.calculateWritingRate(diaryCount: Int): Float {
+fun YearMonth.calculateWritingRate(diaryCount: Int): Double {
     val daysInMonth = this.lengthOfMonth()
-    if (daysInMonth <= 0) return 0.0f
+    if (daysInMonth <= 0) return 0.0
 
-    val rawRate = (diaryCount.toFloat() / daysInMonth) * 100
+    val rawRate = (diaryCount.toDouble() / daysInMonth) * 100
     return rawRate.roundToOneDecimal()
 }
 
-fun Float.roundToOneDecimal(): Float {
+fun Double.roundToOneDecimal(): Double {
     return round(this * 10f) / 10f
 }
 
