@@ -21,12 +21,13 @@ class UpdateNicknameUserService(
         val user = securityPort.getCurrentUser()
         val profile = userProfilePort.findByUserId(user.id)
             ?: throw BusinessException(UserErrorCode.USER_PROFILE_NOT_FOUND)
-        profile.nickname = request.nickname
+
+        val updatedProfile = profile.updateNickname(request.nickname)
         val updatedAt = LocalDateTime.now()
-        userProfilePort.save(profile)
+        userProfilePort.save(updatedProfile)
 
         return UpdateNicknameResponse(
-            nickname = profile.nickname,
+            nickname = updatedProfile.nickname,
             updatedAt = updatedAt
         )
     }

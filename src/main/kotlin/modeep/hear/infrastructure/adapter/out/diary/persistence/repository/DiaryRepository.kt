@@ -56,7 +56,7 @@ interface DiaryRepository : JpaRepository<DiaryJpaEntity, UUID> {
 
     fun countByUserId(userId: UUID): Long
 
-    fun findAllByUserIdAndBaseTimeCreatedAtBetween(
+    fun findAllByUserIdAndBaseTimeCreatedAtGreaterThanEqualAndBaseTimeCreatedAtLessThan(
         userId: UUID,
         baseTimeCreatedAtAfter: LocalDateTime,
         baseTimeCreatedAtBefore: LocalDateTime

@@ -4,6 +4,6 @@ import java.time.LocalDateTime
 
 data class UpdatePasswordResponse(
     val emailSent: Boolean,
-    val sentTo: String,
+    val sentTo: String?,
     val updatedAt: LocalDateTime
 )

@@ -6,6 +6,8 @@ import modeep.hear.domain.user.exception.UserErrorCode
 import modeep.hear.domain.user.port.`in`.UpdatePasswordUseCase
 import modeep.hear.domain.user.port.out.command.CommandUserPort
 import modeep.hear.global.error.exception.BusinessException
+import modeep.hear.global.util.maskEmail
+import modeep.hear.global.util.maskIfSensitive
 import modeep.hear.infrastructure.adapter.`in`.user.dto.request.UpdatePasswordRequest
 import modeep.hear.infrastructure.adapter.`in`.user.dto.response.UpdatePasswordResponse
 import org.springframework.stereotype.Service
@@ -24,7 +26,9 @@ class UpdatePasswordService(
             throw BusinessException(UserErrorCode.INVALID_VALUE, "새 비밀번호가 일치하지 않습니다.")
         }
         val user = securityPort.getCurrentUser()
-        passwordPort.matches(request.oldPassword, user.getPassword())
+        if (!passwordPort.matches(request.oldPassword, user.getPassword())) {
+            throw BusinessException(UserErrorCode.INVALID_VALUE, "기존 비밀번호가 일치하지 않습니다.")
+        }
 
         val updatedUser = user.updatePassword(passwordPort.encode(request.newPassword))
         val updatedAt = LocalDateTime.now()
@@ -34,7 +38,7 @@ class UpdatePasswordService(
 
         return UpdatePasswordResponse(
             emailSent = user.isEmailSubscribed,
-            sentTo = user.email,
+            sentTo = if (user.isEmailSubscribed) user.email.maskEmail() else null,
             updatedAt = updatedAt
         )
     }
