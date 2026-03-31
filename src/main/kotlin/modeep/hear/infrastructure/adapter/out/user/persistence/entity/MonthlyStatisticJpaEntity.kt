@@ -28,7 +28,7 @@ class MonthlyStatisticJpaEntity(
     var photoCount: Int = 0,
 
     @Column(name = "writing_rate", nullable = false)
-    var writingRate: Float = 0.0f,
+    var writingRate: Double = 0.0,
 
     @Column(name = "ai_report_content", length = 1000)
     var aiReportContent: String? = null,
