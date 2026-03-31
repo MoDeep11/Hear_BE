@@ -10,9 +10,6 @@ fun YearMonth.calculateWritingRate(diaryCount: Int): Float {
     val daysInMonth = this.lengthOfMonth()
     if (daysInMonth <= 0) return 0.0f
 
-    val today = LocalDate.now()
-    if (YearMonth.of(today.year, today.monthValue) != this) return 0.0f
-
     val rawRate = (diaryCount.toFloat() / daysInMonth) * 100
     return rawRate.roundToOneDecimal()
 }

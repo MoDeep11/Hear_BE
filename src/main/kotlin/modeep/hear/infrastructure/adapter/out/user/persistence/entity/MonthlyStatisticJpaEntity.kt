@@ -1,10 +1,14 @@
 package modeep.hear.infrastructure.adapter.out.user.persistence.entity
 
 import jakarta.persistence.Column
+import jakarta.persistence.EmbeddedId
 import jakarta.persistence.Entity
 import jakarta.persistence.Table
 import modeep.hear.domain.common.vo.EmotionDistribution
+import modeep.hear.global.common.entity.BaseEntity
+import modeep.hear.global.common.entity.BaseTimeEntity
 import modeep.hear.global.common.entity.BaseUUIDEntity
+import modeep.hear.infrastructure.adapter.out.user.persistence.entity.id.MonthlyStatisticId
 import org.hibernate.annotations.JdbcTypeCode
 import org.hibernate.type.SqlTypes
 import java.time.YearMonth
@@ -14,11 +18,8 @@ import java.util.UUID
 @Table(name = "monthly_statistics")
 class MonthlyStatisticJpaEntity(
 
-    @Column(name = "user_id", nullable = false)
-    val userId: UUID,
-
-    @Column(name = "target_year_month", nullable = false)
-    val targetYearMonth: YearMonth,
+    @EmbeddedId
+    val id: MonthlyStatisticId,
 
     @Column(name = "diary_count", nullable = false)
     var diaryCount: Int = 0,
@@ -36,5 +37,4 @@ class MonthlyStatisticJpaEntity(
     @Column(name = "emotion_distribution", columnDefinition = "jsonb", nullable = false)
     var emotionDistribution: EmotionDistribution,
 
-    id: UUID
-) : BaseUUIDEntity(id)
+) : BaseTimeEntity()

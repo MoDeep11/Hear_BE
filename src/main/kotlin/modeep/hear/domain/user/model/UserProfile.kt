@@ -29,7 +29,7 @@ data class UserProfile(
                 userId = userId,
                 nickname = nickname
                     ?.trim()
-                    ?.takeUnless { it.isEmpty() }
+                    ?.takeUnless { it.isBlank() }
                     ?: "user${userId.toString().take(8)}",
                 profileImageUrl = DefaultProfileImageUrl.random().value,
                 baseTime = BaseTime()
