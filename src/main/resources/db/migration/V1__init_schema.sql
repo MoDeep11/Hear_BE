@@ -39,7 +39,7 @@ CREATE TABLE user_stats
 CREATE TABLE monthly_statistics
 (
     user_id              UUID             NOT NULL,
-    target_year_month    VARCHAR(255)             NOT NULL,
+    target_year_month    VARCHAR(255)     NOT NULL,
     diary_count          INTEGER          NOT NULL DEFAULT 0,
     photo_count          INTEGER          NOT NULL DEFAULT 0,
     writing_rate         DOUBLE PRECISION NOT NULL DEFAULT 0.0,
@@ -49,7 +49,7 @@ CREATE TABLE monthly_statistics
     updated_at           TIMESTAMP WITHOUT TIME ZONE NOT NULL,
     CONSTRAINT pk_monthly_statistics PRIMARY KEY (user_id, target_year_month),
     CONSTRAINT ck_monthly_statistics_target_year_month
-        CHECK (target_year_month = date_trunc('month', target_year_month)::date)
+        CHECK (target_year_month ~ '^\d{4}-(0[1-9]|1[0-2])$')
 );
 
 CREATE TABLE user_calendars
