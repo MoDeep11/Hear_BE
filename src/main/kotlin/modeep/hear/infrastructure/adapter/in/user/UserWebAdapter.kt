@@ -2,6 +2,13 @@ package modeep.hear.infrastructure.adapter.`in`.user
 
 import jakarta.validation.Valid
 import modeep.hear.domain.user.port.`in`.DeleteUserUseCase
+import modeep.hear.domain.user.port.`in`.GetUserProfileUseCase
+import modeep.hear.domain.user.port.`in`.GetUserStatisticsUseCase
+import modeep.hear.domain.user.port.`in`.GetUserSummaryUseCase
+import modeep.hear.domain.user.port.`in`.UpdateEmailSubscriptionUseCase
+import modeep.hear.domain.user.port.`in`.UpdateNicknameUserUseCase
+import modeep.hear.domain.user.port.`in`.UpdatePasswordUseCase
+import modeep.hear.domain.user.port.`in`.UpdateProfileImageUseCase
 import modeep.hear.global.common.response.ApiResult
 import modeep.hear.global.document.user.UserApiDocument
 import modeep.hear.infrastructure.adapter.`in`.user.dto.request.DeleteUserRequest
@@ -29,7 +36,14 @@ import java.time.YearMonth
 @RestController
 @RequestMapping("/api/v1/user/me")
 class UserWebAdapter(
-    private val deleteUserUseCase: DeleteUserUseCase
+    private val deleteUserUseCase: DeleteUserUseCase,
+    private val getUserProfileUseCase: GetUserProfileUseCase,
+    private val getUserStatisticsUseCase: GetUserStatisticsUseCase,
+    private val getUserSummaryUseCase: GetUserSummaryUseCase,
+    private val updateNicknameUserUseCase: UpdateNicknameUserUseCase,
+    private val updateProfileImageUseCase: UpdateProfileImageUseCase,
+    private val updatePasswordUseCase: UpdatePasswordUseCase,
+    private val updateEmailSubscriptionUseCase: UpdateEmailSubscriptionUseCase
 ) : UserApiDocument {
 
     @DeleteMapping
@@ -46,7 +60,9 @@ class UserWebAdapter(
     }
 
     override fun getProfile(): ResponseEntity<ApiResult<UserProfileResponse>> {
-        TODO("Not yet implemented")
+        return ResponseEntity.ok(ApiResult(
+            data = getUserProfileUseCase.execute()
+        ))
     }
 
     override fun getStatistics(
@@ -54,38 +70,44 @@ class UserWebAdapter(
         @DateTimeFormat(pattern = "yyyy-MM")
         yearMonth: YearMonth
     ): ResponseEntity<ApiResult<UserStatisticsResponse>> {
-        TODO("Not yet implemented")
+        return ResponseEntity.ok(ApiResult(
+            data =  getUserStatisticsUseCase.execute(yearMonth)))
     }
 
     override fun getSummary(): ResponseEntity<ApiResult<UserSummaryResponse>> {
-        TODO("Not yet implemented")
+        return ResponseEntity.ok(ApiResult(
+            data = getUserSummaryUseCase.execute()))
     }
 
     override fun updateNickname(
         @RequestBody @Valid
         request: UpdateNicknameRequest
     ): ResponseEntity<ApiResult<UpdateNicknameResponse>> {
-        TODO("Not yet implemented")
+        return ResponseEntity.ok(ApiResult(
+            data = updateNicknameUserUseCase.execute(request)))
     }
 
     override fun updateProfileImage(
         @RequestBody @Valid
         request: UpdateProfileImageRequest
     ): ResponseEntity<ApiResult<UpdateProfileImageResponse>> {
-        TODO("Not yet implemented")
+        return ResponseEntity.ok(ApiResult(
+            data = updateProfileImageUseCase.execute(request)))
     }
 
     override fun updatePassword(
         @RequestBody @Valid
         request: UpdatePasswordRequest
     ): ResponseEntity<ApiResult<UpdatePasswordResponse>> {
-        TODO("Not yet implemented")
+        return ResponseEntity.ok(ApiResult(
+            data = updatePasswordUseCase.execute(request)))
     }
 
     override fun updateEmailSubscription(
         @RequestBody @Valid
         request: UpdateEmailSubscriptionRequest
     ): ResponseEntity<ApiResult<UpdateEmailSubscriptionResponse>> {
-        TODO("Not yet implemented")
+        return ResponseEntity.ok(ApiResult(
+            data = updateEmailSubscriptionUseCase.execute(request)))
     }
 }
