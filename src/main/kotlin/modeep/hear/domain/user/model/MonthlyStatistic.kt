@@ -8,8 +8,7 @@ import java.time.YearMonth
 import java.util.UUID
 
 data class MonthlyStatistic(
-    val id: UUID? = null,
-    val userId: UUID? = null,
+    val userId: UUID,
     val targetYearMonth: YearMonth,
     val diaryCount: Int = 0,
     val photoCount: Int = 0,
@@ -22,6 +21,19 @@ data class MonthlyStatistic(
         photoCount.validateNotNegative("photoCount")
     }
 
-    val writingRate: Float
+    val writingRate: Double
         get() = targetYearMonth.calculateWritingRate(diaryCount)
+
+    companion object {
+        fun create(
+            userId: UUID,
+            targetYearMonth: YearMonth
+        ): MonthlyStatistic {
+            return MonthlyStatistic(
+                userId = userId,
+                targetYearMonth = targetYearMonth,
+                baseTime = BaseTime()
+            )
+        }
+    }
 }

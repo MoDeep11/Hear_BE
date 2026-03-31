@@ -6,6 +6,7 @@ import modeep.hear.domain.auth.port.out.PasswordPort
 import modeep.hear.domain.auth.port.out.SecurityPort
 import modeep.hear.domain.user.port.`in`.DeleteUserUseCase
 import modeep.hear.domain.user.port.out.command.CommandUserPort
+import modeep.hear.domain.user.vo.UserStatus
 import modeep.hear.global.error.exception.BusinessException
 import modeep.hear.infrastructure.adapter.`in`.auth.dto.request.LogoutRequest
 import modeep.hear.infrastructure.adapter.`in`.user.dto.request.DeleteUserRequest
@@ -30,7 +31,8 @@ class DeleteUserService(
             throw BusinessException(AuthErrorCode.PASSWORD_NOT_MATCH)
         }
 
-        commandUserPort.delete(user.id)
+        user.status = UserStatus.DELETED
+        commandUserPort.save(user)
 
         logoutAuthUseCase.execute(
             LogoutRequest(

@@ -9,7 +9,7 @@ import java.util.UUID
 
 data class UserProfile(
     val userId: UUID,
-    val nickname: String,
+    var nickname: String,
     val profileImageUrl: String,
     val baseTime: BaseTime
 ) {
@@ -29,7 +29,7 @@ data class UserProfile(
                 userId = userId,
                 nickname = nickname
                     ?.trim()
-                    ?.takeUnless { it.isEmpty() }
+                    ?.takeUnless { it.isBlank() }
                     ?: "user${userId.toString().take(8)}",
                 profileImageUrl = DefaultProfileImageUrl.random().value,
                 baseTime = BaseTime()

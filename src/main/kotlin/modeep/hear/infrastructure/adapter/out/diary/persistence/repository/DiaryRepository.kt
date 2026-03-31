@@ -58,6 +58,29 @@ interface DiaryRepository : JpaRepository<DiaryJpaEntity, UUID> {
 
     @Query(
         """
+        SELECT COUNT(DISTINCT d.id) FROM DiaryJpaEntity d
+        JOIN d.diaryImages i
+        WHERE d.userId = :userId
+        AND d.baseTime.createdAt >= :start
+        AND d.baseTime.createdAt < :end
+        AND i.sourceType = 'AI_MADE'
+        AND i.imageUrl IS NOT NULL
+    """
+    )
+    fun countByUserIdAndCreatedAtBetweenWithAiImage(
+        @Param("userId") userId: UUID,
+        @Param("start") start: LocalDateTime,
+        @Param("end") end: LocalDateTime
+    ): Int
+
+    fun findAllByUserIdAndBaseTimeCreatedAtGreaterThanEqualAndBaseTimeCreatedAtLessThan(
+        userId: UUID,
+        baseTimeCreatedAtAfter: LocalDateTime,
+        baseTimeCreatedAtBefore: LocalDateTime
+    ): List<DiaryJpaEntity>
+
+    @Query(
+        """
         SELECT DISTINCT CAST(d.baseTime.createdAt AS date) 
         FROM DiaryJpaEntity d 
         WHERE d.userId = :userId 

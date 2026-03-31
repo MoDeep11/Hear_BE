@@ -1,4 +1,4 @@
-package modeep.hear.domain.auth.model
+package modeep.hear.domain.auth.model.deprecated
 
 import modeep.hear.domain.auth.exception.AuthErrorCode
 import modeep.hear.domain.auth.vo.EmailVerificationType

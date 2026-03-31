@@ -1,4 +1,4 @@
-package modeep.hear.domain.chat.service
+package modeep.hear.domain.chat.service.deprecated
 
 import modeep.hear.domain.auth.port.out.SecurityPort
 import modeep.hear.domain.chat.port.`in`.CreateVoiceMessageUseCase

@@ -14,9 +14,9 @@ data class User(
     val email: String,
     private var password: String,
     val role: Role,
-    val status: UserStatus = UserStatus.ACTIVE,
+    var status: UserStatus = UserStatus.ACTIVE,
     val baseTime: BaseTime,
-    val isEmailSubscribed: Boolean = false
+    var isEmailSubscribed: Boolean = false
 ) {
     companion object {
         fun create(
