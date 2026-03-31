@@ -63,9 +63,11 @@ class UserWebAdapter(
 
     @GetMapping
     override fun getProfile(): ResponseEntity<ApiResult<UserProfileResponse>> {
-        return ResponseEntity.ok(ApiResult(
-            data = getUserProfileUseCase.execute()
-        ))
+        return ResponseEntity.ok(
+            ApiResult(
+                data = getUserProfileUseCase.execute()
+            )
+        )
     }
 
     @GetMapping("/statistics")
@@ -74,14 +76,20 @@ class UserWebAdapter(
         @DateTimeFormat(pattern = "yyyy-MM")
         yearMonth: YearMonth
     ): ResponseEntity<ApiResult<UserStatisticsResponse>> {
-        return ResponseEntity.ok(ApiResult(
-            data =  getUserStatisticsUseCase.execute(yearMonth)))
+        return ResponseEntity.ok(
+            ApiResult(
+                data = getUserStatisticsUseCase.execute(yearMonth)
+            )
+        )
     }
 
     @GetMapping("/summary")
     override fun getSummary(): ResponseEntity<ApiResult<UserSummaryResponse>> {
-        return ResponseEntity.ok(ApiResult(
-            data = getUserSummaryUseCase.execute()))
+        return ResponseEntity.ok(
+            ApiResult(
+                data = getUserSummaryUseCase.execute()
+            )
+        )
     }
 
     @PatchMapping("/nickname")
@@ -89,8 +97,11 @@ class UserWebAdapter(
         @RequestBody @Valid
         request: UpdateNicknameRequest
     ): ResponseEntity<ApiResult<UpdateNicknameResponse>> {
-        return ResponseEntity.ok(ApiResult(
-            data = updateNicknameUserUseCase.execute(request)))
+        return ResponseEntity.ok(
+            ApiResult(
+                data = updateNicknameUserUseCase.execute(request)
+            )
+        )
     }
 
     @PatchMapping("/profile-image")
@@ -98,8 +109,11 @@ class UserWebAdapter(
         @RequestBody @Valid
         request: UpdateProfileImageRequest
     ): ResponseEntity<ApiResult<UpdateProfileImageResponse>> {
-        return ResponseEntity.ok(ApiResult(
-            data = updateProfileImageUseCase.execute(request)))
+        return ResponseEntity.ok(
+            ApiResult(
+                data = updateProfileImageUseCase.execute(request)
+            )
+        )
     }
 
     @PatchMapping("/password")
@@ -107,8 +121,11 @@ class UserWebAdapter(
         @RequestBody @Valid
         request: UpdatePasswordRequest
     ): ResponseEntity<ApiResult<UpdatePasswordResponse>> {
-        return ResponseEntity.ok(ApiResult(
-            data = updatePasswordUseCase.execute(request)))
+        return ResponseEntity.ok(
+            ApiResult(
+                data = updatePasswordUseCase.execute(request)
+            )
+        )
     }
 
     @PatchMapping("/email-subscription")
@@ -116,7 +133,10 @@ class UserWebAdapter(
         @RequestBody @Valid
         request: UpdateEmailSubscriptionRequest
     ): ResponseEntity<ApiResult<UpdateEmailSubscriptionResponse>> {
-        return ResponseEntity.ok(ApiResult(
-            data = updateEmailSubscriptionUseCase.execute(request)))
+        return ResponseEntity.ok(
+            ApiResult(
+                data = updateEmailSubscriptionUseCase.execute(request)
+            )
+        )
     }
 }

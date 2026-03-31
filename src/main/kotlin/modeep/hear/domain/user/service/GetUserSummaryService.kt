@@ -5,7 +5,6 @@ import modeep.hear.domain.user.exception.UserErrorCode
 import modeep.hear.domain.user.port.`in`.GetUserSummaryUseCase
 import modeep.hear.domain.user.port.out.MonthlyStatisticPort
 import modeep.hear.domain.user.port.out.query.QueryUserStatPort
-import modeep.hear.domain.user.service.deprecated.GetEmotionDistributionService
 import modeep.hear.global.error.exception.BusinessException
 import modeep.hear.infrastructure.adapter.`in`.user.dto.response.UserSummaryResponse
 import org.springframework.stereotype.Service
@@ -30,7 +29,7 @@ class GetUserSummaryService(
         return UserSummaryResponse(
             currentStreak = stat.currentStreak,
             monthlyDiaryCount = monthlyStat.diaryCount,
-            emotionDistribution = monthlyStat.emotionDistribution,
+            emotionDistribution = monthlyStat.emotionDistribution
         )
     }
 }

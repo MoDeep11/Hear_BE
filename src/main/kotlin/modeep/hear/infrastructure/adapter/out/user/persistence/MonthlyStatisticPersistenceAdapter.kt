@@ -2,7 +2,6 @@ package modeep.hear.infrastructure.adapter.out.user.persistence
 
 import modeep.hear.domain.user.model.MonthlyStatistic
 import modeep.hear.domain.user.port.out.MonthlyStatisticPort
-import modeep.hear.infrastructure.adapter.out.user.persistence.entity.MonthlyStatisticJpaEntity
 import modeep.hear.infrastructure.adapter.out.user.persistence.entity.id.MonthlyStatisticId
 import modeep.hear.infrastructure.adapter.out.user.persistence.mapper.MonthlyStatisticMapper
 import modeep.hear.infrastructure.adapter.out.user.persistence.repository.MonthlyStatisticRepository

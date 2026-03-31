@@ -7,7 +7,6 @@ import modeep.hear.domain.user.port.`in`.UpdatePasswordUseCase
 import modeep.hear.domain.user.port.out.command.CommandUserPort
 import modeep.hear.global.error.exception.BusinessException
 import modeep.hear.global.util.maskEmail
-import modeep.hear.global.util.maskIfSensitive
 import modeep.hear.infrastructure.adapter.`in`.user.dto.request.UpdatePasswordRequest
 import modeep.hear.infrastructure.adapter.`in`.user.dto.response.UpdatePasswordResponse
 import org.springframework.stereotype.Service
