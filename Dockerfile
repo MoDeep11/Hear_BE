@@ -5,7 +5,7 @@ WORKDIR /app
 COPY build.gradle.kts settings.gradle.kts ./
 COPY gradle ./gradle
 
-RUN gradle build -x test -x ktlintCheck --no-daemon > /dev/null 2>&1 || true
+RUN gradle dependencies --no-daemon
 
 COPY src ./src
 
