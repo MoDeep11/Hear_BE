@@ -65,6 +65,12 @@ class DiaryPersistenceAdapter(
         return repo.findAllByUserIdAndBaseTimeCreatedAtGreaterThanEqualAndBaseTimeCreatedAtLessThan(userId, start, end).map { mapper.toModel(it) }
     }
 
+    override fun countByUserIdAndYearMonthWithAiImage(userId: UUID, yearMonth: YearMonth): Int {
+        val start = yearMonth.atDay(1).atStartOfDay()
+        val end = yearMonth.plusMonths(1).atDay(1).atStartOfDay()
+        return repo.countByUserIdAndCreatedAtBetweenWithAiImage(userId, start, end)
+    }
+
     override fun findAllByCreatedAtBetween(
         start: LocalDateTime,
         end: LocalDateTime

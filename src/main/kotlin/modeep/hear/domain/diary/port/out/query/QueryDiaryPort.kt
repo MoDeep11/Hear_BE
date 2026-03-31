@@ -29,5 +29,7 @@ interface QueryDiaryPort {
 
     fun findAllByUserIdAndYearMonth(userId: UUID, yearMonth: YearMonth): List<Diary>
 
+    fun countByUserIdAndYearMonthWithAiImage(userId: UUID, yearMonth: YearMonth): Int
+
     fun findAllByCreatedAtBetween(start: LocalDateTime, end: LocalDateTime): List<Diary>
 }

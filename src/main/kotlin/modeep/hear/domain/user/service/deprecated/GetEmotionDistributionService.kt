@@ -1,15 +1,12 @@
-package modeep.hear.domain.user.service
+package modeep.hear.domain.user.service.deprecated
 
 import modeep.hear.domain.common.vo.Emotion
 import modeep.hear.domain.common.vo.EmotionDistribution
 import modeep.hear.domain.diary.port.out.query.QueryDiaryPort
-import org.springframework.stereotype.Service
-import org.springframework.transaction.annotation.Transactional
 import java.time.YearMonth
 import java.util.UUID
 
-@Service
-@Transactional(readOnly = true)
+@Deprecated("Use UpdateMonthlyStatisticComponent instead")
 class GetEmotionDistributionService(
     private val queryDiaryPort: QueryDiaryPort
 ) {
@@ -19,7 +16,7 @@ class GetEmotionDistributionService(
     ): EmotionDistribution {
         val monthlyDiaries = queryDiaryPort.findAllByUserIdAndYearMonth(userId, yearMonth)
         val emotions: List<Emotion> = monthlyDiaries.map { it.emotion }
-        return EmotionDistribution.create(
+        return EmotionDistribution.Companion.create(
             emotions.groupingBy { it }.eachCount()
         )
     }

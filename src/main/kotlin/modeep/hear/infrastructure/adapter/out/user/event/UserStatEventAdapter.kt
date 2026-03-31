@@ -11,11 +11,13 @@ import org.springframework.stereotype.Component
 import org.springframework.transaction.event.TransactionPhase
 import org.springframework.transaction.event.TransactionalEventListener
 import java.time.LocalDate
+import java.time.YearMonth
 
 @Component
 class UserStatEventAdapter(
     private val userStatPort: UserStatPort,
-    private val queryDiaryPort: QueryDiaryPort
+    private val queryDiaryPort: QueryDiaryPort,
+    private val updateMonthlyStatisticComponent: UpdateMonthlyStatisticComponent
 ) {
     @TransactionalEventListener(phase = TransactionPhase.BEFORE_COMMIT)
     fun onDiaryDeleted(event: DecreasedUserStatEvent) {
@@ -46,6 +48,9 @@ class UserStatEventAdapter(
         )
 
         userStatPort.save(userStatDecreased)
+
+        val yearMonth = YearMonth.from(event.createdAtOfDiary)
+        updateMonthlyStatisticComponent.execute(userId, yearMonth)
     }
 
     @EventListener
@@ -58,5 +63,8 @@ class UserStatEventAdapter(
         val userStatIncreased = userStat.increaseDiaryCount(LocalDate.now())
 
         userStatPort.save(userStatIncreased)
+
+        val yearMonth = YearMonth.now()
+        updateMonthlyStatisticComponent.execute(userId, yearMonth)
     }
 }
