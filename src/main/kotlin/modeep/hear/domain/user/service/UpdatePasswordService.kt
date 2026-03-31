@@ -37,7 +37,8 @@ class UpdatePasswordService(
         // todo: 알림용 이메일 발송
 
         return UpdatePasswordResponse(
-            emailSent = user.isEmailSubscribed,
+            // emailSent = user.isEmailSubscribed,
+            emailSent = false, // TODO: 이메일 발송 구현 후 true로 변경
             sentTo = if (user.isEmailSubscribed) user.email.maskEmail() else null,
             updatedAt = updatedAt
         )

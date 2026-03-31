@@ -28,9 +28,9 @@ fun String?.maskIfSensitive(fieldName: String): String {
 fun String.maskEmail(): String {
     if (!this.contains("@")) return this
 
-    val parts = this.split("@")
-    val id = parts[0]
-    val domain = parts[1]
+    val atIndex = this.indexOf("@")
+    val id = this.substring(0, atIndex)
+     val domain = this.substring(atIndex + 1)
 
     val maskedId = when {
         id.length <= 2 -> "*" .repeat(id.length) // 아이디가 2글자 이하일 때
