@@ -24,15 +24,15 @@ jobs:
           push: true
           tags: ${{ secrets.DOCKER_USERNAME }}/hear-spring-application:latest
 
-      - name: Pull & Restart on EC2
-        uses: appleboy/ssh-action@master
-        with:
-          host: ${{ secrets.EC2_HOST }}
-          username: ${{ secrets.EC2_USER }}
-          key: ${{ secrets.EC2_KEY }}
-          script: |
-            docker pull ${{ secrets.DOCKER_USERNAME }}/myapp:latest
-            docker stop myapp || true
-            docker rm myapp || true
-            docker run -d -p 8080:8080 --name myapp \
-              ${{ secrets.DOCKER_USERNAME }}/myapp:latest
+#      - name: Pull & Restart on EC2
+#        uses: appleboy/ssh-action@master
+#        with:
+#          host: ${{ secrets.EC2_HOST }}
+#          username: ${{ secrets.EC2_USER }}
+#          key: ${{ secrets.EC2_KEY }}
+#          script: |
+#            docker pull ${{ secrets.DOCKER_USERNAME }}/hear-spring-application:latest
+#            docker stop hear-spring-application || true
+#            docker rm hear-spring-application || true
+#            docker run -d -p 8080:8080 --name hear-spring-application \
+#              ${{ secrets.DOCKER_USERNAME }}/hear-spring-application:latest
