@@ -1,5 +1,4 @@
 services:
-  # 1. PostgreSQL 데이터베이스
   postgres:
     image: 'postgres:16-alpine'
     container_name: postgres-db
@@ -10,7 +9,7 @@ services:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     ports:
-      - '5432:5432' # 외부에서도 접속 가능하도록 매핑
+      - '5432:5432'
     volumes:
       - ./postgres_data:/var/lib/postgresql
     networks:
@@ -21,7 +20,6 @@ services:
       timeout: 5s
       retries: 5
 
-  # 2. Redis 캐시/메시지 브로커
   redis:
     image: 'redis:7-alpine'
     container_name: redis-cache
@@ -30,12 +28,8 @@ services:
     networks:
       - hear-network
 
-  # 3. 코틀린 스프링 부트 애플리케이션
   app:
-    build: .
-    image: 'kusuri12/hear-spring-application:1.0'
-    profiles:
-      - prod
+    image: 'kusuri12/hear-spring-application:latest'
     container_name: hear-app
     ports:
       - '8080:8080'
@@ -46,8 +40,10 @@ services:
     env_file:
       - .env
     depends_on:
-      - postgres
-      - redis
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_started
     networks:
       - hear-network
 
