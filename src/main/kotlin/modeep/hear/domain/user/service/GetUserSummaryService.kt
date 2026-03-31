@@ -26,7 +26,6 @@ class GetUserSummaryService(
         val stat = queryUserStatPort.findByUserId(user.id)
             ?: throw BusinessException(UserErrorCode.USER_STAT_NOT_FOUND)
         val monthlyStat = monthlyStatisticPort.findByUserIdAndYearMonth(user.id, yearMonth)
-            ?: throw BusinessException(UserErrorCode.MONTHLY_STATISTIC_NOT_FOUND)
 
         val emotionDistribution = getEmotionDistributionService.execute(user.id, yearMonth)
 

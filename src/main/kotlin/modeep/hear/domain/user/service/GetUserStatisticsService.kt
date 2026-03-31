@@ -22,7 +22,6 @@ class GetUserStatisticsService(
     ): UserStatisticsResponse {
         val user = securityPort.getCurrentUser()
         val monthlyStat = monthlyStatisticPort.findByUserIdAndYearMonth(user.id, yearMonth)
-            ?: throw BusinessException(UserErrorCode.MONTHLY_STATISTIC_NOT_FOUND)
 
         val emotionDistribution = getEmotionDistributionService.execute(user.id, yearMonth)
 

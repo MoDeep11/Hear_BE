@@ -2,6 +2,7 @@ package modeep.hear.infrastructure.adapter.out.user.persistence
 
 import modeep.hear.domain.user.model.MonthlyStatistic
 import modeep.hear.domain.user.port.out.MonthlyStatisticPort
+import modeep.hear.infrastructure.adapter.out.user.persistence.entity.MonthlyStatisticJpaEntity
 import modeep.hear.infrastructure.adapter.out.user.persistence.entity.id.MonthlyStatisticId
 import modeep.hear.infrastructure.adapter.out.user.persistence.mapper.MonthlyStatisticMapper
 import modeep.hear.infrastructure.adapter.out.user.persistence.repository.MonthlyStatisticRepository
@@ -15,8 +16,12 @@ class MonthlyStatisticPersistenceAdapter(
     private val repo: MonthlyStatisticRepository,
     private val mapper: MonthlyStatisticMapper
 ) : MonthlyStatisticPort {
-    override fun findByUserIdAndYearMonth(userId: UUID, yearMonth: YearMonth): MonthlyStatistic? {
-        return repo.findByIdOrNull(MonthlyStatisticId(userId, yearMonth))?.let { mapper.toModel(it) }
+    override fun findByUserIdAndYearMonth(userId: UUID, yearMonth: YearMonth): MonthlyStatistic {
+        val id = MonthlyStatisticId(userId, yearMonth)
+        val entity = repo.findByIdOrNull(id)
+            ?: repo.save(mapper.toEntity(MonthlyStatistic.create(userId, yearMonth)))
+
+        return mapper.toModel(entity)
     }
 
     override fun save(monthlyStatistic: MonthlyStatistic) {
