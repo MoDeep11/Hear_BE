@@ -1,4 +1,0 @@
-ALTER TABLE ai_image_tasks RENAME COLUMN session_id TO chat_id;
-ALTER TABLE diaries RENAME COLUMN session_id TO chat_id;
-ALTER TABLE messages RENAME COLUMN session_id TO chat_id;
-ALTER TABLE messages RENAME CONSTRAINT FK_MESSAGES_ON_SESSION TO FK_MESSAGES_ON_CHAT;
