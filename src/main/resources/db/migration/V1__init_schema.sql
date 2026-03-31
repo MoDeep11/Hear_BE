@@ -39,7 +39,7 @@ CREATE TABLE user_stats
 CREATE TABLE monthly_statistics
 (
     user_id              UUID             NOT NULL,
-    target_year_month    DATE             NOT NULL,
+    target_year_month    VARCHAR(255)             NOT NULL,
     diary_count          INTEGER          NOT NULL DEFAULT 0,
     photo_count          INTEGER          NOT NULL DEFAULT 0,
     writing_rate         DOUBLE PRECISION NOT NULL DEFAULT 0.0,
