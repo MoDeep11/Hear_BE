@@ -1,11 +1,13 @@
 package modeep.hear.infrastructure.adapter.`in`.user.dto.request
 
+import com.fasterxml.jackson.annotation.JsonAlias
 import jakarta.validation.constraints.NotBlank
 
 data class DeleteUserRequest(
     @field:NotBlank
     val password: String,
 
+    @field:JsonAlias("refresh_token")
     @field:NotBlank
     val refreshToken: String
 )

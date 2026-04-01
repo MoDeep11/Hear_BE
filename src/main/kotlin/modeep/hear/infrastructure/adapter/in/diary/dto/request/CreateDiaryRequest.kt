@@ -13,8 +13,8 @@ data class CreateDiaryRequest(
     val emotion: Emotion,
     @field:NotEmpty
     val tags: List<@NotBlank String>,
-    @JsonAlias("source_type")
+    @field:JsonAlias("source_type")
     val sourceType: DiarySourceType = DiarySourceType.AI_MADE,
-    @JsonAlias("chat_id")
+    @field:JsonAlias("chat_id")
     val chatId: UUID
 )
