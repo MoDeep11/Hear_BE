@@ -11,3 +11,4 @@ CREATE TABLE pending_uploads
 );
 
 CREATE INDEX idx_pending_uploads_expired_at ON pending_uploads (expired_at);
+CREATE INDEX idx_pending_uploads_s3_key ON pending_uploads (s3_key)
