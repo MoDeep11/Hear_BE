@@ -15,20 +15,19 @@ class UserPersistenceAdapter(
 ) : UserPort {
     // --Query--//
     override fun findByEmail(email: String): User? {
-        return repository.findByEmail(email) ?.let { mapper.toModel(it) }
+        return repository.findByEmail(email)?.let { mapper.toModel(it) }
     }
 
     override fun existsByEmail(email: String): Boolean =
         repository.existsByEmail(email)
 
     override fun findById(id: UUID): User? {
-        return repository.findByIdOrNull(id) ?.let { mapper.toModel(it) }
+        return repository.findByIdOrNull(id)?.let { mapper.toModel(it) }
     }
 
     // --Command--//
     override fun save(user: User) {
-        val userEntity = mapper.toEntity(user)
-        repository.save(userEntity)
+        repository.save(mapper.toEntity(user))
     }
 
     override fun delete(userId: UUID) {

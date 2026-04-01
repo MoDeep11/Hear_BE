@@ -14,7 +14,7 @@ class UserStatPersistenceAdapter(
     private val repo: UserStatRepository,
     private val baseTimeMapper: BaseTimeMapper
 ) : UserStatPort {
-    // -Query--//
+
     override fun findByUserId(userId: UUID): UserStat? {
         return repo.findByIdOrNull(userId)?.let {
             UserStat(
@@ -28,7 +28,6 @@ class UserStatPersistenceAdapter(
         }
     }
 
-    // -Command--//
     override fun save(userStat: UserStat) {
         repo.save(
             UserStatJpaEntity(

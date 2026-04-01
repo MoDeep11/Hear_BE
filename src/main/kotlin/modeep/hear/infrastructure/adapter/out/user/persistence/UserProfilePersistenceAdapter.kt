@@ -14,6 +14,7 @@ class UserProfilePersistenceAdapter(
     private val repo: UserProfileRepository,
     private val baseTimeMapper: BaseTimeMapper
 ) : UserProfilePort {
+
     override fun findByUserId(userId: UUID): UserProfile? {
         return repo.findByIdOrNull(userId)?.let {
             UserProfile(
