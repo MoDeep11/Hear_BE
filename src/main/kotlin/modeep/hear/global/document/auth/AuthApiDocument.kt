@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
+import io.swagger.v3.oas.annotations.security.SecurityRequirements
 import io.swagger.v3.oas.annotations.tags.Tag
 import modeep.hear.global.common.response.ApiResult
 import modeep.hear.global.document.annotation.ApiInternalServerErrorResponse
@@ -19,7 +20,7 @@ import modeep.hear.infrastructure.adapter.`in`.auth.dto.response.TokenResponse
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 
-@SecurityRequirement(name = "")
+@SecurityRequirements
 @Tag(name = "Auth", description = "Auth 도메인 관련 API")
 interface AuthApiDocument {
 
