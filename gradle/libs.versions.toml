@@ -31,6 +31,7 @@ spring-boot-security = { group = "org.springframework.boot", name = "spring-boot
 spring-boot-starter-webflux = { group = "org.springframework.boot", name = "spring-boot-starter-webflux" }
 spring-boot-validation = { group = "org.springframework.boot", name = "spring-boot-starter-validation" }
 spring-boot-devtools = { group = "org.springframework.boot", name = "spring-boot-devtools" }
+spring-boot-actuator = { module = "org.springframework.boot:spring-boot-starter-actuator" }
 kotlinx-coroutines-reactor = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-reactor", version.ref = "kotlinxCoroutines" }
 
 # jpa
