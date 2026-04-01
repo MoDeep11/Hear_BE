@@ -1,5 +1,6 @@
 package modeep.hear.infrastructure.adapter.`in`.diary.dto.request
 
+import com.fasterxml.jackson.annotation.JsonAlias
 import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.NotEmpty
 import modeep.hear.domain.common.vo.Emotion
@@ -12,6 +13,8 @@ data class CreateDiaryRequest(
     val emotion: Emotion,
     @field:NotEmpty
     val tags: List<@NotBlank String>,
+    @JsonAlias("source_type")
     val sourceType: DiarySourceType = DiarySourceType.AI_MADE,
+    @JsonAlias("chat_id")
     val chatId: UUID
 )
