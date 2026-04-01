@@ -7,4 +7,8 @@ interface StoragePort {
     fun generateUploadUrl(file: FileData): GenerateUploadUrlResponse
 
     fun deleteAll(urls: List<String>)
+
+    fun deleteAllByKeys(keys: List<String>)
+
+    fun extractKey(url: String): String
 }

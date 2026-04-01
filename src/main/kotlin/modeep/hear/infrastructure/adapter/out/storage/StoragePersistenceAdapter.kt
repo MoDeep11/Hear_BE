@@ -46,7 +46,7 @@ class StoragePersistenceAdapter(
         if (urls.isEmpty()) return
 
         urls.chunked(1000).forEach { chunk ->
-            val keys = urls.map { url ->
+            val keys = chunk.map { url ->
                 val key = extractKeyFromUrl(url)
                 ObjectIdentifier.builder().key(key).build()
             }
@@ -73,6 +73,35 @@ class StoragePersistenceAdapter(
             }
         }
     }
+
+    override fun deleteAllByKeys(keys: List<String>) {
+        if (keys.isEmpty()) return
+
+        keys.chunked(1000).forEach { chunk ->
+            val objects = chunk.map { key -> ObjectIdentifier.builder().key(key).build() }
+
+            val deleteObjectsRequest = DeleteObjectsRequest.builder()
+                .bucket(awsProperties.s3.bucket)
+                .delete(Delete.builder().objects(objects).build())
+                .build()
+
+            try {
+                val response = s3Client.deleteObjects(deleteObjectsRequest)
+                val errors = response.errors()
+                if (errors.isNotEmpty()) {
+                    errors.forEach { error ->
+                        log.error { "S3 삭제 실패 - Key: ${error.key()}, Message: ${error.message()}" }
+                    }
+                    throw BusinessException(StorageErrorCode.FILE_DELETE_FAILED)
+                }
+            } catch (e: SdkException) {
+                log.error { "S3 파일 삭제 실패: ${e.message}" }
+                throw BusinessException(StorageErrorCode.FILE_DELETE_FAILED)
+            }
+        }
+    }
+
+    override fun extractKey(url: String): String = extractKeyFromUrl(url)
 
     private fun extractKeyFromUrl(s3Url: String): String {
         val expectedPrefix = "${awsProperties.s3.bucket}.s3.${awsProperties.region.static}.amazonaws.com/"

@@ -7,6 +7,8 @@ import modeep.hear.domain.diary.model.DiaryImage
 import modeep.hear.domain.diary.vo.DiaryImageStatus
 import modeep.hear.domain.diary.vo.DiarySourceType
 import modeep.hear.domain.storage.port.`in`.UploadImageUseCase
+import modeep.hear.domain.storage.port.out.PendingUploadPort
+import modeep.hear.domain.storage.port.out.StoragePort
 import modeep.hear.domain.storage.vo.ImageAction
 import modeep.hear.global.error.exception.BusinessException
 import modeep.hear.infrastructure.adapter.`in`.storage.dto.request.UploadDiaryImageRequest
@@ -14,7 +16,9 @@ import org.springframework.stereotype.Service
 
 @Service
 class UploadImageService(
-    private val eventPublisher: EventPublisher
+    private val eventPublisher: EventPublisher,
+    private val pendingUploadPort: PendingUploadPort,
+    private val storagePort: StoragePort
 ) : UploadImageUseCase {
     override fun execute(
         diaryImages: MutableList<DiaryImage>?,
@@ -35,6 +39,9 @@ class UploadImageService(
                         diaryImageStatus = DiaryImageStatus.SUCCESS
                     )
                     images.add(newImage)
+
+                    val s3Key = storagePort.extractKey(request.imageUrl!!)
+                    pendingUploadPort.deleteByS3Key(s3Key)
                 }
 
                 // 2. 기존 이미지 삭제
