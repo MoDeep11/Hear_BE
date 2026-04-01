@@ -87,10 +87,12 @@ class StoragePersistenceAdapter(
 
             try {
                 val response = s3Client.deleteObjects(deleteObjectsRequest)
-                if (response.hasErrors()) {
-                    response.errors().forEach { error ->
+                val errors = response.errors()
+                if (errors.isNotEmpty()) {
+                    errors.forEach { error ->
                         log.error { "S3 삭제 실패 - Key: ${error.key()}, Message: ${error.message()}" }
                     }
+                    throw BusinessException(StorageErrorCode.FILE_DELETE_FAILED)
                 }
             } catch (e: SdkException) {
                 log.error { "S3 파일 삭제 실패: ${e.message}" }

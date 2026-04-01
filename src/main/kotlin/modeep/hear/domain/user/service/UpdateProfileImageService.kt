@@ -36,7 +36,7 @@ class UpdateProfileImageService(
         val updatedAt = LocalDateTime.now()
         commandUserProfilePort.save(updatedProfile)
 
-        if (previousImageUrl !in defaultImageUrls) {
+        if (previousImageUrl != updatedProfile.profileImageUrl &&  previousImageUrl !in defaultImageUrls) {
             storagePort.deleteAll(listOf(previousImageUrl))
         }
 
