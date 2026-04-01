@@ -49,6 +49,7 @@ dependencies {
     implementation(libs.cache)
     implementation(libs.spring.boot.starter.mail)
     implementation(libs.spring.boot.starter.webflux)
+    implementation(libs.spring.boot.actuator)
     implementation(libs.kotlinx.coroutines.reactor)
     developmentOnly(libs.spring.boot.devtools)
 
