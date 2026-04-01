@@ -4,4 +4,8 @@ import modeep.hear.domain.auth.model.VerifiedTicket
 
 interface VerifiedTicketPort {
     fun save(ticket: VerifiedTicket)
+
+    fun findByTicket(ticket: String): VerifiedTicket?
+
+    fun delete(ticket: String)
 }

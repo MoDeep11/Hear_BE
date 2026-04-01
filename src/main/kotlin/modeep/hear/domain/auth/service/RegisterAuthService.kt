@@ -4,6 +4,7 @@ import modeep.hear.domain.auth.exception.AuthErrorCode
 import modeep.hear.domain.auth.port.`in`.RegisterAuthUseCase
 import modeep.hear.domain.auth.port.out.JwtPort
 import modeep.hear.domain.auth.port.out.PasswordPort
+import modeep.hear.domain.auth.port.out.VerifiedTicketPort
 import modeep.hear.domain.user.model.User
 import modeep.hear.domain.user.port.`in`.CreateUserUseCase
 import modeep.hear.domain.user.vo.Role
@@ -18,9 +19,17 @@ import org.springframework.transaction.annotation.Transactional
 class RegisterAuthService(
     private val passwordPort: PasswordPort,
     private val jwtPort: JwtPort,
+    private val verifiedTicketPort: VerifiedTicketPort,
     private val createUserUseCase: CreateUserUseCase
 ) : RegisterAuthUseCase {
     override fun execute(request: RegisterRequest): TokenResponse {
+        val verifiedTicket = verifiedTicketPort.findByTicket(request.ticket)
+            ?: throw BusinessException(AuthErrorCode.INVALID_TICKET)
+
+        if (verifiedTicket.email != request.email) {
+            throw BusinessException(AuthErrorCode.INVALID_TICKET)
+        }
+
         matches(request.password, request.confirmPassword)
 
         val user = User.create(
@@ -30,16 +39,14 @@ class RegisterAuthService(
         )
 
         createUserUseCase.execute(user)
+        verifiedTicketPort.delete(request.ticket)
 
-        val userId = user.id
-        return jwtPort.createToken(userId.toString())
+        return jwtPort.createToken(user.id.toString())
     }
 
     private fun matches(password: String, confirmPassword: String) {
         if (password != confirmPassword) {
-            throw BusinessException(
-                AuthErrorCode.PASSWORD_NOT_MATCH
-            )
+            throw BusinessException(AuthErrorCode.PASSWORD_NOT_MATCH)
         }
     }
 }

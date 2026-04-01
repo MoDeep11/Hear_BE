@@ -12,10 +12,21 @@ class VerifiedTicketPersistenceAdapter(
     private val verifiedTicketRepository: VerifiedTicketRepository
 ) : VerifiedTicketPort {
 
+    // --Query--//
+    override fun findByTicket(ticket: String): VerifiedTicket? {
+        return verifiedTicketRepository.findById(ticket)
+            .map { verifiedTicketMapper.toModel(it) }
+            .orElse(null)
+    }
+
     // --Command--//
     override fun save(ticket: VerifiedTicket) {
         verifiedTicketRepository.save(
             verifiedTicketMapper.toEntity(ticket)
         )
+    }
+
+    override fun delete(ticket: String) {
+        verifiedTicketRepository.deleteById(ticket)
     }
 }
