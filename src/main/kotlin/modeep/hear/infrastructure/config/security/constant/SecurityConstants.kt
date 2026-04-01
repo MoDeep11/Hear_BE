@@ -20,7 +20,7 @@ object SecurityConstants {
         "/internal/v1/**",
 
         // Actuator
-        "/actuator/health",
-        "/actuator/info"
+        "/actuator/health/**",
+        "/actuator/info/**"
     )
 }
