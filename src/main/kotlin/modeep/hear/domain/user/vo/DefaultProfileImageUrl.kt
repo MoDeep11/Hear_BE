@@ -7,7 +7,8 @@ enum class DefaultProfileImageUrl(
     SAD("link"),
     ANGRY("link"),
     ANXIETY("link"),
-    NEUTRAL("link");
+    NEUTRAL("link"),
+    NORMAL("https://hear-official.s3.ap-northeast-2.amazonaws.com/default/user-profile/hear_normal_dust.svg");
 
     companion object {
         fun random(): DefaultProfileImageUrl {
