@@ -17,6 +17,7 @@ import modeep.hear.infrastructure.adapter.`in`.auth.dto.request.ResetPasswordReq
 import modeep.hear.infrastructure.adapter.`in`.auth.dto.request.SendEmailRequest
 import modeep.hear.infrastructure.adapter.`in`.auth.dto.request.VerifyEmailRequest
 import modeep.hear.infrastructure.adapter.`in`.auth.dto.response.TokenResponse
+import modeep.hear.infrastructure.adapter.`in`.auth.dto.response.VerifyEmailResponse
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 
@@ -66,7 +67,7 @@ interface AuthApiDocument {
     @ApiInternalServerErrorResponse
     fun verifyEmail(
         request: VerifyEmailRequest
-    ): ResponseEntity<ApiResult<String>>
+    ): ResponseEntity<ApiResult<VerifyEmailResponse>>
 
     @ApiInternalServerErrorResponse
     fun verifyResetTicket(
