@@ -10,6 +10,8 @@ import modeep.hear.global.util.maskIfSensitive
 import modeep.hear.infrastructure.external.openfeign.discord.DiscordSendService
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
+import org.springframework.http.converter.HttpMessageNotReadableException
+import org.springframework.web.HttpRequestMethodNotSupportedException
 import org.springframework.web.bind.MethodArgumentNotValidException
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.RestControllerAdvice
@@ -64,8 +66,8 @@ class GlobalExceptionHandler(
             .status(HttpStatus.BAD_REQUEST.value())
             .body(
                 ErrorResponse(
-                    code = "INVALID_INPUT_VALUE", // todo: error code
-                    message = fieldErrors.firstOrNull()?.defaultMessage ?: "입력값이 유효하지 않습니다.",
+                    code = GlobalErrorCode.INVALID_REQUEST_BODY.code,
+                    message = fieldErrors.firstOrNull()?.defaultMessage ?: GlobalErrorCode.INVALID_REQUEST_BODY.message,
                     path = request.requestURI,
                     errors = fieldErrors.map { fieldError ->
                         ErrorResponse.FieldError(
@@ -78,6 +80,34 @@ class GlobalExceptionHandler(
             )
     }
 
+    @ExceptionHandler(HttpMessageNotReadableException::class)
+    fun handleHttpMessageNotReadableException(e: HttpMessageNotReadableException, request: HttpServletRequest): ResponseEntity<ErrorResponse> {
+        log.warn { "HttpMessageNotReadableException: ${e.message}" }
+        return ResponseEntity
+            .status(GlobalErrorCode.INVALID_REQUEST_BODY.status.value())
+            .body(
+                ErrorResponse(
+                    code = GlobalErrorCode.INVALID_REQUEST_BODY.code,
+                    message = GlobalErrorCode.INVALID_REQUEST_BODY.message,
+                    path = request.requestURI
+                )
+            )
+    }
+
+    @ExceptionHandler(HttpRequestMethodNotSupportedException::class)
+    fun handleHttpRequestMethodNotSupportedException(e: HttpRequestMethodNotSupportedException, request: HttpServletRequest): ResponseEntity<ErrorResponse> {
+        log.warn { "HttpRequestMethodNotSupportedException: ${e.method} is not supported" }
+        return ResponseEntity
+            .status(GlobalErrorCode.METHOD_NOT_ALLOWED.status.value())
+            .body(
+                ErrorResponse(
+                    code = GlobalErrorCode.METHOD_NOT_ALLOWED.code,
+                    message = GlobalErrorCode.METHOD_NOT_ALLOWED.message,
+                    path = request.requestURI
+                )
+            )
+    }
+
     @ExceptionHandler(IllegalArgumentException::class)
     fun handlerIllegalArgumentException(e: IllegalArgumentException, request: HttpServletRequest): ResponseEntity<ErrorResponse> {
         log.error { "IllegalArgumentException: ${e.message}, Cause: ${e.cause}" }
@@ -86,8 +116,8 @@ class GlobalExceptionHandler(
             .status(HttpStatus.BAD_REQUEST.value())
             .body(
                 ErrorResponse(
-                    code = "ILLEGAL_ARGUMENT_ERROR",
-                    message = "입력값이 유효하지 않습니다.",
+                    code = GlobalErrorCode.INVALID_REQUEST_BODY.code,
+                    message = GlobalErrorCode.INVALID_REQUEST_BODY.message,
                     path = request.requestURI
                 )
             )
@@ -99,8 +129,8 @@ class GlobalExceptionHandler(
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
             .body(
                 ErrorResponse(
-                    code = "RESOURCE_NOT_FOUND",
-                    message = "리소스를 찾을 수 없습니다.",
+                    code = GlobalErrorCode.RESOURCE_NOT_FOUND.code,
+                    message = GlobalErrorCode.RESOURCE_NOT_FOUND.message,
                     path = request.requestURI
                 )
             )
