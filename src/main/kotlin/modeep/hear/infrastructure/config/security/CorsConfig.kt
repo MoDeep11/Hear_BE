@@ -15,7 +15,8 @@ class CorsConfig {
                 allowedOrigins =
                     listOf(
                         "http://localhost:8080",
-                        "http://localhost:5173"
+                        "http://localhost:5173",
+                        "https://hear-service.vercel.app"
                     )
                 allowedMethods = listOf("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS")
                 allowedHeaders = listOf("*")
