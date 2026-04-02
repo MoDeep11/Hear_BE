@@ -31,8 +31,6 @@ class LoginAuthService(
             )
         }
 
-        val userId = user.id
-            ?: throw BusinessException(AuthErrorCode.INVALID_LOGIN_CREDENTIALS)
-        return jwtPort.createToken(userId.toString())
+        return jwtPort.createToken(user.id.toString())
     }
 }

@@ -13,7 +13,7 @@ class RefreshTokenPersistenceAdapter(
 ) : RefreshTokenPort {
     // --Query--//
     override fun findByRefreshToken(refreshToken: String): RefreshToken? {
-        return repo.findByRefreshToken(refreshToken)?.let { mapper.toModel(it) }
+        return repo.findById(refreshToken).orElse(null)?.let { mapper.toModel(it) }
     }
 
     override fun existsByRefreshToken(refreshToken: String): Boolean =

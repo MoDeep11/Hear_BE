@@ -46,6 +46,7 @@ services:
         condition: service_started
     networks:
       - hear-network
+    restart: always
 
 networks:
   hear-network:

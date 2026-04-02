@@ -14,7 +14,7 @@ class EmailVerificationPersistenceAdapter(
 
     // --Query--//
     override fun findByEmail(email: String): EmailVerification? {
-        return repo.findByEmail(email) ?.let { mapper.toModel(it) }
+        return repo.findById(email).orElse(null)?.let { mapper.toModel(it) }
     }
 
     // --Command--//
