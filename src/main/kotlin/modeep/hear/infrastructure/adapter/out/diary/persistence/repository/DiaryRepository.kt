@@ -99,4 +99,14 @@ interface DiaryRepository : JpaRepository<DiaryJpaEntity, UUID> {
         baseTimeCreatedAtAfter: LocalDateTime,
         baseTimeCreatedAtBefore: LocalDateTime
     ): MutableList<DiaryJpaEntity>
+
+    @Query(
+        value = """
+        SELECT * FROM diaries
+        WHERE user_id = :userId
+        LIMIT 1 OFFSET :offset
+    """,
+        nativeQuery = true
+    )
+    fun findOneByUserIdWithOffset(@Param("userId") userId: UUID, @Param("offset") offset: Long): DiaryJpaEntity?
 }

@@ -78,6 +78,13 @@ class DiaryPersistenceAdapter(
         return repo.findAllByBaseTime_CreatedAtBetween(start, end).map { mapper.toModel(it) }
     }
 
+    override fun findRandomByUserId(userId: UUID): Diary? {
+        val count = repo.countByUserId(userId)
+        if (count == 0L) return null
+        val offset = (Math.random() * count).toLong()
+        return repo.findOneByUserIdWithOffset(userId, offset)?.let { mapper.toModel(it) }
+    }
+
     // --Command--//
     override fun save(diary: Diary) {
         repo.save(mapper.toEntity(diary))

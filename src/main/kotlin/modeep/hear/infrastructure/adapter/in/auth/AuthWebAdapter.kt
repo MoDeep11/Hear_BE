@@ -19,6 +19,7 @@ import modeep.hear.infrastructure.adapter.`in`.auth.dto.request.ResetPasswordReq
 import modeep.hear.infrastructure.adapter.`in`.auth.dto.request.SendEmailRequest
 import modeep.hear.infrastructure.adapter.`in`.auth.dto.request.VerifyEmailRequest
 import modeep.hear.infrastructure.adapter.`in`.auth.dto.response.TokenResponse
+import modeep.hear.infrastructure.adapter.`in`.auth.dto.response.VerifyEmailResponse
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PatchMapping
@@ -92,10 +93,11 @@ class AuthWebAdapter(
     override fun verifyEmail(
         @RequestBody @Valid
         request: VerifyEmailRequest
-    ): ResponseEntity<ApiResult<String>> {
+    ): ResponseEntity<ApiResult<VerifyEmailResponse>> {
+        val ticket = verifyEmailAuthUseCase.execute(request)
         return ResponseEntity.ok(
             ApiResult(
-                data = verifyEmailAuthUseCase.execute(request)
+                data = VerifyEmailResponse(ticket = ticket)
             )
         )
     }

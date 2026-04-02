@@ -6,6 +6,7 @@ import modeep.hear.infrastructure.adapter.`in`.diary.dto.request.QueryDiariesReq
 import modeep.hear.infrastructure.adapter.`in`.diary.dto.request.UpdateDiaryContentRequest
 import modeep.hear.infrastructure.adapter.`in`.diary.dto.response.QueryDiariesResponse
 import modeep.hear.infrastructure.adapter.`in`.diary.dto.response.QueryDiaryDetailResponse
+import modeep.hear.infrastructure.adapter.`in`.diary.dto.response.RecommendDiaryResponse
 import modeep.hear.infrastructure.adapter.`in`.storage.dto.request.UploadDiaryImageRequest
 import modeep.hear.infrastructure.adapter.`in`.storage.dto.response.UploadDiaryImageResponse
 import org.springframework.http.ResponseEntity
@@ -35,4 +36,6 @@ interface DiaryApiDocument {
     fun deleteDiary(
         diaryId: UUID
     ): ResponseEntity<ApiResult<Unit>>
+
+    fun recommendDiary(): ResponseEntity<ApiResult<RecommendDiaryResponse>>
 }
