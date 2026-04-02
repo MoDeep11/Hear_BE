@@ -19,5 +19,7 @@ enum class GlobalErrorCode(
 
     INVALID_INPUT_VALUE(HttpStatus.BAD_REQUEST, "GLOBAL_007", "입력값이 유효하지 않습니다."),
     ILLEGAL_ARGUMENT_ERROR(HttpStatus.BAD_REQUEST, "GLOBAL_008", "잘못된 인자가 전달되었습니다."),
-    RESOURCE_NOT_FOUND(HttpStatus.NOT_FOUND, "GLOBAL_009", "리소스를 찾을 수 없습니다.")
+    RESOURCE_NOT_FOUND(HttpStatus.NOT_FOUND, "GLOBAL_009", "리소스를 찾을 수 없습니다."),
+
+    MISSING_REQUEST_HEADER(HttpStatus.BAD_REQUEST, "GLOBAL_010", "필수 요청 헤더가 누락되었습니다.")
 }

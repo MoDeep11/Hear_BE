@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity
 import org.springframework.http.converter.HttpMessageNotReadableException
 import org.springframework.web.HttpRequestMethodNotSupportedException
 import org.springframework.web.bind.MethodArgumentNotValidException
+import org.springframework.web.bind.MissingRequestHeaderException
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.RestControllerAdvice
 import org.springframework.web.servlet.resource.NoResourceFoundException
@@ -87,6 +88,20 @@ class GlobalExceptionHandler(
                             reason = fieldError.defaultMessage?.replace("{0}", fieldName) ?: "unknown"
                         )
                     }
+                )
+            )
+    }
+
+    @ExceptionHandler(MissingRequestHeaderException::class)
+    fun handleMissingRequestHeaderException(e: MissingRequestHeaderException, request: HttpServletRequest): ResponseEntity<ErrorResponse> {
+        log.warn { "MissingRequestHeaderException: ${e.headerName} header is missing" }
+        return ResponseEntity
+            .status(GlobalErrorCode.MISSING_REQUEST_HEADER.status.value())
+            .body(
+                ErrorResponse(
+                    code = GlobalErrorCode.MISSING_REQUEST_HEADER.code,
+                    message = "'${e.headerName}' ${GlobalErrorCode.MISSING_REQUEST_HEADER.message}",
+                    path = request.requestURI
                 )
             )
     }
