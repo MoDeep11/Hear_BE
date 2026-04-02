@@ -2,6 +2,7 @@ package modeep.hear.global.document.diary
 
 import io.swagger.v3.oas.annotations.tags.Tag
 import modeep.hear.global.common.response.ApiResult
+import modeep.hear.infrastructure.adapter.`in`.diary.dto.response.RecommendDiaryResponse
 import modeep.hear.infrastructure.adapter.`in`.diary.dto.request.QueryDiariesRequest
 import modeep.hear.infrastructure.adapter.`in`.diary.dto.request.UpdateDiaryContentRequest
 import modeep.hear.infrastructure.adapter.`in`.diary.dto.response.QueryDiariesResponse
@@ -35,4 +36,6 @@ interface DiaryApiDocument {
     fun deleteDiary(
         diaryId: UUID
     ): ResponseEntity<ApiResult<Unit>>
+
+    fun recommendDiary(): ResponseEntity<ApiResult<RecommendDiaryResponse>>
 }

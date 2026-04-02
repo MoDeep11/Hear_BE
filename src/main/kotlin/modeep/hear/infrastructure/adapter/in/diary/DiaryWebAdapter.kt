@@ -4,6 +4,7 @@ import jakarta.validation.Valid
 import modeep.hear.domain.diary.port.`in`.DeleteDiaryUseCase
 import modeep.hear.domain.diary.port.`in`.QueryDiariesUseCase
 import modeep.hear.domain.diary.port.`in`.QueryDiaryDetailUseCase
+import modeep.hear.domain.diary.port.`in`.RecommendDairyUseCase
 import modeep.hear.domain.diary.port.`in`.UpdateDiaryContentUseCase
 import modeep.hear.domain.diary.port.`in`.UploadDiaryImageUseCase
 import modeep.hear.global.common.response.ApiResult
@@ -12,6 +13,7 @@ import modeep.hear.infrastructure.adapter.`in`.diary.dto.request.QueryDiariesReq
 import modeep.hear.infrastructure.adapter.`in`.diary.dto.request.UpdateDiaryContentRequest
 import modeep.hear.infrastructure.adapter.`in`.diary.dto.response.QueryDiariesResponse
 import modeep.hear.infrastructure.adapter.`in`.diary.dto.response.QueryDiaryDetailResponse
+import modeep.hear.infrastructure.adapter.`in`.diary.dto.response.RecommendDiaryResponse
 import modeep.hear.infrastructure.adapter.`in`.storage.dto.request.UploadDiaryImageRequest
 import modeep.hear.infrastructure.adapter.`in`.storage.dto.response.UploadDiaryImageResponse
 import org.springframework.http.ResponseEntity
@@ -32,7 +34,8 @@ class DiaryWebAdapter(
     private val queryDiaryDetailUseCase: QueryDiaryDetailUseCase,
     private val deleteDiaryUseCase: DeleteDiaryUseCase,
     private val updateDiaryContentUseCase: UpdateDiaryContentUseCase,
-    private val uploadDiaryImageUseCase: UploadDiaryImageUseCase
+    private val uploadDiaryImageUseCase: UploadDiaryImageUseCase,
+    private val recommendDairyUseCase: RecommendDairyUseCase
 ) : DiaryApiDocument {
 
     @GetMapping
@@ -82,5 +85,10 @@ class DiaryWebAdapter(
     ): ResponseEntity<ApiResult<Unit>> {
         deleteDiaryUseCase.execute(diaryId)
         return ResponseEntity.ok(ApiResult())
+    }
+
+    @GetMapping("/recommendation")
+    override fun recommendDiary(): ResponseEntity<ApiResult<RecommendDiaryResponse>> {
+        TODO("Not yet implemented")
     }
 }
