@@ -79,7 +79,10 @@ class DiaryPersistenceAdapter(
     }
 
     override fun findRandomByUserId(userId: UUID): Diary? {
-        return repo.findRandomByUserId(userId)?.let { mapper.toModel(it) }
+        val count = repo.countByUserId(userId)
+        if (count == 0L) return null
+        val offset = (Math.random() * count).toLong()
+        return repo.findOneByUserIdWithOffset(userId, offset)?.let { mapper.toModel(it) }
     }
 
     // --Command--//

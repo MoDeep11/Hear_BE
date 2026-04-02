@@ -104,10 +104,9 @@ interface DiaryRepository : JpaRepository<DiaryJpaEntity, UUID> {
         value = """
         SELECT * FROM diaries
         WHERE user_id = :userId
-        ORDER BY RANDOM()
-        LIMIT 1
+        LIMIT 1 OFFSET :offset
     """,
         nativeQuery = true
     )
-    fun findRandomByUserId(@Param("userId") userId: UUID): DiaryJpaEntity?
+    fun findOneByUserIdWithOffset(@Param("userId") userId: UUID, @Param("offset") offset: Long): DiaryJpaEntity?
 }

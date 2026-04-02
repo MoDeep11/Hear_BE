@@ -4,7 +4,7 @@ import jakarta.validation.Valid
 import modeep.hear.domain.diary.port.`in`.DeleteDiaryUseCase
 import modeep.hear.domain.diary.port.`in`.QueryDiariesUseCase
 import modeep.hear.domain.diary.port.`in`.QueryDiaryDetailUseCase
-import modeep.hear.domain.diary.port.`in`.RecommendDairyUseCase
+import modeep.hear.domain.diary.port.`in`.RecommendDiaryUseCase
 import modeep.hear.domain.diary.port.`in`.UpdateDiaryContentUseCase
 import modeep.hear.domain.diary.port.`in`.UploadDiaryImageUseCase
 import modeep.hear.global.common.response.ApiResult
@@ -35,7 +35,7 @@ class DiaryWebAdapter(
     private val deleteDiaryUseCase: DeleteDiaryUseCase,
     private val updateDiaryContentUseCase: UpdateDiaryContentUseCase,
     private val uploadDiaryImageUseCase: UploadDiaryImageUseCase,
-    private val recommendDairyUseCase: RecommendDairyUseCase
+    private val recommendDiaryUseCase: RecommendDiaryUseCase
 ) : DiaryApiDocument {
 
     @GetMapping
@@ -91,7 +91,7 @@ class DiaryWebAdapter(
     override fun recommendDiary(): ResponseEntity<ApiResult<RecommendDiaryResponse>> {
         return ResponseEntity.ok(
             ApiResult(
-                data = recommendDairyUseCase.execute()
+                data = recommendDiaryUseCase.execute()
             )
         )
     }
