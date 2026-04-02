@@ -68,6 +68,9 @@ class DiaryCompositeAdapter(
     ): List<Diary> =
         persistenceAdapter.findAllByCreatedAtBetween(start, end)
 
+    override fun findRandomByUserId(userId: UUID): Diary? =
+        persistenceAdapter.findRandomByUserId(userId)
+
     override fun save(diary: Diary) =
         persistenceAdapter.save(diary)
 
