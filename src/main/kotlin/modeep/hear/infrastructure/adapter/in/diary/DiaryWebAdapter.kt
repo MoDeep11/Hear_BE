@@ -89,6 +89,10 @@ class DiaryWebAdapter(
 
     @GetMapping("/recommendation")
     override fun recommendDiary(): ResponseEntity<ApiResult<RecommendDiaryResponse>> {
-        TODO("Not yet implemented")
+        return ResponseEntity.ok(
+            ApiResult(
+                data = recommendDairyUseCase.execute()
+            )
+        )
     }
 }
