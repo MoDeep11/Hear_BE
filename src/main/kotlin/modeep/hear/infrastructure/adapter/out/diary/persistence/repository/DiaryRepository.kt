@@ -99,4 +99,15 @@ interface DiaryRepository : JpaRepository<DiaryJpaEntity, UUID> {
         baseTimeCreatedAtAfter: LocalDateTime,
         baseTimeCreatedAtBefore: LocalDateTime
     ): MutableList<DiaryJpaEntity>
+
+    @Query(
+        value = """
+        SELECT * FROM diaries
+        WHERE user_id = :userId
+        ORDER BY RANDOM()
+        LIMIT 1
+    """,
+        nativeQuery = true
+    )
+    fun findRandomByUserId(@Param("userId") userId: UUID): DiaryJpaEntity?
 }

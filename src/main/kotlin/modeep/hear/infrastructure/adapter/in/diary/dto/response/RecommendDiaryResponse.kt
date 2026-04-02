@@ -7,6 +7,5 @@ import java.util.UUID
 data class RecommendDiaryResponse(
     val diaryId: UUID,
     val targetDate: LocalDate,
-    val emotion: Emotion,
-    val recommendationText: String
+    val emotion: Emotion
 )
