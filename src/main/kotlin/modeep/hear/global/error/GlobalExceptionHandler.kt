@@ -8,6 +8,7 @@ import modeep.hear.global.error.exception.CriticalException
 import modeep.hear.global.error.exception.GlobalErrorCode
 import modeep.hear.global.util.maskIfSensitive
 import modeep.hear.infrastructure.external.openfeign.discord.DiscordSendService
+import org.springframework.context.MessageSource
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.http.converter.HttpMessageNotReadableException
@@ -16,13 +17,18 @@ import org.springframework.web.bind.MethodArgumentNotValidException
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.RestControllerAdvice
 import org.springframework.web.servlet.resource.NoResourceFoundException
+import java.util.Locale
 
 private val log = KotlinLogging.logger {}
 
 @RestControllerAdvice
 class GlobalExceptionHandler(
-    private val discordSendService: DiscordSendService
+    private val discordSendService: DiscordSendService,
+    private val messageSource: MessageSource
 ) {
+
+    private fun resolveFieldName(field: String): String =
+        messageSource.getMessage(field, null, field, Locale.KOREA) ?: field
 
     @ExceptionHandler(BusinessException::class)
     fun handlerBusinessException(e: BusinessException, request: HttpServletRequest): ResponseEntity<ErrorResponse> {
@@ -62,18 +68,23 @@ class GlobalExceptionHandler(
     fun handleMethodArgumentNotValidException(e: MethodArgumentNotValidException, request: HttpServletRequest): ResponseEntity<ErrorResponse> {
         log.error { "Validation failed for argument: ${e.bindingResult.fieldError?.field}" }
         val fieldErrors = e.bindingResult.fieldErrors
+        val firstMessage = fieldErrors.firstOrNull()?.let { fieldError ->
+            val fieldName = resolveFieldName(fieldError.field)
+            fieldError.defaultMessage?.replace("{0}", fieldName)
+        } ?: GlobalErrorCode.INVALID_INPUT_VALUE.message
         return ResponseEntity
             .status(HttpStatus.BAD_REQUEST.value())
             .body(
                 ErrorResponse(
-                    code = GlobalErrorCode.INVALID_REQUEST_BODY.code,
-                    message = fieldErrors.firstOrNull()?.defaultMessage ?: GlobalErrorCode.INVALID_REQUEST_BODY.message,
+                    code = GlobalErrorCode.INVALID_INPUT_VALUE.code,
+                    message = firstMessage,
                     path = request.requestURI,
                     errors = fieldErrors.map { fieldError ->
+                        val fieldName = resolveFieldName(fieldError.field)
                         ErrorResponse.FieldError(
                             field = fieldError.field,
                             value = fieldError.rejectedValue?.toString().maskIfSensitive(fieldError.field),
-                            reason = fieldError?.defaultMessage ?: "unknown"
+                            reason = fieldError.defaultMessage?.replace("{0}", fieldName) ?: "unknown"
                         )
                     }
                 )
