@@ -11,6 +11,7 @@ import modeep.hear.domain.user.port.`in`.UpdatePasswordUseCase
 import modeep.hear.domain.user.port.`in`.UpdateProfileImageUseCase
 import modeep.hear.global.common.response.ApiResult
 import modeep.hear.global.document.user.UserApiDocument
+import modeep.hear.infrastructure.adapter.`in`.user.dto.response.GetUserCalendarResponse
 import modeep.hear.infrastructure.adapter.`in`.user.dto.request.DeleteUserRequest
 import modeep.hear.infrastructure.adapter.`in`.user.dto.request.UpdateEmailSubscriptionRequest
 import modeep.hear.infrastructure.adapter.`in`.user.dto.request.UpdateNicknameRequest
@@ -74,11 +75,12 @@ class UserWebAdapter(
     override fun getStatistics(
         @RequestParam
         @DateTimeFormat(pattern = "yyyy-MM")
-        yearMonth: YearMonth
+        yearMonth: YearMonth?
     ): ResponseEntity<ApiResult<UserStatisticsResponse>> {
+        val effectiveYearMonth = yearMonth ?: YearMonth.now()
         return ResponseEntity.ok(
             ApiResult(
-                data = getUserStatisticsUseCase.execute(yearMonth)
+                data = getUserStatisticsUseCase.execute(effectiveYearMonth)
             )
         )
     }
@@ -138,5 +140,14 @@ class UserWebAdapter(
                 data = updateEmailSubscriptionUseCase.execute(request)
             )
         )
+    }
+
+    override fun getUserCalendar(
+        @RequestParam
+        @DateTimeFormat(pattern = "yyyy-MM")
+        yearMonth: YearMonth?
+    ): ResponseEntity<ApiResult<List<GetUserCalendarResponse>>> {
+        val effectiveYearMonth = yearMonth ?: YearMonth.now()
+        TODO("Not yet implemented")
     }
 }

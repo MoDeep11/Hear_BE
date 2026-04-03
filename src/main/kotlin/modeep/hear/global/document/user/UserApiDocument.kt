@@ -2,6 +2,7 @@ package modeep.hear.global.document.user
 
 import io.swagger.v3.oas.annotations.tags.Tag
 import modeep.hear.global.common.response.ApiResult
+import modeep.hear.infrastructure.adapter.`in`.user.dto.response.GetUserCalendarResponse
 import modeep.hear.infrastructure.adapter.`in`.user.dto.request.DeleteUserRequest
 import modeep.hear.infrastructure.adapter.`in`.user.dto.request.UpdateEmailSubscriptionRequest
 import modeep.hear.infrastructure.adapter.`in`.user.dto.request.UpdateNicknameRequest
@@ -28,7 +29,7 @@ interface UserApiDocument {
     fun getProfile(): ResponseEntity<ApiResult<UserProfileResponse>>
 
     fun getStatistics(
-        yearMonth: YearMonth
+        yearMonth: YearMonth?
     ): ResponseEntity<ApiResult<UserStatisticsResponse>>
 
     fun getSummary(): ResponseEntity<ApiResult<UserSummaryResponse>>
@@ -48,4 +49,8 @@ interface UserApiDocument {
     fun updateEmailSubscription(
         request: UpdateEmailSubscriptionRequest
     ): ResponseEntity<ApiResult<UpdateEmailSubscriptionResponse>>
+
+    fun getUserCalendar(
+        yearMonth: YearMonth?
+    ): ResponseEntity<ApiResult<List<GetUserCalendarResponse>>>
 }
