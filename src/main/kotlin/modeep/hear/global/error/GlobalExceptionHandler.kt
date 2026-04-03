@@ -9,9 +9,11 @@ import modeep.hear.global.error.exception.GlobalErrorCode
 import modeep.hear.global.util.maskIfSensitive
 import modeep.hear.infrastructure.external.openfeign.discord.DiscordSendService
 import org.springframework.context.MessageSource
+import org.springframework.context.i18n.LocaleContextHolder
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.http.converter.HttpMessageNotReadableException
+import org.springframework.validation.FieldError
 import org.springframework.web.HttpRequestMethodNotSupportedException
 import org.springframework.web.bind.MethodArgumentNotValidException
 import org.springframework.web.bind.MissingRequestHeaderException
@@ -28,8 +30,8 @@ class GlobalExceptionHandler(
     private val messageSource: MessageSource
 ) {
 
-    private fun resolveFieldName(field: String): String =
-        messageSource.getMessage(field, null, field, Locale.KOREA) ?: field
+    private fun resolveValidationMessage(fieldError: FieldError): String =
+        messageSource.getMessage(fieldError, LocaleContextHolder.getLocale())
 
     @ExceptionHandler(BusinessException::class)
     fun handlerBusinessException(e: BusinessException, request: HttpServletRequest): ResponseEntity<ErrorResponse> {
@@ -69,10 +71,9 @@ class GlobalExceptionHandler(
     fun handleMethodArgumentNotValidException(e: MethodArgumentNotValidException, request: HttpServletRequest): ResponseEntity<ErrorResponse> {
         log.error { "Validation failed for argument: ${e.bindingResult.fieldError?.field}" }
         val fieldErrors = e.bindingResult.fieldErrors
-        val firstMessage = fieldErrors.firstOrNull()?.let { fieldError ->
-            val fieldName = resolveFieldName(fieldError.field)
-            fieldError.defaultMessage?.replace("{0}", fieldName)
-        } ?: GlobalErrorCode.INVALID_INPUT_VALUE.message
+        val firstMessage = fieldErrors.firstOrNull()
+            ?.let(::resolveValidationMessage)
+            ?: GlobalErrorCode.INVALID_INPUT_VALUE.message
         return ResponseEntity
             .status(HttpStatus.BAD_REQUEST.value())
             .body(
@@ -81,11 +82,10 @@ class GlobalExceptionHandler(
                     message = firstMessage,
                     path = request.requestURI,
                     errors = fieldErrors.map { fieldError ->
-                        val fieldName = resolveFieldName(fieldError.field)
                         ErrorResponse.FieldError(
                             field = fieldError.field,
                             value = fieldError.rejectedValue?.toString().maskIfSensitive(fieldError.field),
-                            reason = fieldError.defaultMessage?.replace("{0}", fieldName) ?: "unknown"
+                            reason = resolveValidationMessage(fieldError)
                         )
                     }
                 )
@@ -108,7 +108,7 @@ class GlobalExceptionHandler(
 
     @ExceptionHandler(HttpMessageNotReadableException::class)
     fun handleHttpMessageNotReadableException(e: HttpMessageNotReadableException, request: HttpServletRequest): ResponseEntity<ErrorResponse> {
-        log.warn { "HttpMessageNotReadableException: ${e.message}" }
+        log.warn { "HttpMessageNotReadableException on ${request.requestURI}: unreadable request body" }
         return ResponseEntity
             .status(GlobalErrorCode.INVALID_REQUEST_BODY.status.value())
             .body(
@@ -124,7 +124,8 @@ class GlobalExceptionHandler(
     fun handleHttpRequestMethodNotSupportedException(e: HttpRequestMethodNotSupportedException, request: HttpServletRequest): ResponseEntity<ErrorResponse> {
         log.warn { "HttpRequestMethodNotSupportedException: ${e.method} is not supported" }
         return ResponseEntity
-            .status(GlobalErrorCode.METHOD_NOT_ALLOWED.status.value())
+            .status(GlobalErrorCode.METHOD_NOT_ALLOWED.status)
+            .headers(e.headers)
             .body(
                 ErrorResponse(
                     code = GlobalErrorCode.METHOD_NOT_ALLOWED.code,
