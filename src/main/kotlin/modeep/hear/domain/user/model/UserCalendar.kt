@@ -35,7 +35,7 @@ data class UserCalendar(
             hasDiary: Boolean = false,
             diaryId: UUID? = null,
             emotion: Emotion? = null
-        ) : UserCalendar {
+        ): UserCalendar {
             return UserCalendar(
                 id = id,
                 hasDiary = hasDiary,

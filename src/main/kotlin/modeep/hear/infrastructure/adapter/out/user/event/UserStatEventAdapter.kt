@@ -87,15 +87,25 @@ class UserStatEventAdapter(
     }
 
     private fun updateCalendarOnDelete(userId: UUID, diaryDate: LocalDate, hasDiaryOnDate: Boolean) {
-        if (hasDiaryOnDate) return
-
         val existingCalendar = userCalendarPort.findByUserIdAndDate(userId, diaryDate) ?: return
-        userCalendarPort.save(
-            existingCalendar.copy(
-                hasDiary = false,
-                diaryId = null,
-                emotion = null
+
+        if (hasDiaryOnDate) {
+            val remaining = queryDiaryPort.findLatestByUserIdAndDate(userId, diaryDate) ?: return
+            userCalendarPort.save(
+                existingCalendar.copy(
+                    hasDiary = true,
+                    diaryId = remaining.id,
+                    emotion = remaining.emotion
+                )
             )
-        )
+        } else {
+            userCalendarPort.save(
+                existingCalendar.copy(
+                    hasDiary = false,
+                    diaryId = null,
+                    emotion = null
+                )
+            )
+        }
     }
 }

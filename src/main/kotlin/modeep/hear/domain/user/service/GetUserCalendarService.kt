@@ -19,12 +19,12 @@ class GetUserCalendarService(
         val calendars = userCalendarPort.findAllByUserIdAndYearMonth(user.id, yearMonth)
 
         return calendars.map {
-                GetUserCalendarResponse(
-                    date = it.id.calendarDate,
-                    hasDiary = it.hasDiary,
-                    diaryId = it.diaryId,
-                    emotion = it.emotion
-                )
-            }
+            GetUserCalendarResponse(
+                date = it.id.calendarDate,
+                hasDiary = it.hasDiary,
+                diaryId = it.diaryId,
+                emotion = it.emotion
+            )
+        }
     }
 }
