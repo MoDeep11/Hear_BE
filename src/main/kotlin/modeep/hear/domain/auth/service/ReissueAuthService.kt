@@ -28,7 +28,9 @@ class ReissueAuthService(
         val userId = accessTokenClaim.subject
         verifyRefreshTokenOwner(request.refreshToken, userId)
 
-        return jwtPort.createToken(UUID.fromString(userId))
+        val userUUID = runCatching { UUID.fromString(userId) }
+            .getOrElse { throw BusinessException(AuthErrorCode.INVALID_TOKEN) }
+        return jwtPort.createToken(userUUID)
     }
 
     private fun verifyRefreshTokenOwner(rawRefreshToken: String, userId: String) {
