@@ -1,8 +1,10 @@
 package modeep.hear.infrastructure.adapter.out.user.persistence
 
+import modeep.hear.domain.user.exception.UserErrorCode
 import modeep.hear.domain.user.model.UserCalendar
 import modeep.hear.domain.user.model.id.UserCalendarId
 import modeep.hear.domain.user.port.out.UserCalendarPort
+import modeep.hear.global.error.exception.BusinessException
 import modeep.hear.infrastructure.adapter.out.calendar.persistence.repository.CalendarRepository
 import modeep.hear.infrastructure.adapter.out.user.persistence.entity.UserCalendarJpaEntity
 import modeep.hear.infrastructure.adapter.out.user.persistence.entity.id.UserCalendarIdEntity
@@ -32,13 +34,20 @@ class UserCalendarPersistenceAdapter(
             val calendars = calendarRepo.findAllByCalendarDateIn(missingDates)
             val calendarMap = calendars.associateBy { it.calendarDate }
 
-            val newEntities = missingDates.mapNotNull { date ->
-                calendarMap[date]?.let { calendar ->
-                    UserCalendarJpaEntity(
-                        id = UserCalendarIdEntity(calendarDate = date, userId = userId),
-                        calendar = calendar
-                    )
-                }
+            val missingCalendarDates = missingDates.filterNot(calendarMap::containsKey)
+            if (missingCalendarDates.isEmpty()) {
+                throw BusinessException(UserErrorCode.CALENDAR_NOT_FOUND, "missingCalendarDates : $missingCalendarDates")
+            }
+
+            val newEntities = missingDates.map { date ->
+                val calendar = requireNotNull(calendarMap[date])
+                UserCalendarJpaEntity(
+                    id = UserCalendarIdEntity(
+                        calendarDate = date,
+                        userId = userId
+                    ),
+                    calendar = calendar
+                )
             }
 
             repo.saveAll(newEntities)

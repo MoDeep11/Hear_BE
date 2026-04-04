@@ -6,6 +6,7 @@ import java.util.UUID
 
 data class GetUserCalendarResponse(
     val date: LocalDate,
-    val diaryId: UUID,
-    val emotion: Emotion
+    val hasDiary: Boolean,
+    val diaryId: UUID?,
+    val emotion: Emotion?
 )

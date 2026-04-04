@@ -144,6 +144,7 @@ class UserWebAdapter(
         )
     }
 
+    @GetMapping("/calendars")
     override fun getUserCalendar(
         @RequestParam
         @DateTimeFormat(pattern = "yyyy-MM")
