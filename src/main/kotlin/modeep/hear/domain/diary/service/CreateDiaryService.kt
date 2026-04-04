@@ -44,7 +44,14 @@ class CreateDiaryService(
 
         commandDiaryPort.save(diary)
         chatCommandService.finishChatWithSuspend(user.id, chat)
-        eventPublisher.publish(IncreasedUserStatEvent(userId))
+        eventPublisher.publish(
+            IncreasedUserStatEvent(
+                userId = userId,
+                diaryId = diary.id,
+                emotion = diary.emotion,
+                diaryDate = diary.baseTime.createdAt.toLocalDate()
+            )
+        )
 
         val task = taskPort.findByChatId(chatId)
         if (task != null) {

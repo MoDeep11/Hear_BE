@@ -37,7 +37,8 @@ class DeleteDiaryService(
                 userId = userId,
                 createdAtOfDiary = diary.baseTime.createdAt,
                 hasTodayDiary = hasTodayDiary,
-                totalCount = totalCount
+                totalCount = totalCount,
+                diaryDate = diary.baseTime.createdAt.toLocalDate()
             )
         )
     }

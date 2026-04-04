@@ -48,6 +48,51 @@ class UserCalendarPersistenceAdapter(
         return existing.map { it.toModel() }
     }
 
+    override fun findByUserIdAndDate(userId: UUID, date: LocalDate): UserCalendar? {
+        return repo.findByIdUserIdAndIdCalendarDate(userId, date)?.toModel()
+    }
+
+    override fun save(userCalendar: UserCalendar) {
+        val idEntity = UserCalendarIdEntity(
+            calendarDate = userCalendar.id.calendarDate,
+            userId = userCalendar.id.userId
+        )
+        val calendar = calendarRepo.findById(userCalendar.id.calendarDate).orElseThrow {
+            IllegalStateException("Calendar not found for date: ${userCalendar.id.calendarDate}")
+        }
+        repo.save(
+            UserCalendarJpaEntity(
+                id = idEntity,
+                calendar = calendar,
+                hasDiary = userCalendar.hasDiary,
+                diaryId = userCalendar.diaryId,
+                emotion = userCalendar.emotion
+            )
+        )
+    }
+
+    override fun saveAll(userCalendars: List<UserCalendar>) {
+        val dates = userCalendars.map { it.id.calendarDate }
+        val calendarMap = calendarRepo.findAllByCalendarDateIn(dates).associateBy { it.calendarDate }
+
+        val entities = userCalendars.mapNotNull { userCalendar ->
+            calendarMap[userCalendar.id.calendarDate]?.let { calendar ->
+                UserCalendarJpaEntity(
+                    id = UserCalendarIdEntity(
+                        calendarDate = userCalendar.id.calendarDate,
+                        userId = userCalendar.id.userId
+                    ),
+                    calendar = calendar,
+                    hasDiary = userCalendar.hasDiary,
+                    diaryId = userCalendar.diaryId,
+                    emotion = userCalendar.emotion
+                )
+            }
+        }
+
+        repo.saveAll(entities)
+    }
+
     private fun UserCalendarJpaEntity.toModel() = UserCalendar(
         id = UserCalendarId(
             calendarDate = id.calendarDate,

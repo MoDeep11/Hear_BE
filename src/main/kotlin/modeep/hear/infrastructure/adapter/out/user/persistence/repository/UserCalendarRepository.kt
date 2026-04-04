@@ -13,4 +13,6 @@ interface UserCalendarRepository : JpaRepository<UserCalendarJpaEntity, UserCale
         idCalendarDateAfter: LocalDate,
         idCalendarDateBefore: LocalDate
     ): MutableList<UserCalendarJpaEntity>
+
+    fun findByIdUserIdAndIdCalendarDate(idUserId: UUID, idCalendarDate: LocalDate): UserCalendarJpaEntity?
 }
