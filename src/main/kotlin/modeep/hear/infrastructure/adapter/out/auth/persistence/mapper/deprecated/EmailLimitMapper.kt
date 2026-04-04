@@ -1,10 +1,9 @@
-package modeep.hear.infrastructure.adapter.out.auth.persistence.mapper
+package modeep.hear.infrastructure.adapter.out.auth.persistence.mapper.deprecated
 
 import modeep.hear.domain.auth.model.EmailLimit
-import modeep.hear.infrastructure.adapter.out.auth.persistence.entity.EmailLimitRedisEntity
-import org.springframework.stereotype.Component
+import modeep.hear.infrastructure.adapter.out.auth.persistence.entity.deprecated.EmailLimitRedisEntity
 
-@Component
+@Deprecated("Not used anymore")
 class EmailLimitMapper {
     fun toModel(entity: EmailLimitRedisEntity) =
         EmailLimit(

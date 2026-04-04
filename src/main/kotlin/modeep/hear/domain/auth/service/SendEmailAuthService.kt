@@ -1,7 +1,6 @@
 package modeep.hear.domain.auth.service
 
 import modeep.hear.domain.auth.exception.AuthErrorCode
-import modeep.hear.domain.auth.model.EmailLimit
 import modeep.hear.domain.auth.model.EmailVerification
 import modeep.hear.domain.auth.model.PasswordResetTicket
 import modeep.hear.domain.auth.port.`in`.SendEmailAuthUseCase
@@ -31,11 +30,10 @@ class SendEmailAuthService(
 ) : SendEmailAuthUseCase {
 
     override fun execute(request: SendEmailRequest) {
-        // 어뷰징 방지
-        if (emailLimitPort.findByEmail(request.email) != null) {
+        // 어뷰징 방지 (원자적 SET NX)
+        if (!emailLimitPort.saveIfAbsent(request.email)) {
             throw BusinessException(AuthErrorCode.TOO_MANY_EMAIL_REQUESTS)
         }
-        emailLimitPort.save(EmailLimit(email = request.email, count = 1))
 
         when (request.type) {
             EmailRequestType.PASSWORD_RESET -> sendPasswordResetEmail(request.email)
