@@ -38,7 +38,7 @@ class CreateUserService(
 
         val yearMonth = YearMonth.now()
         val userCalendars = (1..yearMonth.lengthOfMonth()).map { day ->
-            UserCalendar(
+            UserCalendar.create(
                 id = UserCalendarId(
                     calendarDate = yearMonth.atDay(day),
                     userId = user.id
