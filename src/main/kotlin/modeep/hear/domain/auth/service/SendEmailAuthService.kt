@@ -1,9 +1,11 @@
 package modeep.hear.domain.auth.service
 
 import modeep.hear.domain.auth.exception.AuthErrorCode
+import modeep.hear.domain.auth.model.EmailLimit
 import modeep.hear.domain.auth.model.EmailVerification
 import modeep.hear.domain.auth.model.PasswordResetTicket
 import modeep.hear.domain.auth.port.`in`.SendEmailAuthUseCase
+import modeep.hear.domain.auth.port.out.EmailLimitPort
 import modeep.hear.domain.auth.port.out.EmailVerificationPort
 import modeep.hear.domain.auth.port.out.MailExternalPort
 import modeep.hear.domain.auth.port.out.PasswordResetTicketPort
@@ -13,16 +15,14 @@ import modeep.hear.global.error.exception.BusinessException
 import modeep.hear.global.util.VerificationCodeGenerator
 import modeep.hear.infrastructure.adapter.`in`.auth.dto.EmailRequestType
 import modeep.hear.infrastructure.adapter.`in`.auth.dto.request.SendEmailRequest
-import org.springframework.data.redis.core.StringRedisTemplate
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.util.UUID
-import java.util.concurrent.TimeUnit
 
 @Service
 @Transactional(readOnly = true)
 class SendEmailAuthService(
-    private val redisTemplate: StringRedisTemplate, // TODO: 언젠가 변경
+    private val emailLimitPort: EmailLimitPort,
     private val codeGenerator: VerificationCodeGenerator,
     private val mailExternalPort: MailExternalPort,
     private val emailVerificationPort: EmailVerificationPort,
@@ -31,12 +31,11 @@ class SendEmailAuthService(
 ) : SendEmailAuthUseCase {
 
     override fun execute(request: SendEmailRequest) {
-        val limitKey = "AUTH:LIMIT:${request.email}"
-
         // 어뷰징 방지
-        val isFirstRequest = redisTemplate.opsForValue()
-            .setIfAbsent(limitKey, "sent", 60, TimeUnit.SECONDS) ?: false
-        if (!isFirstRequest) throw BusinessException(AuthErrorCode.TOO_MANY_EMAIL_REQUESTS)
+        if (emailLimitPort.findByEmail(request.email) != null) {
+            throw BusinessException(AuthErrorCode.TOO_MANY_EMAIL_REQUESTS)
+        }
+        emailLimitPort.save(EmailLimit(email = request.email, count = 1))
 
         when (request.type) {
             EmailRequestType.PASSWORD_RESET -> sendPasswordResetEmail(request.email)
