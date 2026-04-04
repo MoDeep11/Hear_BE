@@ -25,6 +25,8 @@ interface QueryDiaryPort {
 
     fun existsByUserIdAndDate(userId: UUID, date: LocalDate): Boolean
 
+    fun findLatestByUserIdAndDate(userId: UUID, date: LocalDate): Diary?
+
     fun countByUserId(userId: UUID): Long
 
     fun findAllByUserIdAndYearMonth(userId: UUID, yearMonth: YearMonth): List<Diary>

@@ -14,4 +14,7 @@ interface UserRepository : JpaRepository<UserJpaEntity, UUID> {
     @Modifying
     @Query("DELETE FROM UserJpaEntity u WHERE u.id = :id")
     fun deleteIfExists(id: UUID)
+
+    @Query("SELECT u.id FROM UserJpaEntity u")
+    fun findAllIds(): List<UUID>
 }

@@ -9,6 +9,7 @@ import modeep.hear.infrastructure.adapter.`in`.auth.dto.request.ReissueRequest
 import modeep.hear.infrastructure.adapter.`in`.auth.dto.response.TokenResponse
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import java.util.UUID
 
 @Service
 @Transactional
@@ -27,7 +28,9 @@ class ReissueAuthService(
         val userId = accessTokenClaim.subject
         verifyRefreshTokenOwner(request.refreshToken, userId)
 
-        return jwtPort.createToken(userId)
+        val userUUID = runCatching { UUID.fromString(userId) }
+            .getOrElse { throw BusinessException(AuthErrorCode.INVALID_TOKEN) }
+        return jwtPort.createToken(userUUID)
     }
 
     private fun verifyRefreshTokenOwner(rawRefreshToken: String, userId: String) {

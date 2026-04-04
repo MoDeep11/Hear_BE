@@ -7,6 +7,7 @@ import modeep.hear.infrastructure.adapter.`in`.user.dto.request.UpdateEmailSubsc
 import modeep.hear.infrastructure.adapter.`in`.user.dto.request.UpdateNicknameRequest
 import modeep.hear.infrastructure.adapter.`in`.user.dto.request.UpdatePasswordRequest
 import modeep.hear.infrastructure.adapter.`in`.user.dto.request.UpdateProfileImageRequest
+import modeep.hear.infrastructure.adapter.`in`.user.dto.response.GetUserCalendarResponse
 import modeep.hear.infrastructure.adapter.`in`.user.dto.response.UpdateEmailSubscriptionResponse
 import modeep.hear.infrastructure.adapter.`in`.user.dto.response.UpdateNicknameResponse
 import modeep.hear.infrastructure.adapter.`in`.user.dto.response.UpdatePasswordResponse
@@ -28,7 +29,7 @@ interface UserApiDocument {
     fun getProfile(): ResponseEntity<ApiResult<UserProfileResponse>>
 
     fun getStatistics(
-        yearMonth: YearMonth
+        yearMonth: YearMonth?
     ): ResponseEntity<ApiResult<UserStatisticsResponse>>
 
     fun getSummary(): ResponseEntity<ApiResult<UserSummaryResponse>>
@@ -48,4 +49,8 @@ interface UserApiDocument {
     fun updateEmailSubscription(
         request: UpdateEmailSubscriptionRequest
     ): ResponseEntity<ApiResult<UpdateEmailSubscriptionResponse>>
+
+    fun getUserCalendar(
+        yearMonth: YearMonth?
+    ): ResponseEntity<ApiResult<List<GetUserCalendarResponse>>>
 }

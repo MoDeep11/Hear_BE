@@ -47,6 +47,12 @@ class DiaryCompositeAdapter(
     override fun existsByUserIdAndDate(userId: UUID, date: LocalDate): Boolean =
         persistenceAdapter.existsByUserIdAndDate(userId, date)
 
+    override fun findLatestByUserIdAndDate(
+        userId: UUID,
+        date: LocalDate
+    ): Diary? =
+        persistenceAdapter.findLatestByUserIdAndDate(userId, date)
+
     override fun countByUserId(userId: UUID): Long =
         persistenceAdapter.countByUserId(userId)
 

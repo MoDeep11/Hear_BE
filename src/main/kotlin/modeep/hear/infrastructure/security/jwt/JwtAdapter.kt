@@ -20,6 +20,7 @@ import org.springframework.stereotype.Component
 import org.springframework.util.StringUtils
 import java.time.LocalDateTime
 import java.util.Date
+import java.util.UUID
 import javax.crypto.SecretKey
 
 @Component
@@ -39,7 +40,7 @@ class JwtAdapter(
 
     private val key: SecretKey = Keys.hmacShaKeyFor(jwtProperties.secret.toByteArray())
 
-    override fun createToken(userId: String): TokenResponse {
+    override fun createToken(userId: UUID): TokenResponse {
         val now = LocalDateTime.now()
 
         return TokenResponse(
@@ -80,10 +81,11 @@ class JwtAdapter(
         return if (remainTime > 0) remainTime else 0L
     }
 
-    override fun registerBlacklist(accessToken: String, remainingTime: Long) {
+    override fun registerBlacklist(accessToken: String, userId: UUID, remainingTime: Long) {
         blacklistTokenPort.save(
             BlacklistToken(
                 accessToken = accessToken,
+                userId = userId,
                 timeToLive = remainingTime
             )
         )
@@ -99,7 +101,7 @@ class JwtAdapter(
         }
     }
 
-    private fun generateToken(userId: String, type: String, expirationSeconds: Long): String {
+    private fun generateToken(userId: UUID, type: String, expirationSeconds: Long): String {
         val now = Date()
 
         return Jwts.builder()
@@ -111,15 +113,16 @@ class JwtAdapter(
             .compact()
     }
 
-    private fun generateAccessToken(userId: String): String =
+    private fun generateAccessToken(userId: UUID): String =
         generateToken(userId, ACCESS_TYPE, jwtProperties.accessExpiration)
 
-    private fun generateRefreshToken(userId: String): String {
+    private fun generateRefreshToken(userId: UUID): String {
         val refreshToken = generateToken(userId, REFRESH_TYPE, jwtProperties.refreshExpiration)
 
         refreshTokenPort.save(
             RefreshToken(
                 refreshToken = refreshToken,
+                userId = userId,
                 timeToLive = jwtProperties.refreshExpiration
             )
         )

@@ -31,6 +31,6 @@ class LoginAuthService(
             )
         }
 
-        return jwtPort.createToken(user.id.toString())
+        return jwtPort.createToken(user.id)
     }
 }

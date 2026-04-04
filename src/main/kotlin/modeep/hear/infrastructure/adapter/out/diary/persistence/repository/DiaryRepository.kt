@@ -95,6 +95,12 @@ interface DiaryRepository : JpaRepository<DiaryJpaEntity, UUID> {
         baseTimeCreatedAtBefore: LocalDateTime
     ): Boolean
 
+    fun findFirstByUserIdAndBaseTimeCreatedAtBetweenOrderByBaseTimeCreatedAtDesc(
+        userId: UUID,
+        baseTimeCreatedAtAfter: LocalDateTime,
+        baseTimeCreatedAtBefore: LocalDateTime
+    ): DiaryJpaEntity?
+
     fun findAllByBaseTime_CreatedAtBetween(
         baseTimeCreatedAtAfter: LocalDateTime,
         baseTimeCreatedAtBefore: LocalDateTime

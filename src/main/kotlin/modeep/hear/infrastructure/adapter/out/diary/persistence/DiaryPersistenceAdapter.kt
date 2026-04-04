@@ -55,6 +55,14 @@ class DiaryPersistenceAdapter(
         return repo.existsByUserIdAndBaseTimeCreatedAtBetween(userId, start, end)
     }
 
+    override fun findLatestByUserIdAndDate(userId: UUID, date: LocalDate): Diary? {
+        val start = date.atStartOfDay()
+        val end = date.atTime(LocalTime.MAX)
+
+        return repo.findFirstByUserIdAndBaseTimeCreatedAtBetweenOrderByBaseTimeCreatedAtDesc(userId, start, end)
+            ?.let { mapper.toModel(it) }
+    }
+
     override fun countByUserId(userId: UUID): Long {
         return repo.countByUserId(userId)
     }
