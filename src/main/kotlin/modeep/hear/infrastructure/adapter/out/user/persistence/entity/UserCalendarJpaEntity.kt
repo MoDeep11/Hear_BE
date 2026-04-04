@@ -9,6 +9,7 @@ import jakarta.persistence.Table
 import modeep.hear.domain.common.vo.Emotion
 import modeep.hear.global.common.entity.BaseTimeEntity
 import modeep.hear.infrastructure.adapter.out.user.persistence.entity.id.UserCalendarIdEntity
+import java.util.UUID
 
 @Entity
 @Table(name = "user_calendars")
@@ -18,6 +19,9 @@ class UserCalendarJpaEntity(
 
     @Column(name = "has_diary", nullable = false)
     val hasDiary: Boolean = false,
+
+    @Column(name = "diary_id", nullable = true)
+    val diaryId: UUID? = null,
 
     @Enumerated(EnumType.STRING)
     @Column(name = "emotion", nullable = true, length = 8)

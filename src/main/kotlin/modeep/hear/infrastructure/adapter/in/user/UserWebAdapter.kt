@@ -2,6 +2,7 @@ package modeep.hear.infrastructure.adapter.`in`.user
 
 import jakarta.validation.Valid
 import modeep.hear.domain.user.port.`in`.DeleteUserUseCase
+import modeep.hear.domain.user.port.`in`.GetUserCalendarUseCase
 import modeep.hear.domain.user.port.`in`.GetUserProfileUseCase
 import modeep.hear.domain.user.port.`in`.GetUserStatisticsUseCase
 import modeep.hear.domain.user.port.`in`.GetUserSummaryUseCase
@@ -11,12 +12,12 @@ import modeep.hear.domain.user.port.`in`.UpdatePasswordUseCase
 import modeep.hear.domain.user.port.`in`.UpdateProfileImageUseCase
 import modeep.hear.global.common.response.ApiResult
 import modeep.hear.global.document.user.UserApiDocument
-import modeep.hear.infrastructure.adapter.`in`.user.dto.response.GetUserCalendarResponse
 import modeep.hear.infrastructure.adapter.`in`.user.dto.request.DeleteUserRequest
 import modeep.hear.infrastructure.adapter.`in`.user.dto.request.UpdateEmailSubscriptionRequest
 import modeep.hear.infrastructure.adapter.`in`.user.dto.request.UpdateNicknameRequest
 import modeep.hear.infrastructure.adapter.`in`.user.dto.request.UpdatePasswordRequest
 import modeep.hear.infrastructure.adapter.`in`.user.dto.request.UpdateProfileImageRequest
+import modeep.hear.infrastructure.adapter.`in`.user.dto.response.GetUserCalendarResponse
 import modeep.hear.infrastructure.adapter.`in`.user.dto.response.UpdateEmailSubscriptionResponse
 import modeep.hear.infrastructure.adapter.`in`.user.dto.response.UpdateNicknameResponse
 import modeep.hear.infrastructure.adapter.`in`.user.dto.response.UpdatePasswordResponse
@@ -46,7 +47,8 @@ class UserWebAdapter(
     private val updateNicknameUserUseCase: UpdateNicknameUserUseCase,
     private val updateProfileImageUseCase: UpdateProfileImageUseCase,
     private val updatePasswordUseCase: UpdatePasswordUseCase,
-    private val updateEmailSubscriptionUseCase: UpdateEmailSubscriptionUseCase
+    private val updateEmailSubscriptionUseCase: UpdateEmailSubscriptionUseCase,
+    private val getUserCalendarUseCase: GetUserCalendarUseCase
 ) : UserApiDocument {
 
     @DeleteMapping
@@ -148,6 +150,7 @@ class UserWebAdapter(
         yearMonth: YearMonth?
     ): ResponseEntity<ApiResult<List<GetUserCalendarResponse>>> {
         val effectiveYearMonth = yearMonth ?: YearMonth.now()
-        TODO("Not yet implemented")
+        val res = getUserCalendarUseCase.execute(effectiveYearMonth)
+        return ResponseEntity.ok(ApiResult(data = res))
     }
 }
