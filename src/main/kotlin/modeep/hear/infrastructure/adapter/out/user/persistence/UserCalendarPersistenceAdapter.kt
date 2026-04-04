@@ -14,6 +14,8 @@ import java.time.LocalDate
 import java.time.YearMonth
 import java.util.UUID
 
+private const val BATCH_SIZE = 100
+
 @Component
 class UserCalendarPersistenceAdapter(
     private val repo: UserCalendarRepository,
@@ -25,36 +27,14 @@ class UserCalendarPersistenceAdapter(
         val end = yearMonth.atEndOfMonth()
 
         val existing = repo.findAllByIdUserIdAndIdCalendarDateBetween(userId, start, end)
+            .associateBy { it.id.calendarDate }
 
-        val existingDates = existing.map { it.id.calendarDate }.toSet()
-        val allDates = (1..yearMonth.lengthOfMonth()).map { yearMonth.atDay(it) }
-        val missingDates = allDates.filter { it !in existingDates }
-
-        if (missingDates.isNotEmpty()) {
-            val calendars = calendarRepo.findAllByCalendarDateIn(missingDates)
-            val calendarMap = calendars.associateBy { it.calendarDate }
-
-            val missingCalendarDates = missingDates.filterNot(calendarMap::containsKey)
-            if (missingCalendarDates.isEmpty()) {
-                throw BusinessException(UserErrorCode.CALENDAR_NOT_FOUND, "missingCalendarDates : $missingCalendarDates")
-            }
-
-            val newEntities = missingDates.map { date ->
-                val calendar = requireNotNull(calendarMap[date])
-                UserCalendarJpaEntity(
-                    id = UserCalendarIdEntity(
-                        calendarDate = date,
-                        userId = userId
-                    ),
-                    calendar = calendar
-                )
-            }
-
-            repo.saveAll(newEntities)
-            return (existing + newEntities).map { it.toModel() }
+        return (1..yearMonth.lengthOfMonth()).map { day ->
+            val date = yearMonth.atDay(day)
+            existing[date]?.toModel() ?: UserCalendar(
+                id = UserCalendarId(calendarDate = date, userId = userId)
+            )
         }
-
-        return existing.map { it.toModel() }
     }
 
     override fun findByUserIdAndDate(userId: UUID, date: LocalDate): UserCalendar? {
@@ -84,22 +64,47 @@ class UserCalendarPersistenceAdapter(
         val dates = userCalendars.map { it.id.calendarDate }
         val calendarMap = calendarRepo.findAllByCalendarDateIn(dates).associateBy { it.calendarDate }
 
-        val entities = userCalendars.mapNotNull { userCalendar ->
-            calendarMap[userCalendar.id.calendarDate]?.let { calendar ->
-                UserCalendarJpaEntity(
-                    id = UserCalendarIdEntity(
-                        calendarDate = userCalendar.id.calendarDate,
-                        userId = userCalendar.id.userId
-                    ),
-                    calendar = calendar,
-                    hasDiary = userCalendar.hasDiary,
-                    diaryId = userCalendar.diaryId,
-                    emotion = userCalendar.emotion
-                )
-            }
+        val missingDates = dates.filterNot(calendarMap::containsKey)
+        if (missingDates.isNotEmpty()) {
+            throw BusinessException(UserErrorCode.CALENDAR_NOT_FOUND, "missingDates: $missingDates")
+        }
+
+        val entities = userCalendars.map { userCalendar ->
+            UserCalendarJpaEntity(
+                id = UserCalendarIdEntity(
+                    calendarDate = userCalendar.id.calendarDate,
+                    userId = userCalendar.id.userId
+                ),
+                calendar = calendarMap.getValue(userCalendar.id.calendarDate),
+                hasDiary = userCalendar.hasDiary,
+                diaryId = userCalendar.diaryId,
+                emotion = userCalendar.emotion
+            )
         }
 
         repo.saveAll(entities)
+    }
+
+    override fun saveAllForAllUsers(userIds: List<UUID>, yearMonth: YearMonth) {
+        val dates = (1..yearMonth.lengthOfMonth()).map { yearMonth.atDay(it) }
+        val calendarMap = calendarRepo.findAllByCalendarDateIn(dates).associateBy { it.calendarDate }
+
+        val missingDates = dates.filterNot(calendarMap::containsKey)
+        if (missingDates.isNotEmpty()) {
+            throw BusinessException(UserErrorCode.CALENDAR_NOT_FOUND, "missingDates: $missingDates")
+        }
+
+        userIds.chunked(BATCH_SIZE) { chunk ->
+            val entities = chunk.flatMap { userId ->
+                dates.map { date ->
+                    UserCalendarJpaEntity(
+                        id = UserCalendarIdEntity(calendarDate = date, userId = userId),
+                        calendar = calendarMap.getValue(date)
+                    )
+                }
+            }
+            repo.saveAll(entities)
+        }
     }
 
     private fun UserCalendarJpaEntity.toModel() = UserCalendar(

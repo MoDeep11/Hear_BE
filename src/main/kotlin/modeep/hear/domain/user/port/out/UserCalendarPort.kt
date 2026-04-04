@@ -13,4 +13,6 @@ interface UserCalendarPort {
     fun save(userCalendar: UserCalendar)
 
     fun saveAll(userCalendars: List<UserCalendar>)
+
+    fun saveAllForAllUsers(userIds: List<UUID>, yearMonth: YearMonth)
 }
