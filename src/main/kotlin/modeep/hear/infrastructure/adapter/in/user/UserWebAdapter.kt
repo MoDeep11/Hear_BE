@@ -36,7 +36,7 @@ import org.springframework.web.bind.annotation.RestController
 import java.time.YearMonth
 
 @RestController
-@RequestMapping("/api/v1/user/me")
+@RequestMapping("/api/v1/users/me")
 class UserWebAdapter(
     private val deleteUserUseCase: DeleteUserUseCase,
     private val getUserProfileUseCase: GetUserProfileUseCase,
