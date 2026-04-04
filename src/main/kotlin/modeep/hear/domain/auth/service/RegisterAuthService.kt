@@ -41,7 +41,7 @@ class RegisterAuthService(
         createUserUseCase.execute(user)
         verifiedTicketPort.delete(request.ticket)
 
-        return jwtPort.createToken(user.id.toString())
+        return jwtPort.createToken(user.id)
     }
 
     private fun matches(password: String, confirmPassword: String) {
