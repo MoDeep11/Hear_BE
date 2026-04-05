@@ -9,6 +9,7 @@ import modeep.hear.global.error.exception.GlobalErrorCode
 import modeep.hear.global.util.maskIfSensitive
 import modeep.hear.infrastructure.external.openfeign.discord.DiscordSendService
 import org.springframework.context.MessageSource
+import org.springframework.context.annotation.Primary
 import org.springframework.context.i18n.LocaleContextHolder
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -23,8 +24,9 @@ import org.springframework.web.servlet.resource.NoResourceFoundException
 
 private val log = KotlinLogging.logger {}
 
+@Primary
 @RestControllerAdvice
-class GlobalExceptionHandler(
+class DevGlobalExceptionHandler(
     private val discordSendService: DiscordSendService,
     private val messageSource: MessageSource
 ) {
@@ -36,6 +38,8 @@ class GlobalExceptionHandler(
     fun handlerBusinessException(e: BusinessException, request: HttpServletRequest): ResponseEntity<ErrorResponse> {
         val errorCode: ErrorCode = e.errorCode
         log.error { "[BUSINESS ERROR] ${errorCode.code}: ${errorCode.message}, Details: [${e.details}]" }
+
+        discordSendService.sendErrorLog(e, errorCode, request.requestURI)
 
         return ResponseEntity
             .status(errorCode.status.value())
@@ -69,15 +73,21 @@ class GlobalExceptionHandler(
     @ExceptionHandler(MethodArgumentNotValidException::class)
     fun handleMethodArgumentNotValidException(e: MethodArgumentNotValidException, request: HttpServletRequest): ResponseEntity<ErrorResponse> {
         log.error { "Validation failed for argument: ${e.bindingResult.fieldError?.field}" }
+
+        val errorCode = GlobalErrorCode.INVALID_INPUT_VALUE
+
         val fieldErrors = e.bindingResult.fieldErrors
         val firstMessage = fieldErrors.firstOrNull()
             ?.let(::resolveValidationMessage)
-            ?: GlobalErrorCode.INVALID_INPUT_VALUE.message
+            ?: errorCode.message
+
+        discordSendService.sendErrorLog(e, errorCode, request.requestURI)
+
         return ResponseEntity
             .status(HttpStatus.BAD_REQUEST.value())
             .body(
                 ErrorResponse(
-                    code = GlobalErrorCode.INVALID_INPUT_VALUE.code,
+                    code = errorCode.code,
                     message = firstMessage,
                     path = request.requestURI,
                     errors = fieldErrors.map { fieldError ->
@@ -94,6 +104,10 @@ class GlobalExceptionHandler(
     @ExceptionHandler(MissingRequestHeaderException::class)
     fun handleMissingRequestHeaderException(e: MissingRequestHeaderException, request: HttpServletRequest): ResponseEntity<ErrorResponse> {
         log.warn { "MissingRequestHeaderException: ${e.headerName} header is missing" }
+
+        val errorCode = GlobalErrorCode.MISSING_REQUEST_HEADER
+        discordSendService.sendErrorLog(e, errorCode, request.requestURI)
+
         return ResponseEntity
             .status(GlobalErrorCode.MISSING_REQUEST_HEADER.status.value())
             .body(
@@ -108,6 +122,10 @@ class GlobalExceptionHandler(
     @ExceptionHandler(HttpMessageNotReadableException::class)
     fun handleHttpMessageNotReadableException(e: HttpMessageNotReadableException, request: HttpServletRequest): ResponseEntity<ErrorResponse> {
         log.warn { "HttpMessageNotReadableException on ${request.requestURI}: unreadable request body" }
+
+        val errorCode = GlobalErrorCode.INVALID_REQUEST_BODY
+        discordSendService.sendErrorLog(e, errorCode, request.requestURI)
+
         return ResponseEntity
             .status(GlobalErrorCode.INVALID_REQUEST_BODY.status.value())
             .body(
@@ -122,6 +140,10 @@ class GlobalExceptionHandler(
     @ExceptionHandler(HttpRequestMethodNotSupportedException::class)
     fun handleHttpRequestMethodNotSupportedException(e: HttpRequestMethodNotSupportedException, request: HttpServletRequest): ResponseEntity<ErrorResponse> {
         log.warn { "HttpRequestMethodNotSupportedException: ${e.method} is not supported" }
+
+        val errorCode = GlobalErrorCode.METHOD_NOT_ALLOWED
+        discordSendService.sendErrorLog(e, errorCode, request.requestURI)
+
         return ResponseEntity
             .status(GlobalErrorCode.METHOD_NOT_ALLOWED.status)
             .headers(e.headers)
@@ -138,6 +160,9 @@ class GlobalExceptionHandler(
     fun handlerIllegalArgumentException(e: IllegalArgumentException, request: HttpServletRequest): ResponseEntity<ErrorResponse> {
         log.error { "IllegalArgumentException: ${e.message}, Cause: ${e.cause}" }
 
+        val errorCode = GlobalErrorCode.INVALID_REQUEST_BODY
+        discordSendService.sendErrorLog(e, errorCode, request.requestURI)
+
         return ResponseEntity
             .status(HttpStatus.BAD_REQUEST.value())
             .body(
@@ -152,6 +177,10 @@ class GlobalExceptionHandler(
     @ExceptionHandler(NoResourceFoundException::class)
     fun handleNoResourceFoundException(e: NoResourceFoundException, request: HttpServletRequest): ResponseEntity<ErrorResponse> {
         log.warn { "Resource not found: ${e.resourcePath}" }
+
+        val errorCode = GlobalErrorCode.RESOURCE_NOT_FOUND
+        discordSendService.sendErrorLog(e, errorCode, request.requestURI)
+
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
             .body(
                 ErrorResponse(
