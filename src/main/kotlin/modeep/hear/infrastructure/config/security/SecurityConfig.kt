@@ -1,6 +1,8 @@
 package modeep.hear.infrastructure.config.security
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import modeep.hear.global.error.HttpAuthEntryPoint
+import modeep.hear.global.error.HttpAccessDeniedHandler
 import modeep.hear.infrastructure.config.security.constant.SecurityConstants
 import modeep.hear.infrastructure.security.jwt.JwtAdapter
 import org.springframework.beans.factory.annotation.Qualifier
@@ -24,7 +26,9 @@ class SecurityConfig(
     private val jwtAdapter: JwtAdapter,
     private val objectMapper: ObjectMapper,
     @param:Qualifier("handlerExceptionResolver")
-    private val exceptionResolver: HandlerExceptionResolver
+    private val exceptionResolver: HandlerExceptionResolver,
+    private val authEntryPoint: HttpAuthEntryPoint,
+    private val accessDeniedHandler: HttpAccessDeniedHandler
 ) {
     @Bean
     fun passwordEncoder(): PasswordEncoder = BCryptPasswordEncoder()
@@ -48,6 +52,10 @@ class SecurityConfig(
                     .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                     .requestMatchers(*SecurityConstants.PERMIT_PATHS.toTypedArray()).permitAll()
                     .anyRequest().authenticated()
+            }
+            .exceptionHandling {
+                it.authenticationEntryPoint(authEntryPoint)
+                it.accessDeniedHandler(accessDeniedHandler)
             }
             .with(
                 FilterConfig(

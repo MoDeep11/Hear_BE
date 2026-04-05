@@ -150,7 +150,7 @@ class GlobalExceptionHandler(
     }
 
     @ExceptionHandler(NoResourceFoundException::class)
-    fun handleNoResourceFoundException(e: NoResourceFoundException, request: HttpServletRequest): ResponseEntity<Any> {
+    fun handleNoResourceFoundException(e: NoResourceFoundException, request: HttpServletRequest): ResponseEntity<ErrorResponse> {
         log.warn { "Resource not found: ${e.resourcePath}" }
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
             .body(

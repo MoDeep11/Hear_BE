@@ -175,7 +175,7 @@ class DevGlobalExceptionHandler(
     }
 
     @ExceptionHandler(NoResourceFoundException::class)
-    fun handleNoResourceFoundException(e: NoResourceFoundException, request: HttpServletRequest): ResponseEntity<Any> {
+    fun handleNoResourceFoundException(e: NoResourceFoundException, request: HttpServletRequest): ResponseEntity<ErrorResponse> {
         log.warn { "Resource not found: ${e.resourcePath}" }
 
         val errorCode = GlobalErrorCode.RESOURCE_NOT_FOUND
