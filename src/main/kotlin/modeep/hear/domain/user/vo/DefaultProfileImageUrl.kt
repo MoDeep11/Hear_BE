@@ -3,12 +3,12 @@ package modeep.hear.domain.user.vo
 enum class DefaultProfileImageUrl(
     val value: String
 ) {
-    HAPPY("link"), // todo: 링크 추가
-    SAD("link"),
-    ANGRY("link"),
-    ANXIETY("link"),
-    NEUTRAL("link"),
-    NORMAL("https://hear-official.s3.ap-northeast-2.amazonaws.com/default/user-profile/hear_normal_dust.svg");
+    CLOVER("https://hear-official.s3.ap-northeast-2.amazonaws.com/default/user-profile/hear_clover.svg"),
+    TEAR("https://hear-official.s3.ap-northeast-2.amazonaws.com/default/user-profile/hear_tear.svg"),
+    SPIKY("https://hear-official.s3.ap-northeast-2.amazonaws.com/default/user-profile/hear_spiky.svg"),
+    FLOWER("https://hear-official.s3.ap-northeast-2.amazonaws.com/default/user-profile/hear_flower.svg"),
+    STAR("https://hear-official.s3.ap-northeast-2.amazonaws.com/default/user-profile/hear_star.svg"),
+    DUST("https://hear-official.s3.ap-northeast-2.amazonaws.com/default/user-profile/hear_dust.svg");
 
     companion object {
         fun random(): DefaultProfileImageUrl {
