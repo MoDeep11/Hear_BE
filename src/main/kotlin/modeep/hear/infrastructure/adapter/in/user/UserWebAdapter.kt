@@ -143,7 +143,7 @@ class UserWebAdapter(
 
     @GetMapping("/calendars")
     override fun getUserCalendar(
-        @RequestParam
+        @RequestParam(required = false)
         @DateTimeFormat(pattern = "yyyy-MM")
         yearMonth: YearMonth?
     ): ResponseEntity<ApiResult<List<GetUserCalendarResponse>>> {
