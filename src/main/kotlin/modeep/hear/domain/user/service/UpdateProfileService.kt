@@ -32,6 +32,14 @@ class UpdateProfileService(
 
         val previousImageUrl = profile.profileImageUrl
 
+        if (profile.nickname == request.nickname && profile.profileImageUrl == request.profileImageUrl) {
+            return UpdateProfileResponse(
+                nickname = profile.nickname,
+                profileImageUrl = profile.profileImageUrl,
+                updatedAt = LocalDateTime.now()
+            )
+        }
+
         val updatedProfile = profile
             .updateProfileImageUrl(request.profileImageUrl)
             .updateNickname(request.nickname)

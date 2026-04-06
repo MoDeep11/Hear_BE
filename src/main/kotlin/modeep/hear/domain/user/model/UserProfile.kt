@@ -40,6 +40,14 @@ data class UserProfile(
     fun updateNickname(nickname: String): UserProfile {
         val trimmed = nickname.trim().takeIf { it.isNotEmpty() }
             ?: throw BusinessException(UserErrorCode.INVALID_VALUE, "nickname은 비어있을 수 없습니다.")
+
+        if (nickname.length > 20) {
+            throw BusinessException(
+                UserErrorCode.INVALID_VALUE,
+                "nickname 은 20자를 초과할 수 없습니다."
+            )
+        }
+
         return this.copy(nickname = trimmed)
     }
 
