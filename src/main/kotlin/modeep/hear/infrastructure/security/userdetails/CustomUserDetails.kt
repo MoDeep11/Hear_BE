@@ -9,6 +9,8 @@ class CustomUserDetails(
     private val user: User
 ) : UserDetails {
 
+    fun getUser(): User = user
+
     override fun getAuthorities(): Collection<GrantedAuthority> =
         listOf(SimpleGrantedAuthority("ROLE_${user.role.name}"))
 

@@ -7,33 +7,20 @@ import org.springframework.stereotype.Component
 
 @Component
 class ChatMapperImpl(
-    private val baseTimeMapper: BaseTimeMapper,
-    private val messageMapper: MessageMapper
+    private val baseTimeMapper: BaseTimeMapper
 ) : ChatMapper {
     override fun toModel(entity: ChatJpaEntity): Chat =
         Chat(
             id = entity.id,
             userId = entity.userId,
             status = entity.status,
-            baseTime = baseTimeMapper.toModel(entity.baseTime),
-            messages = entity.messages
-                .map { messageMapper.toModel(entity.id, it) }
-                .toMutableList()
+            baseTime = baseTimeMapper.toModel(entity.baseTime)
         )
 
-    override fun toEntity(model: Chat): ChatJpaEntity {
-        val chatEntity = ChatJpaEntity(
+    override fun toEntity(model: Chat): ChatJpaEntity =
+        ChatJpaEntity(
             id = model.id,
             userId = model.userId,
             status = model.status
         )
-
-        val messageEntities = model.messages.map {
-            messageMapper.toEntity(chatEntity, it)
-        }
-
-        chatEntity.updateMessages(messageEntities)
-
-        return chatEntity
-    }
 }

@@ -89,35 +89,41 @@ interface DiaryRepository : JpaRepository<DiaryJpaEntity, UUID> {
     )
     fun findDistinctDatesByUserId(userId: UUID, pageable: Pageable): List<LocalDate>
 
-    @Query("""
+    @Query(
+        """
         SELECT COUNT(d) > 0 
         FROM DiaryJpaEntity d 
         WHERE d.userId = :userId 
         AND d.baseTime.createdAt BETWEEN :after AND :before
-    """)
+    """
+    )
     fun existsByUserIdAndDateRange(
         userId: UUID,
         baseTimeCreatedAtAfter: LocalDateTime,
         baseTimeCreatedAtBefore: LocalDateTime
     ): Boolean
 
-    @Query("""
+    @Query(
+        """
         SELECT d FROM DiaryJpaEntity d 
         WHERE d.userId = :userId 
         AND d.baseTime.createdAt BETWEEN :after AND :before 
         ORDER BY d.baseTime.createdAt DESC 
         LIMIT 1
-    """)
+    """
+    )
     fun findLatestDiary(
         userId: UUID,
         baseTimeCreatedAtAfter: LocalDateTime,
         baseTimeCreatedAtBefore: LocalDateTime
     ): DiaryJpaEntity?
 
-    @Query("""
+    @Query(
+        """
         SELECT d FROM DiaryJpaEntity d 
         WHERE d.baseTime.createdAt BETWEEN :after AND :before
-    """)
+    """
+    )
     fun findAllByDateRange(
         baseTimeCreatedAtAfter: LocalDateTime,
         baseTimeCreatedAtBefore: LocalDateTime

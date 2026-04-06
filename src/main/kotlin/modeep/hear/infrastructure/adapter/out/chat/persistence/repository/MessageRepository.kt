@@ -6,10 +6,12 @@ import org.springframework.data.jpa.repository.Query
 import java.util.UUID
 
 interface MessageRepository : JpaRepository<MessageJpaEntity, UUID> {
-    @Query("""
+    @Query(
+        """
         SELECT m FROM MessageJpaEntity m 
         WHERE m.chatId = :chatId 
         ORDER BY m.baseTime.createdAt ASC
-    """)
+    """
+    )
     fun findAllByChatIdOrderByCreatedAt(chatId: UUID): List<MessageJpaEntity>
 }
