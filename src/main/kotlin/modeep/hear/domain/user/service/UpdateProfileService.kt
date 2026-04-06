@@ -36,7 +36,7 @@ class UpdateProfileService(
             return UpdateProfileResponse(
                 nickname = profile.nickname,
                 profileImageUrl = profile.profileImageUrl,
-                updatedAt = LocalDateTime.now()
+                updatedAt = profile.baseTime.updatedAt
             )
         }
 

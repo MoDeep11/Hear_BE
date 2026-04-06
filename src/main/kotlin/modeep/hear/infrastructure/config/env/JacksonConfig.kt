@@ -33,7 +33,7 @@ class JacksonConfig {
 
         return jacksonObjectMapper()
             .registerModule(javaTimeModule)
-            .disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS) // ISO-8601 표준 문자열
+            .disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS) // 커스텀 포맷: yyyy-MM-dd HH:mm:ss
             .setSerializationInclusion(JsonInclude.Include.NON_NULL) // null 제외
             .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
     }
