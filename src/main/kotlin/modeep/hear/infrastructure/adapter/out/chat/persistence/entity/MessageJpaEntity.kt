@@ -20,6 +20,9 @@ class MessageJpaEntity(
     @JoinColumn(name = "chat_id", nullable = false)
     var chat: ChatJpaEntity,
 
+    @Column(name = "chat_id", nullable = false)
+    var chatId: UUID,
+
     @Enumerated(EnumType.STRING)
     @Column(name = "sender", nullable = false, length = 8)
     val sender: Sender,

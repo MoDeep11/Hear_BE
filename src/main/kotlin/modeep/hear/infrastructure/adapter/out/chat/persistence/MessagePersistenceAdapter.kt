@@ -21,7 +21,7 @@ class MessagePersistenceAdapter(
 
     // --Query--//
     override fun findAllByChatId(chatId: UUID): List<Message> {
-        return messageRepo.findAllByChatIdOrderByBaseTimeCreatedAtAsc(chatId)
+        return messageRepo.findAllByChatIdOrderByCreatedAt(chatId)
             .map { mapper.toModel(chatId, it) }
     }
 
