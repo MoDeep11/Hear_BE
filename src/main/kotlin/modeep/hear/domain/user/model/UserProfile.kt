@@ -31,7 +31,7 @@ data class UserProfile(
                     ?.trim()
                     ?.takeUnless { it.isBlank() }
                     ?: "user${userId.toString().take(8)}",
-                profileImageUrl = DefaultProfileImageUrl.random().value,
+                profileImageUrl = DefaultProfileImageUrl.random(),
                 baseTime = BaseTime()
             )
         }

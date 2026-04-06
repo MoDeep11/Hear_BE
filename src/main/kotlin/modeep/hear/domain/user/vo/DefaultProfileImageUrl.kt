@@ -11,8 +11,8 @@ enum class DefaultProfileImageUrl(
     DUST("https://hear-official.s3.ap-northeast-2.amazonaws.com/default/user-profile/hear_dust.svg");
 
     companion object {
-        fun random(): DefaultProfileImageUrl {
-            return entries.random()
+        fun random(): String {
+            return entries.random().value
         }
     }
 }

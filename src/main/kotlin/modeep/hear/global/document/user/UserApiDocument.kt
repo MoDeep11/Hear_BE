@@ -7,6 +7,7 @@ import modeep.hear.infrastructure.adapter.`in`.user.dto.request.UpdateEmailSubsc
 import modeep.hear.infrastructure.adapter.`in`.user.dto.request.UpdateNicknameRequest
 import modeep.hear.infrastructure.adapter.`in`.user.dto.request.UpdatePasswordRequest
 import modeep.hear.infrastructure.adapter.`in`.user.dto.request.UpdateProfileImageRequest
+import modeep.hear.infrastructure.adapter.`in`.user.dto.response.GetRandomProfileImageResponse
 import modeep.hear.infrastructure.adapter.`in`.user.dto.response.GetUserCalendarResponse
 import modeep.hear.infrastructure.adapter.`in`.user.dto.response.UpdateEmailSubscriptionResponse
 import modeep.hear.infrastructure.adapter.`in`.user.dto.response.UpdateNicknameResponse
@@ -53,4 +54,6 @@ interface UserApiDocument {
     fun getUserCalendar(
         yearMonth: YearMonth?
     ): ResponseEntity<ApiResult<List<GetUserCalendarResponse>>>
+
+    fun getRandomProfileImage(): ResponseEntity<ApiResult<GetRandomProfileImageResponse>>
 }
