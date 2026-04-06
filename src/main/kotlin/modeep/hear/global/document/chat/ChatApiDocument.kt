@@ -11,6 +11,7 @@ import modeep.hear.infrastructure.adapter.`in`.chat.dto.response.CreateChatRespo
 import modeep.hear.infrastructure.adapter.`in`.chat.dto.response.CreateMessageResponse
 import modeep.hear.infrastructure.adapter.`in`.storage.dto.request.UploadDiaryImageRequest
 import modeep.hear.infrastructure.adapter.`in`.storage.dto.response.UploadDiaryImageResponse
+import modeep.hear.infrastructure.security.userdetails.CustomUserDetails
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.RequestBody
 import java.util.UUID
@@ -18,22 +19,27 @@ import java.util.UUID
 @Tag(name = "Chat", description = "Chat 도메인 관련 API")
 interface ChatApiDocument {
 
-    suspend fun createChat(): ResponseEntity<ApiResult<CreateChatResponse>>
+    suspend fun createChat(
+        user: CustomUserDetails
+    ): ResponseEntity<ApiResult<CreateChatResponse>>
 
     suspend fun finishChat(
-        chatId: UUID
+        chatId: UUID,
+        user: CustomUserDetails
     ): ResponseEntity<ApiResult<Unit>>
 
     suspend fun createMessage(
         chatId: UUID,
         @RequestBody @Valid
-        request: CreateMessageRequest
+        request: CreateMessageRequest,
+        user: CustomUserDetails
     ): ResponseEntity<ApiResult<CreateMessageResponse>>
 
     suspend fun createVoiceMessage(
         chatId: UUID,
         @RequestBody @Valid
-        request: CreateVoiceMessageRequest
+        request: CreateVoiceMessageRequest,
+        user: CustomUserDetails
     ): ResponseEntity<ApiResult<CreateMessageResponse>>
 
     fun uploadImageInChat(

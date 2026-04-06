@@ -10,6 +10,7 @@ import modeep.hear.domain.chat.port.out.query.QueryChatPort
 import modeep.hear.domain.chat.vo.MessageType
 import modeep.hear.domain.chat.vo.Sender
 import modeep.hear.domain.common.component.GetDataForRequestComponent
+import modeep.hear.domain.user.model.User
 import modeep.hear.global.error.exception.BusinessException
 import modeep.hear.global.error.exception.GlobalErrorCode
 import modeep.hear.infrastructure.adapter.`in`.chat.dto.request.CreateMessageRequest
@@ -30,9 +31,10 @@ class CreateMessageService(
 ) : CreateMessageUseCase {
     override suspend fun executeText(
         chatId: UUID,
-        request: CreateMessageRequest
+        request: CreateMessageRequest,
+        user: User
     ): CreateMessageResponse {
-        checkUserWithChatService.executeWithSuspend(chatId)
+        checkUserWithChatService.executeWithSuspend(chatId, user)
         val userMessage = Message.create(
             chatId = chatId,
             sender = Sender.USER,
@@ -45,7 +47,8 @@ class CreateMessageService(
 
     override suspend fun executeVoice(
         chatId: UUID,
-        request: CreateVoiceMessageRequest
+        request: CreateVoiceMessageRequest,
+        user: User
     ): CreateMessageResponse {
         validateOwner(chatId)
         val userMessage = Message.create(

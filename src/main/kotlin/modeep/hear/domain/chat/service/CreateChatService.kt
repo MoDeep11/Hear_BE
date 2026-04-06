@@ -6,6 +6,7 @@ import modeep.hear.domain.chat.model.Chat
 import modeep.hear.domain.chat.port.`in`.CreateChatUseCase
 import modeep.hear.domain.chat.port.out.external.FetchChatPort
 import modeep.hear.domain.common.component.GetDataForRequestComponent
+import modeep.hear.domain.user.model.User
 import modeep.hear.global.error.exception.BusinessException
 import modeep.hear.global.error.exception.GlobalErrorCode
 import modeep.hear.infrastructure.adapter.`in`.chat.dto.response.CreateChatResponse
@@ -15,13 +16,14 @@ private val log = KotlinLogging.logger {}
 
 @Service
 class CreateChatService(
-    private val securityPort: SecurityPort,
     private val chatPort: FetchChatPort,
     private val chatCommandService: ChatCommandService,
     private val getData: GetDataForRequestComponent
 ) : CreateChatUseCase {
-    override suspend fun execute(): CreateChatResponse {
-        val userId = securityPort.getCurrentUserId()
+    override suspend fun execute(
+        user: User
+    ): CreateChatResponse {
+        val userId = user.id
         val newChat = Chat.create(userId)
 
         chatCommandService.okChatWithSuspend(userId, newChat)

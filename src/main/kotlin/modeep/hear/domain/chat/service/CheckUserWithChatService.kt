@@ -16,8 +16,7 @@ class CheckUserWithChatService(
     private val securityPort: SecurityPort,
     private val queryChatPort: QueryChatPort
 ) {
-    suspend fun executeWithSuspend(chatId: UUID): Pair<User, Chat> {
-        val user = securityPort.getCurrentUser()
+    suspend fun executeWithSuspend(chatId: UUID, user: User): Pair<User, Chat> {
         val chat = queryChatPort.findById(chatId) ?: throw BusinessException(ChatErrorCode.CHAT_NOT_FOUND)
         chat.validateOwner(user.id)
 
