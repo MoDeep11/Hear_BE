@@ -8,22 +8,19 @@ import modeep.hear.domain.user.port.`in`.GetUserProfileUseCase
 import modeep.hear.domain.user.port.`in`.GetUserStatisticsUseCase
 import modeep.hear.domain.user.port.`in`.GetUserSummaryUseCase
 import modeep.hear.domain.user.port.`in`.UpdateEmailSubscriptionUseCase
-import modeep.hear.domain.user.port.`in`.UpdateNicknameUserUseCase
 import modeep.hear.domain.user.port.`in`.UpdatePasswordUseCase
-import modeep.hear.domain.user.port.`in`.UpdateProfileImageUseCase
+import modeep.hear.domain.user.port.`in`.UpdateProfileUseCase
 import modeep.hear.global.common.response.ApiResult
 import modeep.hear.global.document.user.UserApiDocument
 import modeep.hear.infrastructure.adapter.`in`.user.dto.request.DeleteUserRequest
 import modeep.hear.infrastructure.adapter.`in`.user.dto.request.UpdateEmailSubscriptionRequest
-import modeep.hear.infrastructure.adapter.`in`.user.dto.request.UpdateNicknameRequest
 import modeep.hear.infrastructure.adapter.`in`.user.dto.request.UpdatePasswordRequest
-import modeep.hear.infrastructure.adapter.`in`.user.dto.request.UpdateProfileImageRequest
+import modeep.hear.infrastructure.adapter.`in`.user.dto.request.UpdateProfileRequest
 import modeep.hear.infrastructure.adapter.`in`.user.dto.response.GetRandomProfileImageResponse
 import modeep.hear.infrastructure.adapter.`in`.user.dto.response.GetUserCalendarResponse
 import modeep.hear.infrastructure.adapter.`in`.user.dto.response.UpdateEmailSubscriptionResponse
-import modeep.hear.infrastructure.adapter.`in`.user.dto.response.UpdateNicknameResponse
 import modeep.hear.infrastructure.adapter.`in`.user.dto.response.UpdatePasswordResponse
-import modeep.hear.infrastructure.adapter.`in`.user.dto.response.UpdateProfileImageResponse
+import modeep.hear.infrastructure.adapter.`in`.user.dto.response.UpdateProfileResponse
 import modeep.hear.infrastructure.adapter.`in`.user.dto.response.UserProfileResponse
 import modeep.hear.infrastructure.adapter.`in`.user.dto.response.UserStatisticsResponse
 import modeep.hear.infrastructure.adapter.`in`.user.dto.response.UserSummaryResponse
@@ -46,8 +43,7 @@ class UserWebAdapter(
     private val getUserProfileUseCase: GetUserProfileUseCase,
     private val getUserStatisticsUseCase: GetUserStatisticsUseCase,
     private val getUserSummaryUseCase: GetUserSummaryUseCase,
-    private val updateNicknameUserUseCase: UpdateNicknameUserUseCase,
-    private val updateProfileImageUseCase: UpdateProfileImageUseCase,
+    private val updateProfileUseCase: UpdateProfileUseCase,
     private val updatePasswordUseCase: UpdatePasswordUseCase,
     private val updateEmailSubscriptionUseCase: UpdateEmailSubscriptionUseCase,
     private val getUserCalendarUseCase: GetUserCalendarUseCase,
@@ -106,28 +102,15 @@ class UserWebAdapter(
         )
     }
 
-    @PatchMapping("/nickname")
-    override fun updateNickname(
+    @PatchMapping("/profile")
+    override fun updateProfile(
         @RequestBody @Valid
-        request: UpdateNicknameRequest
-    ): ResponseEntity<ApiResult<UpdateNicknameResponse>> {
+        request: UpdateProfileRequest
+    ): ResponseEntity<ApiResult<UpdateProfileResponse>> {
         return ResponseEntity.ok(
             ApiResult(
-                message = "Update nickname",
-                data = updateNicknameUserUseCase.execute(request)
-            )
-        )
-    }
-
-    @PatchMapping("/profile-image")
-    override fun updateProfileImage(
-        @RequestBody @Valid
-        request: UpdateProfileImageRequest
-    ): ResponseEntity<ApiResult<UpdateProfileImageResponse>> {
-        return ResponseEntity.ok(
-            ApiResult(
-                message = "Update profile image",
-                data = updateProfileImageUseCase.execute(request)
+                message = "Update profile",
+                data = updateProfileUseCase.execute(request)
             )
         )
     }
