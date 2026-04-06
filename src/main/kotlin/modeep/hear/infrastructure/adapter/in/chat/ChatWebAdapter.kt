@@ -42,9 +42,11 @@ class ChatWebAdapter(
     override suspend fun createChat(
         @AuthenticationPrincipal user: CustomUserDetails
     ): ResponseEntity<ApiResult<CreateChatResponse>> {
-        return ResponseEntity.ok(ApiResult(
-            data = createChatUseCase.execute(user.getUser())
-        ))
+        return ResponseEntity.ok(
+            ApiResult(
+                data = createChatUseCase.execute(user.getUser())
+            )
+        )
     }
 
     @PatchMapping("/{chat_id}")
@@ -54,11 +56,13 @@ class ChatWebAdapter(
     ): ResponseEntity<ApiResult<Unit>> {
         finishChatUseCase.execute(chatId, user.getUser())
         return ResponseEntity.status(HttpStatus.ACCEPTED)
-            .body(ApiResult(
-                status = 202,
-                message = AiImageTaskStatus.RESERVED.name,
-                data = Unit
-            ))
+            .body(
+                ApiResult(
+                    status = 202,
+                    message = AiImageTaskStatus.RESERVED.name,
+                    data = Unit
+                )
+            )
     }
 
     @PostMapping("/{chat_id}/messages")
@@ -68,9 +72,11 @@ class ChatWebAdapter(
         request: CreateMessageRequest,
         @AuthenticationPrincipal user: CustomUserDetails
     ): ResponseEntity<ApiResult<CreateMessageResponse>> {
-        return ResponseEntity.ok(ApiResult(
-            data = createMessageUseCase.executeText(chatId, request, user.getUser())
-        ))
+        return ResponseEntity.ok(
+            ApiResult(
+                data = createMessageUseCase.executeText(chatId, request, user.getUser())
+            )
+        )
     }
 
     @PostMapping("/{chat_id}/voice")
@@ -80,9 +86,11 @@ class ChatWebAdapter(
         request: CreateVoiceMessageRequest,
         @AuthenticationPrincipal user: CustomUserDetails
     ): ResponseEntity<ApiResult<CreateMessageResponse>> {
-        return ResponseEntity.ok(ApiResult(
-            data = createMessageUseCase.executeVoice(chatId, request, user.getUser())
-        ))
+        return ResponseEntity.ok(
+            ApiResult(
+                data = createMessageUseCase.executeVoice(chatId, request, user.getUser())
+            )
+        )
     }
 
     @PostMapping("/{chat_id}/images")
@@ -91,9 +99,11 @@ class ChatWebAdapter(
         @RequestBody @Valid
         request: List<UploadDiaryImageRequest>
     ): ResponseEntity<ApiResult<List<UploadDiaryImageResponse>>> {
-        return ResponseEntity.ok(ApiResult(
-            data = uploadImageInChatUseCase.execute(chatId, request)
-        ))
+        return ResponseEntity.ok(
+            ApiResult(
+                data = uploadImageInChatUseCase.execute(chatId, request)
+            )
+        )
     }
 
     @PostMapping("/{chat_id}/images/generations")
@@ -104,10 +114,12 @@ class ChatWebAdapter(
     ): ResponseEntity<ApiResult<CreateAiImageTaskResponse>> {
         val res = createAiImageTaskInChatUseCase.execute(chatId, request)
         return ResponseEntity.status(HttpStatus.ACCEPTED)
-            .body(ApiResult(
-                data = CreateAiImageTaskResponse.from(res),
-                status = 202,
-                message = res.status.name
-            ))
+            .body(
+                ApiResult(
+                    data = CreateAiImageTaskResponse.from(res),
+                    status = 202,
+                    message = res.status.name
+                )
+            )
     }
 }

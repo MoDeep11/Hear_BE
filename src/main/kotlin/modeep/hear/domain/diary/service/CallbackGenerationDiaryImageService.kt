@@ -19,7 +19,6 @@ private val log = KotlinLogging.logger {}
 @Service
 @Transactional
 class CallbackGenerationDiaryImageService(
-    private val checkUserWithDiaryService: CheckUserWithDiaryService,
     private val diaryImagePort: DiaryImagePort,
     private val taskPort: AiImageTaskPort
 ) : CallbackGenerationDiaryImageUseCase {
@@ -28,7 +27,6 @@ class CallbackGenerationDiaryImageService(
         request: CallbackGenerationDiaryImageRequest
     ) {
         checkStatus(request.status)
-        checkUserWithDiaryService.executeWithSuspend(diaryId)
 
         val image = DiaryImage.create(
             diaryId = diaryId,

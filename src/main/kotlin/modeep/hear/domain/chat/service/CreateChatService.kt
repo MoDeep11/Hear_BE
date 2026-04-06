@@ -1,7 +1,6 @@
 package modeep.hear.domain.chat.service
 
 import io.github.oshai.kotlinlogging.KotlinLogging
-import modeep.hear.domain.auth.port.out.SecurityPort
 import modeep.hear.domain.chat.model.Chat
 import modeep.hear.domain.chat.port.`in`.CreateChatUseCase
 import modeep.hear.domain.chat.port.out.external.FetchChatPort
