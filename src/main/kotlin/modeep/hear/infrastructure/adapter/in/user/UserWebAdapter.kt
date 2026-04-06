@@ -2,26 +2,25 @@ package modeep.hear.infrastructure.adapter.`in`.user
 
 import jakarta.validation.Valid
 import modeep.hear.domain.user.port.`in`.DeleteUserUseCase
+import modeep.hear.domain.user.port.`in`.GetRandomProfileImageUseCase
 import modeep.hear.domain.user.port.`in`.GetUserCalendarUseCase
 import modeep.hear.domain.user.port.`in`.GetUserProfileUseCase
 import modeep.hear.domain.user.port.`in`.GetUserStatisticsUseCase
 import modeep.hear.domain.user.port.`in`.GetUserSummaryUseCase
 import modeep.hear.domain.user.port.`in`.UpdateEmailSubscriptionUseCase
-import modeep.hear.domain.user.port.`in`.UpdateNicknameUserUseCase
 import modeep.hear.domain.user.port.`in`.UpdatePasswordUseCase
-import modeep.hear.domain.user.port.`in`.UpdateProfileImageUseCase
+import modeep.hear.domain.user.port.`in`.UpdateProfileUseCase
 import modeep.hear.global.common.response.ApiResult
 import modeep.hear.global.document.user.UserApiDocument
 import modeep.hear.infrastructure.adapter.`in`.user.dto.request.DeleteUserRequest
 import modeep.hear.infrastructure.adapter.`in`.user.dto.request.UpdateEmailSubscriptionRequest
-import modeep.hear.infrastructure.adapter.`in`.user.dto.request.UpdateNicknameRequest
 import modeep.hear.infrastructure.adapter.`in`.user.dto.request.UpdatePasswordRequest
-import modeep.hear.infrastructure.adapter.`in`.user.dto.request.UpdateProfileImageRequest
+import modeep.hear.infrastructure.adapter.`in`.user.dto.request.UpdateProfileRequest
+import modeep.hear.infrastructure.adapter.`in`.user.dto.response.GetRandomProfileImageResponse
 import modeep.hear.infrastructure.adapter.`in`.user.dto.response.GetUserCalendarResponse
 import modeep.hear.infrastructure.adapter.`in`.user.dto.response.UpdateEmailSubscriptionResponse
-import modeep.hear.infrastructure.adapter.`in`.user.dto.response.UpdateNicknameResponse
 import modeep.hear.infrastructure.adapter.`in`.user.dto.response.UpdatePasswordResponse
-import modeep.hear.infrastructure.adapter.`in`.user.dto.response.UpdateProfileImageResponse
+import modeep.hear.infrastructure.adapter.`in`.user.dto.response.UpdateProfileResponse
 import modeep.hear.infrastructure.adapter.`in`.user.dto.response.UserProfileResponse
 import modeep.hear.infrastructure.adapter.`in`.user.dto.response.UserStatisticsResponse
 import modeep.hear.infrastructure.adapter.`in`.user.dto.response.UserSummaryResponse
@@ -44,11 +43,11 @@ class UserWebAdapter(
     private val getUserProfileUseCase: GetUserProfileUseCase,
     private val getUserStatisticsUseCase: GetUserStatisticsUseCase,
     private val getUserSummaryUseCase: GetUserSummaryUseCase,
-    private val updateNicknameUserUseCase: UpdateNicknameUserUseCase,
-    private val updateProfileImageUseCase: UpdateProfileImageUseCase,
+    private val updateProfileUseCase: UpdateProfileUseCase,
     private val updatePasswordUseCase: UpdatePasswordUseCase,
     private val updateEmailSubscriptionUseCase: UpdateEmailSubscriptionUseCase,
-    private val getUserCalendarUseCase: GetUserCalendarUseCase
+    private val getUserCalendarUseCase: GetUserCalendarUseCase,
+    private val getRandomProfileImageUseCase: GetRandomProfileImageUseCase
 ) : UserApiDocument {
 
     @DeleteMapping
@@ -61,13 +60,18 @@ class UserWebAdapter(
             accessToken = accessToken,
             request = request
         )
-        return ResponseEntity.ok(ApiResult())
+        return ResponseEntity.ok(
+            ApiResult(
+                message = "Successfully withdrew user"
+            )
+        )
     }
 
     @GetMapping
     override fun getProfile(): ResponseEntity<ApiResult<UserProfileResponse>> {
         return ResponseEntity.ok(
             ApiResult(
+                message = "Get user profile",
                 data = getUserProfileUseCase.execute()
             )
         )
@@ -82,6 +86,7 @@ class UserWebAdapter(
         val effectiveYearMonth = yearMonth ?: YearMonth.now()
         return ResponseEntity.ok(
             ApiResult(
+                message = "Get user statistics",
                 data = getUserStatisticsUseCase.execute(effectiveYearMonth)
             )
         )
@@ -91,31 +96,21 @@ class UserWebAdapter(
     override fun getSummary(): ResponseEntity<ApiResult<UserSummaryResponse>> {
         return ResponseEntity.ok(
             ApiResult(
+                message = "Get user summary",
                 data = getUserSummaryUseCase.execute()
             )
         )
     }
 
-    @PatchMapping("/nickname")
-    override fun updateNickname(
+    @PatchMapping("/profile")
+    override fun updateProfile(
         @RequestBody @Valid
-        request: UpdateNicknameRequest
-    ): ResponseEntity<ApiResult<UpdateNicknameResponse>> {
+        request: UpdateProfileRequest
+    ): ResponseEntity<ApiResult<UpdateProfileResponse>> {
         return ResponseEntity.ok(
             ApiResult(
-                data = updateNicknameUserUseCase.execute(request)
-            )
-        )
-    }
-
-    @PatchMapping("/profile-image")
-    override fun updateProfileImage(
-        @RequestBody @Valid
-        request: UpdateProfileImageRequest
-    ): ResponseEntity<ApiResult<UpdateProfileImageResponse>> {
-        return ResponseEntity.ok(
-            ApiResult(
-                data = updateProfileImageUseCase.execute(request)
+                message = "Update profile",
+                data = updateProfileUseCase.execute(request)
             )
         )
     }
@@ -127,6 +122,7 @@ class UserWebAdapter(
     ): ResponseEntity<ApiResult<UpdatePasswordResponse>> {
         return ResponseEntity.ok(
             ApiResult(
+                message = "Update password",
                 data = updatePasswordUseCase.execute(request)
             )
         )
@@ -139,6 +135,7 @@ class UserWebAdapter(
     ): ResponseEntity<ApiResult<UpdateEmailSubscriptionResponse>> {
         return ResponseEntity.ok(
             ApiResult(
+                message = "Update email subscription",
                 data = updateEmailSubscriptionUseCase.execute(request)
             )
         )
@@ -146,12 +143,27 @@ class UserWebAdapter(
 
     @GetMapping("/calendars")
     override fun getUserCalendar(
-        @RequestParam
+        @RequestParam(required = false)
         @DateTimeFormat(pattern = "yyyy-MM")
         yearMonth: YearMonth?
     ): ResponseEntity<ApiResult<List<GetUserCalendarResponse>>> {
         val effectiveYearMonth = yearMonth ?: YearMonth.now()
         val res = getUserCalendarUseCase.execute(effectiveYearMonth)
-        return ResponseEntity.ok(ApiResult(data = res))
+        return ResponseEntity.ok(
+            ApiResult(
+                message = "Get user calendar",
+                data = res
+            )
+        )
+    }
+
+    @GetMapping("/profile-images/random")
+    override fun getRandomProfileImage(): ResponseEntity<ApiResult<GetRandomProfileImageResponse>> {
+        return ResponseEntity.ok(
+            ApiResult(
+                message = "Get random profile image",
+                data = getRandomProfileImageUseCase.execute()
+            )
+        )
     }
 }
