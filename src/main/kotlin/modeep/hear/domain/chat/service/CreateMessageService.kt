@@ -1,6 +1,5 @@
 package modeep.hear.domain.chat.service
 
-import modeep.hear.domain.auth.port.out.SecurityPort
 import modeep.hear.domain.chat.exception.ChatErrorCode
 import modeep.hear.domain.chat.model.Message
 import modeep.hear.domain.chat.port.dto.result.SendMessageResult
@@ -23,7 +22,6 @@ import java.util.UUID
 @Service
 @Transactional
 class CreateMessageService(
-    private val securityPort: SecurityPort,
     private val messagePort: MessagePort,
     private val queryChatPort: QueryChatPort,
     private val getData: GetDataForRequestComponent,
@@ -42,7 +40,7 @@ class CreateMessageService(
             messageType = MessageType.TEXT
         )
 
-        return createMessage(chatId, userMessage, MessageType.TEXT)
+        return createMessage(chatId, userMessage, MessageType.TEXT, user)
     }
 
     override suspend fun executeVoice(
@@ -50,7 +48,8 @@ class CreateMessageService(
         request: CreateVoiceMessageRequest,
         user: User
     ): CreateMessageResponse {
-        validateOwner(chatId)
+        val chat = queryChatPort.findById(chatId) ?: throw BusinessException(ChatErrorCode.CHAT_NOT_FOUND)
+        chat.validateOwner(user.id)
         val userMessage = Message.create(
             chatId = chatId,
             sender = Sender.USER,
@@ -60,21 +59,16 @@ class CreateMessageService(
             duration = request.duration
         )
 
-        return createMessage(chatId, userMessage, MessageType.VOICE)
-    }
-
-    private fun validateOwner(chatId: UUID) {
-        val user = securityPort.getCurrentUser()
-        val chat = queryChatPort.findById(chatId) ?: throw BusinessException(ChatErrorCode.CHAT_NOT_FOUND)
-        chat.validateOwner(user.id)
+        return createMessage(chatId, userMessage, MessageType.VOICE, user)
     }
 
     private suspend fun createMessage(
         chatId: UUID,
         userMessage: Message,
-        type: MessageType
+        type: MessageType,
+        user: User
     ): CreateMessageResponse {
-        val (his, userInfo) = getData.getUserInfoWithHistories(chatId)
+        val (his, userInfo) = getData.getUserInfoWithHistories(chatId, user)
         val aiResult = messagePort.sendMessage(
             chatId,
             his,

@@ -17,10 +17,15 @@ class ChatMapperImpl(
             baseTime = baseTimeMapper.toModel(entity.baseTime)
         )
 
-    override fun toEntity(model: Chat): ChatJpaEntity =
-        ChatJpaEntity(
+    override fun toEntity(model: Chat, isNew: Boolean): ChatJpaEntity {
+        val entity = ChatJpaEntity(
             id = model.id,
             userId = model.userId,
             status = model.status
         )
+        if (!isNew) {
+            entity.markNotNew()
+        }
+        return entity
+    }
 }

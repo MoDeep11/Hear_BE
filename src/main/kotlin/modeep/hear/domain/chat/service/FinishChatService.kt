@@ -18,7 +18,7 @@ class FinishChatService(
         user: User
     ) {
         checkUserWithChatService.executeWithSuspend(chatId, user)
-        val (histories, userInfo) = getData.getUserInfoWithHistories(chatId)
+        val (histories, userInfo) = getData.getUserInfoWithHistories(chatId, user)
         fetchDiaryPort.generateDiary(chatId, histories, userInfo)
     }
 }

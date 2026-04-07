@@ -22,17 +22,20 @@ class CreateChatService(
     override suspend fun execute(
         user: User
     ): CreateChatResponse {
+        log.info { "Create chat for user: $user" }
         val userId = user.id
         val newChat = Chat.create(userId)
 
-        chatCommandService.okChatWithSuspend(userId, newChat)
+        chatCommandService.saveChat(userId, newChat)
 
         val initResult = try {
-            chatPort.initChat(newChat.id, getData.getUserInfoOnly())
+            chatPort.initChat(newChat.id, getData.getUserInfoOnly(user))
         } catch (e: Exception) {
             log.error(e) { "AI Server initialization failed for chatId: ${newChat.id}" }
             throw BusinessException(GlobalErrorCode.AI_SERVER_ERROR)
         }
+
+        chatCommandService.okChatWithSuspend(userId, newChat)
 
         return CreateChatResponse(
             chatId = newChat.id,

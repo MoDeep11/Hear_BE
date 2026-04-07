@@ -9,6 +9,7 @@ import modeep.hear.infrastructure.adapter.`in`.diary.dto.request.CallbackGenerat
 import modeep.hear.infrastructure.adapter.`in`.diary.dto.request.CreateDiaryRequest
 import modeep.hear.infrastructure.adapter.`in`.diary.dto.response.CreateDiaryResponse
 import org.springframework.http.ResponseEntity
+import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PatchMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
@@ -40,5 +41,10 @@ class DiaryInternalAdapter(
     ): ResponseEntity<ApiResult<Unit>> {
         callbackGenerationDiaryImageUseCase.execute(diaryId, request)
         return ResponseEntity.ok(ApiResult())
+    }
+
+    @GetMapping("/test")
+    fun test() {
+        println("test")
     }
 }

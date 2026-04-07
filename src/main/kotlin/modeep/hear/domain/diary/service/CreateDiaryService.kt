@@ -2,6 +2,7 @@ package modeep.hear.domain.diary.service
 
 import modeep.hear.domain.chat.exception.ChatErrorCode
 import modeep.hear.domain.chat.port.out.AiImageTaskPort
+import modeep.hear.domain.chat.port.out.ChatPort
 import modeep.hear.domain.chat.port.out.query.QueryChatPort
 import modeep.hear.domain.chat.service.ChatCommandService
 import modeep.hear.domain.common.event.EventPublisher
@@ -26,13 +27,12 @@ class CreateDiaryService(
     private val eventPublisher: EventPublisher,
     private val commandDiaryPort: CommandDiaryPort,
     private val taskPort: AiImageTaskPort,
-    private val queryChatPort: QueryChatPort,
-    private val queryUserPort: QueryUserPort,
-    private val chatCommandService: ChatCommandService
+    private val chatPort: ChatPort,
+    private val queryUserPort: QueryUserPort
 ) : CreateDiaryUseCase {
     override suspend fun execute(request: CreateDiaryRequest): CreateDiaryResponse {
         val chatId = request.chatId
-        val chat = queryChatPort.findById(chatId) ?: throw BusinessException(ChatErrorCode.CHAT_NOT_FOUND)
+        val chat = chatPort.findById(chatId) ?: throw BusinessException(ChatErrorCode.CHAT_NOT_FOUND)
         val user = queryUserPort.findById(chat.userId) ?: throw BusinessException(UserErrorCode.USER_NOT_FOUND)
         val userId = user.id
         chat.validateOwner(userId)
@@ -50,7 +50,10 @@ class CreateDiaryService(
         diary.updateImages(images)
 
         commandDiaryPort.save(diary)
-        chatCommandService.finishChatWithSuspend(user.id, chat)
+
+        chat.finish()
+        chatPort.save(chat)
+
         eventPublisher.publish(
             IncreasedUserStatEvent(
                 userId = userId,

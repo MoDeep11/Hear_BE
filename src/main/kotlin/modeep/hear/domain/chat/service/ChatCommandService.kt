@@ -10,6 +10,16 @@ import java.util.UUID
 class ChatCommandService(
     private val chatPort: ChatPort
 ) {
+
+    @Transactional
+    suspend fun saveChat(
+        userId: UUID,
+        chat: Chat
+    ) {
+        chat.validateOwner(userId)
+        chatPort.save(chat)
+    }
+
     @Transactional
     suspend fun okChatWithSuspend(
         userId: UUID,
@@ -17,18 +27,7 @@ class ChatCommandService(
     ) {
         chat.validateOwner(userId)
 
-        chat.okChat()
-        chatPort.save(chat)
-    }
-
-    @Transactional
-    suspend fun finishChatWithSuspend(
-        userId: UUID,
-        chat: Chat
-    ) {
-        chat.validateOwner(userId)
-
-        chat.finishChat()
+        chat.ok()
         chatPort.save(chat)
     }
 }
