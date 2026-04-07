@@ -47,7 +47,7 @@ class StoragePersistenceAdapter(
             .build()
 
         val finalUrl = s3Presigner.presignPutObject(presignRequest).url().toString()
-        return GenerateUploadUrlResponse(finalUrl, file.fileName)
+        return GenerateUploadUrlResponse(finalUrl, file.fileName!!)
     }
 
     override fun upload(file: MultipartFile, fileData: FileData): String {

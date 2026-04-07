@@ -10,6 +10,7 @@ import modeep.hear.infrastructure.adapter.`in`.diary.dto.response.RecommendDiary
 import modeep.hear.infrastructure.adapter.`in`.storage.dto.request.UploadDiaryImageRequest
 import modeep.hear.infrastructure.adapter.`in`.storage.dto.response.UploadDiaryImageResponse
 import org.springframework.http.ResponseEntity
+import org.springframework.web.multipart.MultipartFile
 import java.util.UUID
 
 @Tag(name = "Diary", description = "Diary 도메인 관련 API")
@@ -25,7 +26,8 @@ interface DiaryApiDocument {
 
     fun uploadDiaryImage(
         diaryId: UUID,
-        requests: List<UploadDiaryImageRequest>
+        requests: List<UploadDiaryImageRequest>,
+        images: List<MultipartFile>?
     ): ResponseEntity<ApiResult<List<UploadDiaryImageResponse>>>
 
     fun updateDiaryContent(

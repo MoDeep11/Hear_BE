@@ -8,6 +8,8 @@ import java.util.UUID
 
 data class UploadDiaryImageRequest(
     val action: ImageAction,
+    @field:JsonAlias("file_name")
+    val fileName: String?,
     @field:JsonAlias("image_url")
     val imageUrl: String?,
     val id: UUID? = null,
@@ -20,7 +22,7 @@ data class UploadDiaryImageRequest(
     @AssertTrue(message = "사진 업로드의 데이터 정합성이 맞지 않습니다.")
     fun isValid(): Boolean {
         return when (action) {
-            ImageAction.ADD -> !imageUrl.isNullOrBlank() && id == null && !isDeleted
+            ImageAction.ADD -> imageUrl == null && !fileName.isNullOrBlank() && id == null && !isDeleted
             ImageAction.DELETE -> id != null && isDeleted
             ImageAction.UPDATE_ORDER -> id != null && imageUrl == null && !isDeleted
         }

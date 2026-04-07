@@ -10,6 +10,7 @@ import modeep.hear.infrastructure.adapter.`in`.storage.dto.request.UploadDiaryIm
 import modeep.hear.infrastructure.adapter.`in`.storage.dto.response.UploadDiaryImageResponse
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import org.springframework.web.multipart.MultipartFile
 import java.util.UUID
 
 @Service
@@ -21,13 +22,14 @@ class UploadDiaryImageService(
 ) : UploadDiaryImageUseCase {
     override fun execute(
         diaryId: UUID,
-        requests: List<UploadDiaryImageRequest>
+        requests: List<UploadDiaryImageRequest>,
+        images: List<MultipartFile>?
     ): List<UploadDiaryImageResponse> {
         val diary = diaryPort.findById(diaryId)
             ?: throw BusinessException(DiaryErrorCode.DIARY_NOT_FOUND)
         diary.validateOwner(securityPort.getCurrentUser().id)
 
-        val newDiaryImages = uploadImageUseCase.execute(diary.diaryImages, requests)
+        val newDiaryImages = uploadImageUseCase.execute(diary.diaryImages, requests, images)
 
         diary.updateImages(newDiaryImages)
 
