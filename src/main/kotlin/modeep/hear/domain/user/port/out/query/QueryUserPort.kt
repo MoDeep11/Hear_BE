@@ -9,4 +9,6 @@ interface QueryUserPort {
     fun existsByEmail(email: String): Boolean
 
     fun findById(id: UUID): User?
+
+    fun existsById(id: UUID): Boolean
 }
