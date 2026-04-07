@@ -15,12 +15,18 @@ class StickerJpaEntity(
     @Column(name = "user_id", nullable = false)
     val userId: UUID,
 
+    @Column(name = "diary_id")
+    val diaryId: UUID? = null,
+
     @Column(name = "status", nullable = false, length = 16)
     @Enumerated(EnumType.STRING)
     val status: StickerStatus = StickerStatus.PENDING,
 
     @Column(name = "image_url", nullable = false, length = 16)
     val imageUrl: String,
+
+    @Column(name = "keyword")
+    val keyword: String? = null,
 
     id: UUID
 ) : BaseEntity(id)

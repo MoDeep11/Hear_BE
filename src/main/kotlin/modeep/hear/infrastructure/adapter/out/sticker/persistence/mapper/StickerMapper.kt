@@ -13,8 +13,10 @@ class StickerMapper(
         return Sticker(
             id = entity.id,
             userId = entity.userId,
+            diaryId = entity.diaryId,
             status = entity.status,
             imageUrl = entity.imageUrl,
+            keyword = entity.keyword,
             baseTime = baseTimeMapper.toModel(entity.baseTime)
         )
     }
@@ -23,8 +25,10 @@ class StickerMapper(
         val entity = StickerJpaEntity(
             id = model.id,
             userId = model.userId,
+            diaryId = model.diaryId,
             status = model.status,
-            imageUrl = model.imageUrl
+            imageUrl = model.imageUrl,
+            keyword = model.keyword
         )
         if (!isNew) {
             entity.markNotNew()
