@@ -23,20 +23,20 @@ class CallbackGenerationDiaryImageService(
     private val taskPort: AiImageTaskPort
 ) : CallbackGenerationDiaryImageUseCase {
     override suspend fun execute(
-        diaryId: UUID,
         request: CallbackGenerationDiaryImageRequest
     ) {
         checkStatus(request.status)
 
         val image = DiaryImage.create(
-            diaryId = diaryId,
+            diaryId = request.diaryId,
             imageUrl = request.imageUrl,
             order = 10,
             sourceType = DiarySourceType.AI_MADE,
             diaryImageStatus = DiaryImageStatus.SUCCESS
         )
 
-        completeTask(diaryId, image)
+        diaryImagePort.save(image)
+        completeTask(request.diaryId)
     }
 
     private fun checkStatus(status: DiaryImageStatus) {
@@ -45,13 +45,12 @@ class CallbackGenerationDiaryImageService(
         }
     }
 
-    private suspend fun completeTask(diaryId: UUID, image: DiaryImage) {
+    private suspend fun completeTask(diaryId: UUID) {
         val task = taskPort.findByDiaryId(diaryId)
             ?: run {
                 log.info { "Skip duplicate image callback: diaryId=[$diaryId]" }
                 return
             }
-        diaryImagePort.save(image)
         taskPort.delete(task)
     }
 }

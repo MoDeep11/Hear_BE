@@ -8,7 +8,6 @@ import modeep.hear.infrastructure.adapter.`in`.diary.dto.request.CreateDiaryRequ
 import modeep.hear.infrastructure.adapter.`in`.diary.dto.response.CreateDiaryResponse
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.RequestBody
-import java.util.UUID
 
 @Tag(name = "Diary Internal", description = "Diary 도메인 내부 통신용 API")
 interface DiaryInternalApiDocument {
@@ -18,7 +17,6 @@ interface DiaryInternalApiDocument {
     ): ResponseEntity<ApiResult<CreateDiaryResponse>>
 
     suspend fun callbackGenerationDiaryImage(
-        diaryId: UUID,
         @RequestBody @Valid
         request: CallbackGenerationDiaryImageRequest
     ): ResponseEntity<ApiResult<Unit>>

@@ -10,12 +10,10 @@ import modeep.hear.infrastructure.adapter.`in`.diary.dto.request.CreateDiaryRequ
 import modeep.hear.infrastructure.adapter.`in`.diary.dto.response.CreateDiaryResponse
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.PatchMapping
-import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
-import java.util.UUID
 
 @RestController
 @RequestMapping("/internal/v1/diaries")
@@ -32,13 +30,12 @@ class DiaryInternalAdapter(
         return ResponseEntity.ok(ApiResult(data = res))
     }
 
-    @PatchMapping("/{diary_id}/images")
+    @PatchMapping("/images")
     override suspend fun callbackGenerationDiaryImage(
-        @PathVariable("diary_id") diaryId: UUID,
         @RequestBody @Valid
         request: CallbackGenerationDiaryImageRequest
     ): ResponseEntity<ApiResult<Unit>> {
-        callbackGenerationDiaryImageUseCase.execute(diaryId, request)
+        callbackGenerationDiaryImageUseCase.execute(request)
         return ResponseEntity.ok(ApiResult())
     }
 }
