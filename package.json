@@ -24,9 +24,6 @@
     "lint-staged": "^16.4.0"
   },
   "lint-staged": {
-    "*.kt": [
-      "./gradlew ktlintFormat",
-      "git add"
-    ]
+    "*.kt": "bash -c './gradlew ktlintFormat' && git add"
   }
 }
