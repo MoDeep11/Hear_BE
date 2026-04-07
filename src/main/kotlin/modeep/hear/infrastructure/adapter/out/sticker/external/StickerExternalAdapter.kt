@@ -4,7 +4,7 @@ import io.github.oshai.kotlinlogging.KotlinLogging
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import modeep.hear.infrastructure.adapter.out.sticker.event.GenerateStickerRequest
+import modeep.hear.infrastructure.adapter.out.sticker.external.dto.request.GenerateStickerRequest
 import org.springframework.stereotype.Component
 import org.springframework.web.reactive.function.client.WebClient
 import org.springframework.web.reactive.function.client.awaitBodilessEntity

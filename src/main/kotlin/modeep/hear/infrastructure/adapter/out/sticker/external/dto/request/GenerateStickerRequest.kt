@@ -1,4 +1,4 @@
-package modeep.hear.infrastructure.adapter.out.sticker.event
+package modeep.hear.infrastructure.adapter.out.sticker.external.dto.request
 
 import modeep.hear.domain.common.vo.Emotion
 import java.util.UUID
