@@ -30,13 +30,14 @@ class DiaryImagePersistenceAdapter(
 
     // --Command--//
     override fun saveAll(diaryImages: List<DiaryImage>) {
-        val savedDiaryImages = diaryImages.map { mapper.toEntity(it) }
-        repo.saveAll(savedDiaryImages)
+        diaryImages.forEach { save(it) }
     }
 
     override fun save(diaryImage: DiaryImage) {
         val diaryRef = diaryRepository.getReferenceById(diaryImage.diaryId!!) ?: throw BusinessException(DiaryErrorCode.DIARY_NOT_FOUND)
-        repo.save(mapper.toEntity(diaryImage, diaryRef))
+        val isExist = repo.existsById(diaryImage.id)
+        val entity = mapper.toEntity(diaryImage, diaryRef, isNew = !isExist)
+        repo.save(entity)
     }
 
     override fun delete(diaryImageId: UUID) {

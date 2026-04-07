@@ -24,8 +24,8 @@ class DiaryImageMapper(
         )
     }
 
-    fun toEntity(model: DiaryImage, diary: DiaryJpaEntity? = null): DiaryImageJpaEntity {
-        return DiaryImageJpaEntity(
+    fun toEntity(model: DiaryImage, diary: DiaryJpaEntity? = null, isNew: Boolean): DiaryImageJpaEntity {
+        val entity = DiaryImageJpaEntity(
             id = model.id,
             diary = diary,
             imageUrl = model.imageUrl,
@@ -34,5 +34,9 @@ class DiaryImageMapper(
             chatId = model.chatId,
             diaryImageStatus = model.diaryImageStatus
         )
+        if (!isNew) {
+            entity.markNotNew()
+        }
+        return entity
     }
 }

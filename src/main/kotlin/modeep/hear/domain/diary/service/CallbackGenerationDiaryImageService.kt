@@ -51,6 +51,6 @@ class CallbackGenerationDiaryImageService(
                 log.info { "Skip duplicate image callback: diaryId=[$diaryId]" }
                 return
             }
-        taskPort.delete(task)
+        taskPort.delete(task.id)
     }
 }

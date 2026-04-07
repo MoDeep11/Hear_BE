@@ -6,5 +6,5 @@ import modeep.hear.infrastructure.adapter.out.diary.persistence.entity.DiaryJpaE
 interface DiaryMapper {
     fun toModel(entity: DiaryJpaEntity): Diary
 
-    fun toEntity(model: Diary): DiaryJpaEntity
+    fun toEntity(model: Diary, isNew: Boolean): DiaryJpaEntity
 }

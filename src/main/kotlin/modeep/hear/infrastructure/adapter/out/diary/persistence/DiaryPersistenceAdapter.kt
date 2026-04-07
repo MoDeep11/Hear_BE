@@ -95,7 +95,9 @@ class DiaryPersistenceAdapter(
 
     // --Command--//
     override fun save(diary: Diary) {
-        repo.save(mapper.toEntity(diary))
+        val isExist = repo.existsById(diary.id)
+        val entity = mapper.toEntity(diary, isNew = !isExist)
+        repo.save(entity)
     }
 
     override fun deleteById(diaryId: UUID) {
