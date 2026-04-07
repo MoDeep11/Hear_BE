@@ -1,6 +1,11 @@
 package modeep.hear.domain.storage.vo
 
+import java.util.UUID
+
 data class FileData(
-    val filePath: String,
-    val contentType: String
+    val fileName: String,
+    val contentType: String,
+    val size: Long,
+    val type: ServiceType,
+    val userId: UUID
 )
