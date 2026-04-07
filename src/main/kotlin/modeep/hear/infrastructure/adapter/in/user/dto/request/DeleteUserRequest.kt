@@ -4,8 +4,8 @@ import com.fasterxml.jackson.annotation.JsonAlias
 import jakarta.validation.constraints.NotBlank
 
 data class DeleteUserRequest(
-    @field:NotBlank
-    val password: String,
+//    @field:NotBlank
+//    val password: String,
 
     @field:JsonAlias("refresh_token")
     @field:NotBlank
