@@ -2,7 +2,10 @@ package modeep.hear.domain.user.service
 
 import modeep.hear.domain.auth.port.out.SecurityPort
 import modeep.hear.domain.storage.port.out.StoragePort
+import modeep.hear.domain.storage.vo.FileData
+import modeep.hear.domain.storage.vo.ServiceType
 import modeep.hear.domain.user.exception.UserErrorCode
+import modeep.hear.domain.user.model.UserProfile
 import modeep.hear.domain.user.port.`in`.UpdateProfileUseCase
 import modeep.hear.domain.user.port.out.command.CommandUserProfilePort
 import modeep.hear.domain.user.port.out.query.QueryUserProfilePort
@@ -12,6 +15,7 @@ import modeep.hear.infrastructure.adapter.`in`.user.dto.request.UpdateProfileReq
 import modeep.hear.infrastructure.adapter.`in`.user.dto.response.UpdateProfileResponse
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import org.springframework.web.multipart.MultipartFile
 import java.time.LocalDateTime
 
 @Service
@@ -25,14 +29,18 @@ class UpdateProfileService(
 
     private val defaultImageUrls = DefaultProfileImageUrl.entries.map { it.value }.toSet()
 
-    override fun execute(request: UpdateProfileRequest): UpdateProfileResponse {
+    override fun execute(
+        request: UpdateProfileRequest,
+        image: MultipartFile
+    ): UpdateProfileResponse {
         val userId = securityPort.getCurrentUserId()
         val profile = queryUserProfilePort.findByUserId(userId)
             ?: throw BusinessException(UserErrorCode.USER_PROFILE_NOT_FOUND)
 
         val previousImageUrl = profile.profileImageUrl
+        val uploadedUrl = uploadFile(image, profile)
 
-        if (profile.nickname == request.nickname && profile.profileImageUrl == request.profileImageUrl) {
+        if (profile.nickname == request.nickname && profile.profileImageUrl == uploadedUrl) {
             return UpdateProfileResponse(
                 nickname = profile.nickname,
                 profileImageUrl = profile.profileImageUrl,
@@ -41,7 +49,7 @@ class UpdateProfileService(
         }
 
         val updatedProfile = profile
-            .updateProfileImageUrl(request.profileImageUrl)
+            .updateProfileImageUrl(uploadedUrl)
             .updateNickname(request.nickname)
         val updatedAt = LocalDateTime.now()
         commandUserProfilePort.save(updatedProfile)
@@ -55,5 +63,17 @@ class UpdateProfileService(
             profileImageUrl = updatedProfile.profileImageUrl,
             updatedAt = updatedAt
         )
+    }
+
+    private fun uploadFile(image: MultipartFile, profile: UserProfile): String {
+        val fileData = FileData(
+            fileName = image.originalFilename,
+            contentType = image.contentType,
+            size = image.size,
+            type = ServiceType.PROFILE,
+            userId = profile.userId
+        )
+
+        return storagePort.upload(image, fileData)
     }
 }

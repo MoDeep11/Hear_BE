@@ -17,13 +17,16 @@ class StorageManager {
     fun generatePath(file: FileData): String {
         validate(file)
 
-        val uniqueFileName = "${UUID.randomUUID()}-${file.fileName.generateSafeFileName()}"
+        val uniqueFileName = "${UUID.randomUUID()}-${file.fileName!!.generateSafeFileName()}"
         val path = "${file.type.folder}/${file.userId}/$uniqueFileName"
 
         return path
     }
 
     fun validate(request: FileData) {
+        if (request.fileName.isNullOrBlank() || request.contentType.isNullOrBlank()) {
+            throw BusinessException(StorageErrorCode.INVALID_FILE)
+        }
         if (!allowedTypes.contains(request.contentType.lowercase())) {
             throw BusinessException(StorageErrorCode.NOT_ALLOW_EXTENSION)
         }

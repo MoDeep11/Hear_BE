@@ -15,6 +15,7 @@ import modeep.hear.infrastructure.adapter.`in`.user.dto.response.UserProfileResp
 import modeep.hear.infrastructure.adapter.`in`.user.dto.response.UserStatisticsResponse
 import modeep.hear.infrastructure.adapter.`in`.user.dto.response.UserSummaryResponse
 import org.springframework.http.ResponseEntity
+import org.springframework.web.multipart.MultipartFile
 import java.time.YearMonth
 
 @Tag(name = "User", description = "User 도메인 관련 API")
@@ -34,7 +35,8 @@ interface UserApiDocument {
     fun getSummary(): ResponseEntity<ApiResult<UserSummaryResponse>>
 
     fun updateProfile(
-        request: UpdateProfileRequest
+        request: UpdateProfileRequest,
+        image: MultipartFile
     ): ResponseEntity<ApiResult<UpdateProfileResponse>>
 
     fun updatePassword(
