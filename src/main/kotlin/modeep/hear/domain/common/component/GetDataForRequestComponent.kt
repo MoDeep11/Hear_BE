@@ -1,11 +1,11 @@
 package modeep.hear.domain.common.component
 
-import modeep.hear.domain.auth.port.out.SecurityPort
 import modeep.hear.domain.chat.port.out.MessagePort
 import modeep.hear.domain.diary.exception.DiaryErrorCode
 import modeep.hear.domain.diary.model.Diary
 import modeep.hear.domain.diary.port.out.query.QueryDiaryPort
 import modeep.hear.domain.user.exception.UserErrorCode
+import modeep.hear.domain.user.model.User
 import modeep.hear.domain.user.port.out.query.QueryUserProfilePort
 import modeep.hear.domain.user.port.out.query.QueryUserStatPort
 import modeep.hear.global.error.exception.BusinessException
@@ -19,23 +19,21 @@ class GetDataForRequestComponent(
     private val messagePort: MessagePort,
     private val queryUserStatPort: QueryUserStatPort,
     private val queryUserProfilePort: QueryUserProfilePort,
-    private val securityPort: SecurityPort,
     private val queryDiaryPort: QueryDiaryPort
 ) {
-    fun getUserInfoWithHistories(chatId: UUID): Pair<List<History>, UserInfo> {
+    fun getUserInfoWithHistories(chatId: UUID, user: User): Pair<List<History>, UserInfo> {
         val histories = messagePort.findAllByChatId(chatId).map(History::from)
-        val userInfo = getUserInfoOnly()
+        val userInfo = getUserInfoOnly(user)
         return histories to userInfo
     }
 
-    fun getUserInfoWithDiary(diaryId: UUID): Pair<UserInfo, Diary> {
-        val userInfo = getUserInfoOnly()
+    fun getUserInfoWithDiary(diaryId: UUID, user: User): Pair<UserInfo, Diary> {
+        val userInfo = getUserInfoOnly(user)
         val diary = queryDiaryPort.findById(diaryId) ?: throw BusinessException(DiaryErrorCode.DIARY_NOT_FOUND)
         return userInfo to diary
     }
 
-    fun getUserInfoOnly(): UserInfo {
-        val user = securityPort.getCurrentUser()
+    fun getUserInfoOnly(user: User): UserInfo {
         val profile = queryUserProfilePort.findByUserId(user.id)
             ?: throw BusinessException(UserErrorCode.USER_PROFILE_NOT_FOUND)
         val stat = queryUserStatPort.findByUserId(user.id)

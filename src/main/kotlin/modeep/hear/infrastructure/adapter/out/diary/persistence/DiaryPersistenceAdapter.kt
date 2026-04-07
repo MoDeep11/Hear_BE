@@ -52,14 +52,14 @@ class DiaryPersistenceAdapter(
         val start = date.atStartOfDay()
         val end = date.atTime(LocalTime.MAX)
 
-        return repo.existsByUserIdAndBaseTimeCreatedAtBetween(userId, start, end)
+        return repo.existsByUserIdAndDateRange(userId, start, end)
     }
 
     override fun findLatestByUserIdAndDate(userId: UUID, date: LocalDate): Diary? {
         val start = date.atStartOfDay()
         val end = date.atTime(LocalTime.MAX)
 
-        return repo.findFirstByUserIdAndBaseTimeCreatedAtBetweenOrderByBaseTimeCreatedAtDesc(userId, start, end)
+        return repo.findLatestDiary(userId, start, end)
             ?.let { mapper.toModel(it) }
     }
 
@@ -83,7 +83,7 @@ class DiaryPersistenceAdapter(
         start: LocalDateTime,
         end: LocalDateTime
     ): List<Diary> {
-        return repo.findAllByBaseTime_CreatedAtBetween(start, end).map { mapper.toModel(it) }
+        return repo.findAllByDateRange(start, end).map { mapper.toModel(it) }
     }
 
     override fun findRandomByUserId(userId: UUID): Diary? {

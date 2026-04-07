@@ -1,6 +1,5 @@
 package modeep.hear.domain.chat.service
 
-import modeep.hear.domain.auth.port.out.SecurityPort
 import modeep.hear.domain.chat.exception.ChatErrorCode
 import modeep.hear.domain.chat.model.Message
 import modeep.hear.domain.chat.port.dto.result.SendMessageResult
@@ -10,6 +9,7 @@ import modeep.hear.domain.chat.port.out.query.QueryChatPort
 import modeep.hear.domain.chat.vo.MessageType
 import modeep.hear.domain.chat.vo.Sender
 import modeep.hear.domain.common.component.GetDataForRequestComponent
+import modeep.hear.domain.user.model.User
 import modeep.hear.global.error.exception.BusinessException
 import modeep.hear.global.error.exception.GlobalErrorCode
 import modeep.hear.infrastructure.adapter.`in`.chat.dto.request.CreateMessageRequest
@@ -22,7 +22,6 @@ import java.util.UUID
 @Service
 @Transactional
 class CreateMessageService(
-    private val securityPort: SecurityPort,
     private val messagePort: MessagePort,
     private val queryChatPort: QueryChatPort,
     private val getData: GetDataForRequestComponent,
@@ -30,9 +29,10 @@ class CreateMessageService(
 ) : CreateMessageUseCase {
     override suspend fun executeText(
         chatId: UUID,
-        request: CreateMessageRequest
+        request: CreateMessageRequest,
+        user: User
     ): CreateMessageResponse {
-        checkUserWithChatService.executeWithSuspend(chatId)
+        checkUserWithChatService.executeWithSuspend(chatId, user)
         val userMessage = Message.create(
             chatId = chatId,
             sender = Sender.USER,
@@ -40,14 +40,16 @@ class CreateMessageService(
             messageType = MessageType.TEXT
         )
 
-        return createMessage(chatId, userMessage, MessageType.TEXT)
+        return createMessage(chatId, userMessage, MessageType.TEXT, user)
     }
 
     override suspend fun executeVoice(
         chatId: UUID,
-        request: CreateVoiceMessageRequest
+        request: CreateVoiceMessageRequest,
+        user: User
     ): CreateMessageResponse {
-        validateOwner(chatId)
+        val chat = queryChatPort.findById(chatId) ?: throw BusinessException(ChatErrorCode.CHAT_NOT_FOUND)
+        chat.validateOwner(user.id)
         val userMessage = Message.create(
             chatId = chatId,
             sender = Sender.USER,
@@ -57,21 +59,16 @@ class CreateMessageService(
             duration = request.duration
         )
 
-        return createMessage(chatId, userMessage, MessageType.VOICE)
-    }
-
-    private fun validateOwner(chatId: UUID) {
-        val user = securityPort.getCurrentUser()
-        val chat = queryChatPort.findById(chatId) ?: throw BusinessException(ChatErrorCode.CHAT_NOT_FOUND)
-        chat.validateOwner(user.id)
+        return createMessage(chatId, userMessage, MessageType.VOICE, user)
     }
 
     private suspend fun createMessage(
         chatId: UUID,
         userMessage: Message,
-        type: MessageType
+        type: MessageType,
+        user: User
     ): CreateMessageResponse {
-        val (his, userInfo) = getData.getUserInfoWithHistories(chatId)
+        val (his, userInfo) = getData.getUserInfoWithHistories(chatId, user)
         val aiResult = messagePort.sendMessage(
             chatId,
             his,

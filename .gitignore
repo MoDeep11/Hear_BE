@@ -46,3 +46,5 @@ postgres_data/
 
 **/src/main/resources/application-dev.yml
 **/src/main/resources/application-prod.yml
+
+node_modules

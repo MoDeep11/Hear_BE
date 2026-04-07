@@ -31,12 +31,12 @@ data class Chat(
         }
     }
 
-    fun okChat(): Chat {
+    fun ok(): Chat {
         this.status = ChatStatus.CONTINUE
         return this
     }
 
-    fun finishChat(): Chat {
+    fun finish(): Chat {
         this.status = ChatStatus.FINISH
         return this
     }

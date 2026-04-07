@@ -1,0 +1,29 @@
+{
+  "name": "hear",
+  "version": "1.0.0",
+  "description": "hear는 사용자가 AI를 통해 하루를 성찰하고, 간편하게 일기를 작성할 수 있는 서비스입니다.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prepare": "husky"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MoDeep11/Hear_BE.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/MoDeep11/Hear_BE/issues"
+  },
+  "homepage": "https://github.com/MoDeep11/Hear_BE#readme",
+  "devDependencies": {
+    "husky": "^9.1.7",
+    "lint-staged": "^16.4.0"
+  },
+  "lint-staged": {
+    "*.kt": "bash -c './gradlew ktlintFormat' && git add"
+  }
+}

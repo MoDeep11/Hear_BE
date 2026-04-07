@@ -6,5 +6,5 @@ import modeep.hear.infrastructure.adapter.out.chat.persistence.entity.ChatJpaEnt
 interface ChatMapper {
     fun toModel(entity: ChatJpaEntity): Chat
 
-    fun toEntity(model: Chat): ChatJpaEntity
+    fun toEntity(model: Chat, isNew: Boolean = true): ChatJpaEntity
 }

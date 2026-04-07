@@ -24,7 +24,9 @@ class ChatPersistenceAdapter(
 
     // --Command--//
     override fun save(chat: Chat) {
-        repo.save(mapper.toEntity(chat))
+        val isExist = repo.existsById(chat.id)
+        val entity = mapper.toEntity(chat, isNew = !isExist)
+        repo.save(entity)
     }
 
     override fun delete(chatId: UUID) {

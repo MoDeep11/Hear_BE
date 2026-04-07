@@ -2,7 +2,6 @@ package modeep.hear.infrastructure.adapter.out.chat.persistence.mapper
 
 import modeep.hear.domain.chat.model.Message
 import modeep.hear.global.common.mapper.BaseTimeMapper
-import modeep.hear.infrastructure.adapter.out.chat.persistence.entity.ChatJpaEntity
 import modeep.hear.infrastructure.adapter.out.chat.persistence.entity.MessageJpaEntity
 import org.springframework.stereotype.Component
 import java.util.UUID
@@ -22,9 +21,9 @@ class MessageMapper(
         baseTime = baseTimeMapper.toModel(entity.baseTime)
     )
 
-    fun toEntity(chat: ChatJpaEntity, model: Message): MessageJpaEntity = MessageJpaEntity(
+    fun toEntity(model: Message): MessageJpaEntity = MessageJpaEntity(
         id = model.id,
-        chat = chat,
+        chatId = model.chatId,
         sender = model.sender,
         message = model.message,
         messageType = model.messageType,
