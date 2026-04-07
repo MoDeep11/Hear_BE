@@ -23,10 +23,12 @@ class AiImageTaskPersistenceAdapter(
 
     // --Command--//
     override fun save(task: AiImageTask) {
-        repo.save(mapper.toEntity(task))
+        val isExist = repo.existsById(task.id)
+        val entity = mapper.toEntity(task, isNew = !isExist)
+        repo.save(entity)
     }
 
-    override fun delete(task: AiImageTask) {
-        repo.delete(mapper.toEntity(task))
+    override fun delete(taskId: UUID) {
+        repo.deleteById(taskId)
     }
 }

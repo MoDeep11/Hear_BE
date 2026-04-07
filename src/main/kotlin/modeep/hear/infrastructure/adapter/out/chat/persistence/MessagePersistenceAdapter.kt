@@ -22,6 +22,8 @@ class MessagePersistenceAdapter(
 
     // --Command--//
     override fun save(message: Message) {
-        messageRepo.save(mapper.toEntity(message))
+        val isExist = messageRepo.existsById(message.id)
+        val entity = mapper.toEntity(message, isExist)
+        messageRepo.save(entity)
     }
 }

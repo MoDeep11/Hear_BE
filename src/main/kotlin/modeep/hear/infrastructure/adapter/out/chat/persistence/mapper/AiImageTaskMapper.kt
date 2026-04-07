@@ -19,12 +19,16 @@ class AiImageTaskMapper(
         )
     }
 
-    fun toEntity(model: AiImageTask): AiImageTaskJpaEntity {
-        return AiImageTaskJpaEntity(
+    fun toEntity(model: AiImageTask, isNew: Boolean): AiImageTaskJpaEntity {
+        val entity = AiImageTaskJpaEntity(
             chatId = model.chatId,
             diaryId = model.diaryId,
             status = model.status,
             id = model.id
         )
+        if (!isNew) {
+            entity.markNotNew()
+        }
+        return entity
     }
 }
