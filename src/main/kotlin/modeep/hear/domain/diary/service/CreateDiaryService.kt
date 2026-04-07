@@ -3,8 +3,6 @@ package modeep.hear.domain.diary.service
 import modeep.hear.domain.chat.exception.ChatErrorCode
 import modeep.hear.domain.chat.port.out.AiImageTaskPort
 import modeep.hear.domain.chat.port.out.ChatPort
-import modeep.hear.domain.chat.port.out.query.QueryChatPort
-import modeep.hear.domain.chat.service.ChatCommandService
 import modeep.hear.domain.common.event.EventPublisher
 import modeep.hear.domain.diary.event.GenerateDiaryImageEvent
 import modeep.hear.domain.diary.model.Diary
