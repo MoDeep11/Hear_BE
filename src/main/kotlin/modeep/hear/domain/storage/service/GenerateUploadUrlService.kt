@@ -32,6 +32,7 @@ class GenerateUploadUrlService(
         )
 
         val fullPath = storageManager.generatePath(file)
+        val uploadTarget = file.copy(fileName = fullPath)
 
         pendingUploadPort.save(
             PendingUpload.create(
@@ -41,6 +42,6 @@ class GenerateUploadUrlService(
             )
         )
 
-        return storagePort.generateUploadUrl(file)
+        return storagePort.generateUploadUrl(uploadTarget)
     }
 }
