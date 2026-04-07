@@ -20,7 +20,7 @@ class CreateStickerService(
     override fun execute(req: CreateStickerRequest) {
         if (!queryUserPort.existsById(req.userId)) throw BusinessException(UserErrorCode.USER_NOT_FOUND)
 
-        val sticker = Sticker.Companion.create(
+        val sticker = Sticker.create(
             userId = req.userId,
             status = StickerStatus.COMPLETED,
             imageUrl = req.imageUrl

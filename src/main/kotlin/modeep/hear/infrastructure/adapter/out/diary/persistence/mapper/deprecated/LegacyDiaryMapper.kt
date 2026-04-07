@@ -1,4 +1,4 @@
-package modeep.hear.infrastructure.adapter.out.diary.persistence.mapper
+package modeep.hear.infrastructure.adapter.out.diary.persistence.mapper.deprecated
 
 import modeep.hear.domain.diary.model.Diary
 import modeep.hear.domain.diary.model.DiaryImage
