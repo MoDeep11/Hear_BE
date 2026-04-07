@@ -12,4 +12,8 @@ interface UploadImageUseCase {
         images: List<MultipartFile>?,
         serviceType: ServiceType
     ): List<DiaryImage>
+
+    fun executeInChat(
+        requests: List<UploadDiaryImageRequest>
+    ): List<DiaryImage>
 }

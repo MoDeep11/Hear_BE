@@ -92,6 +92,36 @@ class UploadImageService(
         return existedImages
     }
 
+    override fun executeInChat(
+        requests: List<UploadDiaryImageRequest>
+    ): List<DiaryImage> {
+        val sortedRequests = requests.sortedByDescending { it.action == ImageAction.DELETE }
+        val images = mutableListOf<DiaryImage>()
+        val urlsToDelete = mutableSetOf<String>()
+
+        sortedRequests.forEach { request ->
+            when (request.action) {
+                // 1. 새 이미지 추가
+                ImageAction.ADD -> {
+                    val newImage = DiaryImage.create(
+                        imageUrl = request.imageUrl,
+                        order = request.order,
+                        sourceType = DiarySourceType.MANUAL,
+                        diaryImageStatus = DiaryImageStatus.SUCCESS
+                    )
+                    images.add(newImage)
+
+                    val s3Key = storagePort.extractKey(request.imageUrl!!)
+                    pendingUploadPort.deleteByS3Key(s3Key)
+                }
+                else -> throw BusinessException(DiaryErrorCode.IMAGE_NOT_FOUND)
+            }
+        }
+
+        reorderImagesSafely(images)
+        return images
+    }
+
     private fun reorderImagesSafely(diaryImages: MutableList<DiaryImage>) {
         val reordered = diaryImages
             .sortedBy { it.order }

@@ -5,6 +5,7 @@ import modeep.hear.domain.diary.exception.DiaryErrorCode
 import modeep.hear.domain.diary.port.`in`.UploadDiaryImageUseCase
 import modeep.hear.domain.diary.port.out.DiaryPort
 import modeep.hear.domain.storage.port.`in`.UploadImageUseCase
+import modeep.hear.domain.storage.vo.ServiceType
 import modeep.hear.global.error.exception.BusinessException
 import modeep.hear.infrastructure.adapter.`in`.storage.dto.request.UploadDiaryImageRequest
 import modeep.hear.infrastructure.adapter.`in`.storage.dto.response.UploadDiaryImageResponse
@@ -29,7 +30,7 @@ class UploadDiaryImageService(
             ?: throw BusinessException(DiaryErrorCode.DIARY_NOT_FOUND)
         diary.validateOwner(securityPort.getCurrentUser().id)
 
-        val newDiaryImages = uploadImageUseCase.execute(diary.diaryImages, requests, images)
+        val newDiaryImages = uploadImageUseCase.execute(diary.diaryImages, requests, images, ServiceType.DIARY)
 
         diary.updateImages(newDiaryImages)
 
