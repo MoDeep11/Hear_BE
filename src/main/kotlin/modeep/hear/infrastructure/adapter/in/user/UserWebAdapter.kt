@@ -106,9 +106,9 @@ class UserWebAdapter(
 
     @PatchMapping("/profile")
     override fun updateProfile(
-        @RequestPart("data") @Valid
+        @RequestPart(name = "data") @Valid
         request: UpdateProfileRequest,
-        @RequestParam("image") image: MultipartFile?
+        @RequestParam(name = "image", required = false) image: MultipartFile?
     ): ResponseEntity<ApiResult<UpdateProfileResponse>> {
         return ResponseEntity.ok(
             ApiResult(

@@ -32,7 +32,7 @@ class StoragePersistenceAdapter(
 ) : StoragePort {
 
     private val bucket = awsProperties.s3.bucket
-    private val region = awsProperties.region
+    private val region = awsProperties.region.static
 
     override fun generateUploadUrl(file: FileData): GenerateUploadUrlResponse {
         val putObjectRequest = PutObjectRequest.builder()
