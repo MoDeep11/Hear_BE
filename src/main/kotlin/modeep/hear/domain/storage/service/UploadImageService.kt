@@ -32,7 +32,14 @@ class UploadImageService(
         images: List<MultipartFile>?,
         serviceType: ServiceType
     ): List<DiaryImage> {
-        val sortedRequests = renameDuplicateFileNames(requests.sortedByDescending { it.action == ImageAction.DELETE })
+        val sortedRequests = requests.sortedBy { it.action == ImageAction.DELETE }
+            .let { sorted ->
+                val (deletes, others) = sorted.partition { it.action == ImageAction.DELETE }
+                val (renamedOthers, renameMap) = renameDuplicateFileNames(others)
+                Triple(renamedOthers + deletes, renameMap, deletes)
+            }
+        val (finalRequests, renameMap) = sortedRequests
+
         val existedImages = diaryImages ?: mutableListOf()
         val urlsToDelete = mutableSetOf<String>()
 
@@ -41,11 +48,12 @@ class UploadImageService(
         val remainingImages = images.orEmpty().toMutableList()
         val imagesToSave = mutableListOf<Pair<MultipartFile, FileData>>()
 
-        sortedRequests.forEach { request ->
+        finalRequests.forEach { request ->
             when (request.action) {
                 // 1. 새 이미지 추가
                 ImageAction.ADD -> {
-                    val imageIndex = remainingImages.indexOfFirst { it.originalFilename == request.fileName }
+                    val originalFileName = renameMap[request.fileName] ?: request.fileName
+                    val imageIndex = remainingImages.indexOfFirst { it.originalFilename == originalFileName }
                     if (imageIndex == -1) throw BusinessException(StorageErrorCode.INVALID_FILE)
                     val image = remainingImages.removeAt(imageIndex)
                     val fileData = FileData.create(
@@ -80,14 +88,11 @@ class UploadImageService(
                 ImageAction.UPDATE_ORDER -> {
                     val index = existedImages.indexOfFirst { it.id == request.id }
                     if (index == -1) throw BusinessException(DiaryErrorCode.IMAGE_NOT_FOUND)
-
-                    // 새로운 순서가 적용된 복사본으로 교체
                     existedImages[index] = existedImages[index].updateOrder(order = request.order)
                 }
             }
         }
 
-        // 순서가 꼬엿을 경우를 대비해 인덱스 재정렬
         reorderImagesSafely(existedImages)
 
         if (urlsToDelete.isNotEmpty()) {
@@ -140,23 +145,22 @@ class UploadImageService(
         diaryImages.addAll(reordered)
     }
 
-    private fun renameDuplicateFileNames(requests: List<UploadDiaryImageRequest>): List<UploadDiaryImageRequest> {
+    private fun renameDuplicateFileNames(
+        requests: List<UploadDiaryImageRequest>
+    ): Pair<List<UploadDiaryImageRequest>, Map<String, String>> { // <renamed, originalName → renamedName>
         val nameCountMap = mutableMapOf<String, Int>()
+        val renameMap = mutableMapOf<String, String>() // originalName → renamedName
 
-        return requests.map { request ->
+        val renamed = requests.map { request ->
             val originalName = request.fileName
 
-            // fileName이 null인 경우는 그대로 반환
             if (originalName == null) {
                 request
             } else {
-                // 해당 이름이 몇 번째인지 확인
                 val count = nameCountMap.getOrDefault(originalName, 0)
-
                 val newName = if (count == 0) {
-                    originalName // 처음 등장하면 그대로 사용
+                    originalName
                 } else {
-                    // 확장자가 있는 경우와 없는 경우를 구분하여 숫자 추가
                     val extensionIndex = originalName.lastIndexOf('.')
                     if (extensionIndex != -1) {
                         val name = originalName.substring(0, extensionIndex)
@@ -166,11 +170,15 @@ class UploadImageService(
                         "$originalName($count)"
                     }
                 }
-
-                // 카운트 증가 및 객체 복사 (data class의 copy 활용)
                 nameCountMap[originalName] = count + 1
+
+                if (originalName != newName) {
+                    renameMap[newName] = originalName
+                }
+
                 request.copy(fileName = newName)
             }
         }
+        return renamed to renameMap
     }
 }
