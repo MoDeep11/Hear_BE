@@ -32,25 +32,29 @@ class UploadImageService(
         images: List<MultipartFile>?,
         serviceType: ServiceType
     ): List<DiaryImage> {
-        val sortedRequests = requests.sortedByDescending { it.action == ImageAction.DELETE }
+        val sortedRequests = renameDuplicateFileNames(requests.sortedByDescending { it.action == ImageAction.DELETE })
         val existedImages = diaryImages ?: mutableListOf()
         val urlsToDelete = mutableSetOf<String>()
 
         val user = securityPort.getCurrentUser()
 
+        val remainingImages = images.orEmpty().toMutableList()
+        val imagesToSave = mutableListOf<Pair<MultipartFile, FileData>>()
+
         sortedRequests.forEach { request ->
             when (request.action) {
                 // 1. 새 이미지 추가
                 ImageAction.ADD -> {
-                    val image = images?.firstOrNull { it.originalFilename == request.fileName }
-                        ?: throw BusinessException(StorageErrorCode.INVALID_FILE)
+                    val imageIndex = remainingImages.indexOfFirst { it.originalFilename == request.fileName }
+                    if (imageIndex == -1) throw BusinessException(StorageErrorCode.INVALID_FILE)
+                    val image = remainingImages.removeAt(imageIndex)
                     val fileData = FileData.create(
                         image,
                         serviceType,
                         user.id
                     )
 
-                    val url = storagePort.upload(image, fileData)
+                    val url = storagePort.getUrlToUpload(fileData)
                     val newImage = DiaryImage.create(
                         imageUrl = url,
                         order = request.order,
@@ -58,6 +62,7 @@ class UploadImageService(
                         diaryImageStatus = DiaryImageStatus.SUCCESS
                     )
                     existedImages.add(newImage)
+                    imagesToSave.add(Pair(image, fileData))
 
                     val s3Key = storagePort.extractKey(url)
                     pendingUploadPort.deleteByS3Key(s3Key)
@@ -89,6 +94,12 @@ class UploadImageService(
             eventPublisher.publish(DiaryImageDeletedEvent(urlsToDelete.toList()))
         }
 
+        if (imagesToSave.isNotEmpty()) {
+            imagesToSave.forEach { (image, fileData) ->
+                storagePort.upload(image, fileData)
+            }
+        }
+
         return existedImages
     }
 
@@ -97,7 +108,6 @@ class UploadImageService(
     ): List<DiaryImage> {
         val sortedRequests = requests.sortedByDescending { it.action == ImageAction.DELETE }
         val images = mutableListOf<DiaryImage>()
-        val urlsToDelete = mutableSetOf<String>()
 
         sortedRequests.forEach { request ->
             when (request.action) {
@@ -128,5 +138,39 @@ class UploadImageService(
             .mapIndexed { index, img -> img.updateOrder(index) }
         diaryImages.clear()
         diaryImages.addAll(reordered)
+    }
+
+    private fun renameDuplicateFileNames(requests: List<UploadDiaryImageRequest>): List<UploadDiaryImageRequest> {
+        val nameCountMap = mutableMapOf<String, Int>()
+
+        return requests.map { request ->
+            val originalName = request.fileName
+
+            // fileName이 null인 경우는 그대로 반환
+            if (originalName == null) {
+                request
+            } else {
+                // 해당 이름이 몇 번째인지 확인
+                val count = nameCountMap.getOrDefault(originalName, 0)
+
+                val newName = if (count == 0) {
+                    originalName // 처음 등장하면 그대로 사용
+                } else {
+                    // 확장자가 있는 경우와 없는 경우를 구분하여 숫자 추가
+                    val extensionIndex = originalName.lastIndexOf('.')
+                    if (extensionIndex != -1) {
+                        val name = originalName.substring(0, extensionIndex)
+                        val ext = originalName.substring(extensionIndex)
+                        "$name($count)$ext"
+                    } else {
+                        "$originalName($count)"
+                    }
+                }
+
+                // 카운트 증가 및 객체 복사 (data class의 copy 활용)
+                nameCountMap[originalName] = count + 1
+                request.copy(fileName = newName)
+            }
+        }
     }
 }

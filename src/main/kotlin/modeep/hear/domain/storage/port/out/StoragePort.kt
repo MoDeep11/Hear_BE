@@ -7,6 +7,8 @@ import org.springframework.web.multipart.MultipartFile
 interface StoragePort {
     fun generateUploadUrl(file: FileData): GenerateUploadUrlResponse
 
+    fun getUrlToUpload(fileData: FileData): String
+
     fun upload(file: MultipartFile, fileData: FileData): String
 
     fun deleteAll(urls: List<String>)

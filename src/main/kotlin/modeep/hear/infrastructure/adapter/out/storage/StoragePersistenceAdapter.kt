@@ -50,6 +50,11 @@ class StoragePersistenceAdapter(
         return GenerateUploadUrlResponse(finalUrl, file.fileName!!)
     }
 
+    override fun getUrlToUpload(fileData: FileData): String {
+        val key = storageManager.generatePath(fileData)
+        return "https://$bucket.s3.$region.amazonaws.com/$key"
+    }
+
     override fun upload(file: MultipartFile, fileData: FileData): String {
         val key = storageManager.generatePath(fileData)
 
