@@ -6,7 +6,7 @@ import jakarta.persistence.Entity
 import jakarta.persistence.Table
 import modeep.hear.domain.common.vo.EmotionDistribution
 import modeep.hear.global.common.entity.BaseTimeEntity
-import modeep.hear.infrastructure.adapter.out.user.persistence.entity.id.MonthlyStatisticId
+import modeep.hear.infrastructure.adapter.out.user.persistence.entity.id.MonthlyStatisticIdEntity
 import org.hibernate.annotations.JdbcTypeCode
 import org.hibernate.type.SqlTypes
 
@@ -15,7 +15,7 @@ import org.hibernate.type.SqlTypes
 class MonthlyStatisticJpaEntity(
 
     @EmbeddedId
-    val id: MonthlyStatisticId,
+    val id: MonthlyStatisticIdEntity,
 
     @Column(name = "diary_count", nullable = false)
     var diaryCount: Int = 0,

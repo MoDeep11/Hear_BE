@@ -9,7 +9,7 @@ import java.time.YearMonth
 import java.util.UUID
 
 @Embeddable
-data class MonthlyStatisticId(
+data class MonthlyStatisticIdEntity(
     @Column(name = "user_id")
     val userId: UUID,
 

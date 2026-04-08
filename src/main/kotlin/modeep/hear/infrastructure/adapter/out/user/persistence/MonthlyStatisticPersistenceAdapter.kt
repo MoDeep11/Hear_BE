@@ -2,7 +2,7 @@ package modeep.hear.infrastructure.adapter.out.user.persistence
 
 import modeep.hear.domain.user.model.MonthlyStatistic
 import modeep.hear.domain.user.port.out.MonthlyStatisticPort
-import modeep.hear.infrastructure.adapter.out.user.persistence.entity.id.MonthlyStatisticId
+import modeep.hear.infrastructure.adapter.out.user.persistence.entity.id.MonthlyStatisticIdEntity
 import modeep.hear.infrastructure.adapter.out.user.persistence.mapper.MonthlyStatisticMapper
 import modeep.hear.infrastructure.adapter.out.user.persistence.repository.MonthlyStatisticRepository
 import org.springframework.data.repository.findByIdOrNull
@@ -16,7 +16,7 @@ class MonthlyStatisticPersistenceAdapter(
     private val mapper: MonthlyStatisticMapper
 ) : MonthlyStatisticPort {
     override fun findByUserIdAndYearMonth(userId: UUID, yearMonth: YearMonth): MonthlyStatistic {
-        val id = MonthlyStatisticId(userId, yearMonth)
+        val id = MonthlyStatisticIdEntity(userId, yearMonth)
         val entity = repo.findByIdOrNull(id)
             ?: repo.save(mapper.toEntity(MonthlyStatistic.create(userId, yearMonth)))
 

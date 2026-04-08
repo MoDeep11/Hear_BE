@@ -3,7 +3,7 @@ package modeep.hear.infrastructure.adapter.out.user.persistence.mapper
 import modeep.hear.domain.user.model.MonthlyStatistic
 import modeep.hear.global.common.mapper.BaseTimeMapper
 import modeep.hear.infrastructure.adapter.out.user.persistence.entity.MonthlyStatisticJpaEntity
-import modeep.hear.infrastructure.adapter.out.user.persistence.entity.id.MonthlyStatisticId
+import modeep.hear.infrastructure.adapter.out.user.persistence.entity.id.MonthlyStatisticIdEntity
 import org.springframework.stereotype.Component
 
 @Component
@@ -24,7 +24,7 @@ class MonthlyStatisticMapper(
 
     fun toEntity(model: MonthlyStatistic): MonthlyStatisticJpaEntity {
         return MonthlyStatisticJpaEntity(
-            id = MonthlyStatisticId(
+            id = MonthlyStatisticIdEntity(
                 userId = model.userId,
                 targetYearMonth = model.targetYearMonth
             ),
