@@ -36,7 +36,7 @@ interface UserApiDocument {
 
     fun updateProfile(
         request: UpdateProfileRequest,
-        image: MultipartFile
+        image: MultipartFile?
     ): ResponseEntity<ApiResult<UpdateProfileResponse>>
 
     fun updatePassword(

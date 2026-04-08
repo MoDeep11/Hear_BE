@@ -17,8 +17,10 @@ class LogoutAuthService(
     private val jwtPort: JwtPort,
     private val securityPort: SecurityPort
 ) : LogoutAuthUseCase {
-    override fun execute(request: LogoutRequest, accessToken: String) {
+    override fun execute(request: LogoutRequest, rawAccessToken: String) {
         val user = securityPort.getCurrentUser()
+        val accessToken = jwtPort.resolveToken(rawAccessToken)
+            ?: throw BusinessException(AuthErrorCode.INVALID_TOKEN)
 
         val refreshToken = refreshTokenPort.findByRefreshToken(request.refreshToken)
             ?: throw BusinessException(AuthErrorCode.REFRESH_TOKEN_NOT_FOUND)

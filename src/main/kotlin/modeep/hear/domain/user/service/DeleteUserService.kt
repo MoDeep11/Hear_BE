@@ -30,7 +30,7 @@ class DeleteUserService(
             LogoutRequest(
                 refreshToken = request.refreshToken
             ),
-            accessToken = accessToken
+            rawAccessToken = accessToken
         )
     }
 }
