@@ -7,6 +7,6 @@ import org.springframework.web.multipart.MultipartFile
 interface UpdateProfileUseCase {
     fun execute(
         request: UpdateProfileRequest,
-        image: MultipartFile
+        image: MultipartFile?
     ): UpdateProfileResponse
 }

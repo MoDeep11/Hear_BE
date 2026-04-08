@@ -9,7 +9,6 @@ import modeep.hear.domain.user.model.UserProfile
 import modeep.hear.domain.user.port.`in`.UpdateProfileUseCase
 import modeep.hear.domain.user.port.out.command.CommandUserProfilePort
 import modeep.hear.domain.user.port.out.query.QueryUserProfilePort
-import modeep.hear.domain.user.vo.DefaultProfileImageUrl
 import modeep.hear.global.error.exception.BusinessException
 import modeep.hear.infrastructure.adapter.`in`.user.dto.request.UpdateProfileRequest
 import modeep.hear.infrastructure.adapter.`in`.user.dto.response.UpdateProfileResponse
@@ -26,21 +25,16 @@ class UpdateProfileService(
     private val storagePort: StoragePort,
     private val securityPort: SecurityPort
 ) : UpdateProfileUseCase {
-
-    private val defaultImageUrls = DefaultProfileImageUrl.entries.map { it.value }.toSet()
-
     override fun execute(
         request: UpdateProfileRequest,
-        image: MultipartFile
+        image: MultipartFile?
     ): UpdateProfileResponse {
         val userId = securityPort.getCurrentUserId()
-        val profile = queryUserProfilePort.findByUserId(userId)
+        var profile = queryUserProfilePort.findByUserId(userId)
             ?: throw BusinessException(UserErrorCode.USER_PROFILE_NOT_FOUND)
 
-        val previousImageUrl = profile.profileImageUrl
-        val uploadedUrl = uploadFile(image, profile)
-
-        if (profile.nickname == request.nickname && profile.profileImageUrl == uploadedUrl) {
+        val isSameNick = profile.nickname == request.nickname
+        if (isSameNick && image == null) {
             return UpdateProfileResponse(
                 nickname = profile.nickname,
                 profileImageUrl = profile.profileImageUrl,
@@ -48,20 +42,27 @@ class UpdateProfileService(
             )
         }
 
-        val updatedProfile = profile
-            .updateProfileImageUrl(uploadedUrl)
-            .updateNickname(request.nickname)
-        val updatedAt = LocalDateTime.now()
-        commandUserProfilePort.save(updatedProfile)
+        val previousImageUrl = profile.profileImageUrl
 
-        if (previousImageUrl != updatedProfile.profileImageUrl && previousImageUrl !in defaultImageUrls) {
+        if (!isSameNick) {
+            profile = profile.updateNickname(request.nickname)
+        }
+
+        if (image != null) {
+            val uploadedUrl = uploadFile(image, profile)
+            profile = profile.updateProfileImageUrl(uploadedUrl)
+        }
+
+        commandUserProfilePort.save(profile)
+
+        if (image != null) {
             storagePort.deleteAll(listOf(previousImageUrl))
         }
 
         return UpdateProfileResponse(
-            nickname = updatedProfile.nickname,
-            profileImageUrl = updatedProfile.profileImageUrl,
-            updatedAt = updatedAt
+            nickname = profile.nickname,
+            profileImageUrl = profile.profileImageUrl,
+            updatedAt = LocalDateTime.now()
         )
     }
 
