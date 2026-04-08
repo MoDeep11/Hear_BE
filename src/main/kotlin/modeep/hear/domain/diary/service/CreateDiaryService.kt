@@ -9,6 +9,7 @@ import modeep.hear.domain.diary.model.Diary
 import modeep.hear.domain.diary.port.`in`.CreateDiaryUseCase
 import modeep.hear.domain.diary.port.out.command.CommandDiaryPort
 import modeep.hear.domain.diary.port.out.query.QueryDiaryImagePort
+import modeep.hear.domain.sticker.event.CreateStickerEvent
 import modeep.hear.domain.user.event.IncreasedUserStatEvent
 import modeep.hear.domain.user.exception.UserErrorCode
 import modeep.hear.domain.user.port.out.query.QueryUserPort
@@ -58,6 +59,12 @@ class CreateDiaryService(
                 diaryId = diary.id,
                 emotion = diary.emotion,
                 diaryDate = diary.baseTime.createdAt.toLocalDate()
+            )
+        )
+        eventPublisher.publish(
+            CreateStickerEvent(
+                userId = userId,
+                diaryId = diary.id
             )
         )
 

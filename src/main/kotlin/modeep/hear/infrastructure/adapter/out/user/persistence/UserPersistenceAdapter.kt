@@ -25,6 +25,10 @@ class UserPersistenceAdapter(
         return repository.findByIdOrNull(id)?.let { mapper.toModel(it) }
     }
 
+    override fun existsById(id: UUID): Boolean {
+        return repository.existsById(id)
+    }
+
     // --Command--//
     override fun save(user: User) {
         val isExist = repository.existsById(user.id)
