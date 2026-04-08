@@ -21,8 +21,8 @@ class UserMapperImpl(
         )
     }
 
-    override fun toEntity(model: User): UserJpaEntity {
-        return UserJpaEntity(
+    override fun toEntity(model: User, isNew: Boolean): UserJpaEntity {
+        val entity = UserJpaEntity(
             id = model.id,
             email = model.email,
             password = model.getPassword(),
@@ -30,5 +30,9 @@ class UserMapperImpl(
             status = model.status,
             isEmailSubscribed = model.isEmailSubscribed
         )
+        if (!isNew) {
+            entity.markNotNew()
+        }
+        return entity
     }
 }

@@ -36,8 +36,8 @@ class DiaryMapperImpl(
         )
     }
 
-    override fun toEntity(model: Diary): DiaryJpaEntity {
-        val diaryEntity = DiaryJpaEntity(
+    override fun toEntity(model: Diary, isNew: Boolean): DiaryJpaEntity {
+        val entity = DiaryJpaEntity(
             userId = model.userId,
             content = model.content,
             emotion = model.emotion,
@@ -46,20 +46,23 @@ class DiaryMapperImpl(
             chatId = model.chatId,
             id = model.id
         )
+        if (!isNew) {
+            entity.markNotNew()
+        }
 
         val imageEntities = model.diaryImages.map {
-            diaryImageMapper.toEntity(it, diaryEntity)
+            diaryImageMapper.toEntity(it, entity, true)
         }
-        diaryEntity.updateImages(imageEntities)
+        entity.updateImages(imageEntities)
 
         model.diaryAiComment?.let { comment ->
-            diaryEntity.diaryAiComment = DiaryAiCommentJpaEntity(
-                diaryId = diaryEntity.id,
-                diary = diaryEntity,
+            entity.diaryAiComment = DiaryAiCommentJpaEntity(
+                diaryId = entity.id,
+                diary = entity,
                 content = comment.content,
                 status = comment.status
             )
         }
-        return diaryEntity
+        return entity
     }
 }

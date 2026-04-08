@@ -10,5 +10,5 @@ import modeep.hear.infrastructure.adapter.out.user.persistence.entity.UserJpaEnt
 interface UserMapper {
     fun toModel(entity: UserJpaEntity): User
 
-    fun toEntity(model: User): UserJpaEntity
+    fun toEntity(model: User, isNew: Boolean): UserJpaEntity
 }

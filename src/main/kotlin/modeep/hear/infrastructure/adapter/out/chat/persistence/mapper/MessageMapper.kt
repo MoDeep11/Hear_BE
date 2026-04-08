@@ -21,13 +21,19 @@ class MessageMapper(
         baseTime = baseTimeMapper.toModel(entity.baseTime)
     )
 
-    fun toEntity(model: Message): MessageJpaEntity = MessageJpaEntity(
-        id = model.id,
-        chatId = model.chatId,
-        sender = model.sender,
-        message = model.message,
-        messageType = model.messageType,
-        voiceUrl = model.voiceUrl,
-        duration = model.duration
-    )
+    fun toEntity(model: Message, isNew: Boolean): MessageJpaEntity {
+        val entity = MessageJpaEntity(
+            id = model.id,
+            chatId = model.chatId,
+            sender = model.sender,
+            message = model.message,
+            messageType = model.messageType,
+            voiceUrl = model.voiceUrl,
+            duration = model.duration
+        )
+        if (!isNew) {
+            entity.markNotNew()
+        }
+        return entity
+    }
 }

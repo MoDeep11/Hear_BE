@@ -27,7 +27,9 @@ class UserPersistenceAdapter(
 
     // --Command--//
     override fun save(user: User) {
-        repository.save(mapper.toEntity(user))
+        val isExist = repository.existsById(user.id)
+        val entity = mapper.toEntity(user, isNew = !isExist)
+        repository.save(entity)
     }
 
     override fun delete(userId: UUID) {
