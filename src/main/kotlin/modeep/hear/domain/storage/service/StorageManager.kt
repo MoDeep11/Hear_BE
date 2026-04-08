@@ -1,9 +1,9 @@
 package modeep.hear.domain.storage.service
 
 import modeep.hear.domain.storage.exception.StorageErrorCode
+import modeep.hear.domain.storage.vo.FileData
 import modeep.hear.global.error.exception.BusinessException
 import modeep.hear.global.util.generateSafeFileName
-import modeep.hear.infrastructure.adapter.`in`.storage.dto.request.GenerateUploadUrlRequest
 import org.springframework.stereotype.Component
 import java.util.UUID
 
@@ -14,16 +14,19 @@ class StorageManager {
         private const val MAX_FILE_SIZE = 1024 * 1024 * 10L // 10MB
     }
 
-    fun generatePath(userId: UUID, request: GenerateUploadUrlRequest): String {
-        validate(request)
+    fun generatePath(file: FileData): String {
+        validate(file)
 
-        val uniqueFileName = "${UUID.randomUUID()}-${request.fileName.generateSafeFileName()}"
-        val path = "${request.type.folder}/$userId/$uniqueFileName"
+        val uniqueFileName = "${UUID.randomUUID()}-${file.fileName!!.generateSafeFileName()}"
+        val path = "${file.type.folder}/${file.userId}/$uniqueFileName"
 
         return path
     }
 
-    fun validate(request: GenerateUploadUrlRequest) {
+    fun validate(request: FileData) {
+        if (request.fileName.isNullOrBlank() || request.contentType.isNullOrBlank()) {
+            throw BusinessException(StorageErrorCode.INVALID_FILE)
+        }
         if (!allowedTypes.contains(request.contentType.lowercase())) {
             throw BusinessException(StorageErrorCode.NOT_ALLOW_EXTENSION)
         }

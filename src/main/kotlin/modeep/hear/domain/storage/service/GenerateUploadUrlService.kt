@@ -20,19 +20,28 @@ class GenerateUploadUrlService(
 ) : GenerateUploadUrlUseCase {
 
     @Transactional
-    override fun execute(request: GenerateUploadUrlRequest): GenerateUploadUrlResponse {
+    override fun execute(req: GenerateUploadUrlRequest): GenerateUploadUrlResponse {
         val user = securityPort.getCurrentUser()
 
-        val fullPath = storageManager.generatePath(user.id, request)
+        val file = FileData(
+            fileName = req.fileName,
+            contentType = req.contentType,
+            size = req.size,
+            type = req.type,
+            userId = user.id
+        )
+
+        val fullPath = storageManager.generatePath(file)
+        val uploadTarget = file.copy(fileName = fullPath)
 
         pendingUploadPort.save(
             PendingUpload.create(
                 userId = user.id,
                 s3Key = fullPath,
-                serviceType = request.type
+                serviceType = file.type
             )
         )
 
-        return storagePort.generateUploadUrl(FileData(fullPath, request.contentType))
+        return storagePort.generateUploadUrl(uploadTarget)
     }
 }

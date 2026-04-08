@@ -12,5 +12,7 @@ enum class StorageErrorCode(
     FILE_TOO_LARGE(HttpStatus.BAD_REQUEST, "STORAGE_002", "파일의 크기는 10MB 이하까지 허용됩니다."),
 
     FILE_DELETE_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "STORAGE_003", "파일 삭제에 실패하였습니다"),
-    INVALID_URL(HttpStatus.BAD_REQUEST, "STORAGE_004", "URL 형식이 올바르지 않습니다.")
+    FILE_UPLOAD_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "STORAGE_004", "파일 업로드에 실패하였습니다"),
+    INVALID_FILE(HttpStatus.BAD_REQUEST, "STORAGE_005", "파일 형식이 올바르지 않습니다."),
+    INVALID_URL(HttpStatus.BAD_REQUEST, "STORAGE_006", "URL 형식이 올바르지 않습니다.")
 }

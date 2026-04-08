@@ -4,5 +4,5 @@ import modeep.hear.infrastructure.adapter.`in`.storage.dto.request.GenerateUploa
 import modeep.hear.infrastructure.adapter.`in`.storage.dto.response.GenerateUploadUrlResponse
 
 interface GenerateUploadUrlUseCase {
-    fun execute(request: GenerateUploadUrlRequest): GenerateUploadUrlResponse
+    fun execute(req: GenerateUploadUrlRequest): GenerateUploadUrlResponse
 }

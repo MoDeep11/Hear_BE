@@ -22,7 +22,7 @@ class UploadImageInChatService(
         request: List<UploadDiaryImageRequest>
     ): List<UploadDiaryImageResponse> {
         checkUserWithChatService.execute(chatId)
-        val images = uploadImageUseCase.execute(
+        val images = uploadImageUseCase.executeInChat(
             requests = request
         )
 

@@ -20,7 +20,7 @@ class DiaryImageExternalAdapter(
         CoroutineScope(Dispatchers.IO).launch {
             runCatching {
                 webClient.post()
-                    .uri("/internal/v1/diaries/{diary_id}/images", req.diaryId)
+                    .uri("/internal/v1/diaries/images")
                     .bodyValue(req)
                     .retrieve()
                     .awaitBodilessEntity() // subscribe 대신 await 사용

@@ -33,7 +33,9 @@ import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestHeader
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
+import org.springframework.web.bind.annotation.RequestPart
 import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.multipart.MultipartFile
 import java.time.YearMonth
 
 @RestController
@@ -104,13 +106,14 @@ class UserWebAdapter(
 
     @PatchMapping("/profile")
     override fun updateProfile(
-        @RequestBody @Valid
-        request: UpdateProfileRequest
+        @RequestPart("data") @Valid
+        request: UpdateProfileRequest,
+        @RequestParam("image") image: MultipartFile
     ): ResponseEntity<ApiResult<UpdateProfileResponse>> {
         return ResponseEntity.ok(
             ApiResult(
                 message = "Update profile",
-                data = updateProfileUseCase.execute(request)
+                data = updateProfileUseCase.execute(request, image)
             )
         )
     }

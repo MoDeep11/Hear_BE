@@ -3,12 +3,15 @@ package modeep.hear.infrastructure.adapter.out.storage
 import io.github.oshai.kotlinlogging.KotlinLogging
 import modeep.hear.domain.storage.exception.StorageErrorCode
 import modeep.hear.domain.storage.port.out.StoragePort
+import modeep.hear.domain.storage.service.StorageManager
 import modeep.hear.domain.storage.vo.FileData
 import modeep.hear.global.error.exception.BusinessException
 import modeep.hear.infrastructure.adapter.`in`.storage.dto.response.GenerateUploadUrlResponse
 import modeep.hear.infrastructure.config.aws.properties.AwsProperties
 import org.springframework.stereotype.Component
+import org.springframework.web.multipart.MultipartFile
 import software.amazon.awssdk.core.exception.SdkException
+import software.amazon.awssdk.core.sync.RequestBody
 import software.amazon.awssdk.services.s3.S3Client
 import software.amazon.awssdk.services.s3.model.Delete
 import software.amazon.awssdk.services.s3.model.DeleteObjectsRequest
@@ -24,12 +27,17 @@ private val log = KotlinLogging.logger {}
 class StoragePersistenceAdapter(
     private val s3Presigner: S3Presigner,
     private val s3Client: S3Client,
-    private val awsProperties: AwsProperties
+    private val awsProperties: AwsProperties,
+    private val storageManager: StorageManager
 ) : StoragePort {
+
+    private val bucket = awsProperties.s3.bucket
+    private val region = awsProperties.region
+
     override fun generateUploadUrl(file: FileData): GenerateUploadUrlResponse {
         val putObjectRequest = PutObjectRequest.builder()
-            .bucket(awsProperties.s3.bucket)
-            .key(file.filePath)
+            .bucket(bucket)
+            .key(file.fileName)
             .contentType(file.contentType)
             .build()
 
@@ -39,7 +47,38 @@ class StoragePersistenceAdapter(
             .build()
 
         val finalUrl = s3Presigner.presignPutObject(presignRequest).url().toString()
-        return GenerateUploadUrlResponse(finalUrl, file.filePath)
+        return GenerateUploadUrlResponse(finalUrl, file.fileName!!)
+    }
+
+    override fun getUrlToUpload(fileData: FileData): String {
+        val key = storageManager.generatePath(fileData)
+        return "https://$bucket.s3.$region.amazonaws.com/$key"
+    }
+
+    override fun upload(file: MultipartFile, fileData: FileData): String {
+        val key = storageManager.generatePath(fileData)
+
+        val request = PutObjectRequest.builder()
+            .bucket(bucket)
+            .key(key)
+            .contentType(file.contentType)
+            .contentLength(file.size)
+            .build()
+
+        return try {
+            // .use를 사용하여 InputStream을 안전하게 닫음
+            file.inputStream.use { inputStream ->
+                s3Client.putObject(
+                    request,
+                    RequestBody.fromInputStream(inputStream, file.size)
+                )
+            }
+            "https://$bucket.s3.$region.amazonaws.com/$key"
+        } catch (e: SdkException) {
+            // SdkException을 포착하여 도메인 예외로 변환
+            log.error(e) { "S3 파일 업로드 실패: ${e.message}, key: $key" }
+            throw BusinessException(StorageErrorCode.FILE_UPLOAD_FAILED)
+        }
     }
 
     override fun deleteAll(urls: List<String>) {

@@ -24,7 +24,9 @@ import org.springframework.web.bind.annotation.PatchMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestPart
 import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.multipart.MultipartFile
 import java.util.UUID
 
 @RestController
@@ -59,12 +61,12 @@ class DiaryWebAdapter(
     @PatchMapping("/{diary_id}/images")
     override fun uploadDiaryImage(
         @PathVariable("diary_id") diaryId: UUID,
-        @RequestBody @Valid
-        requests: List<UploadDiaryImageRequest>
+        @RequestPart("data") @Valid requests: List<UploadDiaryImageRequest>,
+        @RequestPart("images") images: List<MultipartFile>?
     ): ResponseEntity<ApiResult<List<UploadDiaryImageResponse>>> {
         return ResponseEntity.ok(
             ApiResult(
-                data = uploadDiaryImageUseCase.execute(diaryId, requests)
+                data = uploadDiaryImageUseCase.execute(diaryId, requests, images)
             )
         )
     }
