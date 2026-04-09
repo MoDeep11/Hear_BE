@@ -117,8 +117,8 @@ api:
 
 logging:
   level:
-    root: ERROR
-    modeep.hear:
+    root: warn
+    modeep.hear: warn
   file:
     name: /app/logs/app.log
     pattern:

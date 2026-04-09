@@ -1,8 +1,10 @@
 package modeep.hear.infrastructure.config.env
 
 import io.github.oshai.kotlinlogging.KotlinLogging
+import modeep.hear.global.filter.MdcTaskDecorator
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.scheduling.annotation.AsyncConfigurer
 import org.springframework.scheduling.annotation.EnableAsync
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor
 import java.util.concurrent.Executor
@@ -12,7 +14,15 @@ private val log = KotlinLogging.logger {}
 
 @Configuration
 @EnableAsync
-class AsyncConfig {
+class AsyncConfig : AsyncConfigurer {
+
+    override fun getAsyncExecutor(): Executor {
+        val executor = ThreadPoolTaskExecutor()
+        executor.setTaskDecorator(MdcTaskDecorator()) // 여기서 등록!
+        executor.initialize()
+        return executor
+    }
+
     @Bean(name = ["discordAsyncExecutor"])
     fun discordAsyncExecutor(): Executor {
         val executor = ThreadPoolTaskExecutor()
