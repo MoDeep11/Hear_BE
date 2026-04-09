@@ -66,6 +66,9 @@ services:
     container_name: watchtower
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      - DOCKER_API_VERSION=1.40
+      - WATCHTOWER_POLL_INTERVAL=60
     command: --interval 30 --cleanup
     restart: always
 
