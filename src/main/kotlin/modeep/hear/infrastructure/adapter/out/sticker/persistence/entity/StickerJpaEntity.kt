@@ -22,7 +22,7 @@ class StickerJpaEntity(
     @Enumerated(EnumType.STRING)
     val status: StickerStatus = StickerStatus.PENDING,
 
-    @Column(name = "image_url", nullable = false, length = 16)
+    @Column(name = "image_url", nullable = false, length = 512)
     val imageUrl: String,
 
     @Column(name = "keyword")
