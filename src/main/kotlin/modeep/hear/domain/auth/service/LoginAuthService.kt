@@ -5,6 +5,7 @@ import modeep.hear.domain.auth.port.`in`.LoginAuthUseCase
 import modeep.hear.domain.auth.port.out.JwtPort
 import modeep.hear.domain.auth.port.out.PasswordPort
 import modeep.hear.domain.user.port.out.query.QueryUserPort
+import modeep.hear.domain.user.vo.UserStatus
 import modeep.hear.global.error.exception.BusinessException
 import modeep.hear.infrastructure.adapter.`in`.auth.dto.request.LoginRequest
 import modeep.hear.infrastructure.adapter.`in`.auth.dto.response.TokenResponse
@@ -24,6 +25,10 @@ class LoginAuthService(
                 AuthErrorCode.INVALID_LOGIN_CREDENTIALS,
                 "email: ${request.email}"
             )
+
+        if (user.status == UserStatus.DELETED) {
+            throw BusinessException(AuthErrorCode.USER_IS_DELETED)
+        }
 
         if (!passwordPort.matches(request.password, user.getPassword())) {
             throw BusinessException(
