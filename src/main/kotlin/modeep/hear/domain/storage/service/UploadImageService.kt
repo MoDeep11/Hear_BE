@@ -15,6 +15,7 @@ import modeep.hear.domain.storage.vo.FileData
 import modeep.hear.domain.storage.vo.ImageAction
 import modeep.hear.domain.storage.vo.ServiceType
 import modeep.hear.global.error.exception.BusinessException
+import modeep.hear.infrastructure.adapter.`in`.chat.dto.request.UploadImageInChatMetaRequest
 import modeep.hear.infrastructure.adapter.`in`.storage.dto.request.UploadDiaryImageRequest
 import org.springframework.stereotype.Service
 import org.springframework.web.multipart.MultipartFile
@@ -118,32 +119,42 @@ class UploadImageService(
     }
 
     override fun executeInChat(
-        requests: List<UploadDiaryImageRequest>
+        images: List<MultipartFile>,
+        requests: List<UploadImageInChatMetaRequest>
     ): List<DiaryImage> {
-        val sortedRequests = requests.sortedByDescending { it.action == ImageAction.DELETE }
-        val images = mutableListOf<DiaryImage>()
+        if (images.size != requests.size) {
+            throw BusinessException(StorageErrorCode.INVALID_FILE)
+        }
 
-        sortedRequests.forEach { request ->
-            when (request.action) {
-                // 1. 새 이미지 추가
-                ImageAction.ADD -> {
-                    val newImage = DiaryImage.create(
-                        imageUrl = request.imageUrl,
+        val user = securityPort.getCurrentUser()
+        val diaryImages = mutableListOf<DiaryImage>()
+        val uploadedUrls = mutableListOf<String>()
+
+        try {
+            requests.forEachIndexed { index, request ->
+                val image = images[index]
+                val fileData = FileData.create(image, ServiceType.CHAT, user.id)
+                val url = storagePort.upload(image, fileData)
+                uploadedUrls.add(url)
+
+                diaryImages.add(
+                    DiaryImage.create(
+                        imageUrl = url,
                         order = request.order,
                         sourceType = DiarySourceType.MANUAL,
                         diaryImageStatus = DiaryImageStatus.SUCCESS
                     )
-                    images.add(newImage)
-
-                    val s3Key = storagePort.extractKey(request.imageUrl!!)
-                    pendingUploadPort.deleteByS3Key(s3Key)
-                }
-                else -> throw BusinessException(DiaryErrorCode.IMAGE_NOT_FOUND)
+                )
             }
+        } catch (e: Exception) {
+            if (uploadedUrls.isNotEmpty()) {
+                storagePort.deleteAll(uploadedUrls)
+            }
+            throw e
         }
 
-        reorderImagesSafely(images)
-        return images
+        reorderImagesSafely(diaryImages)
+        return diaryImages
     }
 
     private fun reorderImagesSafely(diaryImages: MutableList<DiaryImage>) {

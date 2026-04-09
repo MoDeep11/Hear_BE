@@ -4,10 +4,11 @@ import modeep.hear.domain.chat.port.`in`.UploadImageInChatUseCase
 import modeep.hear.domain.diary.model.DiaryImage
 import modeep.hear.domain.diary.port.out.DiaryImagePort
 import modeep.hear.domain.storage.port.`in`.UploadImageUseCase
-import modeep.hear.infrastructure.adapter.`in`.storage.dto.request.UploadDiaryImageRequest
+import modeep.hear.infrastructure.adapter.`in`.chat.dto.request.UploadImageInChatMetaRequest
 import modeep.hear.infrastructure.adapter.`in`.storage.dto.response.UploadDiaryImageResponse
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import org.springframework.web.multipart.MultipartFile
 import java.util.UUID
 
 @Service
@@ -19,11 +20,14 @@ class UploadImageInChatService(
 ) : UploadImageInChatUseCase {
     override fun execute(
         chatId: UUID,
-        request: List<UploadDiaryImageRequest>
+        files: List<MultipartFile>,
+        requests: List<UploadImageInChatMetaRequest>
     ): List<UploadDiaryImageResponse> {
         checkUserWithChatService.execute(chatId)
+
         val images = uploadImageUseCase.executeInChat(
-            requests = request
+            images = files,
+            requests = requests
         )
 
         val diaryImages = images.map { image ->

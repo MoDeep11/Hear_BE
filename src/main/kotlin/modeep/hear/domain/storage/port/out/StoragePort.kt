@@ -11,6 +11,8 @@ interface StoragePort {
 
     fun upload(file: MultipartFile, fileData: FileData): String
 
+    fun uploadAudio(file: MultipartFile, fileData: FileData): String
+
     fun deleteAll(urls: List<String>)
 
     fun deleteAllByKeys(keys: List<String>)

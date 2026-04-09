@@ -9,6 +9,9 @@ import modeep.hear.domain.chat.port.out.query.QueryChatPort
 import modeep.hear.domain.chat.vo.MessageType
 import modeep.hear.domain.chat.vo.Sender
 import modeep.hear.domain.common.component.GetDataForRequestComponent
+import modeep.hear.domain.storage.port.out.StoragePort
+import modeep.hear.domain.storage.vo.FileData
+import modeep.hear.domain.storage.vo.ServiceType
 import modeep.hear.domain.user.model.User
 import modeep.hear.global.error.exception.BusinessException
 import modeep.hear.global.error.exception.GlobalErrorCode
@@ -17,6 +20,7 @@ import modeep.hear.infrastructure.adapter.`in`.chat.dto.request.CreateVoiceMessa
 import modeep.hear.infrastructure.adapter.`in`.chat.dto.response.CreateMessageResponse
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import org.springframework.web.multipart.MultipartFile
 import java.util.UUID
 
 @Service
@@ -25,7 +29,8 @@ class CreateMessageService(
     private val messagePort: MessagePort,
     private val queryChatPort: QueryChatPort,
     private val getData: GetDataForRequestComponent,
-    private val checkUserWithChatService: CheckUserWithChatService
+    private val checkUserWithChatService: CheckUserWithChatService,
+    private val storagePort: StoragePort
 ) : CreateMessageUseCase {
     override suspend fun executeText(
         chatId: UUID,
@@ -45,17 +50,22 @@ class CreateMessageService(
 
     override suspend fun executeVoice(
         chatId: UUID,
+        voice: MultipartFile,
         request: CreateVoiceMessageRequest,
         user: User
     ): CreateMessageResponse {
         val chat = queryChatPort.findById(chatId) ?: throw BusinessException(ChatErrorCode.CHAT_NOT_FOUND)
         chat.validateOwner(user.id)
+
+        val fileData = FileData.create(voice, ServiceType.CHAT, user.id)
+        val voiceUrl = storagePort.uploadAudio(voice, fileData)
+
         val userMessage = Message.create(
             chatId = chatId,
             sender = Sender.USER,
             message = "send voice message",
             messageType = MessageType.VOICE,
-            voiceUrl = request.voiceUrl,
+            voiceUrl = voiceUrl,
             duration = request.duration
         )
 

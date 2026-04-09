@@ -57,7 +57,15 @@ class StoragePersistenceAdapter(
 
     override fun upload(file: MultipartFile, fileData: FileData): String {
         val key = storageManager.generatePath(fileData)
+        return putObject(file, key)
+    }
 
+    override fun uploadAudio(file: MultipartFile, fileData: FileData): String {
+        val key = storageManager.generateAudioPath(fileData)
+        return putObject(file, key)
+    }
+
+    private fun putObject(file: MultipartFile, key: String): String {
         val request = PutObjectRequest.builder()
             .bucket(bucket)
             .key(key)
@@ -66,7 +74,6 @@ class StoragePersistenceAdapter(
             .build()
 
         return try {
-            // .use를 사용하여 InputStream을 안전하게 닫음
             file.inputStream.use { inputStream ->
                 s3Client.putObject(
                     request,
@@ -75,7 +82,6 @@ class StoragePersistenceAdapter(
             }
             "https://$bucket.s3.$region.amazonaws.com/$key"
         } catch (e: SdkException) {
-            // SdkException을 포착하여 도메인 예외로 변환
             log.error(e) { "S3 파일 업로드 실패: ${e.message}, key: $key" }
             throw BusinessException(StorageErrorCode.FILE_UPLOAD_FAILED)
         }

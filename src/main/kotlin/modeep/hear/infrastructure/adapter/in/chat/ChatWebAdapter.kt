@@ -12,13 +12,14 @@ import modeep.hear.global.document.chat.ChatApiDocument
 import modeep.hear.infrastructure.adapter.`in`.chat.dto.request.CreateAiImageTaskRequest
 import modeep.hear.infrastructure.adapter.`in`.chat.dto.request.CreateMessageRequest
 import modeep.hear.infrastructure.adapter.`in`.chat.dto.request.CreateVoiceMessageRequest
+import modeep.hear.infrastructure.adapter.`in`.chat.dto.request.UploadImageInChatMetaRequest
 import modeep.hear.infrastructure.adapter.`in`.chat.dto.response.CreateAiImageTaskResponse
 import modeep.hear.infrastructure.adapter.`in`.chat.dto.response.CreateChatResponse
 import modeep.hear.infrastructure.adapter.`in`.chat.dto.response.CreateMessageResponse
-import modeep.hear.infrastructure.adapter.`in`.storage.dto.request.UploadDiaryImageRequest
 import modeep.hear.infrastructure.adapter.`in`.storage.dto.response.UploadDiaryImageResponse
 import modeep.hear.infrastructure.security.userdetails.CustomUserDetails
 import org.springframework.http.HttpStatus
+import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.PatchMapping
@@ -26,7 +27,9 @@ import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestPart
 import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.multipart.MultipartFile
 import java.util.UUID
 
 @RestController
@@ -79,29 +82,29 @@ class ChatWebAdapter(
         )
     }
 
-    @PostMapping("/{chat_id}/voice")
+    @PostMapping("/{chat_id}/voice", consumes = [MediaType.MULTIPART_FORM_DATA_VALUE])
     override suspend fun createVoiceMessage(
         @PathVariable("chat_id") chatId: UUID,
-        @RequestBody @Valid
-        request: CreateVoiceMessageRequest,
+        @RequestPart("voice") voice: MultipartFile,
+        @RequestPart("request") @Valid request: CreateVoiceMessageRequest,
         @AuthenticationPrincipal user: CustomUserDetails
     ): ResponseEntity<ApiResult<CreateMessageResponse>> {
         return ResponseEntity.ok(
             ApiResult(
-                data = createMessageUseCase.executeVoice(chatId, request, user.getUser())
+                data = createMessageUseCase.executeVoice(chatId, voice, request, user.getUser())
             )
         )
     }
 
-    @PostMapping("/{chat_id}/images")
+    @PostMapping("/{chat_id}/images", consumes = [MediaType.MULTIPART_FORM_DATA_VALUE])
     override fun uploadImageInChat(
         @PathVariable("chat_id") chatId: UUID,
-        @RequestBody @Valid
-        request: List<UploadDiaryImageRequest>
+        @RequestPart("files") files: List<MultipartFile>,
+        @RequestPart("requests") @Valid requests: List<UploadImageInChatMetaRequest>
     ): ResponseEntity<ApiResult<List<UploadDiaryImageResponse>>> {
         return ResponseEntity.ok(
             ApiResult(
-                data = uploadImageInChatUseCase.execute(chatId, request)
+                data = uploadImageInChatUseCase.execute(chatId, files, requests)
             )
         )
     }
