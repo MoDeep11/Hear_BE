@@ -21,7 +21,7 @@ class AuthExternalAdapter(
 
         helper.setTo(request.email)
         helper.setSubject("[HEAR] 회원가입 인증번호")
-        helper.setText("인증번호: **${request.code}** \n5분 이내에 입력해주세요.", true)
+        helper.setText("인증번호: **${request.code}** \n3분 이내에 입력해주세요.", true)
 
         mailSender.send(message)
     }

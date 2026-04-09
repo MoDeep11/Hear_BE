@@ -12,5 +12,5 @@ class EmailVerificationRedisEntity(
     val code: String,
 
     @TimeToLive
-    val timeToLive: Long = 300L
+    val timeToLive: Long = 180L
 )
