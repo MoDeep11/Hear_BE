@@ -55,7 +55,7 @@ class UpdateProfileService(
 
         commandUserProfilePort.save(profile)
 
-        if (image != null) {
+        if (image != null && !previousImageUrl.isNullOrBlank()) {
             storagePort.deleteAll(listOf(previousImageUrl))
         }
 

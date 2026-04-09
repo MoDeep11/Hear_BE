@@ -8,7 +8,7 @@ import java.time.LocalDateTime
 import java.util.UUID
 
 interface PendingUploadRepository : JpaRepository<PendingUploadJpaEntity, UUID> {
-    @Modifying
+    @Modifying(clearAutomatically = true)
     @Query("DELETE FROM PendingUploadJpaEntity p WHERE p.s3Key = :s3Key")
     fun deleteByS3Key(s3Key: String)
 

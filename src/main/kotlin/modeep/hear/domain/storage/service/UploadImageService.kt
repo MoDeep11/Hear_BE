@@ -100,8 +100,17 @@ class UploadImageService(
         }
 
         if (imagesToSave.isNotEmpty()) {
-            imagesToSave.forEach { (image, fileData) ->
-                storagePort.upload(image, fileData)
+            val uploadedUrls = mutableListOf<String>()
+            try {
+                imagesToSave.forEach { (image, fileData) ->
+                    val url = storagePort.upload(image, fileData)
+                    uploadedUrls.add(url)
+                }
+            } catch (e: Exception) {
+                if (uploadedUrls.isNotEmpty()) {
+                    storagePort.deleteAll(uploadedUrls)
+                }
+                throw e
             }
         }
 

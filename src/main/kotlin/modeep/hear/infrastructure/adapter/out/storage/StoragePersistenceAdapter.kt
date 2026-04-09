@@ -107,7 +107,7 @@ class StoragePersistenceAdapter(
                     }
                 }
             } catch (e: SdkException) {
-                log.error { "S3 파일 삭제 실패: ${e.message}" }
+                log.error(e) { "S3 파일 삭제 실패: ${e.message}" }
                 throw BusinessException(StorageErrorCode.FILE_DELETE_FAILED)
             }
         }
@@ -115,6 +115,8 @@ class StoragePersistenceAdapter(
 
     override fun deleteAllByKeys(keys: List<String>) {
         if (keys.isEmpty()) return
+
+        var hasError = false
 
         keys.chunked(1000).forEach { chunk ->
             val objects = chunk.map { key -> ObjectIdentifier.builder().key(key).build() }
@@ -126,17 +128,20 @@ class StoragePersistenceAdapter(
 
             try {
                 val response = s3Client.deleteObjects(deleteObjectsRequest)
-                val errors = response.errors()
-                if (errors.isNotEmpty()) {
-                    errors.forEach { error ->
+                if (response.hasErrors()) {
+                    response.errors().forEach { error ->
                         log.error { "S3 삭제 실패 - Key: ${error.key()}, Message: ${error.message()}" }
                     }
-                    throw BusinessException(StorageErrorCode.FILE_DELETE_FAILED)
+                    hasError = true
                 }
             } catch (e: SdkException) {
-                log.error { "S3 파일 삭제 실패: ${e.message}" }
-                throw BusinessException(StorageErrorCode.FILE_DELETE_FAILED)
+                log.error(e) { "S3 파일 삭제 실패: ${e.message}" }
+                hasError = true
             }
+        }
+
+        if (hasError) {
+            throw BusinessException(StorageErrorCode.FILE_DELETE_FAILED)
         }
     }
 
