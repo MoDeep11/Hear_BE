@@ -118,11 +118,14 @@ api:
 logging:
   level:
     root: warn
-    modeep.hear: warn
+    org.springframework: warn
+    org.hibernate: warn
+    modeep.hear: info
   file:
     name: /app/logs/app.log
     pattern:
-      file: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+      file: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n%wEx{10}"
+      console: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n%wEx{4}"
     logback:
       rolling-policy:
         file-name-pattern: /app/logs/app.%d{yyyy-MM-dd}.%i.log
