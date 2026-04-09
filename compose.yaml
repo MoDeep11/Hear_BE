@@ -47,6 +47,8 @@ services:
     networks:
       - hear-network
     restart: always
+    volumes:
+      - ./logs:/app/logs
 
   nginx:
     image: nginx:alpine
