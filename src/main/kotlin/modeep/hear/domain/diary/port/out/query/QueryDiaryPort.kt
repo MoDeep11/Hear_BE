@@ -12,6 +12,7 @@ interface QueryDiaryPort {
     fun findById(diaryId: UUID): Diary?
 
     fun findIdsByFilters(
+        userId: UUID,
         yearMonth: YearMonth,
         hasPhoto: Boolean,
         imageType: DiarySourceType,

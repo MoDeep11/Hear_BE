@@ -1,10 +1,8 @@
 package modeep.hear.domain.diary.service
 
 import modeep.hear.domain.auth.port.out.SecurityPort
-import modeep.hear.domain.diary.exception.DiaryErrorCode
 import modeep.hear.domain.diary.port.`in`.QueryDiariesUseCase
 import modeep.hear.domain.diary.port.out.query.QueryDiaryPort
-import modeep.hear.global.error.exception.BusinessException
 import modeep.hear.infrastructure.adapter.`in`.diary.dto.request.QueryDiariesRequest
 import modeep.hear.infrastructure.adapter.`in`.diary.dto.response.QueryDiariesResponse
 import org.springframework.data.domain.PageRequest
@@ -32,6 +30,7 @@ class QueryDiariesService(
         val pageable = PageRequest.of(0, request.limit, Sort.by(direction, "created_at")) // SQL 컬럼명
 
         val ids = queryDiaryPort.findIdsByFilters(
+            userId = user.id,
             yearMonth = request.resolvedYearMonth,
             hasPhoto = request.hasPhoto,
             imageType = request.imageType,
@@ -41,14 +40,13 @@ class QueryDiariesService(
         if (ids.isEmpty()) return emptyList()
 
         val diaries = queryDiaryPort.findAllByIdInWithImages(ids)
-        diaries.forEach { it.validateOwner(user.id) }
 
         return diaries
             .map { diary ->
                 QueryDiariesResponse(
-                    id = diary.id ?: throw BusinessException(DiaryErrorCode.DIARY_NOT_FOUND),
+                    id = diary.id,
                     thumbnailUrl = diary.diaryImages.minByOrNull { it.order }?.imageUrl,
-                    tags = diary.tags ?: emptyList(),
+                    tags = diary.tags,
                     createdAt = diary.baseTime.createdAt.toLocalDate()
                 )
             }

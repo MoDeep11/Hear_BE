@@ -27,13 +27,14 @@ class DiaryCompositeAdapter(
         persistenceAdapter.findById(diaryId)
 
     override fun findIdsByFilters(
+        userId: UUID,
         yearMonth: YearMonth,
         hasPhoto: Boolean,
         imageType: DiarySourceType,
         tag: String?,
         pageable: Pageable
     ): List<UUID> =
-        persistenceAdapter.findIdsByFilters(yearMonth, hasPhoto, imageType, tag, pageable)
+        persistenceAdapter.findIdsByFilters(userId, yearMonth, hasPhoto, imageType, tag, pageable)
 
     override fun findAllByIdInWithImages(ids: List<UUID>): List<Diary> =
         persistenceAdapter.findAllByIdInWithImages(ids)

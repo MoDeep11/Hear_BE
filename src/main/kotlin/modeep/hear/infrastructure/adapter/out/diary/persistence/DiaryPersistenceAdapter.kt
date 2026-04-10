@@ -26,6 +26,7 @@ class DiaryPersistenceAdapter(
     }
 
     override fun findIdsByFilters(
+        userId: UUID,
         yearMonth: YearMonth,
         hasPhoto: Boolean,
         imageType: DiarySourceType,
@@ -35,7 +36,7 @@ class DiaryPersistenceAdapter(
         val start = yearMonth.atDay(1).atStartOfDay()
         val end = yearMonth.plusMonths(1).atDay(1).atStartOfDay()
 
-        return repo.findIdsByFilters(start, end, imageType.name, hasPhoto, tag, pageable)
+        return repo.findIdsByFilters(userId, start, end, imageType.name, hasPhoto, tag, pageable)
     }
 
     override fun findAllByIdInWithImages(ids: List<UUID>): List<Diary> {

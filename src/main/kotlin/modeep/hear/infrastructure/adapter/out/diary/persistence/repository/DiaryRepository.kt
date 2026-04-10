@@ -22,12 +22,13 @@ interface DiaryRepository : JpaRepository<DiaryJpaEntity, UUID> {
     @Query(
         value = """
         SELECT d.id FROM diaries d
-        WHERE d.created_at >= :start AND d.created_at < :end
-        AND (:imageType IS NULL OR d.source_type = :imageType)
+        WHERE d.user_id = :userId
+        AND d.created_at >= :start AND d.created_at < :end
         AND (:hasPhoto = false OR EXISTS (
-            SELECT 1 FROM diary_images
-            WHERE diary_id = d.id
-            AND image_url IS NOT NULL
+            SELECT 1 FROM diary_images di
+            WHERE di.diary_id = d.id
+            AND di.image_url IS NOT NULL
+            AND (:imageType IS NULL OR di.source_type = :imageType)
         ))
         -- '?' 연산자 대신 jsonb_exists 함수 사용
         AND (:tag IS NULL OR jsonb_exists(d.tags, :tag))
@@ -36,6 +37,7 @@ interface DiaryRepository : JpaRepository<DiaryJpaEntity, UUID> {
         nativeQuery = true
     )
     fun findIdsByFilters(
+        @Param("userId") userId: UUID,
         @Param("start") start: LocalDateTime,
         @Param("end") end: LocalDateTime,
         @Param("imageType") imageType: String?,

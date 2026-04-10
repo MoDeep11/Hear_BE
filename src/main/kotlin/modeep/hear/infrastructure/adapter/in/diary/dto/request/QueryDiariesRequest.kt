@@ -5,7 +5,7 @@ import org.springframework.format.annotation.DateTimeFormat
 import java.time.YearMonth
 
 data class QueryDiariesRequest(
-    val imageType: DiarySourceType = DiarySourceType.AI_MADE,
+    val imageType: DiarySourceType = DiarySourceType.MANUAL,
     val hasPhoto: Boolean = false,
     @field:DateTimeFormat(pattern = "yyyy-MM")
     val yearMonth: YearMonth? = null,
