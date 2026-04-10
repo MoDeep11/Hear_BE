@@ -2,7 +2,6 @@ package modeep.hear.infrastructure.adapter.`in`.user
 
 import jakarta.validation.Valid
 import modeep.hear.domain.user.port.`in`.DeleteUserUseCase
-import modeep.hear.domain.user.port.`in`.GetRandomProfileImageUseCase
 import modeep.hear.domain.user.port.`in`.GetUserCalendarUseCase
 import modeep.hear.domain.user.port.`in`.GetUserProfileUseCase
 import modeep.hear.domain.user.port.`in`.GetUserStatisticsUseCase
@@ -10,13 +9,13 @@ import modeep.hear.domain.user.port.`in`.GetUserSummaryUseCase
 import modeep.hear.domain.user.port.`in`.UpdateEmailSubscriptionUseCase
 import modeep.hear.domain.user.port.`in`.UpdatePasswordUseCase
 import modeep.hear.domain.user.port.`in`.UpdateProfileUseCase
+import modeep.hear.domain.user.port.`in`.UpdateRandomProfileImageUseCase
 import modeep.hear.global.common.response.ApiResult
 import modeep.hear.global.document.user.UserApiDocument
 import modeep.hear.infrastructure.adapter.`in`.user.dto.request.DeleteUserRequest
 import modeep.hear.infrastructure.adapter.`in`.user.dto.request.UpdateEmailSubscriptionRequest
 import modeep.hear.infrastructure.adapter.`in`.user.dto.request.UpdatePasswordRequest
 import modeep.hear.infrastructure.adapter.`in`.user.dto.request.UpdateProfileRequest
-import modeep.hear.infrastructure.adapter.`in`.user.dto.response.GetRandomProfileImageResponse
 import modeep.hear.infrastructure.adapter.`in`.user.dto.response.GetUserCalendarResponse
 import modeep.hear.infrastructure.adapter.`in`.user.dto.response.UpdateEmailSubscriptionResponse
 import modeep.hear.infrastructure.adapter.`in`.user.dto.response.UpdatePasswordResponse
@@ -49,7 +48,7 @@ class UserWebAdapter(
     private val updatePasswordUseCase: UpdatePasswordUseCase,
     private val updateEmailSubscriptionUseCase: UpdateEmailSubscriptionUseCase,
     private val getUserCalendarUseCase: GetUserCalendarUseCase,
-    private val getRandomProfileImageUseCase: GetRandomProfileImageUseCase
+    private val updateRandomProfileImageUseCase: UpdateRandomProfileImageUseCase
 ) : UserApiDocument {
 
     @DeleteMapping
@@ -160,12 +159,12 @@ class UserWebAdapter(
         )
     }
 
-    @GetMapping("/profile-images/random")
-    override fun getRandomProfileImage(): ResponseEntity<ApiResult<GetRandomProfileImageResponse>> {
+    @PatchMapping("/profile-images/random")
+    override fun updateRandomProfileImage(): ResponseEntity<ApiResult<UpdateProfileResponse>> {
         return ResponseEntity.ok(
             ApiResult(
-                message = "Get random profile image",
-                data = getRandomProfileImageUseCase.execute()
+                message = "Update random profile image",
+                data = updateRandomProfileImageUseCase.execute()
             )
         )
     }
