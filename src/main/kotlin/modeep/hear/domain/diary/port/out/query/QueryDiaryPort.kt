@@ -15,7 +15,7 @@ interface QueryDiaryPort {
         userId: UUID,
         yearMonth: YearMonth,
         hasPhoto: Boolean,
-        imageType: DiarySourceType,
+        imageType: DiarySourceType?,
         tag: String? = null,
         pageable: Pageable
     ): List<UUID>

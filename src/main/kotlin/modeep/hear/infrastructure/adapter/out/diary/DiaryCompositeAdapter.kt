@@ -30,7 +30,7 @@ class DiaryCompositeAdapter(
         userId: UUID,
         yearMonth: YearMonth,
         hasPhoto: Boolean,
-        imageType: DiarySourceType,
+        imageType: DiarySourceType?,
         tag: String?,
         pageable: Pageable
     ): List<UUID> =

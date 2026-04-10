@@ -28,7 +28,11 @@ interface DiaryRepository : JpaRepository<DiaryJpaEntity, UUID> {
             SELECT 1 FROM diary_images di
             WHERE di.diary_id = d.id
             AND di.image_url IS NOT NULL
-            AND (:imageType IS NULL OR di.source_type = :imageType)
+        ))
+        AND (:imageType IS NULL OR EXISTS (
+            SELECT 1 FROM diary_images di
+            WHERE di.diary_id = d.id
+            AND di.source_type = :imageType
         ))
         -- '?' 연산자 대신 jsonb_exists 함수 사용
         AND (:tag IS NULL OR jsonb_exists(d.tags, :tag))
