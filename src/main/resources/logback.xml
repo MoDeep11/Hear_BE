@@ -1,11 +1,16 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <configuration>
+    <property name="LOG_PATTERN"
+              value="%d{HH:mm:ss.SSS} %highlight(%-5level) [%magenta(%X{traceId:-startup})] [%cyan(%X{userId:-anonymous})] %yellow(%logger{30}.%M:%L) : %msg%n" />
+
     <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
-            <pattern>[%d{HH:mm:ss.SSS}] [%-5level] [%X{traceId:-startup}] [%X{userId:-anonymous}] %logger{36}.%M:%L - %msg%n</pattern>
+            <pattern>${LOG_PATTERN}</pattern>
+            <charset>utf8</charset>
         </encoder>
     </appender>
 
-    <root level="INFO"> <appender-ref ref="CONSOLE" />
+    <root level="INFO">
+        <appender-ref ref="CONSOLE" />
     </root>
 </configuration>

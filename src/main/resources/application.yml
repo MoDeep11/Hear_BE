@@ -121,6 +121,7 @@ logging:
     org.springframework: warn
     org.hibernate: warn
     modeep.hear: info
+    modeep.hear.global.filter.RequestLogFilter: info
   file:
     name: /app/logs/app.log
     pattern:
