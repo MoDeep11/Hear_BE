@@ -25,7 +25,7 @@ class DiaryImageExternalAdapter(
                     .retrieve()
                     .awaitBodilessEntity() // subscribe 대신 await 사용
             }.onFailure { e ->
-                log.error(e) { "이미지 생성 요청 실패: ${req.diaryId}" }
+                log.error(e) { "이미지 생성 요청 실패: diaryId-[${req.diaryId}]" }
             }
         }
     }

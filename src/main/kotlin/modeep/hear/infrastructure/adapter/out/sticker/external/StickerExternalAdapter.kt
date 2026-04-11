@@ -24,7 +24,7 @@ class StickerExternalAdapter(
                     .retrieve()
                     .awaitBodilessEntity()
             }.onFailure { e ->
-                log.error(e) { "스티커 생성 요청 실패: user-[${req.userId}], diary-[${req.diaryId}]" }
+                log.error(e) { "스티커 생성 요청 실패: userId-[${req.userId}], diaryId-[${req.diaryId}]" }
             }
         }
     }

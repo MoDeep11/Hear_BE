@@ -42,6 +42,7 @@ class ChatExternalAdapter(
                 Retry.backoff(3, Duration.ofSeconds(2))
                     .filter { it is RuntimeException }
             )
+            .checkpoint("AI Chat 생성 실패: chatId-[$chatId]")
             .awaitSingle()
     }
 }
