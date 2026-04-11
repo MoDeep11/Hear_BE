@@ -5,24 +5,20 @@ WORKDIR /app
 COPY build.gradle.kts settings.gradle.kts ./
 COPY gradle ./gradle
 COPY gradlew .
-
 RUN chmod +x gradlew
 RUN ./gradlew dependencies --no-daemon
 
-RUN mkdir -p /app/logs
-RUN chmod 777 /app/logs
-
+# 소스 복사 및 프로젝트 빌드
 COPY src ./src
-
-# 프로젝트 빌드
 RUN ./gradlew build -x test -x ktlintCheck --no-daemon
 
-# 경량화된 JRE 환경에서 실행
-FROM eclipse-temurin:21-jre-jammy
-WORKDIR /app
+# 유저 및 그룹 생성
+RUN addgroup --system springgroup && adduser --system --ingroup springgroup springuser
+RUN mkdir -p /app/logs && chown -R springuser:springgroup /app/logs
 
-# 빌드 스테이지에서 생성된 jar 파일만 추출하여 복사
-COPY --from=build /app/build/libs/*-SNAPSHOT.jar app.jar
+COPY --from=build --chown=springuser:springgroup /app/build/libs/*-SNAPSHOT.jar app.jar
+
+USER springuser
 
 EXPOSE 8080
 
