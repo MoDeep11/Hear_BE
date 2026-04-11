@@ -1,4 +1,4 @@
-package modeep.hear.global.converter.deprecated
+package modeep.hear.global.common.converter.deprecated
 
 import com.fasterxml.jackson.core.type.TypeReference
 import com.fasterxml.jackson.databind.ObjectMapper

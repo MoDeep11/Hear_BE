@@ -4,8 +4,8 @@ import jakarta.servlet.FilterChain
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
 import modeep.hear.domain.auth.exception.AuthErrorCode
+import modeep.hear.global.common.constant.SecurityConstants
 import modeep.hear.global.error.exception.BusinessException
-import modeep.hear.infrastructure.config.security.constant.SecurityConstants
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.util.AntPathMatcher
 import org.springframework.web.filter.OncePerRequestFilter

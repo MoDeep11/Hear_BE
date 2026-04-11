@@ -2,6 +2,7 @@ package modeep.hear.global.util
 
 import modeep.hear.domain.storage.exception.StorageErrorCode
 import modeep.hear.domain.user.exception.UserErrorCode
+import modeep.hear.global.common.constant.SecurityConstants
 import modeep.hear.global.error.exception.BusinessException
 
 fun String.maskUri(): String {
@@ -15,14 +16,13 @@ fun String.maskUri(): String {
     }
 }
 
-fun String?.maskIfSensitive(fieldName: String): String {
+fun Any?.maskIfSensitive(fieldName: String): String {
     if (this == null) return ""
 
-    val sensitiveFields = listOf("password", "account", "ssn", "token", "credential")
-
+    val sensitiveFields = SecurityConstants.SENSITIVE_FIELDS
     val isSensitive = sensitiveFields.any { fieldName.contains(it, ignoreCase = true) }
 
-    return if (isSensitive) "********" else this
+    return if (isSensitive) "********" else this.toString()
 }
 
 fun String.maskEmail(): String {

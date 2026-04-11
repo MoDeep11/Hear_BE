@@ -1,4 +1,4 @@
-package modeep.hear.global.converter
+package modeep.hear.global.common.converter
 
 import jakarta.persistence.AttributeConverter
 import jakarta.persistence.Converter

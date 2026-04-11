@@ -20,7 +20,7 @@ class FilterConfig(
 ) : AbstractHttpConfigurer<FilterConfig, HttpSecurity>() {
     override fun configure(http: HttpSecurity) {
         val mdcLoggingFilter = MDCLoggingFilter()
-        val requestLogFilter = RequestLogFilter()
+        val requestLogFilter = RequestLogFilter(objectMapper)
         val jwtFilter = JwtFilter(jwtAdapter)
         val errorHandlingFilter = ErrorHandlingFilter(
             objectMapper = objectMapper,

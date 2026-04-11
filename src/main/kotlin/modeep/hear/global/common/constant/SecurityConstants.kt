@@ -1,4 +1,4 @@
-package modeep.hear.infrastructure.config.security.constant
+package modeep.hear.global.common.constant
 
 object SecurityConstants {
     val PERMIT_PATHS = listOf(
@@ -23,4 +23,16 @@ object SecurityConstants {
         "/actuator/health/**",
         "/actuator/info/**"
     )
+
+    val SENSITIVE_FIELDS = listOf(
+        "password",
+        "oldPassword",
+        "newPassword",
+        "confirmPassword",
+        "account",
+        "ssn",
+        "credential"
+    )
+
+    const val MASKING_TEXT = "********"
 }
