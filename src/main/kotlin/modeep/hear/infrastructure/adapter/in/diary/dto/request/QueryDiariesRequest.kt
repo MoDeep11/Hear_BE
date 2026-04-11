@@ -10,7 +10,6 @@ data class QueryDiariesRequest(
     @field:DateTimeFormat(pattern = "yyyy-MM")
     val yearMonth: YearMonth? = null,
     val limit: Int = 32,
-    val sort: String = "createdAt,desc",
     val tag: String? = null
 ) {
     val resolvedYearMonth: YearMonth
