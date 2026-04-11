@@ -9,6 +9,9 @@ COPY gradlew .
 RUN chmod +x gradlew
 RUN ./gradlew dependencies --no-daemon
 
+RUN mkdir -p /app/logs
+RUN chmod 777 /app/logs
+
 COPY src ./src
 
 # 프로젝트 빌드

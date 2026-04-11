@@ -126,7 +126,7 @@ logging:
     name: /app/logs/app.log
     pattern:
       file: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n%wEx{10}"
-      console: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n%wEx{4}"
+      console: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n%wEx{short}"
     logback:
       rolling-policy:
         file-name-pattern: /app/logs/app.%d{yyyy-MM-dd}.%i.log
