@@ -24,7 +24,7 @@ class ChatExternalAdapter(
         userInfo: UserInfo
     ): InitChatResponse {
         val req = InitChatRequest(
-            chatId = chatId,
+            sessionId = chatId,
             userInfo = userInfo
         )
 

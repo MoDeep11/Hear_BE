@@ -4,6 +4,6 @@ import modeep.hear.infrastructure.adapter.out.chat.external.dto.vo.UserInfo
 import java.util.UUID
 
 data class InitChatRequest(
-    val chatId: UUID,
+    val sessionId: UUID,
     val userInfo: UserInfo
 )

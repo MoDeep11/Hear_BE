@@ -35,7 +35,7 @@ class MessageExternalAdapter(
             message = message.message,
             userAudioUrl = message.voiceUrl,
             history = histories,
-            chatId = chatId
+            sessionId = chatId
         )
 
         val response = webClient.post()

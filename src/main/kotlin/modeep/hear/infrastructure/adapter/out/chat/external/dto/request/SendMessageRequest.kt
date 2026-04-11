@@ -9,5 +9,5 @@ data class SendMessageRequest(
     val message: String,
     val userAudioUrl: String? = null,
     val history: List<History>,
-    val chatId: UUID
+    val sessionId: UUID
 )

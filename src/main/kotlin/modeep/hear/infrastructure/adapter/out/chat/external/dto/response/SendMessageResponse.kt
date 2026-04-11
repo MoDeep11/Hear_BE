@@ -22,6 +22,6 @@ data class SendMessageResponse(
 
     val suggestion: SuggestionType? = null,
 
-    @field:JsonAlias("chat_id")
+    @field:JsonAlias("chat_id", "session_id", "sessionId")
     val chatId: UUID
 )
