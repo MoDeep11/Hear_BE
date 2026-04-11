@@ -7,6 +7,8 @@ import org.slf4j.LoggerFactory
 import org.springframework.web.filter.OncePerRequestFilter
 import org.springframework.web.util.ContentCachingRequestWrapper
 import java.nio.charset.StandardCharsets
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 class RequestLogFilter : OncePerRequestFilter() {
     private val log = LoggerFactory.getLogger(javaClass)
@@ -28,14 +30,17 @@ class RequestLogFilter : OncePerRequestFilter() {
     private fun logRequestDetails(request: ContentCachingRequestWrapper, status: Int, duration: Long) {
         val uri = request.requestURI
         val method = request.method
+        val now = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS"))
+        val queryString = request.queryString?.let { "?$it" } ?: ""
         val clientIp = request.remoteAddr
         val payload = String(request.contentAsByteArray, StandardCharsets.UTF_8)
 
         log.info(
             """
             |
-            |[REQUEST] $method $uri | Status: $status | Time: ${duration}ms | IP: $clientIp
-            |[PAYLOAD] $payload
+            |[TIMESTAMP] $now
+            |[REQUEST] $method $uri$queryString | Status: $status | Time: ${duration}ms | IP: $clientIp
+            |[PAYLOAD] ${payload.ifBlank { "No Body" }}
             |-------------------------------------------------------------------------
             """.trimMargin()
         )
