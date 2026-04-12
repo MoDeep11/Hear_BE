@@ -61,7 +61,8 @@ class SecurityConfig(
                 FilterConfig(
                     jwtAdapter = jwtAdapter,
                     objectMapper = objectMapper,
-                    exceptionResolver = exceptionResolver
+                    exceptionResolver = exceptionResolver,
+                    authEntryPoint = authEntryPoint
                 ),
                 Customizer.withDefaults()
             )
