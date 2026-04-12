@@ -2,10 +2,10 @@ package modeep.hear.global.common.mapper
 
 import modeep.hear.domain.common.vo.BaseTime
 import modeep.hear.global.common.entity.JpaBaseTime
-import org.mapstruct.Mapper
+import org.springframework.stereotype.Component
 
-@Mapper(componentModel = "spring")
-interface BaseTimeMapper {
+@Component
+class BaseTimeMapper {
     fun toModel(jpaBaseTime: JpaBaseTime): BaseTime {
         return BaseTime(
             createdAt = jpaBaseTime.createdAt,
