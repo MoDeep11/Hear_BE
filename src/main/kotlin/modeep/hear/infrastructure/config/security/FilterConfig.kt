@@ -1,6 +1,7 @@
 package modeep.hear.infrastructure.config.security
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import modeep.hear.global.error.HttpAuthEntryPoint
 import modeep.hear.global.filter.ErrorHandlingFilter
 import modeep.hear.global.filter.MDCLoggingFilter
 import modeep.hear.global.filter.RequestLogFilter
@@ -16,12 +17,13 @@ import kotlin.jvm.java
 class FilterConfig(
     private val jwtAdapter: JwtAdapter,
     private val objectMapper: ObjectMapper,
-    private val exceptionResolver: HandlerExceptionResolver
+    private val exceptionResolver: HandlerExceptionResolver,
+    private val authEntryPoint: HttpAuthEntryPoint
 ) : AbstractHttpConfigurer<FilterConfig, HttpSecurity>() {
     override fun configure(http: HttpSecurity) {
         val mdcLoggingFilter = MDCLoggingFilter()
         val requestLogFilter = RequestLogFilter(objectMapper)
-        val jwtFilter = JwtFilter(jwtAdapter)
+        val jwtFilter = JwtFilter(jwtAdapter, authEntryPoint)
         val errorHandlingFilter = ErrorHandlingFilter(
             objectMapper = objectMapper,
             exceptionResolver = exceptionResolver
