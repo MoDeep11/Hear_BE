@@ -136,4 +136,4 @@ logging:
 
 external.api:
     base-url: ${INTERNAL_API_URL}
-    timeout: 5s
+    timeout: 60s

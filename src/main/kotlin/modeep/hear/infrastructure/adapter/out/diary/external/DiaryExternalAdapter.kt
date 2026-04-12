@@ -18,6 +18,7 @@ import modeep.hear.infrastructure.adapter.out.diary.external.dto.request.AddComm
 import modeep.hear.infrastructure.adapter.out.diary.external.dto.request.GenerateDiaryRequest
 import org.springframework.stereotype.Component
 import org.springframework.web.reactive.function.client.WebClient
+import org.springframework.web.reactive.function.client.WebClientRequestException
 import org.springframework.web.reactive.function.client.awaitBodilessEntity
 import org.springframework.web.reactive.function.client.bodyToMono
 import reactor.core.publisher.Mono
@@ -76,7 +77,10 @@ class DiaryExternalAdapter(
             }
             .bodyToMono<AddCommentResponse>()
             .retryWhen(
-                Retry.backoff(3, Duration.ofSeconds(2))
+                Retry
+                    .backoff(3, Duration.ofSeconds(2))
+                    .maxBackoff(Duration.ofSeconds(10))
+                    .filter { it is WebClientRequestException }
             )
             .awaitSingle()
 

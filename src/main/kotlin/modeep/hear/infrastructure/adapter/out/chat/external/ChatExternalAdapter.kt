@@ -40,6 +40,7 @@ class ChatExternalAdapter(
             .bodyToMono<InitChatResponse>()
             .retryWhen(
                 Retry.backoff(3, Duration.ofSeconds(2))
+                    .maxBackoff(Duration.ofSeconds(10))
                     .filter { it is RuntimeException }
             )
             .checkpoint("AI Chat 생성 실패: chatId-[$chatId]")
