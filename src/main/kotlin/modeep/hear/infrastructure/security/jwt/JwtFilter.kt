@@ -5,13 +5,16 @@ import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
 import modeep.hear.domain.auth.exception.AuthErrorCode
 import modeep.hear.global.common.constant.SecurityConstants
+import modeep.hear.global.error.HttpAuthEntryPoint
 import modeep.hear.global.error.exception.BusinessException
+import org.springframework.security.authentication.InsufficientAuthenticationException
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.util.AntPathMatcher
 import org.springframework.web.filter.OncePerRequestFilter
 
 class JwtFilter(
-    private val jwtAdapter: JwtAdapter
+    private val jwtAdapter: JwtAdapter,
+    private val authEntryPoint: HttpAuthEntryPoint
 ) : OncePerRequestFilter() {
 
     companion object {
@@ -33,10 +36,19 @@ class JwtFilter(
         val bearerToken = request.getHeader(HEADER) ?: return filterChain.doFilter(request, response)
         val token = jwtAdapter.resolveToken(bearerToken) ?: return filterChain.doFilter(request, response)
 
-        validateAccessToken(token)
-
-        val authentication = jwtAdapter.getAuthentication(token)
-        SecurityContextHolder.getContext().authentication = authentication
+        try {
+            validateAccessToken(token)
+            val authentication = jwtAdapter.getAuthentication(token)
+            SecurityContextHolder.getContext().authentication = authentication
+        } catch (e: Exception) {
+            SecurityContextHolder.clearContext()
+            authEntryPoint.commence(
+                request,
+                response,
+                InsufficientAuthenticationException(e.message, e)
+            )
+            return
+        }
 
         filterChain.doFilter(request, response)
     }

@@ -33,5 +33,6 @@ class HttpAuthEntryPoint(
                 path = request.requestURI
             )
         )
+        response.writer.flush()
     }
 }
