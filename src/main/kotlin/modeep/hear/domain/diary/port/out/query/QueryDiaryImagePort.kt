@@ -5,4 +5,6 @@ import java.util.UUID
 
 interface QueryDiaryImagePort {
     fun findAllByChatId(chatId: UUID): List<DiaryImage>
+
+    fun findAllByDiaryId(diaryId: UUID): List<DiaryImage>
 }

@@ -28,6 +28,15 @@ class DiaryImagePersistenceAdapter(
             }
     }
 
+    override fun findAllByDiaryId(diaryId: UUID): List<DiaryImage> {
+        return repo.findAllByDiary_Id(diaryId)
+            .map { img ->
+                mapper.toModel(
+                    entity = img
+                )
+            }
+    }
+
     // --Command--//
     override fun saveAll(diaryImages: List<DiaryImage>) {
         diaryImages.forEach { save(it) }

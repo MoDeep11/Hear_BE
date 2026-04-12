@@ -19,6 +19,9 @@ class DiaryImageCompositeAdapter(
     override fun findAllByChatId(chatId: UUID): List<DiaryImage> =
         persistenceAdapter.findAllByChatId(chatId)
 
+    override fun findAllByDiaryId(diaryId: UUID): List<DiaryImage> =
+        persistenceAdapter.findAllByDiaryId(diaryId)
+
     override fun saveAll(diaryImages: List<DiaryImage>) =
         persistenceAdapter.saveAll(diaryImages)
 

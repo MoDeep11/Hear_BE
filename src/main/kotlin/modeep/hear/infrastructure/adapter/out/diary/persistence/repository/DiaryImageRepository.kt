@@ -12,4 +12,5 @@ interface DiaryImageRepository : JpaRepository<DiaryImageJpaEntity, UUID> {
     @Modifying
     @Query("DELETE FROM DiaryImageJpaEntity d WHERE d.id = :id")
     fun deleteIfExists(id: UUID)
+    fun findAllByDiary_Id(diaryId: UUID): MutableList<DiaryImageJpaEntity>
 }

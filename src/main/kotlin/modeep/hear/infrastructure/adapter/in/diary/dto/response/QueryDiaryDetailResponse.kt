@@ -10,6 +10,8 @@ data class QueryDiaryDetailResponse(
     val userId: UUID,
     val content: String,
     val emotion: Emotion,
+    val imageUrls: List<String>?,
+    val aiComment: String?,
     val tags: List<String>?,
     val sourceType: DiarySourceType,
     val chatId: UUID? = null,
