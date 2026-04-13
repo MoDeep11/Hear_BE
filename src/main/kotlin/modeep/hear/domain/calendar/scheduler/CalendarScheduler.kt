@@ -12,13 +12,13 @@ import org.springframework.scheduling.annotation.Scheduled
 import org.springframework.stereotype.Component
 import java.time.LocalDate
 
-private val log = KotlinLogging.logger {}
-
 @Component
 class CalendarScheduler(
     private val syncCalendarUseCase: SyncCalendarUseCase,
     private val exceptionNotifier: ExceptionNotifier
 ) {
+    private val log = KotlinLogging.logger {}
+
     @Async("calendarAsyncExecutor")
     @EventListener(ApplicationReadyEvent::class)
     fun initCalendarData() {

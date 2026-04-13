@@ -9,12 +9,12 @@ import modeep.hear.infrastructure.external.openfeign.holiday.HolidayFeignClient
 import org.springframework.stereotype.Component
 import java.time.LocalDate
 
-private val log = KotlinLogging.logger {}
-
 @Component
 class CalendarExternalAdapter(
     private val holidayFeignClient: HolidayFeignClient
 ) : FetchCalendarPort {
+    private val log = KotlinLogging.logger {}
+
     override fun fetch(year: Int): Set<LocalDate> {
         val response = try {
             holidayFeignClient.getRestDays(year.toString())

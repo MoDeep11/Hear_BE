@@ -5,12 +5,12 @@ import modeep.hear.global.error.ErrorCode
 import org.springframework.scheduling.annotation.Async
 import org.springframework.stereotype.Component
 
-private val log = KotlinLogging.logger {}
-
 @Component
 class DiscordSendService(
     private val discordWebhookClient: DiscordWebhookClient
 ) {
+    private val log = KotlinLogging.logger {}
+
     @Async("discordAsyncExecutor")
     fun sendErrorLog(
         e: Exception,

@@ -1,6 +1,5 @@
 package modeep.hear.domain.calendar.service.component
 
-import io.github.oshai.kotlinlogging.KotlinLogging
 import modeep.hear.domain.calendar.model.Calendar
 import modeep.hear.domain.calendar.port.out.CommandCalendarPort
 import org.springframework.retry.annotation.Backoff
@@ -9,8 +8,6 @@ import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.time.LocalDate
 import java.time.Year
-
-private val log = KotlinLogging.logger {}
 
 @Service
 class SaveCalendarComponent(

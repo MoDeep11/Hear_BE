@@ -10,12 +10,12 @@ import org.springframework.stereotype.Component
 import org.springframework.web.reactive.function.client.WebClient
 import org.springframework.web.reactive.function.client.awaitBodilessEntity
 
-private val log = KotlinLogging.logger {}
-
 @Component
 class DiaryImageExternalAdapter(
     private val webClient: WebClient
 ) : FetchDiaryImagePort {
+    private val log = KotlinLogging.logger {}
+
     override suspend fun generateImage(req: GenerateDiaryImageRequest) {
         CoroutineScope(Dispatchers.IO).launch {
             runCatching {

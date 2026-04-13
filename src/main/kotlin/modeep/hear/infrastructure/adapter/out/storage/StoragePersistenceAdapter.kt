@@ -21,8 +21,6 @@ import software.amazon.awssdk.services.s3.presigner.S3Presigner
 import software.amazon.awssdk.services.s3.presigner.model.PutObjectPresignRequest
 import java.time.Duration
 
-private val log = KotlinLogging.logger {}
-
 @Component
 class StoragePersistenceAdapter(
     private val s3Presigner: S3Presigner,
@@ -30,6 +28,7 @@ class StoragePersistenceAdapter(
     private val awsProperties: AwsProperties,
     private val storageManager: StorageManager
 ) : StoragePort {
+    private val log = KotlinLogging.logger {}
 
     private val bucket = awsProperties.s3.bucket
     private val region = awsProperties.region.static

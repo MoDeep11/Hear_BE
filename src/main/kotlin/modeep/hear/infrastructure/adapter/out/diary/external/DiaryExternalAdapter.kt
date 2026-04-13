@@ -26,12 +26,12 @@ import reactor.util.retry.Retry
 import java.time.Duration
 import java.util.UUID
 
-private val log = KotlinLogging.logger {}
-
 @Component
 class DiaryExternalAdapter(
     private val webClient: WebClient
 ) : FetchDiaryPort {
+    private val log = KotlinLogging.logger {}
+
     override suspend fun generateDiary(
         chatId: UUID,
         histories: List<History>,

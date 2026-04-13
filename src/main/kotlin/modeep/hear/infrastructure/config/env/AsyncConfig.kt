@@ -10,11 +10,10 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor
 import java.util.concurrent.Executor
 import java.util.concurrent.ThreadPoolExecutor
 
-private val log = KotlinLogging.logger {}
-
 @Configuration
 @EnableAsync
 class AsyncConfig : AsyncConfigurer {
+    private val log = KotlinLogging.logger {}
 
     override fun getAsyncExecutor(): Executor {
         val executor = ThreadPoolTaskExecutor()
