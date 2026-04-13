@@ -51,7 +51,7 @@ dependencies {
     implementation(libs.spring.boot.starter.webflux)
     implementation(libs.spring.boot.actuator)
     implementation(libs.kotlinx.coroutines.reactor)
-    developmentOnly(libs.spring.boot.devtools)
+//    developmentOnly(libs.spring.boot.devtools)
 
     // jwt
     implementation(libs.jjwt.api)
@@ -64,12 +64,12 @@ dependencies {
     annotationProcessor(libs.configuration.processor)
 
     // MapStruct
-    implementation(libs.mapstruct)
-    kapt(libs.mapstruct.processor)
+//    implementation(libs.mapstruct)
+//    kapt(libs.mapstruct.processor)
 
     // QueryDSL
-    implementation(variantOf(libs.querydsl.jpa) { classifier("jakarta") })
-    kapt(variantOf(libs.querydsl.apt) { classifier("jakarta") })
+//    implementation(variantOf(libs.querydsl.jpa) { classifier("jakarta") })
+//    kapt(variantOf(libs.querydsl.apt) { classifier("jakarta") })
 
     // Q 클래스 생성 APT
     kapt(libs.jakarta.persistence.api)
