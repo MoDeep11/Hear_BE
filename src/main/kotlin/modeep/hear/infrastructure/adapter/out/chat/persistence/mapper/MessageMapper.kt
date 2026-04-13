@@ -17,7 +17,6 @@ class MessageMapper(
         message = entity.message,
         messageType = entity.messageType,
         voiceUrl = entity.voiceUrl,
-        duration = entity.duration,
         baseTime = baseTimeMapper.toModel(entity.baseTime)
     )
 
@@ -28,8 +27,7 @@ class MessageMapper(
             sender = model.sender,
             message = model.message,
             messageType = model.messageType,
-            voiceUrl = model.voiceUrl,
-            duration = model.duration
+            voiceUrl = model.voiceUrl
         )
         if (!isNew) {
             entity.markNotNew()
