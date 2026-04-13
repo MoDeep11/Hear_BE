@@ -104,9 +104,9 @@ interface DiaryRepository : JpaRepository<DiaryJpaEntity, UUID> {
     """
     )
     fun existsByUserIdAndDateRange(
-        userId: UUID,
-        baseTimeCreatedAtAfter: LocalDateTime,
-        baseTimeCreatedAtBefore: LocalDateTime
+        @Param("userId") userId: UUID,
+        @Param("after") baseTimeCreatedAtAfter: LocalDateTime,
+        @Param("before") baseTimeCreatedAtBefore: LocalDateTime
     ): Boolean
 
     @Query(
@@ -119,9 +119,9 @@ interface DiaryRepository : JpaRepository<DiaryJpaEntity, UUID> {
     """
     )
     fun findLatestDiary(
-        userId: UUID,
-        baseTimeCreatedAtAfter: LocalDateTime,
-        baseTimeCreatedAtBefore: LocalDateTime
+        @Param("userId") userId: UUID,
+        @Param("after") baseTimeCreatedAtAfter: LocalDateTime,
+        @Param("before") baseTimeCreatedAtBefore: LocalDateTime
     ): DiaryJpaEntity?
 
     @Query(
@@ -131,8 +131,8 @@ interface DiaryRepository : JpaRepository<DiaryJpaEntity, UUID> {
     """
     )
     fun findAllByDateRange(
-        baseTimeCreatedAtAfter: LocalDateTime,
-        baseTimeCreatedAtBefore: LocalDateTime
+        @Param("after") baseTimeCreatedAtAfter: LocalDateTime,
+        @Param("before") baseTimeCreatedAtBefore: LocalDateTime
     ): List<DiaryJpaEntity>
 
     @Query(
@@ -143,5 +143,8 @@ interface DiaryRepository : JpaRepository<DiaryJpaEntity, UUID> {
     """,
         nativeQuery = true
     )
-    fun findOneByUserIdWithOffset(@Param("userId") userId: UUID, @Param("offset") offset: Long): DiaryJpaEntity?
+    fun findOneByUserIdWithOffset(
+        @Param("userId") userId: UUID,
+        @Param("offset") offset: Long
+    ): DiaryJpaEntity?
 }

@@ -5,6 +5,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.joinAll
 import kotlinx.coroutines.launch
 import modeep.hear.domain.diary.port.`in`.CreateDiaryAiCommentUseCase
 import modeep.hear.domain.diary.port.out.query.QueryDiaryPort
@@ -30,22 +31,21 @@ class DiaryScheduler(
 
         val targetDiaries = queryDiaryPort.findAllByCreatedAtBetween(start, end)
 
-        scheduleScope.launch {
+        scheduleScope.launch(Dispatchers.IO) {
             targetDiaries.chunked(100).forEach { batch ->
-                batch.forEach { diary ->
-                    launch { // 각 일기를 개별 코루틴으로 실행 (병렬)
+                val jobs = batch.map { diary ->
+                    launch {
                         runCatching {
                             createDiaryAiCommentUseCase.execute(diary)
-                        }.onSuccess {
-                            log.info { "Successfully added AI Comment: [${diary.id}]" }
                         }.onFailure { e ->
-                            log.error(e) { "Failed to add AI Comment for diary: [${diary.id}]" }
+                            log.error(e) { "Error for diary: [${diary.id}]" }
                         }
                     }
                 }
-                // 1초 대기 (서버 과부하 방지)
+                jobs.joinAll()
+
                 delay(1000)
-                log.info { "Batch processed. Sleeping for 1s..." }
+                log.info { "Batch of 100 processed. Sleeping..." }
             }
         }
     }
