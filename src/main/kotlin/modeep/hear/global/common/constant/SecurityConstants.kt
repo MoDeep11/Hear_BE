@@ -5,6 +5,11 @@ object SecurityConstants {
         // Static Resources
         "/favicon.ico/**",
 
+        // Swagger
+        "/api-docs/**",
+        "/swagger-ui/**",
+        "/swagger-ui.html/**",
+
         // Auth Public Endpoints
         "/api/v1/auth/login/**",
         "/api/v1/auth/reissue/**",
@@ -22,12 +27,7 @@ object SecurityConstants {
     )
 
     val ADMIN_PERMIT_PATHS = listOf(
-        "/api/v1/admin/**",
-
-        // Swagger
-        "/api-docs/**",
-        "/swagger-ui/**",
-        "/swagger-ui.html/**"
+        "/api/v1/admin/**"
     )
 
     val SENSITIVE_FIELDS = listOf(
