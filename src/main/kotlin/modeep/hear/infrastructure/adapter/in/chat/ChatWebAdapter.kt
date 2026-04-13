@@ -1,6 +1,5 @@
 package modeep.hear.infrastructure.adapter.`in`.chat
 
-import io.github.oshai.kotlinlogging.KotlinLogging
 import jakarta.validation.Valid
 import kotlinx.coroutines.runBlocking
 import modeep.hear.domain.chat.port.`in`.CreateAiImageTaskInChatUseCase
@@ -24,7 +23,6 @@ import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.security.core.Authentication
-import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.PatchMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
@@ -44,8 +42,6 @@ class ChatWebAdapter(
     private val uploadImageInChatUseCase: UploadImageInChatUseCase,
     private val createAiImageTaskInChatUseCase: CreateAiImageTaskInChatUseCase
 ) : ChatApiDocument {
-    private val log = KotlinLogging.logger {}
-
     @PostMapping
     override fun createChat(
         authentication: Authentication
@@ -58,47 +54,49 @@ class ChatWebAdapter(
     }
 
     @PatchMapping("/{chat_id}")
-    override suspend fun finishChat(
+    override fun finishChat(
         @PathVariable("chat_id") chatId: UUID,
-        @AuthenticationPrincipal user: CustomUserDetails
+        authentication: Authentication
     ): ResponseEntity<ApiResult<Unit>> {
-        finishChatUseCase.execute(chatId, user.getUser())
+        val user = (authentication.principal as CustomUserDetails).getUser()
+        runBlocking {
+            finishChatUseCase.execute(chatId, user)
+        }
         return ResponseEntity.status(HttpStatus.ACCEPTED)
             .body(
                 ApiResult(
                     status = 202,
-                    message = AiImageTaskStatus.RESERVED.name,
-                    data = Unit
+                    message = AiImageTaskStatus.RESERVED.name
                 )
             )
     }
 
     @PostMapping("/{chat_id}/messages")
-    override suspend fun createMessage(
+    override fun createMessage(
         @PathVariable("chat_id") chatId: UUID,
         @RequestBody @Valid
         request: CreateMessageRequest,
-        @AuthenticationPrincipal user: CustomUserDetails
+        authentication: Authentication
     ): ResponseEntity<ApiResult<CreateMessageResponse>> {
-        return ResponseEntity.ok(
-            ApiResult(
-                data = createMessageUseCase.executeText(chatId, request, user.getUser())
-            )
-        )
+        val user = (authentication.principal as CustomUserDetails).getUser()
+        val result = runBlocking {
+            createMessageUseCase.executeText(chatId, request, user)
+        }
+        return ResponseEntity.ok(ApiResult(data = result))
     }
 
     @PostMapping("/{chat_id}/voice", consumes = [MediaType.MULTIPART_FORM_DATA_VALUE])
-    override suspend fun createVoiceMessage(
+    override fun createVoiceMessage(
         @PathVariable("chat_id") chatId: UUID,
         @RequestPart("voice") voice: MultipartFile,
         @RequestPart("request") @Valid request: CreateVoiceMessageRequest,
-        @AuthenticationPrincipal user: CustomUserDetails
+        authentication: Authentication
     ): ResponseEntity<ApiResult<CreateMessageResponse>> {
-        return ResponseEntity.ok(
-            ApiResult(
-                data = createMessageUseCase.executeVoice(chatId, voice, request, user.getUser())
-            )
-        )
+        val user = (authentication.principal as CustomUserDetails).getUser()
+        val result = runBlocking {
+            createMessageUseCase.executeVoice(chatId, voice, request, user)
+        }
+        return ResponseEntity.ok(ApiResult(data = result))
     }
 
     @PostMapping("/{chat_id}/images", consumes = [MediaType.MULTIPART_FORM_DATA_VALUE])
@@ -107,11 +105,8 @@ class ChatWebAdapter(
         @RequestPart("files") files: List<MultipartFile>,
         @RequestPart("requests") @Valid requests: List<UploadImageInChatMetaRequest>
     ): ResponseEntity<ApiResult<List<UploadDiaryImageResponse>>> {
-        return ResponseEntity.ok(
-            ApiResult(
-                data = uploadImageInChatUseCase.execute(chatId, files, requests)
-            )
-        )
+        val result = uploadImageInChatUseCase.execute(chatId, files, requests)
+        return ResponseEntity.ok(ApiResult(data = result))
     }
 
     @PostMapping("/{chat_id}/images/generations")

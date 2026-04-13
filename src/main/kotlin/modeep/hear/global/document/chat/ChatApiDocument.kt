@@ -11,7 +11,6 @@ import modeep.hear.infrastructure.adapter.`in`.chat.dto.response.CreateAiImageTa
 import modeep.hear.infrastructure.adapter.`in`.chat.dto.response.CreateChatResponse
 import modeep.hear.infrastructure.adapter.`in`.chat.dto.response.CreateMessageResponse
 import modeep.hear.infrastructure.adapter.`in`.storage.dto.response.UploadDiaryImageResponse
-import modeep.hear.infrastructure.security.userdetails.CustomUserDetails
 import org.springframework.http.ResponseEntity
 import org.springframework.security.core.Authentication
 import org.springframework.web.bind.annotation.RequestBody
@@ -25,23 +24,23 @@ interface ChatApiDocument {
         authentication: Authentication
     ): ResponseEntity<ApiResult<CreateChatResponse>>
 
-    suspend fun finishChat(
+    fun finishChat(
         chatId: UUID,
-        user: CustomUserDetails
+        authentication: Authentication
     ): ResponseEntity<ApiResult<Unit>>
 
-    suspend fun createMessage(
+    fun createMessage(
         chatId: UUID,
         @RequestBody @Valid
         request: CreateMessageRequest,
-        user: CustomUserDetails
+        authentication: Authentication
     ): ResponseEntity<ApiResult<CreateMessageResponse>>
 
-    suspend fun createVoiceMessage(
+    fun createVoiceMessage(
         chatId: UUID,
         voice: MultipartFile,
         request: CreateVoiceMessageRequest,
-        user: CustomUserDetails
+        authentication: Authentication
     ): ResponseEntity<ApiResult<CreateMessageResponse>>
 
     fun uploadImageInChat(
