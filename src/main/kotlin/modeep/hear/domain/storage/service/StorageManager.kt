@@ -11,7 +11,7 @@ import java.util.UUID
 class StorageManager {
     companion object {
         private val allowedImageTypes = listOf("image/jpeg", "image/jpg", "image/png", "image/webp", "image/gif")
-        private val allowedAudioTypes = listOf("audio/mpeg", "audio/mp4", "audio/wav", "audio/webm", "audio/aac", "audio/ogg", "audio/x-m4a")
+        private val allowedAudioTypes = listOf("audio/mpeg", "audio/mp4", "audio/wav", "audio/webm", "video/webm", "audio/aac", "audio/ogg", "audio/x-m4a")
         private const val MAX_FILE_SIZE = 1024 * 1024 * 10L // 10MB
     }
 
