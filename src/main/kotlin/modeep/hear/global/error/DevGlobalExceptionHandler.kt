@@ -15,6 +15,7 @@ import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.http.converter.HttpMessageNotReadableException
 import org.springframework.validation.FieldError
+import org.springframework.web.HttpMediaTypeNotSupportedException
 import org.springframework.web.HttpRequestMethodNotSupportedException
 import org.springframework.web.bind.MethodArgumentNotValidException
 import org.springframework.web.bind.MissingRequestHeaderException
@@ -185,6 +186,24 @@ class DevGlobalExceptionHandler(
                 ErrorResponse(
                     code = GlobalErrorCode.RESOURCE_NOT_FOUND.code,
                     message = GlobalErrorCode.RESOURCE_NOT_FOUND.message,
+                    path = request.requestURI
+                )
+            )
+    }
+
+    @ExceptionHandler(HttpMediaTypeNotSupportedException::class)
+    fun handleHttpMediaTypeNotSupportedException(e: HttpMediaTypeNotSupportedException, request: HttpServletRequest): ResponseEntity<ErrorResponse> {
+        log.warn { "HttpMediaTypeNotSupportedException on ${request.requestURI}: not supported media type" }
+
+        val errorCode = GlobalErrorCode.UNSUPPORTED_MEDIA_TYPE
+        discordSendService.sendErrorLog(e, errorCode, request.requestURI)
+
+        return ResponseEntity
+            .status(errorCode.status.value())
+            .body(
+                ErrorResponse(
+                    code = errorCode.code,
+                    message = errorCode.message,
                     path = request.requestURI
                 )
             )

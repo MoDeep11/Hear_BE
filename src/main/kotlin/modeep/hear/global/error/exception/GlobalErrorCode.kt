@@ -18,7 +18,7 @@ enum class GlobalErrorCode(
     METHOD_NOT_ALLOWED(HttpStatus.METHOD_NOT_ALLOWED, "GLOBAL_006", "지원하지 않는 HTTP 메서드입니다."),
 
     INVALID_INPUT_VALUE(HttpStatus.BAD_REQUEST, "GLOBAL_007", "입력값이 유효하지 않습니다."),
-    DATA_CONFLICT(HttpStatus.CONFLICT, "GLOBAL_008", "데이터 충돌이 발생했습니다."),
+    UNSUPPORTED_MEDIA_TYPE(HttpStatus.UNSUPPORTED_MEDIA_TYPE, "GLOBAL_008", "지원하지 않는 Content-Type입니다."),
     RESOURCE_NOT_FOUND(HttpStatus.NOT_FOUND, "GLOBAL_009", "리소스를 찾을 수 없습니다."),
 
     MISSING_REQUEST_HEADER(HttpStatus.BAD_REQUEST, "GLOBAL_010", "필수 요청 헤더가 누락되었습니다."),

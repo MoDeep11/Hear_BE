@@ -14,6 +14,7 @@ import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.http.converter.HttpMessageNotReadableException
 import org.springframework.validation.FieldError
+import org.springframework.web.HttpMediaTypeNotSupportedException
 import org.springframework.web.HttpRequestMethodNotSupportedException
 import org.springframework.web.bind.MethodArgumentNotValidException
 import org.springframework.web.bind.MissingRequestHeaderException
@@ -128,6 +129,20 @@ class GlobalExceptionHandler(
                 ErrorResponse(
                     code = GlobalErrorCode.METHOD_NOT_ALLOWED.code,
                     message = GlobalErrorCode.METHOD_NOT_ALLOWED.message,
+                    path = request.requestURI
+                )
+            )
+    }
+
+    @ExceptionHandler(HttpMediaTypeNotSupportedException::class)
+    fun handleHttpMediaTypeNotSupportedException(e: HttpMediaTypeNotSupportedException, request: HttpServletRequest): ResponseEntity<ErrorResponse> {
+        log.warn { "HttpMediaTypeNotSupportedException on ${request.requestURI}: not supported media type" }
+        return ResponseEntity
+            .status(GlobalErrorCode.UNSUPPORTED_MEDIA_TYPE.status.value())
+            .body(
+                ErrorResponse(
+                    code = GlobalErrorCode.UNSUPPORTED_MEDIA_TYPE.code,
+                    message = GlobalErrorCode.UNSUPPORTED_MEDIA_TYPE.message,
                     path = request.requestURI
                 )
             )
