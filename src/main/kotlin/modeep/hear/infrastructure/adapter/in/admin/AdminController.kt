@@ -2,6 +2,7 @@ package modeep.hear.infrastructure.adapter.`in`.admin
 
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.media.Content
+import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.parameters.RequestBody
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.tags.Tag
@@ -82,11 +83,18 @@ class AdminController(
 
 data class AdminCreateDiaryRequest(
     @field:NotBlank
+    @field:Schema(example = "일기 내용")
     val content: String,
+
+    @field:Schema(example = "NEUTRAL")
     val emotion: Emotion,
+
     @field:NotEmpty
+    @field:Schema(example = "[\"tag1\", \"tag2\"]")
     val tags: List<@NotBlank String>,
+
     @field:NotBlankIfPresent
+    @field:Schema(example = "AI 피드백 내용")
     val aiComment: String? = null
 )
 
