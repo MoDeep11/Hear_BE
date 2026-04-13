@@ -1,4 +1,7 @@
 spring:
+  main:
+    web-application-type: servlet
+
   application:
     name: hear
 

@@ -1,6 +1,8 @@
 package modeep.hear.infrastructure.adapter.`in`.chat
 
+import io.github.oshai.kotlinlogging.KotlinLogging
 import jakarta.validation.Valid
+import kotlinx.coroutines.runBlocking
 import modeep.hear.domain.chat.port.`in`.CreateAiImageTaskInChatUseCase
 import modeep.hear.domain.chat.port.`in`.CreateChatUseCase
 import modeep.hear.domain.chat.port.`in`.CreateMessageUseCase
@@ -21,6 +23,7 @@ import modeep.hear.infrastructure.security.userdetails.CustomUserDetails
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
+import org.springframework.security.core.Authentication
 import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.PatchMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -41,15 +44,17 @@ class ChatWebAdapter(
     private val uploadImageInChatUseCase: UploadImageInChatUseCase,
     private val createAiImageTaskInChatUseCase: CreateAiImageTaskInChatUseCase
 ) : ChatApiDocument {
+    private val log = KotlinLogging.logger {}
+
     @PostMapping
-    override suspend fun createChat(
-        @AuthenticationPrincipal user: CustomUserDetails
+    override fun createChat(
+        authentication: Authentication
     ): ResponseEntity<ApiResult<CreateChatResponse>> {
-        return ResponseEntity.ok(
-            ApiResult(
-                data = createChatUseCase.execute(user.getUser())
-            )
-        )
+        val user = (authentication.principal as CustomUserDetails).getUser()
+        val result = runBlocking {
+            createChatUseCase.execute(user)
+        }
+        return ResponseEntity.ok(ApiResult(data = result))
     }
 
     @PatchMapping("/{chat_id}")

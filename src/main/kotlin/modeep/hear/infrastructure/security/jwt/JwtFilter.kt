@@ -7,6 +7,7 @@ import modeep.hear.domain.auth.exception.AuthErrorCode
 import modeep.hear.global.common.constant.SecurityConstants
 import modeep.hear.global.error.HttpAuthEntryPoint
 import modeep.hear.global.error.exception.BusinessException
+import org.slf4j.MDC
 import org.springframework.security.authentication.InsufficientAuthenticationException
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.util.AntPathMatcher
@@ -40,6 +41,7 @@ class JwtFilter(
             validateAccessToken(token)
             val authentication = jwtAdapter.getAuthentication(token)
             SecurityContextHolder.getContext().authentication = authentication
+            MDC.put("userId", authentication.name)
         } catch (e: Exception) {
             SecurityContextHolder.clearContext()
             authEntryPoint.commence(

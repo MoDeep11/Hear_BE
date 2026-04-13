@@ -2,12 +2,12 @@ package modeep.hear.global.filter
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.node.ObjectNode
+import io.github.oshai.kotlinlogging.KotlinLogging
 import jakarta.servlet.FilterChain
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
 import modeep.hear.global.common.constant.LogColor
 import modeep.hear.global.common.constant.SecurityConstants
-import org.slf4j.LoggerFactory
 import org.springframework.web.filter.OncePerRequestFilter
 import org.springframework.web.util.ContentCachingRequestWrapper
 import org.springframework.web.util.ContentCachingResponseWrapper
@@ -18,7 +18,7 @@ import java.time.format.DateTimeFormatter
 class RequestLogFilter(
     private val objectMapper: ObjectMapper
 ) : OncePerRequestFilter() {
-    private val log = LoggerFactory.getLogger(javaClass)
+    private val log = KotlinLogging.logger {}
 
     override fun doFilterInternal(
         request: HttpServletRequest,
@@ -34,7 +34,8 @@ class RequestLogFilter(
             filterChain.doFilter(wrappingRequest, wrappingResponse)
         } finally {
             val duration = System.currentTimeMillis() - startTime
-            logRequestDetails(wrappingRequest, wrappingResponse, duration)
+            val bodyBytes = wrappingResponse.contentAsByteArray
+            logRequestDetails(wrappingRequest, wrappingResponse, bodyBytes, duration)
             wrappingResponse.copyBodyToResponse()
         }
     }
@@ -42,6 +43,7 @@ class RequestLogFilter(
     private fun logRequestDetails(
         request: ContentCachingRequestWrapper,
         response: ContentCachingResponseWrapper,
+        bodyBytes: ByteArray,
         duration: Long
     ) {
         val uri = request.requestURI
@@ -50,7 +52,7 @@ class RequestLogFilter(
         val queryString = request.queryString?.let { "?$it" } ?: ""
         val clientIp = request.remoteAddr
 
-        val responseBody = String(response.contentAsByteArray, StandardCharsets.UTF_8)
+        val responseBody = String(bodyBytes, StandardCharsets.UTF_8)
         val errorCode = extractErrorCode(responseBody)
 
         val status = response.status
@@ -65,17 +67,17 @@ class RequestLogFilter(
 
         val codeColor = if (errorCode != null) LogColor.RED else LogColor.GREEN
 
-        log.info(
+        log.info {
             """
-            |
-            |${LogColor.CYAN}[TIMESTAMP]${LogColor.RESET} $now 
-            |${LogColor.BLUE}[REQUEST]${LogColor.RESET}   $method $uri$queryString | ${statusColor}Status: $status${LogColor.RESET} | Time: ${duration}ms
-            |${LogColor.BLUE}[CODE]${LogColor.RESET}      ${codeColor}${errorCode ?: "SUCCESS (N/A)"}${LogColor.RESET}
-            |${LogColor.CYAN}[IP]${LogColor.RESET}        $clientIp
-            |${LogColor.CYAN}[PAYLOAD]${LogColor.RESET}   ${maskedPayload.ifBlank { "No Body" }}
-            |-------------------------------------------------------------------------
+        |
+        |${LogColor.CYAN}[TIMESTAMP]${LogColor.RESET} $now 
+        |${LogColor.BLUE}[REQUEST]${LogColor.RESET}   $method $uri$queryString | ${statusColor}Status: $status${LogColor.RESET} | Time: ${duration}ms
+        |${LogColor.BLUE}[CODE]${LogColor.RESET}      ${codeColor}${errorCode ?: "SUCCESS (N/A)"}${LogColor.RESET}
+        |${LogColor.CYAN}[IP]${LogColor.RESET}        $clientIp
+        |${LogColor.CYAN}[PAYLOAD]${LogColor.RESET}   ${maskedPayload.ifBlank { "No Body" }}
+        |-------------------------------------------------------------------------
             """.trimMargin()
-        )
+        }
     }
 
     private fun extractErrorCode(json: String): String? {

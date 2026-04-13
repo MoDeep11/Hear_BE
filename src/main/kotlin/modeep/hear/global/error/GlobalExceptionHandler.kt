@@ -21,13 +21,12 @@ import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.RestControllerAdvice
 import org.springframework.web.servlet.resource.NoResourceFoundException
 
-private val log = KotlinLogging.logger {}
-
 @RestControllerAdvice
 class GlobalExceptionHandler(
     private val discordSendService: DiscordSendService,
     private val messageSource: MessageSource
 ) {
+    private val log = KotlinLogging.logger {}
 
     private fun resolveValidationMessage(fieldError: FieldError): String =
         messageSource.getMessage(fieldError, LocaleContextHolder.getLocale())

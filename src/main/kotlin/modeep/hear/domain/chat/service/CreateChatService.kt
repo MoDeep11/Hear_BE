@@ -11,18 +11,18 @@ import modeep.hear.global.error.exception.GlobalErrorCode
 import modeep.hear.infrastructure.adapter.`in`.chat.dto.response.CreateChatResponse
 import org.springframework.stereotype.Service
 
-private val log = KotlinLogging.logger {}
-
 @Service
 class CreateChatService(
     private val chatPort: FetchChatPort,
     private val chatCommandService: ChatCommandService,
     private val getData: GetDataForRequestComponent
 ) : CreateChatUseCase {
+    private val log = KotlinLogging.logger {}
+
     override suspend fun execute(
         user: User
     ): CreateChatResponse {
-        log.info { "Create chat for user: $user" }
+        log.info { "Create chat for user: ${user.id}" }
         val userId = user.id
         val newChat = Chat.create(userId)
 

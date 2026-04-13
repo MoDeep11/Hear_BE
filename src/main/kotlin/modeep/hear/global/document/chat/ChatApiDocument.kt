@@ -13,6 +13,7 @@ import modeep.hear.infrastructure.adapter.`in`.chat.dto.response.CreateMessageRe
 import modeep.hear.infrastructure.adapter.`in`.storage.dto.response.UploadDiaryImageResponse
 import modeep.hear.infrastructure.security.userdetails.CustomUserDetails
 import org.springframework.http.ResponseEntity
+import org.springframework.security.core.Authentication
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.multipart.MultipartFile
 import java.util.UUID
@@ -20,8 +21,8 @@ import java.util.UUID
 @Tag(name = "Chat", description = "Chat 도메인 관련 API")
 interface ChatApiDocument {
 
-    suspend fun createChat(
-        user: CustomUserDetails
+    fun createChat(
+        authentication: Authentication
     ): ResponseEntity<ApiResult<CreateChatResponse>>
 
     suspend fun finishChat(

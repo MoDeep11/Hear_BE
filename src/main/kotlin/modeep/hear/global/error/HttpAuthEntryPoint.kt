@@ -21,18 +21,21 @@ class HttpAuthEntryPoint(
         authException: AuthenticationException
     ) {
         val errorCode = GlobalErrorCode.UNAUTHORIZED
-        response.status = errorCode.status.value()
-        response.contentType = MediaType.APPLICATION_JSON_VALUE
-        response.characterEncoding = "UTF-8"
 
-        objectMapper.writeValue(
-            response.writer,
+        val json = objectMapper.writeValueAsString(
             ErrorResponse(
                 code = errorCode.code,
                 message = errorCode.message,
                 path = request.requestURI
             )
         )
+
+        response.reset()
+        response.status = errorCode.status.value()
+        response.contentType = MediaType.APPLICATION_JSON_VALUE
+        response.characterEncoding = "UTF-8"
+        response.setContentLength(json.toByteArray(Charsets.UTF_8).size)
+        response.writer.write(json)
         response.writer.flush()
     }
 }

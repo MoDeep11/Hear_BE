@@ -14,13 +14,12 @@ import org.springframework.web.filter.OncePerRequestFilter
 import org.springframework.web.servlet.HandlerExceptionResolver
 import java.nio.charset.StandardCharsets
 
-private val log = KotlinLogging.logger {}
-
 class ErrorHandlingFilter(
     private val objectMapper: ObjectMapper,
     @param:Qualifier("handlerExceptionResolver")
     private val exceptionResolver: HandlerExceptionResolver
 ) : OncePerRequestFilter() {
+    private val log = KotlinLogging.logger {}
 
     override fun doFilterInternal(
         request: HttpServletRequest,

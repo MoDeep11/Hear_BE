@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import modeep.hear.global.error.HttpAuthEntryPoint
 import modeep.hear.global.filter.ErrorHandlingFilter
 import modeep.hear.global.filter.MDCLoggingFilter
-import modeep.hear.global.filter.RequestLogFilter
 import modeep.hear.infrastructure.security.jwt.JwtAdapter
 import modeep.hear.infrastructure.security.jwt.JwtFilter
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
@@ -22,7 +21,6 @@ class FilterConfig(
 ) : AbstractHttpConfigurer<FilterConfig, HttpSecurity>() {
     override fun configure(http: HttpSecurity) {
         val mdcLoggingFilter = MDCLoggingFilter()
-        val requestLogFilter = RequestLogFilter(objectMapper)
         val jwtFilter = JwtFilter(jwtAdapter, authEntryPoint)
         val errorHandlingFilter = ErrorHandlingFilter(
             objectMapper = objectMapper,
@@ -30,7 +28,6 @@ class FilterConfig(
         )
 
         http.addFilterBefore(mdcLoggingFilter, SecurityContextHolderFilter::class.java)
-            .addFilterAfter(requestLogFilter, MDCLoggingFilter::class.java)
             .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter::class.java)
             .addFilterBefore(errorHandlingFilter, JwtFilter::class.java)
     }
