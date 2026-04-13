@@ -61,9 +61,7 @@ class DiaryExternalAdapter(
             userId = userInfo.userId,
             nickname = userInfo.nickname,
             emotion = diary.emotion,
-            content = diary.content,
-            imageUrls = diary.diaryImages
-                .mapNotNull { it.imageUrl }
+            content = diary.content
         )
 
         val res = webClient.post()
