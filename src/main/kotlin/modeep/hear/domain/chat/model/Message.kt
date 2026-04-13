@@ -14,7 +14,6 @@ data class Message(
     val message: String,
     val messageType: MessageType,
     val voiceUrl: String? = null,
-    val duration: Long? = null, // 음성 재생 시간, milliseconds
     val baseTime: BaseTime
 ) {
     companion object {
@@ -23,8 +22,7 @@ data class Message(
             sender: Sender,
             message: String,
             messageType: MessageType,
-            voiceUrl: String? = null,
-            duration: Long? = null
+            voiceUrl: String? = null
         ): Message {
             return Message(
                 id = UUID.randomUUID(),
@@ -33,7 +31,6 @@ data class Message(
                 message = message,
                 messageType = messageType,
                 voiceUrl = voiceUrl,
-                duration = duration,
                 baseTime = BaseTime()
             )
         }

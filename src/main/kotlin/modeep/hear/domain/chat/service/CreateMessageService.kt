@@ -16,7 +16,6 @@ import modeep.hear.domain.user.model.User
 import modeep.hear.global.error.exception.BusinessException
 import modeep.hear.global.error.exception.GlobalErrorCode
 import modeep.hear.infrastructure.adapter.`in`.chat.dto.request.CreateMessageRequest
-import modeep.hear.infrastructure.adapter.`in`.chat.dto.request.CreateVoiceMessageRequest
 import modeep.hear.infrastructure.adapter.`in`.chat.dto.response.CreateMessageResponse
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -51,7 +50,6 @@ class CreateMessageService(
     override suspend fun executeVoice(
         chatId: UUID,
         voice: MultipartFile,
-        request: CreateVoiceMessageRequest,
         user: User
     ): CreateMessageResponse {
         val chat = queryChatPort.findById(chatId) ?: throw BusinessException(ChatErrorCode.CHAT_NOT_FOUND)
@@ -65,8 +63,7 @@ class CreateMessageService(
             sender = Sender.USER,
             message = "send voice message",
             messageType = MessageType.VOICE,
-            voiceUrl = voiceUrl,
-            duration = request.duration
+            voiceUrl = voiceUrl
         )
 
         return createMessage(chatId, userMessage, MessageType.VOICE, user)

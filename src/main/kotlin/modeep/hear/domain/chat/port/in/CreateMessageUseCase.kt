@@ -2,7 +2,6 @@ package modeep.hear.domain.chat.port.`in`
 
 import modeep.hear.domain.user.model.User
 import modeep.hear.infrastructure.adapter.`in`.chat.dto.request.CreateMessageRequest
-import modeep.hear.infrastructure.adapter.`in`.chat.dto.request.CreateVoiceMessageRequest
 import modeep.hear.infrastructure.adapter.`in`.chat.dto.response.CreateMessageResponse
 import org.springframework.web.multipart.MultipartFile
 import java.util.UUID
@@ -17,7 +16,6 @@ interface CreateMessageUseCase {
     suspend fun executeVoice(
         chatId: UUID,
         voice: MultipartFile,
-        request: CreateVoiceMessageRequest,
         user: User
     ): CreateMessageResponse
 }

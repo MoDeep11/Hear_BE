@@ -12,7 +12,6 @@ import modeep.hear.global.common.response.ApiResult
 import modeep.hear.global.document.chat.ChatApiDocument
 import modeep.hear.infrastructure.adapter.`in`.chat.dto.request.CreateAiImageTaskRequest
 import modeep.hear.infrastructure.adapter.`in`.chat.dto.request.CreateMessageRequest
-import modeep.hear.infrastructure.adapter.`in`.chat.dto.request.CreateVoiceMessageRequest
 import modeep.hear.infrastructure.adapter.`in`.chat.dto.request.UploadImageInChatMetaRequest
 import modeep.hear.infrastructure.adapter.`in`.chat.dto.response.CreateAiImageTaskResponse
 import modeep.hear.infrastructure.adapter.`in`.chat.dto.response.CreateChatResponse
@@ -89,12 +88,11 @@ class ChatWebAdapter(
     override fun createVoiceMessage(
         @PathVariable("chat_id") chatId: UUID,
         @RequestPart("voice") voice: MultipartFile,
-        @RequestPart("request") @Valid request: CreateVoiceMessageRequest,
         authentication: Authentication
     ): ResponseEntity<ApiResult<CreateMessageResponse>> {
         val user = (authentication.principal as CustomUserDetails).getUser()
         val result = runBlocking {
-            createMessageUseCase.executeVoice(chatId, voice, request, user)
+            createMessageUseCase.executeVoice(chatId, voice, user)
         }
         return ResponseEntity.ok(ApiResult(data = result))
     }

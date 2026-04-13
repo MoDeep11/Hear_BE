@@ -5,7 +5,6 @@ import jakarta.validation.Valid
 import modeep.hear.global.common.response.ApiResult
 import modeep.hear.infrastructure.adapter.`in`.chat.dto.request.CreateAiImageTaskRequest
 import modeep.hear.infrastructure.adapter.`in`.chat.dto.request.CreateMessageRequest
-import modeep.hear.infrastructure.adapter.`in`.chat.dto.request.CreateVoiceMessageRequest
 import modeep.hear.infrastructure.adapter.`in`.chat.dto.request.UploadImageInChatMetaRequest
 import modeep.hear.infrastructure.adapter.`in`.chat.dto.response.CreateAiImageTaskResponse
 import modeep.hear.infrastructure.adapter.`in`.chat.dto.response.CreateChatResponse
@@ -39,7 +38,6 @@ interface ChatApiDocument {
     fun createVoiceMessage(
         chatId: UUID,
         voice: MultipartFile,
-        request: CreateVoiceMessageRequest,
         authentication: Authentication
     ): ResponseEntity<ApiResult<CreateMessageResponse>>
 
