@@ -9,12 +9,12 @@ import org.springframework.stereotype.Component
 import org.springframework.web.reactive.function.client.WebClient
 import org.springframework.web.reactive.function.client.awaitBodilessEntity
 
-private val log = KotlinLogging.logger {}
-
 @Component
 class StickerExternalAdapter(
     private val webClient: WebClient
 ) {
+    private val log = KotlinLogging.logger {}
+
     suspend fun generateSticker(req: GenerateStickerRequest) {
         CoroutineScope(Dispatchers.IO).launch {
             runCatching {
