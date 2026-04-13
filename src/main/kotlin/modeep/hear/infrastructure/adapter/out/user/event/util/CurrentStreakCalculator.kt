@@ -1,4 +1,4 @@
-package modeep.hear.infrastructure.adapter.out.user.event
+package modeep.hear.infrastructure.adapter.out.user.event.util
 
 import java.time.LocalDate
 

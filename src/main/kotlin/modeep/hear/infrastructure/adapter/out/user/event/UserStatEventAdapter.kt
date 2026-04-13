@@ -9,6 +9,7 @@ import modeep.hear.domain.user.model.id.UserCalendarId
 import modeep.hear.domain.user.port.out.UserCalendarPort
 import modeep.hear.domain.user.port.out.UserStatPort
 import modeep.hear.global.error.exception.BusinessException
+import modeep.hear.infrastructure.adapter.out.user.event.util.CurrentStreakCalculator
 import org.springframework.context.event.EventListener
 import org.springframework.stereotype.Component
 import org.springframework.transaction.event.TransactionPhase

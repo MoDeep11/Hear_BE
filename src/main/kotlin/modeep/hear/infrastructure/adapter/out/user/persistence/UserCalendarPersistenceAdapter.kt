@@ -1,11 +1,13 @@
 package modeep.hear.infrastructure.adapter.out.user.persistence
 
+import modeep.hear.domain.common.event.EventPublisher
 import modeep.hear.domain.user.exception.UserErrorCode
 import modeep.hear.domain.user.model.UserCalendar
 import modeep.hear.domain.user.model.id.UserCalendarId
 import modeep.hear.domain.user.port.out.UserCalendarPort
 import modeep.hear.global.error.exception.BusinessException
 import modeep.hear.infrastructure.adapter.out.calendar.persistence.repository.CalendarRepository
+import modeep.hear.infrastructure.adapter.out.user.event.event.CreateUserCalendarEvent
 import modeep.hear.infrastructure.adapter.out.user.persistence.entity.UserCalendarJpaEntity
 import modeep.hear.infrastructure.adapter.out.user.persistence.entity.id.UserCalendarIdEntity
 import modeep.hear.infrastructure.adapter.out.user.persistence.repository.UserCalendarRepository
@@ -19,7 +21,8 @@ private const val BATCH_SIZE = 100
 @Component
 class UserCalendarPersistenceAdapter(
     private val repo: UserCalendarRepository,
-    private val calendarRepo: CalendarRepository
+    private val calendarRepo: CalendarRepository,
+    private val eventPublisher: EventPublisher
 ) : UserCalendarPort {
 
     override fun findAllByUserIdAndYearMonth(userId: UUID, yearMonth: YearMonth): List<UserCalendar> {
@@ -28,6 +31,20 @@ class UserCalendarPersistenceAdapter(
 
         val existing = repo.findAllByIdUserIdAndIdCalendarDateBetween(userId, start, end)
             .associateBy { it.id.calendarDate }
+
+        val missing = (1..yearMonth.lengthOfMonth())
+            .map { day -> yearMonth.atDay(day) }
+            .filter { date -> existing[date] == null }
+
+        if (missing.isNotEmpty()) {
+            eventPublisher.publish(
+                CreateUserCalendarEvent(
+                    userId = userId,
+                    dates = missing,
+                    yearMonth = yearMonth
+                )
+            )
+        }
 
         return (1..yearMonth.lengthOfMonth()).map { day ->
             val date = yearMonth.atDay(day)
