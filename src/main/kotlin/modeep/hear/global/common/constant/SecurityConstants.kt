@@ -2,10 +2,7 @@ package modeep.hear.global.common.constant
 
 object SecurityConstants {
     val PERMIT_PATHS = listOf(
-        // Swagger & Static Resources
-        "/api-docs/**",
-        "/swagger-ui/**",
-        "/swagger-ui.html/**",
+        // Static Resources
         "/favicon.ico/**",
 
         // Auth Public Endpoints
@@ -22,6 +19,15 @@ object SecurityConstants {
         // Actuator
         "/actuator/health/**",
         "/actuator/info/**"
+    )
+
+    val ADMIN_PERMIT_PATHS = listOf(
+        "/api/v1/admin/**",
+
+        // Swagger
+        "/api-docs/**",
+        "/swagger-ui/**",
+        "/swagger-ui.html/**"
     )
 
     val SENSITIVE_FIELDS = listOf(

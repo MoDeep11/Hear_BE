@@ -56,6 +56,7 @@ class SecurityConfig(
                     // preflight
                     .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                     .requestMatchers(*SecurityConstants.PERMIT_PATHS.toTypedArray()).permitAll()
+                    .requestMatchers(*SecurityConstants.ADMIN_PERMIT_PATHS.toTypedArray()).hasRole("ADMIN")
                     .anyRequest().authenticated()
             }
             .exceptionHandling {
