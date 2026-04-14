@@ -18,7 +18,6 @@ import java.time.YearMonth
 import java.util.UUID
 
 @Component
-@Transactional(readOnly = true)
 class GetDataForRequestComponent(
     private val messagePort: MessagePort,
     private val queryUserStatPort: QueryUserStatPort,
@@ -32,6 +31,7 @@ class GetDataForRequestComponent(
         return histories to userInfo
     }
 
+    @Transactional(readOnly = true)
     fun getUserInfoWithDiariesSummary(userId: UUID, yearMonth: YearMonth): Pair<UserInfo, DiariesSummary> {
         val user = queryUserPort.findById(userId) ?: throw BusinessException(UserErrorCode.USER_NOT_FOUND)
         val userInfo = getUserInfoOnly(user)

@@ -8,10 +8,8 @@ import modeep.hear.domain.user.exception.UserErrorCode
 import modeep.hear.domain.user.port.out.query.QueryUserPort
 import modeep.hear.global.error.exception.BusinessException
 import org.springframework.stereotype.Service
-import org.springframework.transaction.annotation.Transactional
 
 @Service
-@Transactional
 class CreateDiaryAiCommentService(
     private val diaryPort: DiaryPort,
     private val getData: GetDataForRequestComponent,

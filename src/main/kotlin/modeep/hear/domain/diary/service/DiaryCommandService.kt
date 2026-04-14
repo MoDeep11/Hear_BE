@@ -11,11 +11,11 @@ import org.springframework.transaction.annotation.Transactional
 import java.util.UUID
 
 @Service
-@Transactional
 class DiaryCommandService(
     private val diaryPort: DiaryPort,
     private val securityPort: SecurityPort
 ) {
+    @Transactional
     suspend fun saveDiaryWithAiComment(diary: Diary, aiComment: DiaryAiComment) {
         val userId = securityPort.getCurrentUser().id
         diary.validateOwner(userId)
