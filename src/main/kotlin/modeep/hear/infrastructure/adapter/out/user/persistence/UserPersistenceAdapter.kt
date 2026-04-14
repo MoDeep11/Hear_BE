@@ -29,6 +29,10 @@ class UserPersistenceAdapter(
         return repository.existsById(id)
     }
 
+    override fun findAllIds(): List<UUID> {
+        return repository.findAllIds()
+    }
+
     // --Command--//
     override fun save(user: User) {
         val isExist = repository.existsById(user.id)

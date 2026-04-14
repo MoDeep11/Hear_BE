@@ -12,7 +12,7 @@ data class MonthlyStatistic(
     val targetYearMonth: YearMonth,
     val diaryCount: Int = 0,
     val photoCount: Int = 0,
-    val aiReportContent: String? = null,
+    var aiReportContent: String? = null,
     val emotionDistribution: EmotionDistribution = EmotionDistribution.empty(),
     val baseTime: BaseTime
 ) {
@@ -36,4 +36,7 @@ data class MonthlyStatistic(
             )
         }
     }
+
+    fun updateReport(report: String): MonthlyStatistic =
+        this.copy(aiReportContent = report)
 }

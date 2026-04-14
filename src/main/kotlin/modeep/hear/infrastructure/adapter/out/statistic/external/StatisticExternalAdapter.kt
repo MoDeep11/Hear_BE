@@ -1,6 +1,7 @@
 package modeep.hear.infrastructure.adapter.out.statistic.external
 
 import kotlinx.coroutines.reactor.awaitSingle
+import modeep.hear.domain.user.port.out.external.FetchMonthlyStatisticPort
 import modeep.hear.global.error.exception.BusinessException
 import modeep.hear.global.error.exception.GlobalErrorCode
 import modeep.hear.infrastructure.adapter.out.statistic.external.dto.request.GenerateReportRequest
@@ -15,8 +16,8 @@ import java.time.Duration
 @Component
 class StatisticExternalAdapter(
     private val webClient: WebClient
-) {
-    suspend fun generateReport(req: GenerateReportRequest): GenerateReportResponse {
+) : FetchMonthlyStatisticPort {
+    override suspend fun generateReport(req: GenerateReportRequest): GenerateReportResponse {
         val response = webClient.post()
             .uri("/internal/v1/statistics/reports")
             .bodyValue(req)

@@ -16,7 +16,7 @@ class GetEmotionDistributionService(
     ): EmotionDistribution {
         val monthlyDiaries = queryDiaryPort.findAllByUserIdAndYearMonth(userId, yearMonth)
         val emotions: List<Emotion> = monthlyDiaries.map { it.emotion }
-        return EmotionDistribution.Companion.create(
+        return EmotionDistribution.create(
             emotions.groupingBy { it }.eachCount()
         )
     }

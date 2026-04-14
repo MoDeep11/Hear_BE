@@ -18,7 +18,7 @@ class MonthlyStatisticPersistenceAdapter(
     override fun findByUserIdAndYearMonth(userId: UUID, yearMonth: YearMonth): MonthlyStatistic {
         val id = MonthlyStatisticIdEntity(userId, yearMonth)
         val entity = repo.findByIdOrNull(id)
-            ?: repo.save(mapper.toEntity(MonthlyStatistic.create(userId, yearMonth)))
+            ?: mapper.toEntity(MonthlyStatistic.create(userId, yearMonth))
 
         return mapper.toModel(entity)
     }

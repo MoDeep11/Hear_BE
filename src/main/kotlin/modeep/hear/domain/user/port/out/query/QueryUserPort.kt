@@ -11,4 +11,6 @@ interface QueryUserPort {
     fun findById(id: UUID): User?
 
     fun existsById(id: UUID): Boolean
+
+    fun findAllIds(): List<UUID>
 }

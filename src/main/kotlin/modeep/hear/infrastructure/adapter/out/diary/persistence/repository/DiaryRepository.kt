@@ -79,10 +79,19 @@ interface DiaryRepository : JpaRepository<DiaryJpaEntity, UUID> {
         @Param("end") end: LocalDateTime
     ): Int
 
-    fun findAllByUserIdAndBaseTimeCreatedAtGreaterThanEqualAndBaseTimeCreatedAtLessThan(
-        userId: UUID,
-        baseTimeCreatedAtAfter: LocalDateTime,
-        baseTimeCreatedAtBefore: LocalDateTime
+    @Query(
+        """
+    SELECT d FROM DiaryJpaEntity d
+    LEFT JOIN FETCH d.diaryImages
+    WHERE d.userId = :userId
+    AND d.baseTime.createdAt >= :start
+    AND d.baseTime.createdAt < :end
+"""
+    )
+    fun findAllByUserIdAndYearMonth(
+        @Param("userId") userId: UUID,
+        @Param("start") start: LocalDateTime,
+        @Param("end") end: LocalDateTime
     ): List<DiaryJpaEntity>
 
     @Query(
