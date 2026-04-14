@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Transactional
 
 @Component
-class SaveReportComponent(
+class CommandReportComponent(
     private val monthlyStatisticPort: MonthlyStatisticPort
 ) {
     @Transactional

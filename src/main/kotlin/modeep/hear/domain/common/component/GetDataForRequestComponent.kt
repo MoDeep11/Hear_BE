@@ -1,21 +1,24 @@
 package modeep.hear.domain.common.component
 
 import modeep.hear.domain.chat.port.out.MessagePort
-import modeep.hear.domain.diary.exception.DiaryErrorCode
-import modeep.hear.domain.diary.model.Diary
 import modeep.hear.domain.diary.port.out.query.QueryDiaryPort
 import modeep.hear.domain.user.exception.UserErrorCode
 import modeep.hear.domain.user.model.User
 import modeep.hear.domain.user.port.out.query.QueryUserPort
 import modeep.hear.domain.user.port.out.query.QueryUserProfilePort
 import modeep.hear.domain.user.port.out.query.QueryUserStatPort
+import modeep.hear.domain.user.vo.DiariesSummary
 import modeep.hear.global.error.exception.BusinessException
 import modeep.hear.infrastructure.adapter.out.chat.external.dto.vo.History
 import modeep.hear.infrastructure.adapter.out.chat.external.dto.vo.UserInfo
+import modeep.hear.infrastructure.adapter.out.statistic.external.dto.request.DiaryInfo
 import org.springframework.stereotype.Component
+import org.springframework.transaction.annotation.Transactional
+import java.time.YearMonth
 import java.util.UUID
 
 @Component
+@Transactional(readOnly = true)
 class GetDataForRequestComponent(
     private val messagePort: MessagePort,
     private val queryUserStatPort: QueryUserStatPort,
@@ -29,11 +32,19 @@ class GetDataForRequestComponent(
         return histories to userInfo
     }
 
-    fun getUserInfoWithDiary(userId: UUID, diaryId: UUID): Pair<UserInfo, Diary> {
+    fun getUserInfoWithDiariesSummary(userId: UUID, yearMonth: YearMonth): Pair<UserInfo, DiariesSummary> {
         val user = queryUserPort.findById(userId) ?: throw BusinessException(UserErrorCode.USER_NOT_FOUND)
         val userInfo = getUserInfoOnly(user)
-        val diary = queryDiaryPort.findById(diaryId) ?: throw BusinessException(DiaryErrorCode.DIARY_NOT_FOUND)
-        return userInfo to diary
+        val diaries = queryDiaryPort.findAllByUserIdAndYearMonth(userId, yearMonth)
+
+        val diaryInfos = diaries.map { DiaryInfo.from(it) }
+        val photoCount = diaries.sumOf { it.diaryImages.size }
+
+        return userInfo to DiariesSummary(
+            diaryInfos = diaryInfos,
+            monthlyDiaryCount = diaries.size,
+            monthlyPhotoCount = photoCount
+        )
     }
 
     fun getUserInfoOnly(user: User): UserInfo {

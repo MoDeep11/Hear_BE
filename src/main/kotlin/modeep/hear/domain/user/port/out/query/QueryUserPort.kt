@@ -6,6 +6,8 @@ import java.util.UUID
 interface QueryUserPort {
     fun findByEmail(email: String): User?
 
+    fun findAll(): List<User>
+
     fun existsByEmail(email: String): Boolean
 
     fun findById(id: UUID): User?
