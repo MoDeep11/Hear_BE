@@ -1,13 +1,13 @@
 package modeep.hear.domain.diary.service
 
 import modeep.hear.domain.common.component.GetDataForRequestComponent
-import modeep.hear.domain.diary.model.Diary
 import modeep.hear.domain.diary.port.`in`.CreateDiaryAiCommentUseCase
 import modeep.hear.domain.diary.port.out.DiaryPort
 import modeep.hear.domain.user.exception.UserErrorCode
 import modeep.hear.domain.user.port.out.query.QueryUserPort
 import modeep.hear.global.error.exception.BusinessException
 import org.springframework.stereotype.Service
+import java.util.UUID
 
 @Service
 class CreateDiaryAiCommentService(
@@ -16,7 +16,10 @@ class CreateDiaryAiCommentService(
     private val diaryCommandService: DiaryCommandService,
     private val queryUserPort: QueryUserPort
 ) : CreateDiaryAiCommentUseCase {
-    override suspend fun execute(diary: Diary) {
+    override suspend fun execute(diaryId: UUID) {
+        val diary = diaryPort.findById(diaryId)
+            ?: return
+
         val user = queryUserPort.findById(diary.userId)
             ?: throw BusinessException(UserErrorCode.USER_NOT_FOUND)
         val userInfo = getData.getUserInfoOnly(user)

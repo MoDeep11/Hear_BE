@@ -65,7 +65,7 @@ class DiaryExternalAdapter(
         )
 
         val res = webClient.post()
-            .uri("/internal/v1/diaries/comments")
+            .uri("/internal/v1/diaries/comment")
             .bodyValue(req)
             .retrieve()
             .onStatus({ it.is5xxServerError }) { res ->

@@ -34,7 +34,7 @@ interface QueryDiaryPort {
 
     fun countByUserIdAndYearMonthWithAiImage(userId: UUID, yearMonth: YearMonth): Int
 
-    fun findAllByCreatedAtBetween(start: LocalDateTime, end: LocalDateTime): List<Diary>
+    fun findAllIdsByCreatedAtBetween(start: LocalDateTime, end: LocalDateTime): List<UUID>
 
     fun findRandomByUserId(userId: UUID): Diary?
 }

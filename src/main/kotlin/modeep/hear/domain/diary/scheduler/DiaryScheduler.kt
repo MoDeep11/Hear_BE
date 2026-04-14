@@ -29,16 +29,16 @@ class DiaryScheduler(
         val start = yesterday.atStartOfDay()
         val end = yesterday.atTime(LocalTime.MAX)
 
-        val targetDiaries = queryDiaryPort.findAllByCreatedAtBetween(start, end)
+        val targetDiaries = queryDiaryPort.findAllIdsByCreatedAtBetween(start, end)
 
         scheduleScope.launch(Dispatchers.IO) {
             targetDiaries.chunked(100).forEach { batch ->
-                val jobs = batch.map { diary ->
+                val jobs = batch.map { id ->
                     launch {
                         runCatching {
-                            createDiaryAiCommentUseCase.execute(diary)
+                            createDiaryAiCommentUseCase.execute(id)
                         }.onFailure { e ->
-                            log.error(e) { "Error for diary: [${diary.id}]" }
+                            log.error(e) { "Error for diary: [$id]" }
                         }
                     }
                 }

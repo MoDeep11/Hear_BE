@@ -135,14 +135,14 @@ interface DiaryRepository : JpaRepository<DiaryJpaEntity, UUID> {
 
     @Query(
         """
-        SELECT d FROM DiaryJpaEntity d 
+        SELECT d.id FROM DiaryJpaEntity d 
         WHERE d.baseTime.createdAt BETWEEN :after AND :before
     """
     )
-    fun findAllByDateRange(
+    fun findAllIdsByDateRange(
         @Param("after") baseTimeCreatedAtAfter: LocalDateTime,
         @Param("before") baseTimeCreatedAtBefore: LocalDateTime
-    ): List<DiaryJpaEntity>
+    ): List<UUID>
 
     @Query(
         value = """

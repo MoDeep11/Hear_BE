@@ -69,11 +69,11 @@ class DiaryCompositeAdapter(
     ): Int =
         persistenceAdapter.countByUserIdAndYearMonthWithAiImage(userId, yearMonth)
 
-    override fun findAllByCreatedAtBetween(
+    override fun findAllIdsByCreatedAtBetween(
         start: LocalDateTime,
         end: LocalDateTime
-    ): List<Diary> =
-        persistenceAdapter.findAllByCreatedAtBetween(start, end)
+    ): List<UUID> =
+        persistenceAdapter.findAllIdsByCreatedAtBetween(start, end)
 
     override fun findRandomByUserId(userId: UUID): Diary? =
         persistenceAdapter.findRandomByUserId(userId)

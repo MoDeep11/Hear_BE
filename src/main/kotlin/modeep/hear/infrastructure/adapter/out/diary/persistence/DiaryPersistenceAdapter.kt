@@ -80,11 +80,11 @@ class DiaryPersistenceAdapter(
         return repo.countByUserIdAndCreatedAtBetweenWithAiImage(userId, start, end)
     }
 
-    override fun findAllByCreatedAtBetween(
+    override fun findAllIdsByCreatedAtBetween(
         start: LocalDateTime,
         end: LocalDateTime
-    ): List<Diary> {
-        return repo.findAllByDateRange(start, end).map { mapper.toModel(it) }
+    ): List<UUID> {
+        return repo.findAllIdsByDateRange(start, end)
     }
 
     override fun findRandomByUserId(userId: UUID): Diary? {
