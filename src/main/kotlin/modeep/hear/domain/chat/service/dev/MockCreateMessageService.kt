@@ -1,5 +1,6 @@
 package modeep.hear.domain.chat.service.dev
 
+import io.github.oshai.kotlinlogging.KotlinLogging
 import modeep.hear.domain.chat.exception.ChatErrorCode
 import modeep.hear.domain.chat.model.Message
 import modeep.hear.domain.chat.port.`in`.CreateMessageUseCase
@@ -31,11 +32,13 @@ class MockCreateMessageService(
     private val storagePort: StoragePort,
     private val messagePort: MessagePort
 ) : CreateMessageUseCase {
+    private val log = KotlinLogging.logger {}
     override suspend fun executeText(
         chatId: UUID,
         request: CreateMessageRequest,
         user: User
     ): CreateMessageResponse {
+        log.info { "Creating message for chat $chatId" }
         checkUserWithChatService.executeWithSuspend(chatId, user)
         val userMessage = Message.create(
             chatId = chatId,
