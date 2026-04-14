@@ -1,15 +1,16 @@
-package modeep.hear.global.error
+package modeep.hear.global.error.dev
 
 import io.github.oshai.kotlinlogging.KotlinLogging
 import jakarta.servlet.http.HttpServletRequest
 import modeep.hear.global.common.response.ErrorResponse
+import modeep.hear.global.error.ErrorCode
 import modeep.hear.global.error.exception.BusinessException
 import modeep.hear.global.error.exception.CriticalException
 import modeep.hear.global.error.exception.GlobalErrorCode
 import modeep.hear.global.util.maskIfSensitive
 import modeep.hear.infrastructure.external.openfeign.discord.DiscordSendService
 import org.springframework.context.MessageSource
-import org.springframework.context.annotation.Primary
+import org.springframework.context.annotation.Profile
 import org.springframework.context.i18n.LocaleContextHolder
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -23,7 +24,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.RestControllerAdvice
 import org.springframework.web.servlet.resource.NoResourceFoundException
 
-@Primary
+@Profile("dev")
 @RestControllerAdvice
 class DevGlobalExceptionHandler(
     private val discordSendService: DiscordSendService,

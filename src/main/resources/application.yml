@@ -5,6 +5,9 @@ spring:
   application:
     name: hear
 
+  profiles:
+    active: ${PROFILE}
+
   messages:
     encoding: UTF-8
 
