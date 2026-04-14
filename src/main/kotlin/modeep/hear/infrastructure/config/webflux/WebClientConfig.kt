@@ -1,6 +1,7 @@
 package modeep.hear.infrastructure.config.webflux
 
 import io.netty.channel.ChannelOption
+import modeep.hear.global.filter.WebClientLoggingFilter
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.http.HttpHeaders
@@ -11,7 +12,8 @@ import reactor.netty.http.client.HttpClient
 
 @Configuration
 class WebClientConfig(
-    private val properties: ExternalApiProperties
+    private val properties: ExternalApiProperties,
+    private val webClientLoggingFilter: WebClientLoggingFilter
 ) {
     @Bean
     fun externalWebClient(builder: WebClient.Builder): WebClient {
@@ -22,6 +24,7 @@ class WebClientConfig(
 
         return builder
             .baseUrl(properties.baseUrl) // 환경변수에서 가져온 URL 적용
+            .filter(webClientLoggingFilter.loggingFilter())
             .clientConnector(ReactorClientHttpConnector(httpClient))
             .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
             .build()
