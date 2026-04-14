@@ -28,4 +28,4 @@ USER springuser
 
 EXPOSE 8080
 
-ENTRYPOINT ["java", "-jar", "-Dspring.profiles.active=prod", "app.jar"]
+ENTRYPOINT ["java", "-jar", "-Dspring.profiles.active=${PROFILE:-dev}", "app.jar"]
