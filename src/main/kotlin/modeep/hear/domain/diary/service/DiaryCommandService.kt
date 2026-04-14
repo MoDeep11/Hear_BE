@@ -17,9 +17,6 @@ class DiaryCommandService(
 ) {
     @Transactional
     suspend fun saveDiaryWithAiComment(diary: Diary, aiComment: DiaryAiComment) {
-        val userId = securityPort.getCurrentUser().id
-        diary.validateOwner(userId)
-
         diary.diaryAiComment = aiComment
         diaryPort.save(diary)
     }
