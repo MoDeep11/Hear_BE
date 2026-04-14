@@ -6,7 +6,7 @@ spring:
     name: hear
 
   profiles:
-    active: ${PROFILE}
+    active: ${PROFILE:dev}
 
   messages:
     encoding: UTF-8
