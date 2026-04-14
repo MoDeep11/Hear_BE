@@ -1,7 +1,6 @@
 package modeep.hear.domain.user.scheduler
 
 import io.github.oshai.kotlinlogging.KotlinLogging
-import jakarta.annotation.PostConstruct
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -54,14 +53,8 @@ class MonthlyReportScheduler(
                         }
                     }
                 }.joinAll()
-
                 delay(1000)
             }
         }
-    }
-
-    @PostConstruct
-    fun init() {
-        createMonthlyStatistic()
     }
 }
