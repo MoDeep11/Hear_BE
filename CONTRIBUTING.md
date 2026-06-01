@@ -10,6 +10,7 @@ Before contributing, please review the guidelines below.
 
 ## 🚀 Get Started
 
+### ko
 1. 이 저장소를 **Fork** 합니다.
 2. 로컬 환경으로 **Clone** 합니다.
 3. 새로운 기능을 위한 **Issue**를 생성합니다. 
@@ -18,7 +19,7 @@ Before contributing, please review the guidelines below.
 6. 원본 저장소의 **Develop Branch** 로 **Pull Request (PR)**를 보냅니다.
 7. PR이 review되고 merge 될 때까지 기다려주세요.
 
-
+### en
 1. **Fork** this repository.
 2. **Clone** into your local environment.
 3. Create an **issue** for the new feature.
