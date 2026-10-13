@@ -1,0 +1,16 @@
+{
+  "measured_at": "2026-10-13T14:35:39.7205480+09:00",
+  "code_reference": "46d5c96b8fa604b993b5e782ec4417141578b69e",
+  "cpu": "Intel(R) Core(TM) 5 120U",
+  "memory_bytes": 16845287424,
+  "java": "21.0.9",
+  "postgres": "18.4",
+  "pool_size": 5,
+  "concurrency": 10,
+  "requests_per_round": 30,
+  "rounds": 3,
+  "ai_delay_ms": 3000,
+  "ai_status": 500,
+  "retries": 0,
+  "model": "closed loop synchronous Spring JPA boundary comparison"
+}
